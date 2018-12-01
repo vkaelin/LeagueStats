@@ -3,7 +3,7 @@ const request = require('request');
 const path = require('path');
 
 const app = express()
-const port = 5000
+app.set('port', (process.env.PORT || 5000))
 
 const key = 'RGAPI-9753db8a-d3fb-4dc2-bbb9-6eea76b93760';
 //var id = 65362306;
@@ -20,7 +20,7 @@ app.get('/', function (request, response) {
 app.use('/public', express.static(__dirname + '/public'));
 
 /* Launch app */
-app.listen(port, () => console.log(`RiotAPI test app listening on port ${port}!`))
+app.listen(app.get('port'), () => console.log(`RiotAPI test app listening on port ${app.get('port')}!`))
 
 
 // Get data of rankeds
