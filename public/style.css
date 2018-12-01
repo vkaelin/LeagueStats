@@ -1,0 +1,38 @@
+.search {
+  background: #ebebeb;
+}
+
+.search .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 32px 0;
+}
+
+.player {
+  text-align: center;
+  margin: 16px auto;
+  width: 400px;
+  border: 1px solid #ebebeb;
+  padding: 16px;
+}
+
+.player__pp {
+  width: 75px;
+  height: 75px;
+  background: #ebebeb;
+  margin: 0 auto;
+}
+
+.player__rank-img {
+  width: 75px;
+  height: 75px;
+  background: #ebebeb;
+  margin: 0 auto;
+}
+
+.champion-icon {
+  width: 48px;
+  height: 48px;
+}
