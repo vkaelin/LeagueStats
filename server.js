@@ -5,7 +5,7 @@ const path = require('path');
 const app = express()
 app.set('port', (process.env.PORT || 5000))
 
-const key = 'RGAPI-af41b846-8da0-42a2-bb81-34e61ed3dfb5';
+const key = 'RGAPI-79f2b14e-a46e-4520-b7d8-475b8b89b9bc';
 //var id = 65362306;
 var summonerID = 'HMOiIUvzYtfgPk5X53zWTeOZo52T-HYJQhwvhkPNh0BWxZ0';
 var accountID = 'V1xNS14bjVeP54hg03JeMxkXJB29K4TfUMvijDB85nxbD4Y';
