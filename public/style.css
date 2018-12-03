@@ -32,7 +32,22 @@
   margin: 0 auto;
 }
 
+.list-matches {
+  list-style-type: none;
+  padding: 0;
+}
+
+.list-matches li {
+  padding: 10px 0;
+  background: #F1F5F8;
+}
+
+.list-matches li:nth-child(2n) {
+  background: #DAE1E7;
+}
+
 .champion-icon {
   width: 48px;
   height: 48px;
+  margin-left: 5px;
 }

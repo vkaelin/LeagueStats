@@ -1,15 +1,21 @@
 const express = require('express')
 const request = require('request');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const app = express()
 app.set('port', (process.env.PORT || 5000))
 
-const key = 'RGAPI-79f2b14e-a46e-4520-b7d8-475b8b89b9bc';
-//var id = 65362306;
+const key = 'RGAPI-5be8ff59-ab0b-48a8-a924-10984670a571';
 var summonerID = 'HMOiIUvzYtfgPk5X53zWTeOZo52T-HYJQhwvhkPNh0BWxZ0';
 var accountID = 'V1xNS14bjVeP54hg03JeMxkXJB29K4TfUMvijDB85nxbD4Y';
 var pseudo = 'Chil';
+
+/* To retrieve data of post request */
+app.use( bodyParser.json() );    // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({  // to support URL-encoded bodies
+  extended: true
+})); 
 
 /* Homepage */
 app.get('/', function (request, response) {
@@ -50,6 +56,25 @@ app.get('/api', function (req, res) {
       });
     });
   });
+});
+
+
+app.post('/api', function(req, res) {
+  console.log(req.body.playerName);
+  pseudo = req.body.playerName;
+
+  getAccountInfos(function (account) {
+    getRanked(function (ranked) {
+      getMatches(function(matches) {
+        var finalJSON = new Array();
+        finalJSON.push(account);
+        finalJSON.push(ranked);
+        finalJSON.push(matches);
+        res.send(finalJSON);
+      });
+    });
+  });
+
 });
 
 
