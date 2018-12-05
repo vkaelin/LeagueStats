@@ -39,15 +39,16 @@
 
 .list-matches li {
   padding: 10px 0;
-  background: #F1F5F8;
+  background: #51D88A;
 }
 
-.list-matches li:nth-child(2n) {
-  background: #DAE1E7;
+.list-matches li.lose {
+  background: #EF5753;
 }
 
 .champion-icon {
   width: 48px;
   height: 48px;
-  margin-left: 5px;
+  display: block;
+  margin: 0 auto;
 }

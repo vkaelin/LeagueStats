@@ -2,20 +2,23 @@ const express = require('express')
 const request = require('request');
 const path = require('path');
 const bodyParser = require('body-parser');
+const rp = require('request-promise');
+var Promise = require("bluebird");
 
 const app = express()
 app.set('port', (process.env.PORT || 5000))
 
-const key = 'RGAPI-5be8ff59-ab0b-48a8-a924-10984670a571';
+const key = 'RGAPI-158e34a3-b8c2-4835-81bd-6bf0537e8c04';
 var summonerID = 'HMOiIUvzYtfgPk5X53zWTeOZo52T-HYJQhwvhkPNh0BWxZ0';
 var accountID = 'V1xNS14bjVeP54hg03JeMxkXJB29K4TfUMvijDB85nxbD4Y';
 var pseudo = 'Chil';
+var JSONMatches;
 
 /* To retrieve data of post request */
-app.use( bodyParser.json() );    // to support JSON-encoded bodies
+app.use(bodyParser.json());    // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({  // to support URL-encoded bodies
   extended: true
-})); 
+}));
 
 /* Homepage */
 app.get('/', function (request, response) {
@@ -29,6 +32,15 @@ app.use('/public', express.static(__dirname + '/public'));
 app.listen(app.get('port'), () => console.log(`RiotAPI test app listening on port ${app.get('port')}!`))
 
 
+
+function apicall(urlApi) {
+  //console.log(urlApi);
+  return rp({ url: 'https://euw1.api.riotgames.com/lol/match/v4/matches/' + urlApi + '?api_key=' + key, json: true }).then(function (obj) {
+    return addMatchToJSON(obj);
+  });
+}
+
+
 // Get data of rankeds
 function getRanked(callback) {
   request('https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/' + summonerID + '?api_key=' + key, function (error, response, body) {
@@ -40,32 +52,13 @@ function getRanked(callback) {
 
 
 // send data of rankeds and of username
-app.get('/api', function (req, res) {
-  var name = req.url.split('?')[1];
-  if (name != undefined) {
-    pseudo = name;
-  }
-  getAccountInfos(function (account) {
-    getRanked(function (ranked) {
-      getMatches(function(matches) {
-        var finalJSON = new Array();
-        finalJSON.push(account);
-        finalJSON.push(ranked);
-        finalJSON.push(matches);
-        res.send(finalJSON);
-      });
-    });
-  });
-});
-
-
-app.post('/api', function(req, res) {
-  console.log(req.body.playerName);
+app.post('/api', function (req, res) {
+  //console.log(req.body.playerName);
   pseudo = req.body.playerName;
 
   getAccountInfos(function (account) {
     getRanked(function (ranked) {
-      getMatches(function(matches) {
+      getMatches(function (matches) {
         var finalJSON = new Array();
         finalJSON.push(account);
         finalJSON.push(ranked);
@@ -76,25 +69,6 @@ app.post('/api', function(req, res) {
   });
 
 });
-
-
-/*
-app.get('/api', function (req, res) {
-  var name = req.url.split('?')[1];
-  if (name != undefined) {
-    pseudo = name;
-  }
-  getAccountInfos(function (JSONBody) {
-    getRanked(function (body) {
-      dataAPI = body;
-      var finalJSON = new Array();
-      finalJSON.push(JSONBody);
-      finalJSON.push(dataAPI);
-      res.send(finalJSON);
-    });
-  });
-});*/
-
 
 
 // Get account infos of an username
@@ -102,7 +76,7 @@ function getAccountInfos(callback) {
   request('https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + pseudo + '?api_key=' + key, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var JSONBody = JSON.parse(body);
-      console.log(JSONBody);
+      //console.log(JSONBody);
       summonerID = JSONBody.id;
       accountID = JSONBody.accountId;
       callback(JSONBody);
@@ -113,11 +87,36 @@ function getAccountInfos(callback) {
 
 // Get matches of an accountID
 function getMatches(callback) {
-  request('https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/' + accountID + '?endIndex=10&api_key=' + key, function (error, response, body) { 
+  request('https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/' + accountID + '?endIndex=10&api_key=' + key, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      var JSONMatches = JSON.parse(body);
-      //console.log(JSONMatches);
-      callback(JSONMatches);
+      JSONMatches = JSON.parse(body);
+  
+      let matchsId = new Array();
+      for (let i = 0; i < JSONMatches.matches.length; i++) {
+        matchsId[i] = JSONMatches.matches[i].gameId;
+      }
+
+      Promise.mapSeries(matchsId, function (item) {
+        return apicall(item);
+      }).then(() => {
+        console.log('Finished');
+        callback(JSONMatches);
+      }).catch(err => {
+        console.log('Error');
+      });
+
     }
   });
+}
+
+
+function addMatchToJSON(obj) {
+  //console.log(obj.gameId);
+
+  for (let i = 0; i < JSONMatches.matches.length; i++) {
+    if(JSONMatches.matches[i].gameId == obj.gameId) {
+      //console.log('yes');
+      JSONMatches.matches[i] = obj;
+    }
+  }
 }

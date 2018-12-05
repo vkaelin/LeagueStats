@@ -16,11 +16,40 @@ function onLoad() {
   var userStats = parsedEntireResponse[0];
   var rankedStats = JSON.parse(parsedEntireResponse[1]);
   var soloQStats = rankedStats.length !== 0 ? (rankedStats[0].queueType == 'RANKED_SOLO_5x5' ? rankedStats[0] : rankedStats[1]) : false;
-  var matches = parsedEntireResponse[2];
-  //console.log(userStats);
-  //console.log(rankedStats);
-  console.log(matches);
-  console.log(soloQStats);
+  var matches = parsedEntireResponse[2].matches;
+  var accountId = userStats.accountId;
+
+  var matchesInfos = [];
+  // Loop on all matches
+  for (let i = 0; i < matches.length; i++) {
+    var currentMatch = matches[i];
+    var participantId;
+    for (let i = 0; i < currentMatch.participantIdentities.length; i++) {
+      if (currentMatch.participantIdentities[i].player.accountId === accountId)
+        participantId = currentMatch.participantIdentities[i].participantId;
+    }
+
+    var teamId = currentMatch.participants[participantId - 1].teamId;
+
+    var win = false;
+    for (let i = 0; i < currentMatch.teams.length; i++) {
+      if (currentMatch.teams[i].teamId === teamId) {
+        if (currentMatch.teams[i].win === 'Win')
+          win = true;
+      }
+    }
+
+    var champion = currentMatch.participants[participantId - 1].championId;
+    var role = currentMatch.participants[participantId - 1].timeline.lane;
+
+    matchesInfos.push({
+      result: win,
+      champ: champion,
+      role: role
+    });
+  }
+  console.log(matchesInfos);
+
 
   document.querySelector('.player__pp').style.background = 'url(https://cdn.valentinkaelin.ch/riot/profileicon/' + userStats.profileIconId + '.png) center/cover';
   document.querySelector('.player__name').innerHTML = userStats.name;
@@ -39,13 +68,14 @@ function onLoad() {
   var matchesList = document.createElement('ul');
   matchesList.className = 'list-matches';
   playerContainer.appendChild(matchesList);
-  matches.matches.forEach(e => {
+  matchesInfos.forEach(e => {
     var li = document.createElement('li');
+    li.className = e.result ? 'win' : 'lose';
     var img = document.createElement('img');
-    var championName = championsId[e.champion];
+    var championName = championsId[e.champ];
     img.setAttribute('src', '/public/img/champions/' + championName + '.png');
     img.className = 'champion-icon';
-    li.innerHTML = championName + ' - ' + e.lane;
+    li.innerHTML = championName + ' - ' + e.role;
     li.appendChild(img);
     matchesList.appendChild(li);
   });
@@ -62,7 +92,6 @@ var nameToPick = document.querySelector('#name')
 changeName.addEventListener('submit', function (e) {
   e.preventDefault();
   //url = '/api?' + nameToPick.value;
-  url = '/api';
   req.open('POST', url, true);
   req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   req.send('playerName=' + nameToPick.value);
@@ -75,11 +104,11 @@ changeName.addEventListener('submit', function (e) {
 function getRankImg(soloQStats) {
   if (soloQStats) {
     if (soloQStats.tier != 'MASTER' && soloQStats.tier != 'CHALLENGER') {
-      return '/public/img/tier-icons/' + soloQStats.tier.toLowerCase() + '_' + soloQStats.rank.toLowerCase() + '.png';
+      return 'https://cdn.valentinkaelin.ch/riot/tier-icons/' + soloQStats.tier.toLowerCase() + '_' + soloQStats.rank.toLowerCase() + '.png';
     } else {
-      return '/public/img/tier-icons/' + soloQStats.tier.toLowerCase() + '.png';
+      return 'https://cdn.valentinkaelin.ch/riot/tier-icons/' + soloQStats.tier.toLowerCase() + '.png';
     }
   } else {
-    return '/public/img/tier-icons/provisional.png';
+    return 'https://cdn.valentinkaelin.ch/riot/tier-icons/provisional.png';
   }
 }
