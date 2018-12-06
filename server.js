@@ -8,7 +8,7 @@ var Promise = require("bluebird");
 const app = express()
 app.set('port', (process.env.PORT || 5000))
 
-const key = 'RGAPI-158e34a3-b8c2-4835-81bd-6bf0537e8c04';
+const key = 'RGAPI-48b725ad-3376-4b20-856b-66787c36d348';
 var summonerID = 'HMOiIUvzYtfgPk5X53zWTeOZo52T-HYJQhwvhkPNh0BWxZ0';
 var accountID = 'V1xNS14bjVeP54hg03JeMxkXJB29K4TfUMvijDB85nxbD4Y';
 var pseudo = 'Chil';
