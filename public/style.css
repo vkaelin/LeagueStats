@@ -1,3 +1,17 @@
+body {
+  background: #F1F5F8;
+}
+
+.debug {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  background: #EF5753;
+  border: none;
+}
+
 .search {
   background: #ebebeb;
 }
@@ -13,7 +27,7 @@
 .player {
   text-align: center;
   margin: 16px auto;
-  width: 400px;
+  /*width: 400px;*/
   border: 1px solid #ebebeb;
   padding: 16px;
 }
@@ -51,4 +65,99 @@
   height: 48px;
   display: block;
   margin: 0 auto;
+}
+
+.champion-img {
+  width: 48px;
+  height: 48px;
+  display: block;
+  margin: 0 2px 0 0;
+}
+
+.spell-icon {
+  width: 23px;
+  height: 23px;
+  display: block;
+}
+
+
+/* ############## */
+
+
+.list-matches--debug {
+  list-style-type: none;
+  padding: 0;
+}
+
+.match {
+  background: #fff;
+  padding: 10px 0;
+  border-bottom: 1px solid #DAE1E7;
+}
+
+.match .content-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+  
+}
+
+.match.win .content-container {
+  border-left: 10px solid #51D88A;
+}
+
+.match.lose .content-container {
+  border-left: 10px solid #EF5753;
+}
+
+/* First col */
+.match .first {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1 0 0;
+}
+
+.match .level {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  color: #fff;
+  font-weight: bold;
+}
+
+.match .summonerSpells {
+  margin: 0 8px 0 0;
+}
+
+.match .spell-icon:first-child {
+  margin: 0 0 2px 0;
+}
+
+/* Second col */
+.match .second {
+  flex: 1 0 0;
+  text-align: left;
+}
+
+/* Third col */
+.match .third {
+  flex: 1 0 0;
+  display: flex;
+}
+
+.third .item {
+  width: 48px;
+  height: 48px;
+  margin: 0 2px 0 0;
+}
+
+/* Fourth col */
+.match .fourth {
+  flex: 1 0 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }

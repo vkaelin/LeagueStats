@@ -8,7 +8,7 @@ var Promise = require("bluebird");
 const app = express()
 app.set('port', (process.env.PORT || 5000))
 
-const key = 'RGAPI-48b725ad-3376-4b20-856b-66787c36d348';
+const key = 'RGAPI-858eb2b5-24a7-4a54-bf71-45e8b9f3327a';
 var summonerID = 'HMOiIUvzYtfgPk5X53zWTeOZo52T-HYJQhwvhkPNh0BWxZ0';
 var accountID = 'V1xNS14bjVeP54hg03JeMxkXJB29K4TfUMvijDB85nxbD4Y';
 var pseudo = 'Chil';
@@ -91,8 +91,8 @@ function getMatches(callback) {
     if (!error && response.statusCode == 200) {
       JSONMatches = JSON.parse(body);
   
-      let matchsId = new Array();
-      for (let i = 0; i < JSONMatches.matches.length; i++) {
+      var matchsId = new Array();
+      for (var i = 0; i < JSONMatches.matches.length; i++) {
         matchsId[i] = JSONMatches.matches[i].gameId;
       }
 
@@ -113,7 +113,7 @@ function getMatches(callback) {
 function addMatchToJSON(obj) {
   //console.log(obj.gameId);
 
-  for (let i = 0; i < JSONMatches.matches.length; i++) {
+  for (var i = 0; i < JSONMatches.matches.length; i++) {
     if(JSONMatches.matches[i].gameId == obj.gameId) {
       //console.log('yes');
       JSONMatches.matches[i] = obj;
