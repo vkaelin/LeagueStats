@@ -18,6 +18,12 @@ var gameModes = {
   850: 'Co-op vs. AI (Intermediate)'
 };
 
+/* Debug button to reset localstorage */
+document.querySelector('.debug').addEventListener('click', () => {
+  console.log('CLEAR LOCALSTORAGE');
+  localStorage.clear();
+});
+
 var req = new XMLHttpRequest();
 var url = '/api';
 var params = 'playerName=Kalane';
@@ -298,10 +304,3 @@ function displayContent(stringData) {
     matchesList.appendChild(li);
   });
 }
-
-
-/* Debug button to reset localstorage */
-document.querySelector('.debug').addEventListener('click', () => {
-  console.log('CLEAR LOCALSTORAGE');
-  localStorage.clear();
-});
