@@ -6,27 +6,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Riot Api Node</title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">-->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="public/style.css">
 </head>
 
-<body>
+<body class="font-sans bg-grey-lighter">
+
+  <div class="loader--overlay">
+    <div class="loader-container">
+      <div class="LoaderBalls">
+        <div class="LoaderBalls__item"></div>
+        <div class="LoaderBalls__item"></div>
+        <div class="LoaderBalls__item"></div>
+      </div>
+    </div>
+  </div>
+
   <button class="debug"></button>
 
   <div class="search">
-    <div class="container">
+    <div class="container mx-auto">
 
-      <form class="form-inline" id="changeName" method="POST" action="api">
-        <input type="text" class="form-control mb-2 mr-sm-2" id="name" name="playerName" placeholder="Pseudo du Joueur">
-        <button type="submit" class="btn btn-primary mb-2">Chercher</button>
+      <form class="flex items-center mb-6" id="changeName" method="POST" action="api">
+        <input type="text" class="hadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline mr-1" id="name" name="playerName" placeholder="Pseudo du Joueur">
+        <button class="bg-white hover:bg-grey-lightest text-grey-darkest font-semibold py-2 px-4 border border-grey-light rounded shadow">
+          Chercher
+        </button>
       </form>
 
     </div>
   </div>
 
-  <div class="container">
-    <div class="player">
+  <div class="container mx-auto pb-16">
+    <div class="player shadow-md">
       <div class="player__pp"></div>
       <h1 class="player__name">Default name</h1>
       <h3 class="player__level">Default level</h3>
@@ -35,22 +49,19 @@
       <h3 class="player__ratio">Default ratio</h3>
 
 
-      <ul class="list-matches--debug">
-        <!--<li class="lose">
-          Vayne - BOTTOM
-          
-        </li>-->
+      <!--<ul class="list-matches--debug">
+
         <li class="match">
           <div class="content-container">
 
             <div class="first">
-                <img src="/public/img/champions/Vayne.png" class="champion-img" alt="example design">
-                <span class="level">17</span>
-                <div class="summonerSpells">
-                  <img class="spell-icon" src="https://cdn.valentinkaelin.ch/riot/spells/SummonerFlash.png" alt="Flash">
-                  <img class="spell-icon" src="https://cdn.valentinkaelin.ch/riot/spells/SummonerDot.png" alt="Ignite">
-                </div>
-                <span class="champion-name">Vayne</span>
+              <img src="/public/img/champions/Vayne.png" class="champion-img" alt="example design">
+              <span class="level">17</span>
+              <div class="summonerSpells">
+                <img class="spell-icon" src="https://cdn.valentinkaelin.ch/riot/spells/SummonerFlash.png" alt="Flash">
+                <img class="spell-icon" src="https://cdn.valentinkaelin.ch/riot/spells/SummonerDot.png" alt="Ignite">
+              </div>
+              <span class="champion-name">Vayne</span>
             </div>
 
             <div class="second">
@@ -82,17 +93,18 @@
 
           </div>
         </li>
-      </ul>
+      </ul>-->
 
     </div>
   </div>
 
 
   <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>-->
+  <script src="public/data.js"></script>
   <script src="public/functions.js"></script>
   <script src="public/client.js"></script>
 </body>

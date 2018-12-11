@@ -1,5 +1,11 @@
+html {
+  height: 100%;
+}
+
 body {
   background: #F1F5F8;
+  position: relative;
+  min-height: 100%;
 }
 
 .debug {
@@ -8,12 +14,16 @@ body {
   top: 0;
   width: 40px;
   height: 40px;
-  background: #EF5753;
   border: none;
+  z-index: 9999999999;
+}
+
+.debug:hover {
+  background: #EF5753;
 }
 
 .search {
-  background: #ebebeb;
+  background: #4DC0B5;
 }
 
 .search .container {
@@ -26,10 +36,10 @@ body {
 
 .player {
   text-align: center;
-  margin: 16px auto;
-  /*width: 400px;*/
+  margin: 16px auto 0;
   border: 1px solid #ebebeb;
   padding: 16px;
+  background: #fff;
 }
 
 .player__pp {
@@ -99,7 +109,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   padding: 16px;
-  
+  min-width: 1150px;
 }
 
 .match.win .content-container {
@@ -160,4 +170,66 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+
+/* #######LOADER####### */
+.loader--overlay {
+  position: absolute;
+  z-index: 9997;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+
+  display: none;
+}
+
+.loader-container {
+  position: absolute;
+  z-index: 9998;
+
+  width: 100%;
+  height: 100vh;
+}
+
+.LoaderBalls {
+  width: 90px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: absolute;
+  z-index: 9999;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.LoaderBalls__item {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #00f1ca;
+}
+
+.LoaderBalls__item:nth-child(1) {
+  animation: bouncing 0.4s alternate infinite cubic-bezier(0.6, 0.05, 0.15, 0.95);
+}
+
+.LoaderBalls__item:nth-child(2) {
+  animation: bouncing 0.4s 0.1s alternate infinite cubic-bezier(0.6, 0.05, 0.15, 0.95) backwards;
+}
+
+.LoaderBalls__item:nth-child(3) {
+  animation: bouncing 0.4s 0.2s alternate infinite cubic-bezier(0.6, 0.05, 0.15, 0.95) backwards;
+}
+
+@keyframes bouncing {
+  0% {
+    transform: translate3d(0, 10px, 0) scale(1.2, 0.85);
+  }
+
+  100% {
+    transform: translate3d(0, -20px, 0) scale(0.9, 1.1);
+  }
 }
