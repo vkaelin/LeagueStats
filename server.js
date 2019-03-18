@@ -81,7 +81,7 @@ app.post('/api', function (req, res) {
 
 // Get account infos of an username
 function getAccountInfos(callback) {
-  request('https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + pseudo + '?api_key=' + key, function (error, response, body) {
+  request('https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + encodeURIComponent(pseudo) + '?api_key=' + key, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var JSONBody = JSON.parse(body);
       //console.log(JSONBody);
