@@ -22,6 +22,11 @@ app.use(bodyParser.urlencoded({  // to support URL-encoded bodies
 
 /* Homepage */
 app.get('/', function (request, response) {
+  response.sendFile(path.join(__dirname, 'home.html'));
+});
+
+
+app.get('/summoners', function (request, response) {
   response.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -33,7 +38,7 @@ app.listen(app.get('port'), () => console.log(`RiotAPI test app listening on por
 
 
 
-function apicall(urlApi) {
+async function apicall(urlApi) {
   //console.log(urlApi);
   return rp({ url: 'https://euw1.api.riotgames.com/lol/match/v4/matches/' + urlApi + '?api_key=' + key, json: true }).then(function (obj) {
     return addMatchToJSON(obj);
@@ -65,6 +70,7 @@ app.post('/api', function (req, res) {
         finalJSON.push(account);
         finalJSON.push(ranked);
         finalJSON.push(matches);
+        console.log('Data sent to front');
         res.send(finalJSON);
       });
     });
@@ -93,6 +99,7 @@ function getAccountInfos(callback) {
 
 // Get matches of an accountID
 function getMatches(callback) {
+  console.time('getMatches');
   request('https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/' + accountID + '?endIndex=10&api_key=' + key, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       JSONMatches = JSON.parse(body);
@@ -105,6 +112,7 @@ function getMatches(callback) {
       Promise.mapSeries(matchsId, function (item) {
         return apicall(item);
       }).then(() => {
+        console.timeEnd('getMatches');
         console.log('Finished');
         callback(JSONMatches);
       }).catch(err => {

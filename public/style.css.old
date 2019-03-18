@@ -29,13 +29,9 @@ body {
 .search .container {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
 
   padding: 32px 0;
-}
-
-#refresh {
-  display: none;
 }
 
 .player {
@@ -60,9 +56,45 @@ body {
   margin: 0 auto;
 }
 
-
-/* --- MATCHES --- */
 .list-matches {
+  list-style-type: none;
+  padding: 0;
+}
+
+.list-matches li {
+  padding: 10px 0;
+  background: #51D88A;
+}
+
+.list-matches li.lose {
+  background: #EF5753;
+}
+
+.champion-icon {
+  width: 48px;
+  height: 48px;
+  display: block;
+  margin: 0 auto;
+}
+
+.champion-img {
+  width: 48px;
+  height: 48px;
+  display: block;
+  margin: 0 2px 0 0;
+}
+
+.spell-icon {
+  width: 23px;
+  height: 23px;
+  display: block;
+}
+
+
+/* ############## */
+
+
+.list-matches--debug {
   list-style-type: none;
   padding: 0;
 }
@@ -77,6 +109,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   padding: 16px;
+  min-width: 1150px;
 }
 
 .match.win .content-container {
@@ -96,13 +129,6 @@ body {
   flex: 1 0 0;
 }
 
-.champion-icon {
-  width: 48px;
-  height: 48px;
-  display: block;
-  margin: 0 2px 0 0;
-}
-
 .match .level {
   position: absolute;
   bottom: 0;
@@ -114,12 +140,6 @@ body {
 
 .match .summonerSpells {
   margin: 0 8px 0 0;
-}
-
-.spell-icon {
-  width: 23px;
-  height: 23px;
-  display: block;
 }
 
 .match .spell-icon:first-child {
