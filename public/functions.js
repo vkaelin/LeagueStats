@@ -43,13 +43,14 @@ function secToTime(sec) {
  * @param soloQStats : stats in soloQ of the player
  */
 function getRankImg(soloQStats) {
-  if (soloQStats) {
-    if (soloQStats.tier != 'MASTER' && soloQStats.tier != 'CHALLENGER') {
-      return 'https://cdn.valentinkaelin.ch/riot/tier-icons/' + soloQStats.tier.toLowerCase() + '_' + soloQStats.rank.toLowerCase() + '.png';
-    } else {
-      return 'https://cdn.valentinkaelin.ch/riot/tier-icons/' + soloQStats.tier.toLowerCase() + '.png';
-    }
-  } else {
+
+  if (!soloQStats) {
     return 'https://cdn.valentinkaelin.ch/riot/tier-icons/provisional.png';
+  }
+
+  if (soloQStats.tier != 'MASTER' && soloQStats.tier != 'CHALLENGER') {
+    return 'https://cdn.valentinkaelin.ch/riot/tier-icons/' + soloQStats.tier.toLowerCase() + '_' + soloQStats.rank.toLowerCase() + '.png';
+  } else {
+    return 'https://cdn.valentinkaelin.ch/riot/tier-icons/' + soloQStats.tier.toLowerCase() + '.png';
   }
 }

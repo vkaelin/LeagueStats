@@ -27,7 +27,7 @@ app.get('/', function (request, response) {
 
 
 app.get('/summoners', function (request, response) {
-  response.sendFile(path.join(__dirname, 'index.html'));
+  response.sendFile(path.join(__dirname, 'summoner.html'));
 });
 
 /* Public assets folder */
