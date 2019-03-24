@@ -1,12 +1,12 @@
-var req = new XMLHttpRequest();
-var url = '/api';
-var nameChosen = '';
-var localInfos = {};
-var itemsJSON;
+const req = new XMLHttpRequest();
+const url = '/api';
+const localInfos = {};
+let nameChosen = '';
+let itemsJSON;
 
 // Get username from param
-let fullUrl = new URL(window.location.href);
-let searchParams = new URLSearchParams(fullUrl.search);
+const fullUrl = new URL(window.location.href);
+const searchParams = new URLSearchParams(fullUrl.search);
 nameChosen = searchParams.get('username');
 
 /**
@@ -46,7 +46,7 @@ async function main() {
   });
 
   /* Refresh button */
-  var refreshBtn = document.querySelector('#refresh');
+  const refreshBtn = document.querySelector('#refresh');
   refreshBtn.addEventListener('click', (e) => {
     e.preventDefault();
     document.querySelector('.loader--overlay').style.display = 'block';
@@ -62,7 +62,7 @@ main();
 function onLoad() {
 
   document.querySelector('.loader--overlay').style.display = 'none';
-  var response = this.responseText;
+  const response = this.responseText;
 
   // If username isn't found
   if (!response) {
@@ -71,7 +71,7 @@ function onLoad() {
     return;
   }
   document.querySelector('#refresh').style.display = 'block';
-  var parsedEntireResponse = JSON.parse(response);
+  const parsedEntireResponse = JSON.parse(response);
   parsedEntireResponse[1] = JSON.parse(parsedEntireResponse[1]);
   createObject(parsedEntireResponse);
 }
@@ -88,23 +88,23 @@ function createObject(JSONData) {
   console.log('--- ALL INFOS ---')
   console.log(JSONData);
 
-  var userStats = JSONData[0];
-  var rankedStats = JSONData[1];
-  var soloQStats = rankedStats.length !== 0 ? (rankedStats[0].queueType == 'RANKED_SOLO_5x5' ? rankedStats[0] : rankedStats[1]) : false;
-  var matches = JSONData[2].matches;
+  const userStats = JSONData[0];
+  const rankedStats = JSONData[1];
+  const soloQStats = rankedStats.length !== 0 ? (rankedStats[0].queueType == 'RANKED_SOLO_5x5' ? rankedStats[0] : rankedStats[1]) : false;
+  const matches = JSONData[2].matches;
 
-  var matchesInfos = [];
+  const matchesInfos = [];
   // Loop on all matches
   for (let i = 0; i < matches.length; i++) {
-    var currentMatch = matches[i];
-    var participantId;
+    const currentMatch = matches[i];
+    let participantId;
     for (let i = 0; i < currentMatch.participantIdentities.length; i++) {
       if (currentMatch.participantIdentities[i].player.accountId === userStats.accountId)
         participantId = currentMatch.participantIdentities[i].participantId;
     }
 
-    var teamId = currentMatch.participants[participantId - 1].teamId;
-    var win = false;
+    const teamId = currentMatch.participants[participantId - 1].teamId;
+    let win = false;
     for (let i = 0; i < currentMatch.teams.length; i++) {
       if (currentMatch.teams[i].teamId === teamId) {
         if (currentMatch.teams[i].win === 'Win')
@@ -112,27 +112,27 @@ function createObject(JSONData) {
       }
     }
 
-    var map = maps[currentMatch.mapId];
-    var mode = gameModes[currentMatch.queueId];
+    const map = maps[currentMatch.mapId];
+    const mode = gameModes[currentMatch.queueId];
     if (!mode)
       mode = 'Undefinded gamemode';
-    var champion = currentMatch.participants[participantId - 1].championId;
-    var role = currentMatch.participants[participantId - 1].timeline.lane;
-    var timeAgo = timeDifference(currentMatch.gameCreation);
-    var time = secToTime(currentMatch.gameDuration);
-    var kills = currentMatch.participants[participantId - 1].stats.kills;
-    var deaths = currentMatch.participants[participantId - 1].stats.deaths;
-    var assists = currentMatch.participants[participantId - 1].stats.assists;
-    var level = currentMatch.participants[participantId - 1].stats.champLevel;
+    const champion = currentMatch.participants[participantId - 1].championId;
+    const role = currentMatch.participants[participantId - 1].timeline.lane;
+    const timeAgo = timeDifference(currentMatch.gameCreation);
+    const time = secToTime(currentMatch.gameDuration);
+    const kills = currentMatch.participants[participantId - 1].stats.kills;
+    const deaths = currentMatch.participants[participantId - 1].stats.deaths;
+    const assists = currentMatch.participants[participantId - 1].stats.assists;
+    const level = currentMatch.participants[participantId - 1].stats.champLevel;
 
-    var items = [];
+    const items = [];
     for (let i = 0; i < 6; i++) {
-      var currentItem = 'item' + i;
+      const currentItem = 'item' + i;
       items.push(currentMatch.participants[participantId - 1].stats[currentItem]);
     }
 
-    var gold = (currentMatch.participants[participantId - 1].stats.goldEarned / 1000).toFixed(1) + 'k';
-    var minions = currentMatch.participants[participantId - 1].stats.totalMinionsKilled + currentMatch.participants[participantId - 1].stats.neutralMinionsKilled;
+    const gold = (currentMatch.participants[participantId - 1].stats.goldEarned / 1000).toFixed(1) + 'k';
+    const minions = currentMatch.participants[participantId - 1].stats.totalMinionsKilled + currentMatch.participants[participantId - 1].stats.neutralMinionsKilled;
 
     matchesInfos.push({
       result: win,
@@ -178,7 +178,7 @@ function createObject(JSONData) {
  * @param stringData  : Stringify object with all datas
  */
 function displayContent(stringData) {
-  var data = JSON.parse(stringData);
+  const data = JSON.parse(stringData);
 
   document.querySelector('.player__pp').style.background = 'url(https://cdn.valentinkaelin.ch/riot/profileicon/' + data.profileIconId + '.png) center/cover';
   document.querySelector('.player__name').innerHTML = data.name;
@@ -187,17 +187,17 @@ function displayContent(stringData) {
   document.querySelector('.player__rank-img').style.background = 'url(' + data.rankImgLink + ') center/cover';
   document.querySelector('.player__ratio').innerHTML = data.rankedWins ? data.rankedWins + ' wins / ' + data.rankedLosses + ' losses' : "Joueur non classé";
 
-  var playerContainer = document.querySelector('.player');
-  var oldList = document.querySelector('.list-matches');
+  const playerContainer = document.querySelector('.player');
+  const oldList = document.querySelector('.list-matches');
   if (oldList)
     oldList.parentNode.removeChild(oldList);
-  var matchesList = document.createElement('ul');
+  const matchesList = document.createElement('ul');
   matchesList.className = 'list-matches';
   playerContainer.appendChild(matchesList);
 
   /* Loop on all matches */
   data.matches.forEach(e => {
-    var li = createHTMLOneMatch(e);
+    const li = createHTMLOneMatch(e);
     matchesList.appendChild(li);
   });
 }
@@ -208,35 +208,35 @@ function displayContent(stringData) {
  * @param e : Infos in JSON of the match
  */
 function createHTMLOneMatch(e) {
-  var li = document.createElement('li');
+  const li = document.createElement('li');
   li.className = e.result ? 'match win' : 'match lose';
-  var container = document.createElement('div');
+  const container = document.createElement('div');
   container.className = 'content-container';
 
   /* First col (champion/summoners) */
-  var first = document.createElement('div');
+  const first = document.createElement('div');
   first.className = 'first';
-  var imgChamp = document.createElement('img');
-  var championName = championsId[e.champ];
+  const imgChamp = document.createElement('img');
+  const championName = championsId[e.champ];
   imgChamp.setAttribute('src', 'https://cdn.valentinkaelin.ch/riot/champions/' + championName + '.png');
   imgChamp.className = 'champion-icon';
 
-  var level = document.createElement('span');
+  const level = document.createElement('span');
   level.className = 'level';
   level.innerText = e.level;
 
-  var summonerSpells = document.createElement('div');
+  const summonerSpells = document.createElement('div');
   summonerSpells.className = 'summonerSpells';
-  var firstSpell = document.createElement('img');
+  const firstSpell = document.createElement('img');
   firstSpell.setAttribute('src', 'https://cdn.valentinkaelin.ch/riot/spells/SummonerFlash.png');
   firstSpell.className = 'spell-icon';
   summonerSpells.appendChild(firstSpell);
-  var secondSpell = document.createElement('img');
+  const secondSpell = document.createElement('img');
   secondSpell.setAttribute('src', 'https://cdn.valentinkaelin.ch/riot/spells/SummonerDot.png');
   secondSpell.className = 'spell-icon';
   summonerSpells.appendChild(secondSpell);
 
-  var name = document.createElement('span');
+  const name = document.createElement('span');
   name.className = 'champion-name';
   name.innerText = championName;
 
@@ -246,12 +246,12 @@ function createHTMLOneMatch(e) {
   first.appendChild(name);
 
   /* Second col (gamemode) */
-  var second = document.createElement('div');
+  const second = document.createElement('div');
   second.className = 'second';
-  var map = document.createElement('div');
+  const map = document.createElement('div');
   map.className = 'map';
   map.innerText = e.map;
-  var gamemode = document.createElement('div');
+  const gamemode = document.createElement('div');
   gamemode.className = 'gamemode';
   gamemode.innerText = e.gamemode;
 
@@ -259,17 +259,14 @@ function createHTMLOneMatch(e) {
   second.appendChild(gamemode);
 
   /* Third col (items) */
-  var third = document.createElement('div');
+  const third = document.createElement('div');
   third.className = 'third';
   e.items.forEach(e => {
-    var img = document.createElement('div');
+    const img = document.createElement('div');
     img.className = 'item ' + e;
     if(e !== 0) {
-      var itemImage = itemsJSON.data[e].image;
-      var itemSprite = itemImage.sprite;
-      var itemSpriteX = itemImage.x;
-      var itemSpriteY = itemImage.y;
-      img.style.background = `url('https://cdn.valentinkaelin.ch/riot/${itemSprite}') -${itemSpriteX}px -${itemSpriteY}px`;
+      const itemImage = itemsJSON.data[e].image;
+      img.style.background = `url('https://cdn.valentinkaelin.ch/riot/${itemImage.sprite}') -${itemImage.x}px -${itemImage.y}px`;
     } else {
       img.style.background = "url('https://cdn.valentinkaelin.ch/riot/items/0.png') 0% 0% / cover";
     }
@@ -277,29 +274,29 @@ function createHTMLOneMatch(e) {
   });
 
   /* Fourth col (stats) */
-  var fourth = document.createElement('div');
+  const fourth = document.createElement('div');
   fourth.className = 'fourth';
-  var score = document.createElement('div');
+  const score = document.createElement('div');
   score.className = 'score';
   score.innerText = e.kills + '/' + e.deaths + '/' + e.assists;
 
-  var goldFarm = document.createElement('div');
+  const goldFarm = document.createElement('div');
   goldFarm.className = 'gold-farm';
-  var gold = document.createElement('div');
+  const gold = document.createElement('div');
   gold.className = 'gold';
   gold.innerText = e.gold;
-  var farm = document.createElement('div');
+  const farm = document.createElement('div');
   farm.className = 'farm';
   farm.innerText = e.minions;
   goldFarm.appendChild(gold);
   goldFarm.appendChild(farm);
 
-  var durationDate = document.createElement('div');
+  const durationDate = document.createElement('div');
   durationDate.className = 'duration-date';
-  var duration = document.createElement('div');
+  const duration = document.createElement('div');
   duration.className = 'duration';
   duration.innerText = e.time;
-  var date = document.createElement('div');
+  const date = document.createElement('div');
   date.className = 'date';
   date.innerText = e.date;
   durationDate.appendChild(duration);
