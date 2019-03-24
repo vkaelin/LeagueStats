@@ -113,7 +113,7 @@ function createObject(JSONData) {
     }
 
     const map = maps[currentMatch.mapId];
-    const mode = gameModes[currentMatch.queueId];
+    let mode = gameModes[currentMatch.queueId];
     if (!mode)
       mode = 'Undefinded gamemode';
     const champion = currentMatch.participants[participantId - 1].championId;
