@@ -38,6 +38,7 @@ app.listen(app.get('port'), () => console.log(`RiotAPI test app listening on por
 
 
 
+
 async function apicall(urlApi) {
   //console.log(urlApi);
   return rp({ url: 'https://euw1.api.riotgames.com/lol/match/v4/matches/' + urlApi + '?api_key=' + key, json: true }).then(function (obj) {
@@ -59,6 +60,7 @@ function getRanked(callback) {
 // send data of rankeds and of username
 app.post('/api', function (req, res) {
   //console.log(req.body.playerName);
+  console.time('all')
   pseudo = req.body.playerName;
 
   getAccountInfos(function (account) {
@@ -72,6 +74,7 @@ app.post('/api', function (req, res) {
         finalJSON.push(matches);
         console.log('Data sent to front');
         res.send(finalJSON);
+        console.timeEnd('all')
       });
     });
   });
@@ -90,6 +93,7 @@ function getAccountInfos(callback) {
       callback(JSONBody);
     }
     else {
+      console.log(response.statusCode);
       console.log('username not found');
       callback(null);
     }
@@ -109,7 +113,7 @@ function getMatches(callback) {
         matchsId[i] = JSONMatches.matches[i].gameId;
       }
 
-      Promise.mapSeries(matchsId, function (item) {
+      Promise.map(matchsId, function (item) { // old: .mapSeries
         return apicall(item);
       }).then(() => {
         console.timeEnd('getMatches');
@@ -117,6 +121,7 @@ function getMatches(callback) {
         callback(JSONMatches);
       }).catch(err => {
         console.log('Error');
+        console.log(err.statusCode);
       });
 
     }
@@ -126,7 +131,6 @@ function getMatches(callback) {
 
 function addMatchToJSON(obj) {
   //console.log(obj.gameId);
-
   for (var i = 0; i < JSONMatches.matches.length; i++) {
     if (JSONMatches.matches[i].gameId == obj.gameId) {
       //console.log('yes');

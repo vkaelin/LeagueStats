@@ -1,8 +1,7 @@
 var req = new XMLHttpRequest();
 var url = '/api';
-var params = 'playerName=Kalane';
 var nameChosen = '';
-var infos = {};
+var localInfos = {};
 var itemsJSON;
 
 // Get username from param
@@ -37,36 +36,13 @@ async function main() {
     req.open('POST', url, true);
     document.querySelector('.loader--overlay').style.display = 'block';
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    // req.send(params);
     req.send('playerName=' + nameChosen);
   }
-
 
   /* Debug button to reset localstorage */
   document.querySelector('.debug').addEventListener('click', () => {
     console.log('CLEAR LOCALSTORAGE');
     localStorage.clear();
-  });
-
-  /* Form to change username */
-  var changeName = document.querySelector('#changeName');
-  var nameToPick = document.querySelector('#name')
-  changeName.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    console.log('here')
-
-    nameChosen = nameToPick.value;
-    if (localStorage[nameChosen]) {
-      console.log('cached on search');
-      document.querySelector('#refresh').style.display = 'block';
-      displayContent(localStorage[nameChosen]);
-    } else {
-      document.querySelector('.loader--overlay').style.display = 'block';
-      req.open('POST', url, true);
-      req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-      req.send('playerName=' + nameToPick.value);
-    }
   });
 
   /* Refresh button */
@@ -177,22 +153,22 @@ function createObject(JSONData) {
   }
   console.log(matchesInfos);
 
-  infos.accountId = userStats.accountId;
-  infos.matches = matchesInfos;
-  infos.profileIconId = userStats.profileIconId;
-  infos.name = userStats.name;
-  infos.level = userStats.summonerLevel;
-  infos.rank = soloQStats ? soloQStats.tier + ' ' + soloQStats.rank : 'Joueur non classé';
-  infos.rankImgLink = getRankImg(soloQStats);
-  infos.rankedWins = soloQStats.wins;
-  infos.rankedLosses = soloQStats.losses;
+  localInfos.accountId = userStats.accountId;
+  localInfos.matches = matchesInfos;
+  localInfos.profileIconId = userStats.profileIconId;
+  localInfos.name = userStats.name;
+  localInfos.level = userStats.summonerLevel;
+  localInfos.rank = soloQStats ? soloQStats.tier + ' ' + soloQStats.rank : 'Joueur non classé';
+  localInfos.rankImgLink = getRankImg(soloQStats);
+  localInfos.rankedWins = soloQStats.wins;
+  localInfos.rankedLosses = soloQStats.losses;
 
   nameChosen = userStats.name;
 
   console.log('====== Saved infos ======');
-  console.log(infos);
+  console.log(localInfos);
 
-  localStorage[nameChosen] = JSON.stringify(infos);
+  localStorage[nameChosen] = JSON.stringify(localInfos);
   displayContent(localStorage[nameChosen]);
 }
 
