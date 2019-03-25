@@ -71,9 +71,7 @@ function onLoad() {
     return;
   }
   document.querySelector('#refresh').style.display = 'block';
-  const parsedEntireResponse = JSON.parse(response);
-  parsedEntireResponse[1] = JSON.parse(parsedEntireResponse[1]);
-  createObject(parsedEntireResponse);
+  createObject(JSON.parse(response));
 }
 
 function onError() {
@@ -90,8 +88,8 @@ function createObject(JSONData) {
 
   const userStats = JSONData[0];
   const rankedStats = JSONData[1];
-  const soloQStats = rankedStats.length !== 0 ? (rankedStats[0].queueType == 'RANKED_SOLO_5x5' ? rankedStats[0] : rankedStats[1]) : false;
-  const matches = JSONData[2].matches;
+  const soloQStats = rankedStats !== null ? (rankedStats.queueType == 'RANKED_SOLO_5x5' ? rankedStats : JSONData[2]) : false;
+  const matches = JSONData[3].matches;
 
   const matchesInfos = [];
   // Loop on all matches
@@ -115,7 +113,7 @@ function createObject(JSONData) {
     const map = maps[currentMatch.mapId];
     let mode = gameModes[currentMatch.queueId];
     if (!mode)
-      mode = 'Undefinded gamemode';
+      mode = 'Undefined gamemode';
     const champion = currentMatch.participants[participantId - 1].championId;
     const role = currentMatch.participants[participantId - 1].timeline.lane;
     const timeAgo = timeDifference(currentMatch.gameCreation);
@@ -160,8 +158,8 @@ function createObject(JSONData) {
   localInfos.level = userStats.summonerLevel;
   localInfos.rank = soloQStats ? soloQStats.tier + ' ' + soloQStats.rank : 'Joueur non classé';
   localInfos.rankImgLink = getRankImg(soloQStats);
-  localInfos.rankedWins = soloQStats.wins;
-  localInfos.rankedLosses = soloQStats.losses;
+  localInfos.rankedWins = soloQStats ? soloQStats.wins : undefined;
+  localInfos.rankedLosses = soloQStats ? soloQStats.losses : undefined;
 
   nameChosen = userStats.name;
 
@@ -321,11 +319,5 @@ function createHTMLOneMatch(e) {
  * @param text : String to display - error message
  */
 function displayPlayerNotFound(text) {
-  document.querySelector('.player__pp').style.background = 'url(https://cdn.valentinkaelin.ch/riot/profileicon/29.png) center/cover';
-  document.querySelector('.player__name').innerHTML = '';
-  document.querySelector('.player__level').innerHTML = '';
-  document.querySelector('.player__rank').innerHTML = '';
-  document.querySelector('.player__rank-img').style.background = 'https://cdn.valentinkaelin.ch/riot/tier-icons/provisional.png';
-  document.querySelector('.player__ratio').innerHTML = text;
-  document.querySelector('.list-matches').innerHTML = '';
+  document.querySelector('.player').innerHTML = `<h3>${text}</h3>`
 }

@@ -13,6 +13,7 @@ let summonerID;
 let accountID;
 let username;
 let JSONMatches;
+let finalJSON = [];
 
 /* Set Port */
 app.set('port', (process.env.PORT || 5000))
@@ -37,103 +38,85 @@ app.get('/summoners', function (request, response) {
 app.use('/public', express.static(__dirname + '/public'));
 
 /* Launch app */
-app.listen(app.get('port'), () => console.log(`RiotAPI test app listening on port ${app.get('port')}!`))
+app.listen(app.get('port'), () => console.log(`RiotAPI app listening on port ${app.get('port')}!`))
 
-// Get data of one match
-async function apicall(urlApi) {
-  //console.log(urlApi);
-  return rp({ url: 'https://euw1.api.riotgames.com/lol/match/v4/matches/' + urlApi + '?api_key=' + key, json: true }).then(function (obj) {
-    return addMatchToJSON(obj);
-  });
-}
-
-// Get data of rankeds
-function getRanked(callback) {
-  request('https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/' + summonerID + '?api_key=' + key, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      callback(body);
-    }
-  })
-}
-
-// send data of rankeds and of username
+// Send data of a summoner
 app.post('/api', function (req, res) {
   //console.log(req.body.playerName);
   console.time('all')
   username = req.body.playerName;
-
-  getAccountInfos(function (account) {
-    if (!account)
-      res.send(null)
-    getRanked(function (ranked) {
-      getMatches(function (matches) {
-        let finalJSON = [];
-        finalJSON.push(account);
-        finalJSON.push(ranked);
-        finalJSON.push(matches);
-        console.log('Data sent to front');
-        res.send(finalJSON);
-        console.timeEnd('all')
-      });
-    });
-  });
-
+  finalJSON = [];
+  getAccountInfos(res);
 });
 
-
 // Get account infos of an username
-function getAccountInfos(callback) {
+const getAccountInfos = function (res) {
   request('https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + encodeURIComponent(username) + '?api_key=' + key, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       let JSONBody = JSON.parse(body);
-      //console.log(JSONBody);
       summonerID = JSONBody.id;
       accountID = JSONBody.accountId;
-      callback(JSONBody);
+      finalJSON.push(JSONBody)
+      getRanked(res);
     }
     else {
       console.log(response.statusCode);
       console.log('username not found');
-      callback(null);
+      res.send(null);
     }
   });
 }
 
+// Get data of rankeds stats
+const getRanked = function (res) {
+  request('https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/' + summonerID + '?api_key=' + key, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      let JSONBody = JSON.parse(body);
+      if (JSONBody.length > 0) {
+        finalJSON.push(...JSONBody);
+      } else {
+        console.log('empty rank stats')
+        finalJSON.push(null, null);
+      }
+      getMatches(res);
+    }
+  })
+}
 
-// Get matches of an accountID
-function getMatches(callback) {
+// Get 10 matches of an accountID
+const getMatches = function (res) {
   console.time('getMatches');
+
   request('https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/' + accountID + '?endIndex=10&api_key=' + key, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       JSONMatches = JSON.parse(body);
+      const matchsId = JSONMatches.matches.map(x => x.gameId)
 
-      let matchsId = [];
-      for (let i = 0; i < JSONMatches.matches.length; i++) {
-        matchsId[i] = JSONMatches.matches[i].gameId;
-      }
-
-      Promise.map(matchsId, function (item) { // old: .mapSeries
-        return apicall(item);
+      Promise.map(matchsId, function (id) {
+        return getMatch('match/v4/matches/' + id);
       }).then(() => {
         console.timeEnd('getMatches');
-        console.log('Finished');
-        callback(JSONMatches);
+        console.log('Finished - Data sent to front');
+        finalJSON.push(JSONMatches)
+        res.send(finalJSON);
+        console.timeEnd('all')
       }).catch(err => {
-        console.log('Error');
-        console.log(err.statusCode);
+        console.log('Error Promise');
+        console.log(err);
       });
-
     }
+  });
+}
+
+// Get data of one match
+const getMatch = async function (urlApi) {
+  //console.log(urlApi);
+  return rp({ url: 'https://euw1.api.riotgames.com/lol/' + urlApi + '?api_key=' + key, json: true }).then(function (obj) {
+    return addMatchToJSON(obj);
   });
 }
 
 // Add match to global JSON
-function addMatchToJSON(obj) {
-  //console.log(obj.gameId);
-  for (let i = 0; i < JSONMatches.matches.length; i++) {
-    if (JSONMatches.matches[i].gameId == obj.gameId) {
-      //console.log('yes');
-      JSONMatches.matches[i] = obj;
-    }
-  }
+const addMatchToJSON = function (obj) {
+  JSONMatches.matches = JSONMatches.matches.map((match) => match.gameId === obj.gameId ? obj : match);
 }
