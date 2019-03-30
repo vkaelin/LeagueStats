@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riot Api Node</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="public/style.css">
+</head>
+
+<body class="font-sans bg-grey-lighter">
+
+  <div class="loader--overlay">
+    <div class="loader-container">
+      <div class="LoaderBalls">
+        <div class="LoaderBalls__item"></div>
+        <div class="LoaderBalls__item"></div>
+        <div class="LoaderBalls__item"></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="debug"></button>
+
+  <div class="search">
+    <div class="container mx-auto">
+
+      <form class="flex items-center mb-6" id="changeName" method="get" action="summoners">
+        <input type="search" class="hadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline mr-1" id="name" name="username" placeholder="Pseudo du Joueur">
+        <button type="submit" class="bg-white hover:bg-grey-lightest text-grey-darkest font-semibold py-2 px-4 mr-1 border border-grey-light rounded shadow">
+          Chercher
+        </button>
+        <button id="refresh" class="bg-white hover:bg-grey-lightest text-grey-darkest font-semibold py-2 px-4 border border-grey-light rounded shadow">
+          <i class="fas fa-sync"></i>
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="container mx-auto pb-16">
+    <div class="player shadow-md">
+      <div class="player__pp"></div>
+      <h1 class="player__name">Default name</h1>
+      <h3 class="player__level">Default level</h3>
+      <h3 class="player__rank">Default division</h3>
+      <div class="player__rank-img"></div>
+      <h3 class="player__ratio">Default ratio</h3>
+
+
+      <!--<ul class="list-matches--debug">
+
+        <li class="match">
+          <div class="content-container">
+
+            <div class="first">
+              <img src="/public/img/champions/Vayne.png" class="champion-img" alt="example design">
+              <span class="level">17</span>
+              <div class="summonerSpells">
+                <img class="spell-icon" src="https://cdn.valentinkaelin.ch/riot/spells/SummonerFlash.png" alt="Flash">
+                <img class="spell-icon" src="https://cdn.valentinkaelin.ch/riot/spells/SummonerDot.png" alt="Ignite">
+              </div>
+              <span class="champion-name">Vayne</span>
+            </div>
+
+            <div class="second">
+              <div class="map">Summoner's Rift</div>
+              <div class="gamemode">Normal (Draft Mode)</div>
+            </div>
+
+            <div class="third">
+              <img src="https://cdn.valentinkaelin.ch/riot/items/3140.png" class="item" alt="example design">
+              <img src="https://cdn.valentinkaelin.ch/riot/items/3153.png" class="item" alt="example design">
+              <img src="https://cdn.valentinkaelin.ch/riot/items/3031.png" class="item" alt="example design">
+              <img src="https://cdn.valentinkaelin.ch/riot/items/3124.png" class="item" alt="example design">
+              <img src="https://cdn.valentinkaelin.ch/riot/items/3094.png" class="item" alt="example design">
+              <img src="https://cdn.valentinkaelin.ch/riot/items/3006.png" class="item" alt="example design">
+              <img src="https://cdn.valentinkaelin.ch/riot/items/3363.png" class="item" alt="example design">
+            </div>
+
+            <div class="fourth">
+              <div class="score">8/6/9</div>
+              <div class="gold-farm">
+                <div class="gold">16.2k</div>
+                <div class="farm">227</div>
+              </div>
+              <div class="duration-date">
+                <div class="duration">40:31</div>
+                <div class="date">1/12/2018</div>
+              </div>
+            </div>
+
+          </div>
+        </li>
+      </ul>-->
+
+    </div>
+  </div>
+
+  <script src="public/data.js"></script>
+  <script src="public/functions.js"></script>
+  <script src="public/summoner.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riot Api Node</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="public/style.css">
+</head>
+
+<body class="font-sans bg-grey-lighter">
+
+  <div class="loader--overlay">
+    <div class="loader-container">
+      <div class="LoaderBalls">
+        <div class="LoaderBalls__item"></div>
+        <div class="LoaderBalls__item"></div>
+        <div class="LoaderBalls__item"></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="debug"></button>
+
+  <div class="search">
+
+    <div class="container mx-auto">
+      <h2>Homepage</h2>
+      <form class="flex items-center" id="changeName"  method="get" action="summoners">
+        <input type="search" class="hadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline mr-1" id="name" name="username" placeholder="Pseudo du Joueur">
+        <button type="submit" class="bg-white hover:bg-grey-lightest text-grey-darkest font-semibold py-2 px-4 mr-1 border border-grey-light rounded shadow">
+          Chercher
+        </button>
+        <button id="refresh" class="bg-white hover:bg-grey-lightest text-grey-darkest font-semibold py-2 px-4 border border-grey-light rounded shadow">
+          <i class="fas fa-sync"></i>
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+
+  <div class="flex items-center justify-center w-full" style="height: calc(100vh - 153px);">
+    <h1>Welcome on KLN's RIOT API Test</h1>
+
+  </div>
+</body>
+
+</html>
