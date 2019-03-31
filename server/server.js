@@ -6,10 +6,7 @@ const bodyParser = require('body-parser');
 const rp = require('request-promise');
 const Promise = require("bluebird");
 const app = express()
-
-// DEV
-var cors = require('cors');
-app.use(cors({origin: '*'}));
+const history = require('connect-history-api-fallback');
 
 /* Global Variables */
 const key = process.env.API_KEY;
@@ -22,24 +19,28 @@ let finalJSON = [];
 /* Set Port */
 app.set('port', (process.env.PORT || 5000))
 
+/* DEV */
+var cors = require('cors');
+app.use(cors({origin: '*'}));
+
+/* PRODUCTION */
+/*const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
+app.use(staticFileMiddleware);
+app.use(history({
+  disableDotRule: true,
+  verbose: true
+}));
+app.use(staticFileMiddleware);
+
+app.get('/', function (req, res) {
+  res.render(path.join(__dirname + '/dist/index.html'));
+});*/
+
 /* To retrieve data of post request */
 app.use(bodyParser.json());    // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({  // to support URL-encoded bodies
  extended: true
 }));
-
-// /* Homepage */
-// app.get('/', function (request, response) {
-//   response.sendFile(path.join(__dirname, 'home.html'));
-// });
-
-// /* Summoners pages */
-// app.get('/summoners', function (request, response) {
-//   response.sendFile(path.join(__dirname, 'summoner.html'));
-// });
-
-// /* Public assets folder */
-// app.use('/public', express.static(__dirname + '/public'));
 
 /* Launch app */
 app.listen(app.get('port'), () => console.log(`RiotAPI app listening on port ${app.get('port')}!`))

@@ -1,40 +1,50 @@
 <template>
   <div>
-    <button class="debug"></button>
+    <button class="debug" @click="this.resetLocalStorage"></button>
 
     <div class="search">
       <div class="container mx-auto">
-        <form class="flex items-center mb-6" id="changeName" method="get" action="summoners">
-          <input type="search" class="hadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline mr-1" id="name" name="username" placeholder="Pseudo du Joueur">
-          <button type="submit" class="bg-white hover:bg-grey-lightest text-grey-darkest font-semibold py-2 px-4 mr-1 border border-grey-light rounded shadow">Chercher</button>
-          <button id="refresh" class="bg-white hover:bg-grey-lightest text-grey-darkest font-semibold py-2 px-4 border border-grey-light rounded shadow">
-            <i class="fas fa-sync"></i>
+        <form @submit.prevent="redirect" class="flex items-center">
+          <input type="text" placeholder="Entre un pseudo" class="bg-gray-300 p-2 rounded-l outline-none focus:bg-gray-400" v-model="search">
+          <button class="bg-teal-500 p-2 text-white rounded-r hover:bg-teal-400" type="submit">Rechercher</button>
+          
+          <button
+            v-if="summonerFound"
+            id="refresh" 
+            class="block bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow ml-2"
+          >
+            <v-icon name="sync"/>
           </button>
         </form>
       </div>
     </div>
 
-    <div class="container mx-auto pb-16">
-      <div class="player shadow-md" v-if="localInfos.name">
-        <div class="player__pp" :style="{background: `url(https://cdn.valentinkaelin.ch/riot/profileicon/${localInfos.profileIconId}.png) center/cover`}"></div>
-        <h1 class="player__name">{{ localInfos.name }}</h1>
-        <h3 class="player__level">{{ localInfos.level }}</h3>
-        <h3 class="player__rank">{{ localInfos.rank }}</h3>
-        <div class="player__rank-img" :style="{background: `url(${localInfos.rankImgLink}) center/cover`}"></div>
-        <h3 class="player__ratio">{{ localInfos.rankedWins ? localInfos.rankedWins + ' wins / ' + localInfos.rankedLosses + ' losses' : "Joueur non classé" }}</h3>
+    <template v-if="summonerFound">
+      <div class="container mx-auto pb-16">
+        <div class="player shadow-md" v-if="localInfos.name">
+          <div class="player__pp" :style="{background: `url(https://cdn.valentinkaelin.ch/riot/profileicon/${localInfos.profileIconId}.png) center/cover`}"></div>
+          <h1 class="player__name">{{ localInfos.name }}</h1>
+          <h3 class="player__level">{{ localInfos.level }}</h3>
+          <h3 class="player__rank">{{ localInfos.rank }}</h3>
+          <div class="player__rank-img" :style="{background: `url(${localInfos.rankImgLink}) center/cover`}"></div>
+          <h3 class="player__ratio">{{ localInfos.rankedWins ? localInfos.rankedWins + ' wins / ' + localInfos.rankedLosses + ' losses' : "Joueur non classé" }}</h3>
 
-        <ul class="list-matches--debug">
-          <Match
-            v-for="(match, index) in localInfos.matches" :key="index"
-            :data="localInfos.matches[index]"
-          />
-        </ul>
+          <ul class="list-matches--debug">
+            <Match
+              v-for="(match, index) in localInfos.matches" :key="index"
+              :data="localInfos.matches[index]"
+            />
+          </ul>
 
+        </div>
+        <div v-else>
+          <p>Loading player's information...</p>
+        </div>
       </div>
-      <div v-else>
-        <p>Loading player's information...</p>
-      </div>
-    </div>
+    </template>
+    <template v-else>
+      <p>Le joueur est introuvable.</p>
+    </template>
 
   </div>
 </template>
@@ -42,6 +52,7 @@
 <script>
 import Match from '@/components/Match.vue';
 import { championsId, maps, gameModes } from "@/data/data.js";
+import { timeDifference, secToTime, getRankImg } from "@/helpers/functions.js";
 
 export default {
   components: {
@@ -50,10 +61,50 @@ export default {
   data() {
     return {
       localInfos: {},
-      nameChosen: this.$route.params.name
+      nameChosen: this.$route.params.name,
+      search: '',
+      summonerFound: true
     };
   },
   methods: {
+    apiCall() {
+      const summoner = this.$route.params.name;
+      this.axios({
+        method: "POST",
+        //url: "https://vue.valentinkaelin.ch/api",
+        url: "http://localhost:5000/api",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: {
+          summoner
+        }
+      })
+        .then(response => {
+          return response.data;
+        })
+        .then(jsonData => {
+          if(jsonData) {
+            this.summonerFound = true
+            this.createObject(jsonData)
+          } else {
+            this.summonerFound = false
+            console.log('Summoner not found')
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    checkLocalStorage() {
+      if (localStorage[this.$route.params.name]) {
+        console.log('cached')
+        this.summonerFound = true
+        this.localInfos = JSON.parse(localStorage[this.$route.params.name])
+      } else {
+        this.apiCall()
+      }
+    },
     createObject(JSONData) {
       //console.log('--- ALL INFOS ---')
       //console.log(JSONData);
@@ -88,8 +139,8 @@ export default {
           mode = 'Undefined gamemode';
         const champion = championsId[currentMatch.participants[participantId - 1].championId];
         const role = currentMatch.participants[participantId - 1].timeline.lane;
-        const timeAgo = this.timeDifference(currentMatch.gameCreation);
-        const time = this.secToTime(currentMatch.gameDuration);
+        const timeAgo = timeDifference(currentMatch.gameCreation);
+        const time = secToTime(currentMatch.gameDuration);
         const kills = currentMatch.participants[participantId - 1].stats.kills;
         const deaths = currentMatch.participants[participantId - 1].stats.deaths;
         const assists = currentMatch.participants[participantId - 1].stats.assists;
@@ -130,7 +181,7 @@ export default {
         name: userStats.name,
         level: userStats.summonerLevel,
         rank: soloQStats ? soloQStats.tier + ' ' + soloQStats.rank : 'Joueur non classé',
-        rankImgLink: this.getRankImg(soloQStats),
+        rankImgLink: getRankImg(soloQStats),
         rankedWins: soloQStats ? soloQStats.wins : undefined,
         rankedLosses: soloQStats ? soloQStats.losses : undefined
       }
@@ -141,68 +192,23 @@ export default {
       console.log(this.localInfos);
 
       localStorage[this.nameChosen] = JSON.stringify(this.localInfos);
-      //displayContent(localStorage[this.nameChosen]);
     },
-    getRankImg(soloQStats) {
-      if (!soloQStats) {
-        return "https://cdn.valentinkaelin.ch/riot/tier-icons/provisional.png";
-      }
-      if (soloQStats.tier != "MASTER" && soloQStats.tier != "CHALLENGER") {
-        return ("https://cdn.valentinkaelin.ch/riot/tier-icons/" + soloQStats.tier.toLowerCase() + "_" + soloQStats.rank.toLowerCase() + ".png");
-      }
-      return ("https://cdn.valentinkaelin.ch/riot/tier-icons/" + soloQStats.tier.toLowerCase() + ".png");
+    redirect() {
+      this.$router.push("/summoner/" + this.search)
     },
-    secToTime(sec) {
-      var min = Math.floor(sec / 60);
-      var newSec = sec - min * 60;
-      return min + ":" + (newSec < 10 ? "0" + newSec : newSec);
-    },
-    timeDifference(previous) {
-      var current = new Date();
-      var msPerMinute = 60 * 1000;
-      var msPerHour = msPerMinute * 60;
-      var msPerDay = msPerHour * 24;
-      var msPerWeek = msPerDay * 7;
-      var elapsed = current - previous;
-
-      if (elapsed < msPerMinute) {
-        return Math.round(elapsed / 1000) + 's';
-      } else if (elapsed < msPerHour) {
-        return Math.round(elapsed / msPerMinute) + 'm';
-      } else if (elapsed < msPerDay) {
-        return Math.round(elapsed / msPerHour) + 'h';
-      } else if (elapsed < msPerWeek) {
-        return Math.round(elapsed / msPerDay) + 'j';
-      } else {
-        var oldDate = new Date(previous);
-        var day = oldDate.getDate() < 10 ? '0' + oldDate.getDate() : oldDate.getDate();
-        var month = oldDate.getMonth() < 9 ? '0' + (oldDate.getMonth() + 1) : (oldDate.getMonth() + 1);
-        return day + '.' + month + '.' + oldDate.getFullYear().toString().substr(-2);
-      }
+    resetLocalStorage() {
+      console.log('CLEAR LOCALSTORAGE')
+      localStorage.clear()
     }
   },
   mounted: function () {
-    const summoner = this.$route.params.name;
-    this.axios({
-      method: "POST",
-      url: "http://localhost:5000/api",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      data: {
-        summoner
-      }
-    })
-      .then(response => {
-        return response.data;
-      })
-      .then(jsonData => {
-        console.log(jsonData);
-        this.createObject(jsonData);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.checkLocalStorage()
+  },
+  watch: {
+    $route() {
+      console.log('route changed')
+      this.checkLocalStorage()
+    }
   }
 };
 </script>
@@ -232,10 +238,6 @@ export default {
   justify-content: space-around;
 
   padding: 32px 0;
-}
-
-#refresh {
-  display: none;
 }
 
 .player {

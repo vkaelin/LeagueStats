@@ -1,5 +1,5 @@
 <template>
-  <li class="match">
+  <li class="match" :class="data.result ? 'win' : 'lose'">
     <div class="content-container">
 
       <div class="first">
@@ -62,7 +62,6 @@ export default {
 
 
 <style scoped>
-/* --- MATCHES --- */
 .match {
   background: #fff;
   padding: 10px 0;
@@ -148,4 +147,3 @@ export default {
   align-items: center;
 }
 </style>
-
