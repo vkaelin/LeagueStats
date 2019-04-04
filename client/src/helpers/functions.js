@@ -46,10 +46,14 @@ export function getRankImg(soloQStats) {
   if (!soloQStats) {
     return 'https://cdn.valentinkaelin.ch/riot/tier-icons/provisional.png';
   }
+  return 'https://cdn.valentinkaelin.ch/riot/tier-icons/Emblem_' + capitalize(soloQStats.tier.toLowerCase()) + '.png';
+}
 
-  if (soloQStats.tier != 'MASTER' && soloQStats.tier != 'CHALLENGER') {
-    return 'https://cdn.valentinkaelin.ch/riot/tier-icons/' + soloQStats.tier.toLowerCase() + '_' + soloQStats.rank.toLowerCase() + '.png';
-  } else {
-    return 'https://cdn.valentinkaelin.ch/riot/tier-icons/' + soloQStats.tier.toLowerCase() + '.png';
-  }
+
+/**
+ * Capitalize first letter of params string
+ * @param string  : string to capitalize
+ */
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }

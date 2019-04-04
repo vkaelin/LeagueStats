@@ -4,7 +4,7 @@
       <router-link to="/">Accueil</router-link> |
       <router-link :to="`/summoner/${summoner}`">
           {{ linkText }}
-        </router-link>
+      </router-link>
     </div>
     
     <router-view/>
@@ -16,6 +16,8 @@
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  min-height: 100vh;
 }
 </style>
 

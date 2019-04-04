@@ -1,60 +1,83 @@
 <template>
-  <li class="match" :class="data.result ? 'win' : 'lose'">
-    <div class="content-container">
+  <li class="match bg-white shadow text-sm md:text-base" :class="data.result ? 'win' : 'lose'">
 
-      <div class="first">
-        <img :src="`https://cdn.valentinkaelin.ch/riot/champions/${data.champ}.png`" class="champion-icon" alt="example design">
-        <span class="level">{{ data.level }}</span>
-        <div class="summonerSpells">
-          <img class="spell-icon" src="https://cdn.valentinkaelin.ch/riot/spells/SummonerFlash.png" alt="Flash">
-          <img class="spell-icon" src="https://cdn.valentinkaelin.ch/riot/spells/SummonerDot.png" alt="Ignite">
+ 
+
+    <div class="match-container">
+      <!-- Responsive  -->
+      <div class="flex justify-between lg:hidden text-sm text-gray-800 px-2 border-gray-300 border-b">
+        <div class="flex">
+          <div class="gamemode mr-1">{{ data.gamemode }}</div>
+          <span>•</span>
+          <div class="date ml-1">Il y a {{ data.date }}</div>
         </div>
-        <span class="champion-name">{{ data.champ }}</span>
+        <div>
+          <div class="date">{{ data.time }}</div>
+        </div>
       </div>
 
-      <div class="second">
+      <div class="flex-container">
+
+      <div class="first col w-1/3 lg:w-1/4">
+        <div class="icon-and-sums flex flex-col sm:flex-row">
+          <div class="relative">
+            <img :src="`https://cdn.valentinkaelin.ch/riot/champions/${data.champ}.png`" class="champion-icon mb-2px sm:mb-0 sm:mr-2px" alt="example design">
+            <span class="level absolute bottom-0 left-0 text-white font-bold">{{ data.level }}</span>
+          </div>
+          <div class="summonerSpells flex flex-row sm:flex-col">
+            <img class="spell-icon mr-2px sm:mr-0 sm:mb-2px" :src="data.firstSum" alt="Ignite">
+            <img class="spell-icon" :src="data.secondSum" alt="Ignite">
+          </div>
+        </div>
+        <span class="champion-name hidden sm:block">{{ data.champ }}</span>
+      </div>
+
+      <div class="second col hidden lg:block lg:w-1/4">
         <div class="map">{{ data.map }}</div>
         <div class="gamemode">{{ data.gamemode }}</div>
       </div>
 
-      <div class="third">
+      <div class="third col w-1/2 lg:w-1/4 flex-wrap md:flex-no-wrap">
         <div
           v-for="(item, index) in data.items" :key="index"
-          :style="{background: getItemLink(item)}" class="item"
+          :style="{background: item}" class="item"
          >
         </div>
       </div>
 
-      <div class="fourth">
-        <div class="score">{{ data.kills }}/{{ data.deaths }}/{{ data.assists }}</div>
-        <div class="gold-farm">
-          <div class="gold">{{ data.gold }}</div>
-          <div class="farm">{{ data.minions }}</div>
+      <div class="fourth w-1/6 lg:w-1/4 flex-col items-center justify-center sm:flex-row sm:justify-around">
+        <div class="score mb-2 sm:mb-0 font-bold">{{ data.kills }}/{{ data.deaths }}/{{ data.assists }}</div>
+        <div class="gold-farm text-center">
+          <div class="gold flex items-center justify-center mb-2 sm:mb-0">
+            {{ data.gold }}
+            <v-icon name="coins" class="h-3 ml-1 text-blue-800" />
+            </div>
+          <div class="farm flex items-center justify-center">
+            {{ data.minions }}
+            <v-icon name="skull-crossbones" class="h-3 ml-1 text-blue-800" />
+          </div>
         </div>
-        <div class="duration-date">
+        <div class="duration-date hidden lg:block">
           <div class="duration">{{ data.time }}</div>
           <div class="date">{{ data.date }}</div>
         </div>
       </div>
 
     </div>
+    </div>
   </li>
 </template>
 
 <script>
-import itemsJSON from '@/data/item.json'
+
 
 export default {
   props: {
     data: Object
   },
   methods: {
-    getItemLink(id) {
-      if(id !== 0) {
-        const itemImage = itemsJSON.data[id].image;
-        return `url('https://cdn.valentinkaelin.ch/riot/${itemImage.sprite}') -${itemImage.x}px -${itemImage.y}px`;
-      }
-      return "url('https://cdn.valentinkaelin.ch/riot/items/0.png') 0% 0% / cover";
+    tinyItem(link) {
+      return link.replace('item', 'tiny_item')
     }
   }
 }
@@ -63,48 +86,41 @@ export default {
 
 <style scoped>
 .match {
-  background: #fff;
-  padding: 10px 0;
+  /* padding: 10px 0; */
   border-bottom: 1px solid #dae1e7;
+  margin: 16px 0;
 }
 
-.match .content-container {
+.match .flex-container {
   display: flex;
   flex-wrap: wrap;
-  padding: 16px;
+  padding: 16px 8px;
 }
 
-.match.win .content-container {
-  border-left: 10px solid #51d88a;
+.match.win .match-container {
+  border-left: 10px solid #48BB78;
 }
 
-.match.lose .content-container {
-  border-left: 10px solid #ef5753;
+.match.lose .match-container {
+  border-left: 10px solid #F56565;
+}
+
+.match .col {
+  /* flex: 1 0 0; */
 }
 
 /* First col */
 .match .first {
-  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex: 1 0 0;
+  /* flex: 1 0 0; */
 }
 
 .champion-icon {
   width: 48px;
   height: 48px;
   display: block;
-  margin: 0 2px 0 0;
-}
-
-.match .level {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-
-  color: #fff;
-  font-weight: bold;
 }
 
 .match .summonerSpells {
@@ -117,19 +133,15 @@ export default {
   display: block;
 }
 
-.match .spell-icon:first-child {
-  margin: 0 0 2px 0;
-}
-
 /* Second col */
 .match .second {
-  flex: 1 0 0;
+  /* flex: 1 0 0; */
   text-align: left;
 }
 
 /* Third col */
 .match .third {
-  flex: 1 0 0;
+  /* flex: 1 0 0; */
   display: flex;
 }
 
@@ -141,9 +153,8 @@ export default {
 
 /* Fourth col */
 .match .fourth {
-  flex: 1 0 0;
+  /* flex: 1 0 0; */
   display: flex;
-  justify-content: space-around;
   align-items: center;
 }
 </style>

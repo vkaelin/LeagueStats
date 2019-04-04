@@ -2,26 +2,28 @@
   <div>
     <button class="debug" @click="this.resetLocalStorage"></button>
 
-    <div class="search">
+    <div class="search mb-4">
       <div class="container mx-auto">
         <form @submit.prevent="redirect" class="flex items-center">
           <input type="text" placeholder="Entre un pseudo" class="bg-gray-300 p-2 rounded-l outline-none focus:bg-gray-400" v-model="search">
-          <button class="bg-teal-500 p-2 text-white rounded-r hover:bg-teal-400" type="submit">Rechercher</button>
+          <button class="bg-teal-500 p-2 text-white rounded-r hover:bg-teal-400" type="submit" :disabled="loading">Rechercher</button>
           
           <button
             v-if="summonerFound"
             id="refresh" 
             class="block bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow ml-2"
+            :disabled="loading"
+            @click="apiCall"
           >
             <v-icon name="sync"/>
           </button>
         </form>
       </div>
     </div>
-
-    <template v-if="summonerFound">
+   
+    <template v-if="summonerFound && !loading">
       <div class="container mx-auto pb-16">
-        <div class="player shadow-md" v-if="localInfos.name">
+        <div class="player bg-blue-100" v-if="localInfos.name">
           <div class="player__pp" :style="{background: `url(https://cdn.valentinkaelin.ch/riot/profileicon/${localInfos.profileIconId}.png) center/cover`}"></div>
           <h1 class="player__name">{{ localInfos.name }}</h1>
           <h3 class="player__level">{{ localInfos.level }}</h3>
@@ -42,6 +44,11 @@
         </div>
       </div>
     </template>
+    <template v-else-if="loading">
+      <div class="flex items-center justify-center bg-white max-w-xs mx-auto p-5 rounded-lg shadow-xl">
+        <dot-loader :loading="loading"></dot-loader>   
+      </div>
+    </template>
     <template v-else>
       <p>Le joueur est introuvable.</p>
     </template>
@@ -50,6 +57,8 @@
 </template>
 
 <script>
+import itemsJSON from '@/data/item.json'
+import summonersJSON from '@/data/summoner.json'
 import Match from '@/components/Match.vue';
 import { championsId, maps, gameModes } from "@/data/data.js";
 import { timeDifference, secToTime, getRankImg } from "@/helpers/functions.js";
@@ -63,16 +72,18 @@ export default {
       localInfos: {},
       nameChosen: this.$route.params.name,
       search: '',
-      summonerFound: true
+      summonerFound: true,
+      loading: false
     };
   },
   methods: {
     apiCall() {
       const summoner = this.$route.params.name;
+      this.loading = true;
       this.axios({
         method: "POST",
-        //url: "https://vue.valentinkaelin.ch/api",
-        url: "http://localhost:5000/api",
+        url: "https://vue.valentinkaelin.ch/api",
+        //url: "http://localhost:5000/api",
         headers: {
           "Content-Type": "application/json"
         },
@@ -81,6 +92,7 @@ export default {
         }
       })
         .then(response => {
+          this.loading = false;
           return response.data;
         })
         .then(jsonData => {
@@ -93,6 +105,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           console.log(err);
         });
     },
@@ -106,8 +119,8 @@ export default {
       }
     },
     createObject(JSONData) {
-      //console.log('--- ALL INFOS ---')
-      //console.log(JSONData);
+      console.log('--- ALL INFOS ---')
+      console.log(JSONData);
 
       const userStats = JSONData[0];
       const rankedStats = JSONData[1];
@@ -149,11 +162,14 @@ export default {
         const items = [];
         for (let i = 0; i < 6; i++) {
           const currentItem = 'item' + i;
-          items.push(currentMatch.participants[participantId - 1].stats[currentItem]);
+          items.push(this.getItemLink(currentMatch.participants[participantId - 1].stats[currentItem]));
         }
 
         const gold = (currentMatch.participants[participantId - 1].stats.goldEarned / 1000).toFixed(1) + 'k';
         const minions = currentMatch.participants[participantId - 1].stats.totalMinionsKilled + currentMatch.participants[participantId - 1].stats.neutralMinionsKilled;
+
+        const firstSum = currentMatch.participants[participantId - 1].spell1Id;
+        const secondSum = currentMatch.participants[participantId - 1].spell2Id;
 
         matchesInfos.push({
           result: win,
@@ -169,7 +185,9 @@ export default {
           level: level,
           items: items,
           gold: gold,
-          minions: minions
+          minions: minions,
+          firstSum: this.getSummonerLink(firstSum),
+          secondSum: this.getSummonerLink(secondSum)
         });
       }
       console.log(matchesInfos);
@@ -192,6 +210,20 @@ export default {
       console.log(this.localInfos);
 
       localStorage[this.nameChosen] = JSON.stringify(this.localInfos);
+    },
+    getItemLink(id) {
+      if(id === 0) { 
+        return "url('https://cdn.valentinkaelin.ch/riot/items/0.png') 0% 0% / cover";
+      }
+      const itemImage = itemsJSON.data[id].image;
+      return `url('https://cdn.valentinkaelin.ch/riot/${itemImage.sprite}') -${itemImage.x}px -${itemImage.y}px`;
+    },
+    getSummonerLink(id) {
+     for(var prop in summonersJSON.data) {
+        if(summonersJSON.data[prop].key == id) {
+          return `https://cdn.valentinkaelin.ch/riot/spells/${summonersJSON.data[prop].id}.png`;
+        }
+      }
     },
     redirect() {
       this.$router.push("/summoner/" + this.search)
@@ -245,7 +277,7 @@ export default {
   margin: 16px auto 0;
   border: 1px solid #ebebeb;
   padding: 16px;
-  background: #fff;
+  /* background: #fff; */
 }
 
 .player__pp {

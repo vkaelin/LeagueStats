@@ -13,17 +13,20 @@ module.exports = {
   plugins: [
     postcssImport,
     tailwindcss('./tailwind.config.js'),
-    purgecss({
-      content: ['./src/**/*.vue'],
-      whitelist: ['html', 'body'],
-      extractors: [
-        {
-          extractor: TailwindExtractor,
 
-          extensions: ['html', 'js', 'vue']
-        }
-      ]
-    }),
+    // --- !!! purgecss not working !!! ---
+
+    // purgecss({
+    //   content: ['./src/**/*.vue'],
+    //   whitelist: ['html', 'body'],
+    //   extractors: [
+    //     {
+    //       extractor: TailwindExtractor,
+
+    //       extensions: ['html', 'js', 'vue']
+    //     }
+    //   ]
+    // }),
     autoprefixer
   ]
 }
