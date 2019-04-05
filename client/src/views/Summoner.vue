@@ -82,8 +82,8 @@ export default {
       this.loading = true;
       this.axios({
         method: "POST",
-        url: "https://vue.valentinkaelin.ch/api",
-        //url: "http://localhost:5000/api",
+        // url: "https://vue.valentinkaelin.ch/api",
+        url: "http://localhost:5000/api",
         headers: {
           "Content-Type": "application/json"
         },
@@ -131,20 +131,10 @@ export default {
       // Loop on all matches
       for (let i = 0; i < matches.length; i++) {
         const currentMatch = matches[i];
-        let participantId;
-        for (let i = 0; i < currentMatch.participantIdentities.length; i++) {
-          if (currentMatch.participantIdentities[i].player.accountId === userStats.accountId)
-            participantId = currentMatch.participantIdentities[i].participantId;
-        }
+        const participantId = currentMatch.participantIdentities.find((p) => p.player.accountId === userStats.accountId).participantId
 
         const teamId = currentMatch.participants[participantId - 1].teamId;
-        let win = false;
-        for (let i = 0; i < currentMatch.teams.length; i++) {
-          if (currentMatch.teams[i].teamId === teamId) {
-            if (currentMatch.teams[i].win === 'Win')
-              win = true;
-          }
-        }
+        const win = currentMatch.teams.find((t) => t.teamId === teamId).win === 'Win'
 
         const map = maps[currentMatch.mapId];
         let mode = gameModes[currentMatch.queueId];
@@ -189,7 +179,7 @@ export default {
           firstSum: this.getSummonerLink(firstSum),
           secondSum: this.getSummonerLink(secondSum)
         });
-      }
+      } // end loop matches
       console.log(matchesInfos);
 
       this.localInfos =  {
@@ -219,11 +209,8 @@ export default {
       return `url('https://cdn.valentinkaelin.ch/riot/${itemImage.sprite}') -${itemImage.x}px -${itemImage.y}px`;
     },
     getSummonerLink(id) {
-     for(var prop in summonersJSON.data) {
-        if(summonersJSON.data[prop].key == id) {
-          return `https://cdn.valentinkaelin.ch/riot/spells/${summonersJSON.data[prop].id}.png`;
-        }
-      }
+      const spellName = Object.entries(summonersJSON.data).find(([, spell]) => Number(spell.key) === id)[0]
+      return `https://cdn.valentinkaelin.ch/riot/spells/${spellName}.png`;
     },
     redirect() {
       this.$router.push("/summoner/" + this.search)

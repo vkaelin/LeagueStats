@@ -3,12 +3,12 @@
  * @param previous : time we want to get difference 
  */
 export function timeDifference(previous) {
-  var current = new Date();
-  var msPerMinute = 60 * 1000;
-  var msPerHour = msPerMinute * 60;
-  var msPerDay = msPerHour * 24;
-  var msPerWeek = msPerDay * 7;
-  var elapsed = current - previous;
+  const current = new Date();
+  const msPerMinute = 60 * 1000;
+  const msPerHour = msPerMinute * 60;
+  const msPerDay = msPerHour * 24;
+  const msPerWeek = msPerDay * 7;
+  const elapsed = current - previous;
 
   if (elapsed < msPerMinute) {
     return Math.round(elapsed / 1000) + 's';
@@ -19,9 +19,9 @@ export function timeDifference(previous) {
   } else if (elapsed < msPerWeek) {
     return Math.round(elapsed / msPerDay) + 'j';
   } else {
-    var oldDate = new Date(previous);
-    var day = oldDate.getDate() < 10 ? '0' + oldDate.getDate() : oldDate.getDate();
-    var month = oldDate.getMonth() < 9 ? '0' + (oldDate.getMonth() + 1) : (oldDate.getMonth() + 1);
+    const oldDate = new Date(previous);
+    const day = oldDate.getDate() < 10 ? '0' + oldDate.getDate() : oldDate.getDate();
+    const month = oldDate.getMonth() < 9 ? '0' + (oldDate.getMonth() + 1) : (oldDate.getMonth() + 1);
     return day + '.' + month + '.' + oldDate.getFullYear().toString().substr(-2);
   }
 }
@@ -32,8 +32,8 @@ export function timeDifference(previous) {
  * @param sec  : time in seconds to convert
  */
 export function secToTime(sec) {
-  var min = Math.floor(sec / 60);
-  var newSec = sec - min * 60;
+  const min = Math.floor(sec / 60);
+  const newSec = sec - min * 60;
   return min + ':' + (newSec < 10 ? '0' + newSec : newSec); //
 }
 

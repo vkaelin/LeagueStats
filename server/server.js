@@ -20,21 +20,21 @@ let finalJSON = [];
 app.set('port', (process.env.PORT || 5000))
 
 /* DEV */
-//var cors = require('cors');
-//app.use(cors({origin: '*'}));
+var cors = require('cors');
+app.use(cors({origin: '*'}));
 
 /* PRODUCTION */
-const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
-app.use(staticFileMiddleware);
-app.use(history({
-  disableDotRule: true,
-  verbose: true
-}));
-app.use(staticFileMiddleware);
+// const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
+// app.use(staticFileMiddleware);
+// app.use(history({
+//   disableDotRule: true,
+//   verbose: true
+// }));
+// app.use(staticFileMiddleware);
 
-app.get('/', function (req, res) {
-  res.render(path.join(__dirname + '/dist/index.html'));
-});
+// app.get('/', function (req, res) {
+//   res.render(path.join(__dirname + '/dist/index.html'));
+// });
 
 /* To retrieve data of post request */
 app.use(bodyParser.json());    // to support JSON-encoded bodies
