@@ -1,12 +1,18 @@
 <template>
   <div>
-    <button class="debug" @click="this.resetLocalStorage"></button>
+    <button class="debug" @click="resetLocalStorage"></button>
 
     <div class="search mb-4">
       <div class="container mx-auto">
         <form @submit.prevent="redirect" class="flex items-center">
           <input type="text" placeholder="Entre un pseudo" class="bg-gray-300 p-2 rounded-l outline-none focus:bg-gray-400" v-model="search">
-          <button class="bg-teal-500 p-2 text-white rounded-r hover:bg-teal-400" type="submit" :disabled="loading">Rechercher</button>
+          <button 
+            class="bg-teal-500 p-2 text-white rounded-r hover:bg-teal-400" 
+            type="submit" 
+            :disabled="loading"
+          >
+            Rechercher
+          </button>
           
           <button
             v-if="summonerFound"
@@ -23,7 +29,7 @@
    
     <template v-if="summonerFound && !loading">
       <div class="container mx-auto pb-16">
-        <div class="player bg-blue-100" v-if="localInfos.name">
+        <div class="player bg-blue-100">
           <div class="player__pp" :style="{background: `url(https://cdn.valentinkaelin.ch/riot/profileicon/${localInfos.profileIconId}.png) center/cover`}"></div>
           <h1 class="player__name">{{ localInfos.name }}</h1>
           <h3 class="player__level">{{ localInfos.level }}</h3>
@@ -38,9 +44,6 @@
             />
           </ul>
 
-        </div>
-        <div v-else>
-          <p>Loading player's information...</p>
         </div>
       </div>
     </template>
@@ -70,20 +73,23 @@ export default {
   data() {
     return {
       localInfos: {},
-      nameChosen: this.$route.params.name,
       search: '',
       summonerFound: true,
       loading: false
     };
   },
+  computed: {
+    summoner() {
+      return this.$route.params.name
+    }
+  },
   methods: {
     apiCall() {
-      const summoner = this.$route.params.name;
+      const summoner = this.summoner;
       this.loading = true;
       this.axios({
         method: "POST",
-        // url: "https://vue.valentinkaelin.ch/api",
-        url: "http://localhost:5000/api",
+        url: process.env.NODE_ENV === 'development' ? 'http://localhost:5000/api' : 'https://leaguestats.valentinkaelin.ch/api',
         headers: {
           "Content-Type": "application/json"
         },
@@ -110,10 +116,10 @@ export default {
         });
     },
     checkLocalStorage() {
-      if (localStorage[this.$route.params.name]) {
+      if (localStorage[this.summoner]) {
         console.log('cached')
         this.summonerFound = true
-        this.localInfos = JSON.parse(localStorage[this.$route.params.name])
+        this.localInfos = JSON.parse(localStorage[this.summoner])
       } else {
         this.apiCall()
       }
@@ -194,12 +200,12 @@ export default {
         rankedLosses: soloQStats ? soloQStats.losses : undefined
       }
 
-      this.nameChosen = userStats.name;
+      //this.summoner = userStats.name;
 
       console.log('====== Saved infos ======');
       console.log(this.localInfos);
 
-      localStorage[this.nameChosen] = JSON.stringify(this.localInfos);
+      localStorage[this.summoner] = JSON.stringify(this.localInfos);
     },
     getItemLink(id) {
       if(id === 0) { 
@@ -213,7 +219,7 @@ export default {
       return `https://cdn.valentinkaelin.ch/riot/spells/${spellName}.png`;
     },
     redirect() {
-      this.$router.push("/summoner/" + this.search)
+      this.$router.push("/summoner/euw/" + this.search)
     },
     resetLocalStorage() {
       console.log('CLEAR LOCALSTORAGE')

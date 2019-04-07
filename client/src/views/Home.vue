@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     redirect() {
-      this.$router.push("/summoner/" + this.search)
+      this.$router.push("/summoner/euw/" + this.search)
     }
   }
 };

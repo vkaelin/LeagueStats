@@ -4,20 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "./node_modules/.bin/cross-env NODE_ENV=development nodemon server.js"
   },
   "author": "kalane",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
-    "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "connect-history-api-fallback": "^1.6.0"
   },
   "devDependencies": {
-    "connect-history-api-fallback": "^1.6.0"
+    "cors": "^2.8.5",
+    "cross-env": "^5.2.0"
   }
 }

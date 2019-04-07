@@ -1,40 +1,45 @@
 require('dotenv').config()
 const express = require('express')
 const request = require('request');
-const path = require('path');
 const bodyParser = require('body-parser');
 const rp = require('request-promise');
 const Promise = require("bluebird");
 const app = express()
-const history = require('connect-history-api-fallback');
 
 /* Global Variables */
-const key = process.env.API_KEY;
-let summonerID;
-let accountID;
-let username;
-let JSONMatches;
-let finalJSON = [];
+const data = {
+  key: process.env.API_KEY,
+  region: 'euw1',
+  summonerID: '',
+  accountID: '',
+  username: '',
+  JSONMatches: [],
+  finalJSON: []
+}
 
 /* Set Port */
 app.set('port', (process.env.PORT || 5000))
 
-/* DEV */
-var cors = require('cors');
-app.use(cors({origin: '*'}));
+/* Setup env */
+if(process.env.NODE_ENV === 'development') {   /* DEV */
+  const cors = require('cors');
+  app.use(cors({origin: '*'}));
+} 
+else {   /* PRODUCTION */
+  const path = require('path');
+  const history = require('connect-history-api-fallback');
+  const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
+  app.use(staticFileMiddleware);
+  app.use(history({
+    disableDotRule: true,
+    verbose: true
+  }));
+  app.use(staticFileMiddleware);
 
-/* PRODUCTION */
-// const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
-// app.use(staticFileMiddleware);
-// app.use(history({
-//   disableDotRule: true,
-//   verbose: true
-// }));
-// app.use(staticFileMiddleware);
-
-// app.get('/', function (req, res) {
-//   res.render(path.join(__dirname + '/dist/index.html'));
-// });
+  app.get('/', function (req, res) {
+    res.render(path.join(__dirname + '/dist/index.html'));
+  });
+}
 
 /* To retrieve data of post request */
 app.use(bodyParser.json());    // to support JSON-encoded bodies
@@ -51,19 +56,19 @@ app.post('/api', function (req, res) {
   console.log(req.body.summoner);
   //console.log(req.body.playerName);
   console.time('all')
-  username = req.body.summoner;
-  finalJSON = [];
+  data.username = req.body.summoner;
+  data.finalJSON = [];
   getAccountInfos(res);
 });
 
 // Get account infos of an username
 const getAccountInfos = function (res) {
-  request('https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + encodeURIComponent(username) + '?api_key=' + key, function (error, response, body) {
+  request(`https://${data.region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURIComponent(data.username)}?api_key=${data.key}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       let JSONBody = JSON.parse(body);
-      summonerID = JSONBody.id;
-      accountID = JSONBody.accountId;
-      finalJSON.push(JSONBody)
+      data.summonerID = JSONBody.id;
+      data.accountID = JSONBody.accountId;
+      data.finalJSON.push(JSONBody)
       getRanked(res);
     }
     else {
@@ -76,15 +81,15 @@ const getAccountInfos = function (res) {
 
 // Get data of rankeds stats
 const getRanked = function (res) {
-  request('https://euw1.api.riotgames.com/lol/league/v4/positions/by-summoner/' + summonerID + '?api_key=' + key, function (error, response, body) {
+  request(`https://${data.region}.api.riotgames.com/lol/league/v4/positions/by-summoner/${data.summonerID}?api_key=${data.key}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       let JSONBody = JSON.parse(body);
       if (JSONBody.length > 0) {
-        finalJSON.push(...JSONBody);
-        if (JSONBody.length === 1) finalJSON.push(null);
+        data.finalJSON.push(...JSONBody);
+        if (JSONBody.length === 1) data.finalJSON.push(null);
       } else {
         console.log('empty rank stats')
-        finalJSON.push(null, null);
+        data.finalJSON.push(null, null);
       }
       getMatches(res);
     }
@@ -95,18 +100,18 @@ const getRanked = function (res) {
 const getMatches = function (res) {
   console.time('getMatches');
 
-  request('https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/' + accountID + '?endIndex=10&api_key=' + key, function (error, response, body) {
+  request(`https://${data.region}.api.riotgames.com/lol/match/v4/matchlists/by-account/${data.accountID}?endIndex=10&api_key=${data.key}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      JSONMatches = JSON.parse(body);
-      const matchsId = JSONMatches.matches.map(x => x.gameId)
+      data.JSONMatches = JSON.parse(body);
+      const matchsId = data.JSONMatches.matches.map(x => x.gameId)
 
       Promise.map(matchsId, function (id) {
         return getMatch('match/v4/matches/' + id);
       }).then(() => {
         console.timeEnd('getMatches');
         console.log('Finished - Data sent to front');
-        finalJSON.push(JSONMatches)
-        res.send(finalJSON);
+        data.finalJSON.push(data.JSONMatches)
+        res.send(data.finalJSON);
         console.timeEnd('all')
       }).catch(err => {
         console.log('Error Promise');
@@ -119,7 +124,7 @@ const getMatches = function (res) {
 // Get data of one match
 const getMatch = async function (urlApi) {
   //console.log(urlApi);
-  return rp({ url: 'https://euw1.api.riotgames.com/lol/' + urlApi + '?api_key=' + key, json: true }).then(function (obj) {
-    JSONMatches.matches = JSONMatches.matches.map((match) => match.gameId === obj.gameId ? obj : match);
+  return rp({ url: `https://${data.region}.api.riotgames.com/lol/${urlApi}?api_key=${data.key}`, json: true }).then(function (obj) {
+    data.JSONMatches.matches = data.JSONMatches.matches.map((match) => match.gameId === obj.gameId ? obj : match);
   });
 }

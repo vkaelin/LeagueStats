@@ -16,7 +16,7 @@ export default new Router({
       component: Home
     },
     {
-      path: '/summoner/:name',
+      path: '/summoner/:region/:name',
       name: 'summoner',
       component: Summoner
     }

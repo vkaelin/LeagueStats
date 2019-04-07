@@ -2,7 +2,7 @@
   <div id="app" class="font-sans bg-gray-200">
     <div class="nav">
       <router-link to="/">Accueil</router-link> |
-      <router-link :to="`/summoner/${summoner}`">
+      <router-link :to="`/summoner/euw/${summoner}`">
           {{ linkText }}
       </router-link>
     </div>
