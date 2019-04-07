@@ -10,8 +10,10 @@ nodemon
 ```
 cd client
 npm install
+
 cd server
 npm install
+create .env file with API_KEY= your RiotGames API Key
 ```
 
 ### Compiles and hot-reloads for development
