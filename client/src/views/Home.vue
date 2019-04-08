@@ -1,26 +1,23 @@
 <template>
-  <div>
+  <div class="h-screen flex flex-col items-center justify-center">
     <h1>Home page test</h1>
 
-    <form @submit.prevent="redirect">
-      <input type="text" placeholder="Entre un pseudo." class="bg-gray-300 p-2 rounded-l outline-none focus:bg-gray-400" v-model="search">
-      <button class="bg-teal-500 p-2 text-white rounded-r hover:bg-teal-400" type="submit">Rechercher</button>
-    </form>
+    <SearchForm @formSubmit="redirect"/>
+
   </div>
 </template>
 
 <script>
+import SearchForm from '@/components/SearchForm.vue';
+
 export default {
-  data() {
-    return {
-      search: ''
-    };
+  components: {
+    SearchForm
   },
   methods: {
-    redirect() {
-      this.$router.push("/summoner/euw/" + this.search)
-    }
+    redirect(summoner, region) {
+      this.$router.push(`/summoner/${region}/${summoner}`)
+    },
   }
 };
 </script>
-

@@ -4,26 +4,19 @@
 
     <div class="search mb-4">
       <div class="container mx-auto">
-        <form @submit.prevent="redirect" class="flex items-center">
-          <input type="text" placeholder="Entre un pseudo" class="bg-gray-300 p-2 rounded-l outline-none focus:bg-gray-400" v-model="search">
-          <button 
-            class="bg-teal-500 p-2 text-white rounded-r hover:bg-teal-400" 
-            type="submit" 
-            :disabled="loading"
-          >
-            Rechercher
-          </button>
-          
-          <button
-            v-if="summonerFound"
-            id="refresh" 
-            class="block bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow ml-2"
-            :disabled="loading"
-            @click="apiCall"
-          >
-            <v-icon name="sync"/>
-          </button>
-        </form>
+
+        <SearchForm @formSubmit="redirect"/>
+
+        <button
+          v-if="summonerFound"
+          id="refresh" 
+          class="block bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow ml-2"
+          :disabled="loading"
+          @click="apiCall"
+        >
+          <v-icon name="sync"/>
+        </button>
+
       </div>
     </div>
    
@@ -63,29 +56,47 @@
 import itemsJSON from '@/data/item.json'
 import summonersJSON from '@/data/summoner.json'
 import Match from '@/components/Match.vue';
+import SearchForm from '@/components/SearchForm.vue';
 import { championsId, maps, gameModes } from "@/data/data.js";
 import { timeDifference, secToTime, getRankImg } from "@/helpers/functions.js";
 
 export default {
   components: {
-    Match
+    Match,
+    SearchForm
   },
   data() {
     return {
       localInfos: {},
-      search: '',
       summonerFound: true,
-      loading: false
+      loading: false,
+      regionsList: {
+        'br':	'br1',
+        'eune':	'eun1',	
+        'euw':	'euw1',
+        'jp': 'jp1',
+        'kr': 'kr',
+        'lan': 'la1',
+        'las':	'la2',
+        'na': 'na1',
+        'oce':	'oc1',
+        'tr': 'tr1',
+        'ru': 'ru'
+      }
     };
   },
   computed: {
     summoner() {
       return this.$route.params.name
+    },
+    region() {
+      return this.$route.params.region
     }
   },
   methods: {
     apiCall() {
       const summoner = this.summoner;
+      const region = this.regionsList[this.region];
       this.loading = true;
       this.axios({
         method: "POST",
@@ -94,7 +105,8 @@ export default {
           "Content-Type": "application/json"
         },
         data: {
-          summoner
+          summoner,
+          region
         }
       })
         .then(response => {
@@ -116,10 +128,10 @@ export default {
         });
     },
     checkLocalStorage() {
-      if (localStorage[this.summoner]) {
+      if (localStorage[`${this.summoner}:${this.region}`]) {
         console.log('cached')
         this.summonerFound = true
-        this.localInfos = JSON.parse(localStorage[this.summoner])
+        this.localInfos = JSON.parse(localStorage[`${this.summoner}:${this.region}`])
       } else {
         this.apiCall()
       }
@@ -200,12 +212,10 @@ export default {
         rankedLosses: soloQStats ? soloQStats.losses : undefined
       }
 
-      //this.summoner = userStats.name;
-
       console.log('====== Saved infos ======');
       console.log(this.localInfos);
 
-      localStorage[this.summoner] = JSON.stringify(this.localInfos);
+      localStorage[`${this.summoner}:${this.region}`] = JSON.stringify(this.localInfos);
     },
     getItemLink(id) {
       if(id === 0) { 
@@ -218,8 +228,9 @@ export default {
       const spellName = Object.entries(summonersJSON.data).find(([, spell]) => Number(spell.key) === id)[0]
       return `https://cdn.valentinkaelin.ch/riot/spells/${spellName}.png`;
     },
-    redirect() {
-      this.$router.push("/summoner/euw/" + this.search)
+    redirect(summoner, region) {
+      // this.$router.push("/summoner/euw/" + this.search)
+      this.$router.push(`/summoner/${region}/${summoner}`)
     },
     resetLocalStorage() {
       console.log('CLEAR LOCALSTORAGE')
@@ -290,69 +301,5 @@ export default {
 .list-matches {
   list-style-type: none;
   padding: 0;
-}
-
-/* #######LOADER####### */
-.loader--overlay {
-  position: absolute;
-  z-index: 9997;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-
-  display: none;
-}
-
-.loader-container {
-  position: absolute;
-  z-index: 9998;
-
-  width: 100%;
-  height: 100vh;
-}
-
-.LoaderBalls {
-  width: 90px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  position: absolute;
-  z-index: 9999;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.LoaderBalls__item {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #00f1ca;
-}
-
-.LoaderBalls__item:nth-child(1) {
-  animation: bouncing 0.4s alternate infinite
-    cubic-bezier(0.6, 0.05, 0.15, 0.95);
-}
-
-.LoaderBalls__item:nth-child(2) {
-  animation: bouncing 0.4s 0.1s alternate infinite
-    cubic-bezier(0.6, 0.05, 0.15, 0.95) backwards;
-}
-
-.LoaderBalls__item:nth-child(3) {
-  animation: bouncing 0.4s 0.2s alternate infinite
-    cubic-bezier(0.6, 0.05, 0.15, 0.95) backwards;
-}
-
-@keyframes bouncing {
-  0% {
-    transform: translate3d(0, 10px, 0) scale(1.2, 0.85);
-  }
-
-  100% {
-    transform: translate3d(0, -20px, 0) scale(0.9, 1.1);
-  }
 }
 </style>

@@ -54,8 +54,10 @@ app.listen(app.get('port'), () => console.log(`RiotAPI app listening on port ${a
 app.post('/api', function (req, res) {
   console.log('API Request');
   console.log(req.body.summoner);
+  console.log(req.body.region);
   //console.log(req.body.playerName);
   console.time('all')
+  data.region = req.body.region;
   data.username = req.body.summoner;
   data.finalJSON = [];
   getAccountInfos(res);

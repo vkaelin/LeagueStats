@@ -74,11 +74,6 @@
 export default {
   props: {
     data: Object
-  },
-  methods: {
-    tinyItem(link) {
-      return link.replace('item', 'tiny_item')
-    }
   }
 }
 </script>
