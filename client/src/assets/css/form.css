@@ -1,0 +1,25 @@
+button:focus {
+  outline: 0;
+}
+
+.vertical-center {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.horizontal-center {
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.input {
+  border: 4px solid rgba(129, 230, 217, .7);
+  background: rgba(40, 94, 97, .35);
+}
+
+.input:focus,
+.btn:hover {
+  background: rgba(40, 94, 97, .75);
+  border-color: rgba(129, 230, 217, .9);
+}

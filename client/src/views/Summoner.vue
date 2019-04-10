@@ -2,23 +2,27 @@
   <div>
     <button class="debug" @click="resetLocalStorage"></button>
 
-    <div class="search mb-4">
-      <div class="container mx-auto">
+    <header class="search mb-4 bg-teal-900 text-teal-100">
+      <div class="container mx-auto flex justify-between py-8">
+
+        <router-link to="/" class="flex items-center text-lg text-teal-100 mr-8 hover:text-teal-200">Accueil</router-link>
 
         <SearchForm @formSubmit="redirect"/>
 
         <button
           v-if="summonerFound"
           id="refresh" 
-          class="block bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow ml-2"
+          class="input btn w-20 rounded-lg ml-2 relative"
           :disabled="loading"
           @click="apiCall"
         >
-          <v-icon name="sync"/>
+          <v-icon name="sync" class="absolute vertical-center horizontal-center"/>
         </button>
 
+ 
+
       </div>
-    </div>
+    </header>
    
     <template v-if="summonerFound && !loading">
       <div class="container mx-auto pb-16">
@@ -262,18 +266,6 @@ export default {
 
 .debug:hover {
   background: #ef5753;
-}
-
-.search {
-  background: #4dc0b5;
-}
-
-.search .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-
-  padding: 32px 0;
 }
 
 .player {

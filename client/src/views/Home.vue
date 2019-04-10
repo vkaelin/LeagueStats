@@ -1,8 +1,12 @@
 <template>
-  <div class="h-screen flex flex-col items-center justify-center">
-    <h1>Home page test</h1>
+  <div class="homepage h-screen flex flex-col items-center justify-center">
 
-    <SearchForm @formSubmit="redirect"/>
+    <div class="relative flex flex-col items-center w-full max-w-lg">
+      <div class="absolute logo">
+        <img src="@/assets/Logo.svg" alt="logo">
+      </div>
+      <SearchForm @formSubmit="redirect"/>
+    </div>
 
   </div>
 </template>
@@ -21,3 +25,16 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.homepage {
+  background-image: url("../assets/bg-homepage-1.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.logo {
+  top: -160px;
+}
+</style>

@@ -3,7 +3,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import DotLoader from 'vue-spinner/src/DotLoader.vue'
 
-import '@/assets/css/tailwind.css'
+import '@/assets/css/main.css'
 import 'vue-awesome/icons'
 
 import App from './App.vue'
