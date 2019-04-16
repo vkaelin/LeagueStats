@@ -128,6 +128,7 @@ module.exports = {
       '2': '0.5rem',
       '3': '0.75rem',
       '4': '1rem',
+      '4b': '1.15rem',
       '5': '1.25rem',
       '6': '1.5rem',
       '8': '2rem',
@@ -307,7 +308,10 @@ module.exports = {
       screen: '100vh',
     },
     padding: theme => theme('spacing'),
-    margin: theme => ({ auto: 'auto', ...theme('spacing') }),
+    margin: theme => ({
+      auto: 'auto',
+      ...theme('spacing')
+    }),
     negativeMargin: theme => theme('spacing'),
     objectPosition: {
       bottom: 'bottom',

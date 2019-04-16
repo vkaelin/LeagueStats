@@ -2,16 +2,17 @@
   <form @submit.prevent="formSubmit" class="flex text-teal-100 text-lg w-full">
     <div class="relative w-full">
       <!-- <v-icon name="search" class="absolute ml-2 vertical-center"></v-icon> -->
-      <input 
-        type="text" 
+      <input
+        type="text"
         autofocus
-        class="input w-full px-2 py-4 rounded-lg outline-none pl-8 pr-16 font-bold" 
+        class="input w-full px-2 py-4 rounded-lg outline-none pl-8 pr-16 font-bold"
         v-model="summoner"
       >
       <div class="absolute right-0 vertical-center flex items-center h-full mr-2">
-        <div 
+        <div
+          v-bind:class="{'bg-teal-600' : dropdown}"
           @click="dropdown = !dropdown"
-          class="cursor-pointer flex items-center px-2 py-1 rounded-lg hover:bg-teal-700"
+          class="cursor-pointer flex items-center px-2 py-1 rounded"
         >
           <span class="selected font-bold">{{ selectedRegion }}</span>
           <v-icon name="caret-down" class="ml-1"></v-icon>
@@ -28,20 +29,17 @@
         <div
           v-if="dropdown"
           @click="dropdown = !dropdown"
-          class="absolute right-0 text-white rounded-b-lg shadow cursor-pointer mr-2"
+          class="absolute right-0 text-white rounded-b shadow cursor-pointer mr-2 offsetDropDown"
         >
-          <div 
-            v-for="(region, index) in regions" 
+          <div
+            v-for="(region, index) in regions"
             :key="region"
             @click="selectedRegion = region"
-            class="px-4 py-1 text-xs bg-teal-600 hover:bg-teal-500"
+            class="px-4b py-1 text-xs bg-teal-600 hover:bg-teal-500"
             :class="classRegions(index)"
-          >
-            {{ region }}
-          </div>
+          >{{ region }}</div>
         </div>
       </transition>
-
     </div>
 
     <button class="input btn w-20 rounded-lg ml-2 relative" type="submit">
@@ -57,34 +55,55 @@ export default {
   },
   data() {
     return {
-      summoner: '',
+      summoner: "",
       dropdown: false,
-      regions: ['BR', 'EUNE', 'EUW', 'JP', 'KR', 'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU'],
-      selectedRegion: 'EUW'
+      regions: [
+        "BR",
+        "EUNE",
+        "EUW",
+        "JP",
+        "KR",
+        "LAN",
+        "LAS",
+        "NA",
+        "OCE",
+        "TR",
+        "RU"
+      ],
+      selectedRegion: "EUW"
     };
   },
   methods: {
     classRegions(index) {
       return {
-        'rounded-t-lg': index === 0,
-        'rounded-b-lg': index === this.regions.length - 1
-      }
+        "rounded-t": index === 0,
+        "rounded-b": index === this.regions.length - 1
+      };
     },
     formSubmit() {
-      console.log('form submit child');
-      this.$emit('formSubmit', this.summoner, this.selectedRegion.toLowerCase());
+      console.log("form submit child");
+      this.$emit(
+        "formSubmit",
+        this.summoner,
+        this.selectedRegion.toLowerCase()
+      );
     }
   }
-}
+};
 </script>
 
 <style scoped>
+.offsetDropDown {
+  top: 57px;
+  right: 1px;
+}
+
 .bounce-enter-active {
-  animation: bounce-in .5s;
+  animation: bounce-in 0.5s;
 }
 
 .bounce-leave-active {
-  animation: bounce-in .5s reverse;
+  animation: bounce-in 0.5s reverse;
 }
 
 @keyframes bounce-in {
