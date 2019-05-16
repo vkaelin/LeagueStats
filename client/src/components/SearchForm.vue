@@ -35,8 +35,16 @@
             :key="region"
             @click="selectedRegion = region"
             :class="classRegions(index)"
-            class="px-4b py-1 text-xs bg-teal-600 hover:bg-teal-500"
-          >{{ region }}</div>
+            class="relative px-4b py-1 text-xs bg-teal-600 hover:bg-teal-500"
+          >
+            <v-icon 
+              v-if="region === selectedRegion"
+              name="check" 
+              scale="0.7"
+              class="absolute vertical-center offsetIcon">
+            </v-icon>
+            {{ region }}
+          </div>
         </div>
       </transition>
     </div>
@@ -88,5 +96,9 @@ export default {
 .offsetDropDown {
   top: 57px;
   right: 1px;
+}
+
+.offsetIcon {
+  left: 4px;
 }
 </style>
