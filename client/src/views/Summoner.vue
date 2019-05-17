@@ -27,7 +27,7 @@
     <template v-if="summonerFound && !loading">
       <div class="container mx-auto pb-16">
         <div class="player bg-blue-100">
-          <div class="player__pp" :style="{background: `url(https://cdn.valentinkaelin.ch/riot/profileicon/${localInfos.profileIconId}.png) center/cover`}"></div>
+          <div class="player__pp" :style="{background: `url(https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/profileicon/${localInfos.profileIconId}.png) center/cover`}"></div>
           <h1 class="player__name">{{ localInfos.name }}</h1>
           <h3 class="player__level">{{ localInfos.level }}</h3>
           <h3 class="player__rank">{{ localInfos.rank }}</h3>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import itemsJSON from '@/data/item.json'
+// import itemsJSON from '@/data/item.json'
 import summonersJSON from '@/data/summoner.json'
 import Match from '@/components/Match.vue';
 import SearchForm from '@/components/SearchForm.vue';
@@ -71,6 +71,7 @@ export default {
   },
   data() {
     return {
+      championsInfos: [],
       localInfos: {},
       summonerFound: true,
       loading: false,
@@ -99,14 +100,15 @@ export default {
   },
   methods: {
     apiCall() {
+      console.log(this.$patch)
       const summoner = this.summoner;
       const region = this.regionsList[this.region];
       this.loading = true;
       this.axios({
-        method: "POST",
+        method: 'POST',
         url: process.env.NODE_ENV === 'development' ? 'http://localhost:5000/api' : 'https://leaguestats.valentinkaelin.ch/api',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         data: {
           summoner,
@@ -141,6 +143,7 @@ export default {
       }
     },
     createObject(JSONData) {
+      console.time('frontend')
       console.log('--- ALL INFOS ---')
       console.log(JSONData);
 
@@ -162,7 +165,10 @@ export default {
         let mode = gameModes[currentMatch.queueId];
         if (!mode)
           mode = 'Undefined gamemode';
-        const champion = championsId[currentMatch.participants[participantId - 1].championId];
+        //console.log(Object.entries(this.championsInfos))
+        //console.log(this.championsInfos)
+        const champion = Object.entries(this.championsInfos).find(([, champion]) => Number(champion.key) === currentMatch.participants[participantId - 1].championId)[0]
+        //const champion = championsId[currentMatch.participants[participantId - 1].championId];
         const role = currentMatch.participants[participantId - 1].timeline.lane;
         const timeAgo = timeDifference(currentMatch.gameCreation);
         const time = secToTime(currentMatch.gameDuration);
@@ -220,17 +226,28 @@ export default {
       console.log(this.localInfos);
 
       localStorage[`${this.summoner}:${this.region}`] = JSON.stringify(this.localInfos);
+      console.timeEnd('frontend')
+    },
+    getData() {
+      console.log('API CALL FOR CHAMPIONS')
+      this.axios({
+        method: 'GET',
+        url: `http://ddragon.leagueoflegends.com/cdn/${this.$patch}/data/en_US/champion.json`
+      })
+      .then(response => {
+        return response.data
+      })
+      .then(jsonData => {
+        console.log('here')
+        this.championsInfos = jsonData.data
+      })
     },
     getItemLink(id) {
-      if(id === 0) { 
-        return "url('https://cdn.valentinkaelin.ch/riot/items/0.png') 0% 0% / cover";
-      }
-      const itemImage = itemsJSON.data[id].image;
-      return `url('https://cdn.valentinkaelin.ch/riot/${itemImage.sprite}') -${itemImage.x}px -${itemImage.y}px`;
+      return `url('https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/item/${id === 0 ? 3637 : id}.png') no-repeat center center / contain`;
     },
     getSummonerLink(id) {
       const spellName = Object.entries(summonersJSON.data).find(([, spell]) => Number(spell.key) === id)[0]
-      return `https://cdn.valentinkaelin.ch/riot/spells/${spellName}.png`;
+      return `https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/spell/${spellName}.png`;
     },
     redirect(summoner, region) {
       // this.$router.push("/summoner/euw/" + this.search)
@@ -240,6 +257,9 @@ export default {
       console.log('CLEAR LOCALSTORAGE')
       localStorage.clear()
     }
+  },
+  created: function() {
+    this.getData()
   },
   mounted: function () {
     this.checkLocalStorage()

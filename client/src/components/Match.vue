@@ -21,7 +21,7 @@
       <div class="first col w-1/3 lg:w-1/4">
         <div class="icon-and-sums flex flex-col sm:flex-row">
           <div class="relative">
-            <img :src="`https://cdn.valentinkaelin.ch/riot/champions/${data.champ}.png`" class="champion-icon mb-2px sm:mb-0 sm:mr-2px" alt="example design">
+            <img :src="`https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.champ}.png`" class="champion-icon mb-2px sm:mb-0 sm:mr-2px" alt="example design">
             <span class="level absolute bottom-0 left-0 text-white font-bold">{{ data.level }}</span>
           </div>
           <div class="summonerSpells flex flex-row sm:flex-col">
@@ -81,7 +81,6 @@ export default {
 
 <style scoped>
 .match {
-  /* padding: 10px 0; */
   border-bottom: 1px solid #dae1e7;
   margin: 16px 0;
 }
@@ -100,16 +99,11 @@ export default {
   border-left: 10px solid #F56565;
 }
 
-.match .col {
-  /* flex: 1 0 0; */
-}
-
 /* First col */
 .match .first {
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* flex: 1 0 0; */
 }
 
 .champion-icon {
@@ -130,13 +124,11 @@ export default {
 
 /* Second col */
 .match .second {
-  /* flex: 1 0 0; */
   text-align: left;
 }
 
 /* Third col */
 .match .third {
-  /* flex: 1 0 0; */
   display: flex;
 }
 
@@ -148,7 +140,6 @@ export default {
 
 /* Fourth col */
 .match .fourth {
-  /* flex: 1 0 0; */
   display: flex;
   align-items: center;
 }
