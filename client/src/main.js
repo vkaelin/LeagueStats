@@ -14,7 +14,7 @@ Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 Vue.component('v-icon', Icon)
 Vue.component('dot-loader', DotLoader)
-Vue.prototype.$patch = '9.9.1'
+Vue.prototype.$patch = '9.10.1'
 
 
 new Vue({
