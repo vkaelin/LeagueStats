@@ -61,7 +61,7 @@
 import summonersJSON from '@/data/summoner.json'
 import Match from '@/components/Match.vue';
 import SearchForm from '@/components/SearchForm.vue';
-import { championsId, maps, gameModes } from "@/data/data.js";
+import { maps, gameModes } from "@/data/data.js";
 import { timeDifference, secToTime, getRankImg } from "@/helpers/functions.js";
 
 export default {

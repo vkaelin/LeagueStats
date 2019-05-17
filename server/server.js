@@ -4,6 +4,7 @@ const request = require('request');
 const bodyParser = require('body-parser');
 const rp = require('request-promise');
 const Promise = require("bluebird");
+const responseTime = require('response-time')
 const app = express()
 
 /* Global Variables */
@@ -46,6 +47,9 @@ app.use(bodyParser.json());    // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({  // to support URL-encoded bodies
  extended: true
 }));
+
+// Create a middleware that adds a X-Response-Time header to responses
+app.use(responseTime());
 
 /* Launch app */
 app.listen(app.get('port'), () => console.log(`RiotAPI app listening on port ${app.get('port')}!`))
