@@ -87,7 +87,7 @@ const getAccountInfos = function (res) {
 
 // Get data of rankeds stats
 const getRanked = function (res) {
-  request(`https://${data.region}.api.riotgames.com/lol/league/v4/positions/by-summoner/${data.summonerID}?api_key=${data.key}`, function (error, response, body) {
+  request(`https://${data.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${data.summonerID}?api_key=${data.key}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       let JSONBody = JSON.parse(body);
       if (JSONBody.length > 0) {
