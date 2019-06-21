@@ -232,7 +232,7 @@ export default {
       console.log('API CALL FOR CHAMPIONS')
       this.axios({
         method: 'GET',
-        url: `http://ddragon.leagueoflegends.com/cdn/${this.$patch}/data/en_US/champion.json`
+        url: `https://ddragon.leagueoflegends.com/cdn/${this.$patch}/data/en_US/champion.json`
       })
       .then(response => {
         return response.data
@@ -250,7 +250,6 @@ export default {
       return `https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/spell/${spellName}.png`;
     },
     redirect(summoner, region) {
-      // this.$router.push("/summoner/euw/" + this.search)
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
     resetLocalStorage() {

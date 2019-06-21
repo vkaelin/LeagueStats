@@ -15,11 +15,11 @@
     "dotenv": "^7.0.0",
     "express": "^4.17.1",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "response-time": "^2.3.2"
   },
   "devDependencies": {
     "cors": "^2.8.5",
-    "cross-env": "^5.2.0",
-    "response-time": "^2.3.2"
+    "cross-env": "^5.2.0"
   }
 }
