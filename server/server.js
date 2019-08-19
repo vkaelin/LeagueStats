@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const rp = require('request-promise');
 const Promise = require("bluebird");
 const responseTime = require('response-time')
+const cors = require('cors');
 const app = express()
 
 /* Global Variables */
@@ -21,12 +22,17 @@ const data = {
 /* Set Port */
 app.set('port', (process.env.PORT || 5000))
 
-/* Setup env */
-if(process.env.NODE_ENV === 'development') {   /* DEV */
-  const cors = require('cors');
-  app.use(cors({origin: '*'}));
-} 
-else {   /* PRODUCTION */
+/* Setup Cors */
+app.use(cors({
+  origin: [
+    'http://localhost:8080',
+    'https://leaguestats-gg.netlify.com',
+    'https://leaguestats.valentinkaelin.ch/'
+  ]
+}));
+
+/* Setup Production */
+if (process.env.NODE_ENV !== 'development') {
   const path = require('path');
   const history = require('connect-history-api-fallback');
   const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
@@ -45,7 +51,7 @@ else {   /* PRODUCTION */
 /* To retrieve data of post request */
 app.use(bodyParser.json());    // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({  // to support URL-encoded bodies
- extended: true
+  extended: true
 }));
 
 // Create a middleware that adds a X-Response-Time header to responses
