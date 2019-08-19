@@ -16,10 +16,10 @@
     "express": "^4.17.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "response-time": "^2.3.2"
+    "response-time": "^2.3.2",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
-    "cors": "^2.8.5",
     "cross-env": "^5.2.0"
   }
 }
