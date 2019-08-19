@@ -108,14 +108,15 @@ const getRanked = function (res) {
   })
 }
 
-// Get 10 matches of an accountID
+// Get 100 matches basic infos and 10 matches details of an accountID
 const getMatches = function (res) {
   console.time('getMatches');
 
-  request(`https://${data.region}.api.riotgames.com/lol/match/v4/matchlists/by-account/${data.accountID}?endIndex=10&api_key=${data.key}`, function (error, response, body) {
+  request(`https://${data.region}.api.riotgames.com/lol/match/v4/matchlists/by-account/${data.accountID}?endIndex=100&api_key=${data.key}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      data.JSONMatches = JSON.parse(body);
-      const matchsId = data.JSONMatches.matches.map(x => x.gameId)
+      const allMatches = JSON.parse(body)
+      data.JSONMatches = allMatches.matches.slice(0, 10)
+      const matchsId = data.JSONMatches.map(x => x.gameId)
 
       Promise.map(matchsId, function (id) {
         return getMatch('match/v4/matches/' + id);
@@ -123,6 +124,7 @@ const getMatches = function (res) {
         console.timeEnd('getMatches');
         console.log('Finished - Data sent to front');
         data.finalJSON.push(data.JSONMatches)
+        data.finalJSON.push(allMatches)
         res.send(data.finalJSON);
         console.timeEnd('all')
       }).catch(err => {
@@ -137,6 +139,6 @@ const getMatches = function (res) {
 const getMatch = async function (urlApi) {
   //console.log(urlApi);
   return rp({ url: `https://${data.region}.api.riotgames.com/lol/${urlApi}?api_key=${data.key}`, json: true }).then(function (obj) {
-    data.JSONMatches.matches = data.JSONMatches.matches.map((match) => match.gameId === obj.gameId ? obj : match);
+    data.JSONMatches = data.JSONMatches.map((match) => match.gameId === obj.gameId ? obj : match);
   });
 }
