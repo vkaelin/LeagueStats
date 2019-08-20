@@ -95,7 +95,7 @@ const getAccountInfos = function (res) {
 const getRanked = function (res) {
   request(`https://${data.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${data.summonerID}?api_key=${data.key}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      let JSONBody = JSON.parse(body);
+      let JSONBody = JSON.parse(body).filter(e => e.queueType !== 'RANKED_TFT');
       if (JSONBody.length > 0) {
         data.finalJSON.push(...JSONBody);
         if (JSONBody.length === 1) data.finalJSON.push(null);

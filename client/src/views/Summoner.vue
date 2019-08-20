@@ -41,7 +41,7 @@
             class="player__ratio"
           >{{ localInfos.rankedWins ? localInfos.rankedWins + ' wins / ' + localInfos.rankedLosses + ' losses' : "Joueur non classé" }}</h3>
 
-          <RecentActivity :matches="localInfos.allMatches"></RecentActivity>
+          <RecentActivity v-show="localInfos.allMatches" :matches="localInfos.allMatches"></RecentActivity>
 
           <ul class="list-matches--debug">
             <Match
@@ -220,6 +220,7 @@ export default {
           secondSum: this.getSummonerLink(secondSum)
         });
       } // end loop matches
+      console.log('matches infos just below')
       console.log(matchesInfos);
 
       this.localInfos = {

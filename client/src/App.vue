@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="font-sans bg-gray-200">
+  <div id="app" class="font-sans bg-gray-200 antialiased">
 
 
     <!-- <div class="nav">
