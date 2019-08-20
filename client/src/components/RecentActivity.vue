@@ -3,9 +3,10 @@
     <div class="inline-block bg-blue-800 rounded-lg p-3">
       <h4 class="font-bold text-base text-white text-left">Recent Activity</h4>
       <div class="flex">
-        <span class="ml-12 text-blue-200 font-semibold text-xs">Jun</span>
-        <span class="ml-16 text-blue-200 font-semibold text-xs">Jul</span>
-        <span class="ml-16 text-blue-200 font-semibold text-xs">Aug</span>
+        <span class="ml-12 text-blue-200 font-semibold text-xs">{{ gridDays[0].month }}</span>
+        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[37].month }}</span>
+        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[68].month }}</span>
+        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[99].month }}</span>
       </div>
       <div class="mt-1 flex">
         <div class="flex flex-col">
@@ -22,7 +23,7 @@
           style="width: calc(20px * 15); height: calc(20px * 7)"
         >
           <div
-            v-for="(day, index) in gridDays"
+            v-for="(day, index) in gridDays.slice(indexFirstMonday)"
             :key="day.timestamp"
             :title="day.date + ' : ' + day.matches + ' game(s)'"
             :class="[getCaseMargin(index), getCaseColor(day.matches)]"
@@ -31,12 +32,6 @@
         </div>
       </div>
     </div>
-    <ul>
-      <li
-        v-for="(day) in matchesPerDay"
-        :key="day.timestamp"
-      >{{ day.date + ' : ' + day.matches + ' game(s)' }}</li>
-    </ul>
   </div>
 </template>
 
@@ -52,8 +47,8 @@ export default {
   data() {
     return {
       gridDays: [],
-      nbColumns: 15,
-      matchesPerDay: []
+      indexFirstMonday: 0,
+      nbColumns: 15
     };
   },
 
@@ -72,9 +67,12 @@ export default {
         const day = new Date();
         day.setDate(day.getDate() - nbDaysInGrid + i);
         const formattedDay = day.toLocaleString("fr", options);
+
         this.gridDays.push({
           date: formattedDay,
-          matches: 0
+          matches: 0,
+          day: day.toLocaleString("en", { weekday: "long" }).substring(0, 2),
+          month: day.toLocaleString("en", { month: "long" }).substring(0, 3)
         });
       }
 
@@ -92,24 +90,25 @@ export default {
         }
       }
 
-      console.log(this.gridDays);
+      // Get the index of the first Monday
+      this.indexFirstMonday = this.gridDays.findIndex(d => d.day === "Mo");
     },
     getCaseColor(nbMatches) {
       /* TODO: change this */
-      if(nbMatches > 5) {
-        return 'bg-teal-200'
+      if (nbMatches > 5) {
+        return "bg-teal-200";
       } else if (nbMatches > 4) {
-        return 'bg-teal-300'
+        return "bg-teal-300";
       } else if (nbMatches > 3) {
-        return 'bg-teal-400'
+        return "bg-teal-400";
       } else if (nbMatches > 1) {
-        return 'bg-teal-500'
+        return "bg-teal-500";
       }
-      return 'bg-teal-700'
+      return "bg-teal-700";
     },
     getCaseMargin(index) {
       if (index % 7 !== 0) {
-        return 'mt-1'
+        return "mt-1";
       }
     }
   },
