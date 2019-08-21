@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="formSubmit" class="flex text-teal-100 text-lg w-full">
+    <div v-if="dropdown" @click="dropdown = false" class="fixed z-20 inset-0"></div>
     <div class="relative w-full">
       <input
         type="text"
@@ -7,7 +8,7 @@
         class="input w-full px-2 py-4 rounded-lg outline-none pl-8 pr-16 font-bold"
         v-model="summoner"
       >
-      <div class="absolute right-0 vertical-center flex items-center h-full mr-2">
+      <div class="absolute right-0 z-30 vertical-center flex items-center h-full mr-2">
         <div
           @click="dropdown = !dropdown"
           :class="{'bg-teal-600' : dropdown}"
@@ -27,8 +28,7 @@
       >
         <div
           v-if="dropdown"
-          @click="dropdown = !dropdown"
-          class="absolute right-0 text-white rounded-b shadow cursor-pointer mr-2 offsetDropDown"
+          class="absolute right-0 z-30 text-white rounded-b shadow cursor-pointer mr-2 offsetDropDown"
         >
           <div
             v-for="(region, index) in regions"
