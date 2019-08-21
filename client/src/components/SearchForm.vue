@@ -86,7 +86,7 @@ export default {
     },
     formSubmit() {
       console.log('form submit child');
-      this.$emit('formSubmit', this.summoner, this.selectedRegion.toLowerCase());
+      this.$emit('formSubmit', this.summoner.split(' ').join(''), this.selectedRegion.toLowerCase());
     }
   }
 };

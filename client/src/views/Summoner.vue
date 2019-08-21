@@ -168,7 +168,7 @@ export default {
       // Loop on all matches
       for (let i = 0; i < matches.length; i++) {
         const currentMatch = matches[i];
-        const participantId = currentMatch.participantIdentities.find((p) => p.player.accountId === userStats.accountId).participantId
+        const participantId = currentMatch.participantIdentities.find((p) => p.player.currentAccountId === userStats.accountId).participantId
 
         const teamId = currentMatch.participants[participantId - 1].teamId;
         const win = currentMatch.teams.find((t) => t.teamId === teamId).win === 'Win'
