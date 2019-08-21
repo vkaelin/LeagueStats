@@ -14,7 +14,7 @@
           :class="{'bg-teal-600' : dropdown}"
           class="cursor-pointer flex items-center px-2 py-1 rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
         >
-          <span class="selected font-bold">{{ selectedRegion }}</span>
+          <span class="selected font-bold select-none">{{ selectedRegion }}</span>
           <v-icon name="caret-down" class="ml-1"></v-icon>
         </div>
       </div>

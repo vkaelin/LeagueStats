@@ -95,13 +95,13 @@ export default {
     },
     getCaseColor(nbMatches) {
       /* TODO: change this */
-      if (nbMatches > 5) {
+      if (nbMatches >= 6) {
         return "bg-teal-200";
-      } else if (nbMatches > 4) {
+      } else if (nbMatches >= 4) {
         return "bg-teal-300";
-      } else if (nbMatches > 3) {
+      } else if (nbMatches >= 2) {
         return "bg-teal-400";
-      } else if (nbMatches > 1) {
+      } else if (nbMatches >= 1) {
         return "bg-teal-500";
       }
       return "bg-teal-700";
