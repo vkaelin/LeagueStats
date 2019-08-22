@@ -5,19 +5,24 @@ import DotLoader from 'vue-spinner/src/DotLoader.vue'
 
 import '@/assets/css/main.css'
 import 'vue-awesome/icons'
+import Icon from 'vue-awesome/components/Icon'
+
 
 import App from './App.vue'
 import router from './router'
-import Icon from 'vue-awesome/components/Icon'
+import store from './store'
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
+
 Vue.component('v-icon', Icon)
 Vue.component('dot-loader', DotLoader)
+
 Vue.prototype.$patch = '9.16.1'
 
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')

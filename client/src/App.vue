@@ -1,36 +1,18 @@
 <template>
-  <div id="app" class="font-sans bg-gray-200 antialiased">
+  <div id="app" class="font-sans bg-gray-200 antialiased min-h-screen">
 
-
-    <!-- <div class="nav">
-      <router-link to="/">Accueil</router-link> |
-      <router-link :to="`/summoner/euw/${summoner}`">
-          {{ linkText }}
-      </router-link>
-    </div> -->
-    
+    <NotificationsContainer/>
     <router-view/>
 
   </div>
 </template>
 
-<style>
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  
-  min-height: 100vh;
-}
-</style>
-
 <script>
+import NotificationsContainer from '@/components/NotificationsContainer.vue'
+
 export default {
-  data() {
-    return {
-      linkText: 'Test link',
-      summoner: 'Kalane'
-    }
+  components: {
+    NotificationsContainer
   },
 }
 </script>
-

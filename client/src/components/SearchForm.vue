@@ -85,8 +85,16 @@ export default {
       };
     },
     formSubmit() {
-      console.log('form submit child');
-      this.$emit('formSubmit', this.summoner.split(' ').join(''), this.selectedRegion.toLowerCase());
+      const regexNames = new RegExp('^[0-9\\p{L} _\\.]+$', 'u');
+      
+      if(regexNames.exec(this.summoner)) {
+        this.$emit('formSubmit', this.summoner.split(' ').join(''), this.selectedRegion.toLowerCase());
+      } else {
+        this.$store.dispatch('notification/add', {
+          type: 'error',
+          message: 'Summoner Name entered is incorrect.'
+        })
+      }
     }
   }
 };
