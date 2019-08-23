@@ -3,10 +3,10 @@
     <div v-if="dropdown" @click="dropdown = false" class="fixed z-20 inset-0"></div>
     <div class="relative w-full">
       <input
+        v-model="summoner"
         type="text"
         autofocus
         class="input w-full px-2 py-4 rounded-lg outline-none pl-8 pr-16 font-bold"
-        v-model="summoner"
       >
       <div class="absolute right-0 z-30 vertical-center flex items-center h-full mr-2">
         <div
@@ -41,7 +41,8 @@
               v-if="region === selectedRegion"
               name="check" 
               scale="0.7"
-              class="absolute vertical-center offsetIcon">
+              class="absolute vertical-center offsetIcon"
+            >
             </v-icon>
             {{ region }}
           </div>
@@ -75,20 +76,20 @@ export default {
         'RU'
       ],
       selectedRegion: 'EUW'
-    };
+    }
   },
   methods: {
     classRegions(index) {
       return {
         'rounded-t': index === 0,
         'rounded-b': index === this.regions.length - 1
-      };
+      }
     },
     formSubmit() {
-      const regexNames = new RegExp('^[0-9\\p{L} _\\.]+$', 'u');
+      const regexNames = new RegExp('^[0-9\\p{L} _\\.]+$', 'u')
       
       if(regexNames.exec(this.summoner)) {
-        this.$emit('formSubmit', this.summoner.split(' ').join(''), this.selectedRegion.toLowerCase());
+        this.$emit('formSubmit', this.summoner.split(' ').join(''), this.selectedRegion.toLowerCase())
       } else {
         this.$store.dispatch('notification/add', {
           type: 'error',
@@ -97,7 +98,7 @@ export default {
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>

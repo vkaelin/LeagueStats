@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="debug" @click="resetLocalStorage"></button>
+    <button @click="resetLocalStorage" class="debug"></button>
 
     <header class="search mb-4 bg-teal-900 text-teal-100">
       <div class="container mx-auto flex justify-between py-8">
@@ -13,10 +13,10 @@
 
         <button
           v-if="summonerFound"
+          @click="apiCall"
           id="refresh"
           class="input btn w-20 rounded-lg ml-2 relative"
           :disabled="loading"
-          @click="apiCall"
         >
           <v-icon name="sync" class="absolute vertical-center horizontal-center" />
         </button>
@@ -41,7 +41,7 @@
             class="player__ratio"
           >{{ localInfos.rankedWins ? localInfos.rankedWins + ' wins / ' + localInfos.rankedLosses + ' losses' : "Joueur non classé" }}</h3>
 
-          <RecentActivity v-show="localInfos.allMatches" :matches="localInfos.allMatches"></RecentActivity>
+          <RecentActivity v-show="localInfos.allMatches" :matches="localInfos.allMatches" />
 
           <ul class="list-matches--debug">
             <Match
@@ -57,7 +57,7 @@
       <div
         class="flex items-center justify-center bg-white max-w-xs mx-auto p-5 rounded-lg shadow-xl"
       >
-        <dot-loader :loading="loading"></dot-loader>
+        <dot-loader :loading="loading" />
       </div>
     </template>
     <template v-else>
@@ -69,11 +69,11 @@
 <script>
 // import itemsJSON from '@/data/item.json'
 import summonersJSON from '@/data/summoner.json'
-import RecentActivity from '@/components/RecentActivity.vue';
-import Match from '@/components/Match.vue';
-import SearchForm from '@/components/SearchForm.vue';
-import { maps, gameModes } from "@/data/data.js";
-import { timeDifference, secToTime, getRankImg } from "@/helpers/functions.js";
+import RecentActivity from '@/components/RecentActivity.vue'
+import Match from '@/components/Match.vue'
+import SearchForm from '@/components/SearchForm.vue'
+import { maps, gameModes } from '@/data/data.js'
+import { timeDifference, secToTime, getRankImg } from '@/helpers/functions.js'
 
 export default {
   components: {
@@ -81,7 +81,8 @@ export default {
     RecentActivity,
     SearchForm
   },
-  data () {
+
+  data() {
     return {
       championsInfos: [],
       localInfos: {},
@@ -100,22 +101,38 @@ export default {
         'tr': 'tr1',
         'ru': 'ru'
       }
-    };
+    }
   },
+
   computed: {
-    summoner () {
+    summoner() {
       return this.$route.params.name
     },
-    region () {
+    region() {
       return this.$route.params.region
     }
   },
+
+  watch: {
+    $route() {
+      console.log('route changed')
+      this.checkLocalStorage()
+    }
+  },
+
+  created: function () {
+    this.getData()
+  },
+  mounted: function () {
+    this.checkLocalStorage()
+  },
+
   methods: {
-    apiCall () {
+    apiCall() {
       console.log(this.$patch)
-      const summoner = this.summoner;
-      const region = this.regionsList[this.region];
-      this.loading = true;
+      const summoner = this.summoner
+      const region = this.regionsList[this.region]
+      this.loading = true
       this.axios({
         method: 'POST',
         url: process.env.NODE_ENV === 'development' ? 'http://localhost:5000/api' : 'https://leaguestats.valentinkaelin.ch/api',
@@ -128,7 +145,7 @@ export default {
         }
       })
         .then(response => {
-          return response.data;
+          return response.data
         })
         .then(jsonData => {
           if (jsonData) {
@@ -136,16 +153,16 @@ export default {
             this.createObject(jsonData)
           } else {
             this.summonerFound = false
-            this.loading = false;
+            this.loading = false
             console.log('Summoner not found')
           }
         })
         .catch(err => {
-          this.loading = false;
-          console.log(err);
-        });
+          this.loading = false
+          console.log(err)
+        })
     },
-    checkLocalStorage () {
+    checkLocalStorage() {
       if (localStorage[`${this.summoner}:${this.region}`]) {
         console.log('cached')
         this.summonerFound = true
@@ -154,52 +171,52 @@ export default {
         this.apiCall()
       }
     },
-    createObject (JSONData) {
+    createObject(JSONData) {
       console.time('frontend')
       console.log('--- ALL INFOS ---')
-      console.log(JSONData);
+      console.log(JSONData)
 
-      const userStats = JSONData[0];
-      const rankedStats = JSONData[1];
-      const soloQStats = rankedStats !== null ? (rankedStats.queueType == 'RANKED_SOLO_5x5' ? rankedStats : JSONData[2]) : false;
-      const matches = JSONData[3];
+      const userStats = JSONData[0]
+      const rankedStats = JSONData[1]
+      const soloQStats = rankedStats !== null ? (rankedStats.queueType == 'RANKED_SOLO_5x5' ? rankedStats : JSONData[2]) : false
+      const matches = JSONData[3]
 
-      const matchesInfos = [];
+      const matchesInfos = []
       // Loop on all matches
       for (let i = 0; i < matches.length; i++) {
-        const currentMatch = matches[i];
+        const currentMatch = matches[i]
         const participantId = currentMatch.participantIdentities.find((p) => p.player.currentAccountId === userStats.accountId).participantId
 
-        const teamId = currentMatch.participants[participantId - 1].teamId;
+        const teamId = currentMatch.participants[participantId - 1].teamId
         const win = currentMatch.teams.find((t) => t.teamId === teamId).win === 'Win'
 
-        const map = maps[currentMatch.mapId];
-        let mode = gameModes[currentMatch.queueId];
+        const map = maps[currentMatch.mapId]
+        let mode = gameModes[currentMatch.queueId]
         if (!mode)
-          mode = 'Undefined gamemode';
+          mode = 'Undefined gamemode'
         //console.log(Object.entries(this.championsInfos))
         //console.log(this.championsInfos)
         const champion = Object.entries(this.championsInfos).find(([, champion]) => Number(champion.key) === currentMatch.participants[participantId - 1].championId)[0]
         //const champion = championsId[currentMatch.participants[participantId - 1].championId];
-        const role = currentMatch.participants[participantId - 1].timeline.lane;
-        const timeAgo = timeDifference(currentMatch.gameCreation);
-        const time = secToTime(currentMatch.gameDuration);
-        const kills = currentMatch.participants[participantId - 1].stats.kills;
-        const deaths = currentMatch.participants[participantId - 1].stats.deaths;
-        const assists = currentMatch.participants[participantId - 1].stats.assists;
-        const level = currentMatch.participants[participantId - 1].stats.champLevel;
+        const role = currentMatch.participants[participantId - 1].timeline.lane
+        const timeAgo = timeDifference(currentMatch.gameCreation)
+        const time = secToTime(currentMatch.gameDuration)
+        const kills = currentMatch.participants[participantId - 1].stats.kills
+        const deaths = currentMatch.participants[participantId - 1].stats.deaths
+        const assists = currentMatch.participants[participantId - 1].stats.assists
+        const level = currentMatch.participants[participantId - 1].stats.champLevel
 
-        const items = [];
+        const items = []
         for (let i = 0; i < 6; i++) {
-          const currentItem = 'item' + i;
-          items.push(this.getItemLink(currentMatch.participants[participantId - 1].stats[currentItem]));
+          const currentItem = 'item' + i
+          items.push(this.getItemLink(currentMatch.participants[participantId - 1].stats[currentItem]))
         }
 
-        const gold = (currentMatch.participants[participantId - 1].stats.goldEarned / 1000).toFixed(1) + 'k';
-        const minions = currentMatch.participants[participantId - 1].stats.totalMinionsKilled + currentMatch.participants[participantId - 1].stats.neutralMinionsKilled;
+        const gold = (currentMatch.participants[participantId - 1].stats.goldEarned / 1000).toFixed(1) + 'k'
+        const minions = currentMatch.participants[participantId - 1].stats.totalMinionsKilled + currentMatch.participants[participantId - 1].stats.neutralMinionsKilled
 
-        const firstSum = currentMatch.participants[participantId - 1].spell1Id;
-        const secondSum = currentMatch.participants[participantId - 1].spell2Id;
+        const firstSum = currentMatch.participants[participantId - 1].spell1Id
+        const secondSum = currentMatch.participants[participantId - 1].spell2Id
 
         matchesInfos.push({
           result: win,
@@ -218,10 +235,10 @@ export default {
           minions: minions,
           firstSum: this.getSummonerLink(firstSum),
           secondSum: this.getSummonerLink(secondSum)
-        });
+        })
       } // end loop matches
       console.log('matches infos just below')
-      console.log(matchesInfos);
+      console.log(matchesInfos)
 
       this.localInfos = {
         accountId: userStats.accountId,
@@ -236,15 +253,15 @@ export default {
         rankedLosses: soloQStats ? soloQStats.losses : undefined
       }
 
-      console.log('====== Saved infos ======');
-      console.log(this.localInfos);
+      console.log('====== Saved infos ======')
+      console.log(this.localInfos)
 
-      localStorage[`${this.summoner}:${this.region}`] = JSON.stringify(this.localInfos);
+      localStorage[`${this.summoner}:${this.region}`] = JSON.stringify(this.localInfos)
       console.timeEnd('frontend')
-      this.loading = false;
+      this.loading = false
 
     },
-    getData () {
+    getData() {
       console.log('API CALL FOR CHAMPIONS')
       this.axios({
         method: 'GET',
@@ -258,34 +275,22 @@ export default {
           this.championsInfos = jsonData.data
         })
     },
-    getItemLink (id) {
-      return `url('https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/item/${id === 0 ? 3637 : id}.png') no-repeat center center / contain`;
+    getItemLink(id) {
+      return `url('https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/item/${id === 0 ? 3637 : id}.png') no-repeat center center / contain`
     },
-    getSummonerLink (id) {
+    getSummonerLink(id) {
       const spellName = Object.entries(summonersJSON.data).find(([, spell]) => Number(spell.key) === id)[0]
-      return `https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/spell/${spellName}.png`;
+      return `https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/spell/${spellName}.png`
     },
-    redirect (summoner, region) {
+    redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
-    resetLocalStorage () {
+    resetLocalStorage() {
       console.log('CLEAR LOCALSTORAGE')
       localStorage.clear()
     }
-  },
-  created: function () {
-    this.getData()
-  },
-  mounted: function () {
-    this.checkLocalStorage()
-  },
-  watch: {
-    $route () {
-      console.log('route changed')
-      this.checkLocalStorage()
-    }
   }
-};
+}
 </script>
 
 <style scoped>

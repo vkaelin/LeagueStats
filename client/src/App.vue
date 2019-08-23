@@ -1,8 +1,8 @@
 <template>
   <div id="app" class="font-sans bg-gray-200 antialiased min-h-screen">
 
-    <NotificationsContainer/>
-    <router-view/>
+    <NotificationsContainer />
+    <router-view />
 
   </div>
 </template>

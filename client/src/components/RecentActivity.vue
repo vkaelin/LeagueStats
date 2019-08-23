@@ -28,7 +28,7 @@
             :title="day.date + ' : ' + day.matches + ' game(s)'"
             :class="[getCaseMargin(index), getCaseColor(day.matches)]"
             class="ml-1 w-4 h-4 cursor-pointer"
-          ></div>
+          />
         </div>
       </div>
     </div>
@@ -49,74 +49,74 @@ export default {
       gridDays: [],
       indexFirstMonday: 0,
       nbColumns: 15
-    };
-  },
-
-  methods: {
-    createGrid() {
-      const nbDaysInGrid = this.nbColumns * 7;
-
-      const options = {
-        year: "numeric",
-        month: "2-digit",
-        day: "numeric"
-      };
-
-      // Create array with all the days of the Grid
-      for (let i = 1; i <= nbDaysInGrid; i++) {
-        const day = new Date();
-        day.setDate(day.getDate() - nbDaysInGrid + i);
-        const formattedDay = day.toLocaleString("fr", options);
-
-        this.gridDays.push({
-          date: formattedDay,
-          matches: 0,
-          day: day.toLocaleString("en", { weekday: "long" }).substring(0, 2),
-          month: day.toLocaleString("en", { month: "long" }).substring(0, 3)
-        });
-      }
-
-      // Add all the matches made by the summoner
-      for (const key in this.matches) {
-        const match = this.matches[key];
-        const matchTime = new Date(match.timestamp);
-        const formattedTime = matchTime.toLocaleString("fr", options);
-
-        const dayOfTheMatch = this.gridDays.filter(
-          e => e.date === formattedTime
-        );
-        if (dayOfTheMatch.length > 0) {
-          dayOfTheMatch[0].matches++;
-        }
-      }
-
-      // Get the index of the first Monday
-      this.indexFirstMonday = this.gridDays.findIndex(d => d.day === "Mo");
-    },
-    getCaseColor(nbMatches) {
-      /* TODO: change this */
-      if (nbMatches >= 6) {
-        return "bg-teal-200";
-      } else if (nbMatches >= 4) {
-        return "bg-teal-300";
-      } else if (nbMatches >= 2) {
-        return "bg-teal-400";
-      } else if (nbMatches >= 1) {
-        return "bg-teal-500";
-      }
-      return "bg-teal-700";
-    },
-    getCaseMargin(index) {
-      if (index % 7 !== 0) {
-        return "mt-1";
-      }
     }
   },
 
   created() {
-    console.log("activity");
+    console.log('activity')
 
-    this.createGrid();
+    this.createGrid()
+  },
+
+  methods: {
+    createGrid() {
+      const nbDaysInGrid = this.nbColumns * 7
+
+      const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: 'numeric'
+      }
+
+      // Create array with all the days of the Grid
+      for (let i = 1; i <= nbDaysInGrid; i++) {
+        const day = new Date()
+        day.setDate(day.getDate() - nbDaysInGrid + i)
+        const formattedDay = day.toLocaleString('fr', options)
+
+        this.gridDays.push({
+          date: formattedDay,
+          matches: 0,
+          day: day.toLocaleString('en', { weekday: 'long' }).substring(0, 2),
+          month: day.toLocaleString('en', { month: 'long' }).substring(0, 3)
+        })
+      }
+
+      // Add all the matches made by the summoner
+      for (const key in this.matches) {
+        const match = this.matches[key]
+        const matchTime = new Date(match.timestamp)
+        const formattedTime = matchTime.toLocaleString('fr', options)
+
+        const dayOfTheMatch = this.gridDays.filter(
+          e => e.date === formattedTime
+        )
+        if (dayOfTheMatch.length > 0) {
+          dayOfTheMatch[0].matches++
+        }
+      }
+
+      // Get the index of the first Monday
+      this.indexFirstMonday = this.gridDays.findIndex(d => d.day === 'Mo')
+    },
+    getCaseColor(nbMatches) {
+      /* TODO: change this */
+      if (nbMatches >= 6) {
+        return 'bg-teal-200'
+      } else if (nbMatches >= 4) {
+        return 'bg-teal-300'
+      } else if (nbMatches >= 2) {
+        return 'bg-teal-400'
+      } else if (nbMatches >= 1) {
+        return 'bg-teal-500'
+      }
+      return 'bg-teal-700'
+    },
+    getCaseMargin(index) {
+      if (index % 7 !== 0) {
+        return 'mt-1'
+      }
+    }
   }
-};
+}
 </script>

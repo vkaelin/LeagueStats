@@ -25,7 +25,7 @@
 
 <script>
 import LazyBackground from '@/components/LazyBackgroundImage.vue'
-import SearchForm from '@/components/SearchForm.vue';
+import SearchForm from '@/components/SearchForm.vue'
 
 export default {
   components: {
@@ -38,7 +38,7 @@ export default {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
   }
-};
+}
 </script>
 
 <style scoped>

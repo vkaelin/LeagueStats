@@ -45,8 +45,14 @@ export default {
       if (this.imageState === 'loaded') {
         return 'background-image: url(' + this.asyncImage.src + '); background-size: ' + this.backgroundSize
       }
-      return '';
+      return ''
     }
+  },
+
+  mounted () {
+    this.$nextTick(() => {
+      this.fetchImage()
+    })
   },
 
   methods: {
@@ -58,11 +64,6 @@ export default {
     imageOnLoad () {
       this.imageState = 'loaded'
     }
-  },
-  mounted () {
-    this.$nextTick(() => {
-      this.fetchImage()
-    })
   }
 }
 </script>
