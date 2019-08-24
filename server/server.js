@@ -7,6 +7,7 @@ const Promise = require("bluebird");
 const responseTime = require('response-time')
 const cors = require('cors');
 const app = express()
+import { Jax } from "./Jax";
 
 /* Global Variables */
 const data = {
@@ -18,6 +19,9 @@ const data = {
   JSONMatches: [],
   finalJSON: []
 }
+
+/* Setup Riot API Wrapper */
+const jax = new Jax()
 
 /* Set Port */
 app.set('port', (process.env.PORT || 5000))
@@ -69,9 +73,20 @@ app.post('/api', function (req, res) {
   console.time('all')
   data.region = req.body.region;
   data.username = req.body.summoner;
+
+  jax.regionName = req.body.region
+  newVersion()
+
   data.finalJSON = [];
   getAccountInfos(res);
 });
+
+/* Refactor with the Jax Wrapper */
+async function newVersion() {
+  const { id, accountId } = await jax.Summoner.summonerName(data.username)
+
+  console.log(id, accountId)
+}
 
 // Get account infos of an username
 const getAccountInfos = function (res) {
