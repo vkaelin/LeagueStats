@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "./node_modules/.bin/cross-env NODE_ENV=development nodemon server.js"
+    "dev": "./node_modules/.bin/cross-env NODE_ENV=development nodemon --exec babel-node server.js"
   },
   "author": "kalane",
   "license": "ISC",
@@ -12,14 +12,18 @@
     "bluebird": "^3.5.5",
     "body-parser": "^1.19.0",
     "connect-history-api-fallback": "^1.6.0",
+    "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "express": "^4.17.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "response-time": "^2.3.2",
-    "cors": "^2.8.5"
+    "riot-ratelimiter": "^0.1.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "cross-env": "^5.2.0"
   }
 }
