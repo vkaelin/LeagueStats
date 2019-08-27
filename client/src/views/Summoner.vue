@@ -176,10 +176,9 @@ export default {
       console.log('--- ALL INFOS ---')
       console.log(JSONData)
 
-      const userStats = JSONData[0]
-      const rankedStats = JSONData[1]
-      const soloQStats = rankedStats !== null ? (rankedStats.queueType == 'RANKED_SOLO_5x5' ? rankedStats : JSONData[2]) : false
-      const matches = JSONData[3]
+      const userStats = JSONData.account
+      const soloQStats = JSONData.soloQ
+      const matches = JSONData.matchesDetails
 
       const matchesInfos = []
       // Loop on all matches
@@ -242,7 +241,7 @@ export default {
 
       this.localInfos = {
         accountId: userStats.accountId,
-        allMatches: JSONData[4].matches,
+        allMatches: JSONData.allMatches,
         matches: matchesInfos,
         profileIconId: userStats.profileIconId,
         name: userStats.name,

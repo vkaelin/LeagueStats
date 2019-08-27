@@ -17,7 +17,7 @@ const data = {
   accountID: '',
   username: '',
   JSONMatches: [],
-  finalJSON: []
+  finalJSON: {}
 }
 
 /* Setup Riot API Wrapper */
@@ -77,7 +77,7 @@ app.post('/api', function (req, res) {
   jax.regionName = req.body.region
   newVersion()
 
-  data.finalJSON = [];
+  data.finalJSON = {};
   getAccountInfos(res);
 });
 
@@ -95,7 +95,7 @@ const getAccountInfos = function (res) {
       let JSONBody = JSON.parse(body);
       data.summonerID = JSONBody.id;
       data.accountID = JSONBody.accountId;
-      data.finalJSON.push(JSONBody)
+      data.finalJSON.account = JSONBody
       getRanked(res);
     }
     else {
@@ -110,13 +110,12 @@ const getAccountInfos = function (res) {
 const getRanked = function (res) {
   request(`https://${data.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${data.summonerID}?api_key=${data.key}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      let JSONBody = JSON.parse(body).filter(e => e.queueType !== 'RANKED_TFT' && e.queueType !== 'RANKED_FLEX_TT');
-      if (JSONBody.length > 0) {
-        data.finalJSON.push(...JSONBody);
-        if (JSONBody.length === 1) data.finalJSON.push(null);
+      const JSONBody = JSON.parse(body).filter(e => e.queueType === 'RANKED_SOLO_5x5');
+      if (JSONBody.length === 1) {
+        data.finalJSON.soloQ = JSONBody[0];
       } else {
-        console.log('empty rank stats')
-        data.finalJSON.push(null, null);
+        console.log('empty rank stats');
+        data.finalJSON.soloQ = null;
       }
       getMatches(res);
     }
@@ -138,8 +137,8 @@ const getMatches = function (res) {
       }).then(() => {
         console.timeEnd('getMatches');
         console.log('Finished - Data sent to front');
-        data.finalJSON.push(data.JSONMatches)
-        data.finalJSON.push(allMatches)
+        data.finalJSON.matchesDetails = data.JSONMatches
+        data.finalJSON.allMatches = allMatches.matches
         res.send(data.finalJSON);
         console.timeEnd('all')
       }).catch(err => {
