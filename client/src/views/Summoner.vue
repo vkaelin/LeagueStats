@@ -135,7 +135,7 @@ export default {
       this.loading = true
       this.axios({
         method: 'POST',
-        url: process.env.NODE_ENV === 'development' ? 'http://localhost:5000/api' : 'http://167.71.59.33/api',
+        url: process.env.NODE_ENV === 'development' ? 'http://localhost:5000/api' : 'https://api.valentinkaelin.ch/api',
         headers: {
           'Content-Type': 'application/json'
         },
