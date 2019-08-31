@@ -128,39 +128,24 @@ export default {
   },
 
   methods: {
-    apiCall() {
-      console.log(this.$patch)
+    async apiCall() {
       const summoner = this.summoner
       const region = this.regionsList[this.region]
       this.loading = true
-      this.axios({
-        method: 'POST',
-        url: process.env.NODE_ENV === 'development' ? 'http://localhost:5000/api' : 'https://api.valentinkaelin.ch/api',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data: {
-          summoner,
-          region
-        }
-      })
-        .then(response => {
-          return response.data
-        })
-        .then(jsonData => {
-          if (jsonData) {
-            this.summonerFound = true
-            this.createObject(jsonData)
-          } else {
-            this.summonerFound = false
-            this.loading = false
-            console.log('Summoner not found')
-          }
-        })
-        .catch(err => {
+      try {
+        const resp = await this.$axios(({ url: 'api', data: { summoner, region }, method: 'POST' }))
+        if (resp.data) {
+          this.summonerFound = true
+          this.createObject(resp.data)
+        } else {
+          this.summonerFound = false
           this.loading = false
-          console.log(err)
-        })
+          console.log('Summoner not found')
+        }
+      } catch (error) {
+        this.loading = false
+        console.log(error)
+      }
     },
     checkLocalStorage() {
       if (localStorage[`${this.summoner}:${this.region}`]) {
@@ -260,26 +245,11 @@ export default {
       this.loading = false
 
     },
-    getChampionData() {
+    async getChampionData() {
       console.log('API CALL FOR CHAMPIONS')
       const endpoint = 'Champion'
-      this.axios({
-        method: 'POST',
-        url: process.env.NODE_ENV === 'development' ? 'http://localhost:5000/ddragon' : 'https://api.valentinkaelin.ch/ddragon',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data: {
-          endpoint
-        }
-      })
-        .then(response => {
-          return response.data
-        })
-        .then(jsonData => {
-          console.log('here')
-          this.championsInfos = jsonData.data
-        })
+      const resp = await this.$axios(({ url: 'ddragon', data: { endpoint }, method: 'POST' }))
+      this.championsInfos = resp.data.data
     },
     getItemLink(id) {
       return `url('https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/item/${id === 0 ? 3637 : id}.png') no-repeat center center / contain`

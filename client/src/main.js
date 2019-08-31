@@ -1,6 +1,5 @@
 import Vue from 'vue'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+import VueAxios from './plugins/axios'
 import DotLoader from 'vue-spinner/src/DotLoader.vue'
 
 import '@/assets/css/main.css'
@@ -13,7 +12,7 @@ import router from './router'
 import store from './store'
 
 Vue.config.productionTip = false
-Vue.use(VueAxios, axios)
+Vue.use(VueAxios)
 
 Vue.component('v-icon', Icon)
 Vue.component('dot-loader', DotLoader)
