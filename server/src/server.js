@@ -55,34 +55,40 @@ app.post('/api', function (req, res) {
   console.log('API Request');
   console.log(req.body.summoner);
   console.log(req.body.region);
-  //console.log(req.body.playerName);
   console.time('all')
   data.region = req.body.region;
   data.username = req.body.summoner;
 
-  newVersion()
-
   data.finalJSON = {};
-  getAccountInfos(res);
+  // getAccountInfos(res);
+  jax.regionName = data.region
+  getAccountInfosNew(res)
 });
 
 /* Get static file from Riot API */
 app.post('/ddragon', async function (req, res) {
-  console.log('DDragon Request');
+  console.log('DDragon Request')
   const endpoint = req.body.endpoint
   const result = await jax.DDragon[endpoint].list()
   res.send(result)
 })
 
-/* Refactor with the Jax Wrapper */
-async function newVersion() {
-  jax.regionName = data.region
-
-  const { id, accountId } = await jax.Summoner.summonerName(data.username)
-  console.log(id, accountId)
+/* Get account infos of an username - Refactor with the Jax Wrapper */
+async function getAccountInfosNew(res) {
+  try {
+    const account = await jax.Summoner.summonerName(data.username)
+    data.summonerID = account.id
+    data.accountID = account.accountId
+    data.finalJSON.account = account
+    getRanked(res)
+  } catch (error) {
+    console.log('username not found')
+    console.log(error)
+    res.send(null)
+  }
 }
 
-// Get account infos of an username
+// Get account infos of an username - Old version
 const getAccountInfos = function (res) {
   request(`https://${data.region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURIComponent(data.username)}?api_key=${data.key}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
