@@ -121,7 +121,7 @@ export default {
   },
 
   created: function () {
-    this.getData()
+    this.getChampionData()
   },
   mounted: function () {
     this.checkLocalStorage()
@@ -260,11 +260,18 @@ export default {
       this.loading = false
 
     },
-    getData() {
+    getChampionData() {
       console.log('API CALL FOR CHAMPIONS')
+      const endpoint = 'Champion'
       this.axios({
-        method: 'GET',
-        url: `https://ddragon.leagueoflegends.com/cdn/${this.$patch}/data/en_US/champion.json`
+        method: 'POST',
+        url: process.env.NODE_ENV === 'development' ? 'http://localhost:5000/ddragon' : 'https://api.valentinkaelin.ch/ddragon',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: {
+          endpoint
+        }
       })
         .then(response => {
           return response.data

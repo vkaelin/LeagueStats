@@ -1,7 +1,6 @@
 class JaxRequest {
   constructor(endpoint, limiter, region) {
     this.endpoint = endpoint
-    this.region = region
     this.limiter = limiter
     this.region = region
   }

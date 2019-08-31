@@ -20,9 +20,6 @@ const data = {
   finalJSON: {}
 }
 
-/* Setup Riot API Wrapper */
-const jax = new Jax()
-
 /* Set Port */
 app.set('port', (process.env.PORT || 5000))
 
@@ -44,8 +41,14 @@ app.use(bodyParser.urlencoded({  // to support URL-encoded bodies
 // Create a middleware that adds a X-Response-Time header to responses
 app.use(responseTime());
 
+// Setup Jax
+let jax
+
 /* Launch app */
-app.listen(app.get('port'), () => console.log(`RiotAPI app listening on port ${app.get('port')}!`))
+app.listen(app.get('port'), async () => {
+  console.log(`RiotAPI app listening on port ${app.get('port')}!`)
+  jax = await new Jax()
+})
 
 // Send data of a summoner
 app.post('/api', function (req, res) {
@@ -57,17 +60,25 @@ app.post('/api', function (req, res) {
   data.region = req.body.region;
   data.username = req.body.summoner;
 
-  jax.regionName = req.body.region
   newVersion()
 
   data.finalJSON = {};
   getAccountInfos(res);
 });
 
+/* Get static file from Riot API */
+app.post('/ddragon', async function (req, res) {
+  console.log('DDragon Request');
+  const endpoint = req.body.endpoint
+  const result = await jax.DDragon[endpoint].list()
+  res.send(result)
+})
+
 /* Refactor with the Jax Wrapper */
 async function newVersion() {
-  const { id, accountId } = await jax.Summoner.summonerName(data.username)
+  jax.regionName = data.region
 
+  const { id, accountId } = await jax.Summoner.summonerName(data.username)
   console.log(id, accountId)
 }
 
