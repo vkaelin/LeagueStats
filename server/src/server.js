@@ -1,4 +1,4 @@
-require('dotenv').config({path: __dirname + '/.env'})
+require('dotenv').config({ path: __dirname + '/./../.env' })
 const express = require('express')
 const request = require('request');
 const bodyParser = require('body-parser');
@@ -7,7 +7,7 @@ const Promise = require("bluebird");
 const responseTime = require('response-time')
 const cors = require('cors');
 const app = express()
-// import { Jax } from "./Jax";
+import { Jax } from "./Jax";
 
 /* Global Variables */
 const data = {
@@ -21,7 +21,7 @@ const data = {
 }
 
 /* Setup Riot API Wrapper */
-// const jax = new Jax()
+const jax = new Jax()
 
 /* Set Port */
 app.set('port', (process.env.PORT || 5000))
@@ -57,8 +57,8 @@ app.post('/api', function (req, res) {
   data.region = req.body.region;
   data.username = req.body.summoner;
 
-  // jax.regionName = req.body.region
-  // newVersion()
+  jax.regionName = req.body.region
+  newVersion()
 
   data.finalJSON = {};
   getAccountInfos(res);

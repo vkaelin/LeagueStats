@@ -1,6 +1,6 @@
 import JaxRequest from '../JaxRequest'
 
-class SummonerEnpoint {
+class SummonerEndpoint {
   constructor(limiter, region) {
     this.limiter = limiter
     this.region = region
@@ -15,4 +15,4 @@ class SummonerEnpoint {
   }
 }
 
-export default SummonerEnpoint
+export default SummonerEndpoint
