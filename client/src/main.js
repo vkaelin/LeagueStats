@@ -17,7 +17,7 @@ Vue.use(VueAxios)
 Vue.component('v-icon', Icon)
 Vue.component('dot-loader', DotLoader)
 
-Vue.prototype.$patch = '9.16.1'
+Vue.prototype.$patch = '9.17.1'
 
 
 new Vue({
