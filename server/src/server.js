@@ -1,24 +1,10 @@
 require('dotenv').config({ path: __dirname + '/./../.env' })
 const express = require('express')
-const request = require('request');
-const bodyParser = require('body-parser');
-const rp = require('request-promise');
-const Promise = require("bluebird");
+const bodyParser = require('body-parser')
 const responseTime = require('response-time')
-const cors = require('cors');
+const cors = require('cors')
 const app = express()
-import { Jax } from "./Jax";
-
-/* Global Variables */
-const data = {
-  key: process.env.API_KEY,
-  region: 'euw1',
-  summonerID: '',
-  accountID: '',
-  username: '',
-  JSONMatches: [],
-  finalJSON: {}
-}
+import { Jax } from "./Jax"
 
 /* Set Port */
 app.set('port', (process.env.PORT || 5000))
@@ -30,16 +16,16 @@ app.use(cors({
     'https://leaguestats-gg.netlify.com',
     'https://leaguestats.valentinkaelin.ch/'
   ]
-}));
+}))
 
 /* To retrieve data of post request */
-app.use(bodyParser.json());    // to support JSON-encoded bodies
+app.use(bodyParser.json())    // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({  // to support URL-encoded bodies
   extended: true
-}));
+}))
 
 // Create a middleware that adds a X-Response-Time header to responses
-app.use(responseTime());
+app.use(responseTime())
 
 // Setup Jax
 let jax
@@ -51,19 +37,39 @@ app.listen(app.get('port'), async () => {
 })
 
 // Send data of a summoner
-app.post('/api', function (req, res) {
-  console.log('API Request');
-  console.log(req.body.summoner);
-  console.log(req.body.region);
+app.post('/api', async function (req, res) {
+  console.log('API Request')
+  console.log(req.body.summoner, req.body.region)
   console.time('all')
-  data.region = req.body.region;
-  data.username = req.body.summoner;
 
-  data.finalJSON = {};
-  // getAccountInfos(res);
-  jax.regionName = data.region
-  getAccountInfosNew(res)
-});
+  const finalJSON = {}
+  jax.regionName = req.body.region
+
+  try {
+    const account = await jax.Summoner.summonerName(req.body.summoner)
+    finalJSON.account = account
+
+    const ranked = await jax.League.summonerID(account.id)
+    const soloQ = ranked.filter(e => e.queueType === 'RANKED_SOLO_5x5')
+    finalJSON.soloQ = soloQ.length ? soloQ[0] : null;
+
+    console.time('getMatches')
+    const { matches } = await jax.Matchlist.accountID(account.accountId)
+    const gameIds = matches.slice(0, 10).map(({ gameId }) => gameId)
+    const requests = gameIds.map(jax.Match.get)
+    const results = await Promise.all(requests)
+    finalJSON.matchesDetails = results
+    finalJSON.allMatches = matches
+
+    res.send(finalJSON)
+    console.timeEnd('getMatches')
+    console.timeEnd('all')
+  } catch (error) {
+    console.log('username not found')
+    console.log(error)
+    res.send(null)
+  }
+})
 
 /* Get static file from Riot API */
 app.post('/ddragon', async function (req, res) {
@@ -72,87 +78,3 @@ app.post('/ddragon', async function (req, res) {
   const result = await jax.DDragon[endpoint].list()
   res.send(result)
 })
-
-/* Get account infos of an username - Refactor with the Jax Wrapper */
-async function getAccountInfosNew(res) {
-  try {
-    const account = await jax.Summoner.summonerName(data.username)
-    data.summonerID = account.id
-    data.accountID = account.accountId
-    data.finalJSON.account = account
-    getRanked(res)
-  } catch (error) {
-    console.log('username not found')
-    console.log(error)
-    res.send(null)
-  }
-}
-
-// Get account infos of an username - Old version
-const getAccountInfos = function (res) {
-  request(`https://${data.region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURIComponent(data.username)}?api_key=${data.key}`, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      let JSONBody = JSON.parse(body);
-      data.summonerID = JSONBody.id;
-      data.accountID = JSONBody.accountId;
-      data.finalJSON.account = JSONBody
-      getRanked(res);
-    }
-    else {
-      console.log(response.statusCode);
-      console.log('username not found');
-      res.send(null);
-    }
-  });
-}
-
-// Get data of rankeds stats
-const getRanked = function (res) {
-  request(`https://${data.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${data.summonerID}?api_key=${data.key}`, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      const JSONBody = JSON.parse(body).filter(e => e.queueType === 'RANKED_SOLO_5x5');
-      if (JSONBody.length === 1) {
-        data.finalJSON.soloQ = JSONBody[0];
-      } else {
-        console.log('empty rank stats');
-        data.finalJSON.soloQ = null;
-      }
-      getMatches(res);
-    }
-  })
-}
-
-// Get 100 matches basic infos and 10 matches details of an accountID
-const getMatches = function (res) {
-  console.time('getMatches');
-
-  request(`https://${data.region}.api.riotgames.com/lol/match/v4/matchlists/by-account/${data.accountID}?endIndex=100&api_key=${data.key}`, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      const allMatches = JSON.parse(body)
-      data.JSONMatches = allMatches.matches.slice(0, 10)
-      const matchsId = data.JSONMatches.map(x => x.gameId)
-
-      Promise.map(matchsId, function (id) {
-        return getMatch('match/v4/matches/' + id);
-      }).then(() => {
-        console.timeEnd('getMatches');
-        console.log('Finished - Data sent to front');
-        data.finalJSON.matchesDetails = data.JSONMatches
-        data.finalJSON.allMatches = allMatches.matches
-        res.send(data.finalJSON);
-        console.timeEnd('all')
-      }).catch(err => {
-        console.log('Error Promise');
-        console.log(err);
-      });
-    }
-  });
-}
-
-// Get data of one match
-const getMatch = async function (urlApi) {
-  //console.log(urlApi);
-  return rp({ url: `https://${data.region}.api.riotgames.com/lol/${urlApi}?api_key=${data.key}`, json: true }).then(function (obj) {
-    data.JSONMatches = data.JSONMatches.map((match) => match.gameId === obj.gameId ? obj : match);
-  });
-}
