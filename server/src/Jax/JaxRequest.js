@@ -16,7 +16,7 @@ class JaxRequest {
       return JSON.parse(resp)
 
     } catch ({ statusCode, ...rest }) {
-      console.log('error: ' + statusCode, rest)
+      console.log('error: ' + statusCode)
     }
   }
 

@@ -7,7 +7,7 @@
         type="text"
         autofocus
         class="input w-full px-2 py-4 rounded-lg outline-none pl-8 pr-16 font-bold"
-      >
+      />
       <div class="absolute right-0 z-30 vertical-center flex items-center h-full mr-2">
         <div
           @click="dropdown = !dropdown"
@@ -37,13 +37,12 @@
             :class="classRegions(index)"
             class="relative px-4b py-1 text-xs bg-teal-600 hover:bg-teal-500"
           >
-            <v-icon 
+            <v-icon
               v-if="region === selectedRegion"
-              name="check" 
+              name="check"
               scale="0.7"
               class="absolute vertical-center offsetIcon"
-            >
-            </v-icon>
+            ></v-icon>
             {{ region }}
           </div>
         </div>
@@ -86,15 +85,9 @@ export default {
       }
     },
     formSubmit() {
-      const regexNames = new RegExp('^[0-9\\p{L} _\\.]+$', 'u')
-      
-      if(regexNames.exec(this.summoner)) {
-        this.$emit('formSubmit', this.summoner.split(' ').join(''), this.selectedRegion.toLowerCase())
-      } else {
-        this.$store.dispatch('notification/add', {
-          type: 'error',
-          message: 'Summoner Name entered is incorrect.'
-        })
+      const search = this.summoner.split(' ').join('')
+      if (search.length) {
+        this.$emit('formSubmit', search, this.selectedRegion.toLowerCase())
       }
     }
   }

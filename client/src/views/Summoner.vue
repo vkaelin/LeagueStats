@@ -140,6 +140,11 @@ export default {
         } else {
           this.summonerFound = false
           this.loading = false
+
+          this.$store.dispatch('notification/add', {
+            type: 'error',
+            message: 'Summoner not found.'
+          })
           console.log('Summoner not found')
         }
       } catch (error) {

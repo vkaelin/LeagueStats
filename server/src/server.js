@@ -42,11 +42,21 @@ app.post('/api', async function (req, res) {
   console.log(req.body.summoner, req.body.region)
   console.time('all')
 
+  /* Check if the summonerName is correct before fetching Riot API */
+  const regexSummonerName = new RegExp('^[0-9\\p{L} _\\.]+$', 'u')
+  if (!regexSummonerName.exec(req.body.summoner)) {
+    return res.send(null)
+  }
+
   const finalJSON = {}
   jax.regionName = req.body.region
 
   try {
     const account = await jax.Summoner.summonerName(req.body.summoner)
+
+    // Check if the summoner is found
+    if (!account) return res.send(null)
+
     finalJSON.account = account
 
     const ranked = await jax.League.summonerID(account.id)
@@ -66,7 +76,6 @@ app.post('/api', async function (req, res) {
     console.timeEnd('all')
   } catch (error) {
     console.log('username not found')
-    console.log(error)
     res.send(null)
   }
 })
