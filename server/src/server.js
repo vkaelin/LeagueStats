@@ -27,13 +27,9 @@ app.use(bodyParser.urlencoded({  // to support URL-encoded bodies
 // Create a middleware that adds a X-Response-Time header to responses
 app.use(responseTime())
 
-// Setup Jax
-let jax
-
 /* Launch app */
-app.listen(app.get('port'), async () => {
+app.listen(app.get('port'), () => {
   console.log(`RiotAPI app listening on port ${app.get('port')}!`)
-  jax = await new Jax()
 })
 
 // Send data of a summoner
@@ -49,24 +45,24 @@ app.post('/api', async function (req, res) {
   }
 
   const finalJSON = {}
-  jax.regionName = req.body.region
+  Jax.regionName = req.body.region
 
   try {
-    const account = await jax.Summoner.summonerName(req.body.summoner)
+    const account = await Jax.Summoner.summonerName(req.body.summoner)
 
     // Check if the summoner is found
     if (!account) return res.send(null)
 
     finalJSON.account = account
 
-    const ranked = await jax.League.summonerID(account.id)
+    const ranked = await Jax.League.summonerID(account.id)
     const soloQ = ranked.filter(e => e.queueType === 'RANKED_SOLO_5x5')
     finalJSON.soloQ = soloQ.length ? soloQ[0] : null;
 
     console.time('getMatches')
-    const { matches } = await jax.Matchlist.accountID(account.accountId)
+    const { matches } = await Jax.Matchlist.accountID(account.accountId)
     const gameIds = matches.slice(0, 10).map(({ gameId }) => gameId)
-    const requests = gameIds.map(jax.Match.get)
+    const requests = gameIds.map(Jax.Match.get)
     const results = await Promise.all(requests)
     finalJSON.matchesDetails = results
     finalJSON.allMatches = matches
@@ -84,6 +80,6 @@ app.post('/api', async function (req, res) {
 app.post('/ddragon', async function (req, res) {
   console.log('DDragon Request')
   const endpoint = req.body.endpoint
-  const result = await jax.DDragon[endpoint].list()
+  const result = await Jax.DDragon[endpoint].list()
   res.send(result)
 })

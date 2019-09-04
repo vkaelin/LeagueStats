@@ -12,29 +12,29 @@ import DDragonChampionEndpoint from './Endpoints/DDragonEndpoints/DDragonChampio
 
 class Jax {
   constructor(key = process.env.API_KEY, region = 'euw1') {
-    return (async () => {
-      this.key = key
-      const limiterOptions = {
-        strategy: STRATEGY.BURST
-      }
-      this.limiter = new RiotRateLimiter(limiterOptions)
-      this.region = region
 
-      this.League = new LeagueEndpoint(this.limiter, this.region)
-      this.Match = new MatchEndpoint(this.limiter, this.region)
-      this.Matchlist = new MatchlistEndpoint(this.limiter, this.region)
-      this.Summoner = new SummonerEndpoint(this.limiter, this.region)
+    this.key = key
+    const limiterOptions = {
+      strategy: STRATEGY.BURST
+    }
+    this.limiter = new RiotRateLimiter(limiterOptions)
+    this.region = region
 
-      this.version = (await new DDragonVersionEndpoint().list())[0]
+    this.League = new LeagueEndpoint(this.limiter, this.region)
+    this.Match = new MatchEndpoint(this.limiter, this.region)
+    this.Matchlist = new MatchlistEndpoint(this.limiter, this.region)
+    this.Summoner = new SummonerEndpoint(this.limiter, this.region)
 
-      this.DDragon = {
-        Champion: new DDragonChampionEndpoint(this.version),
-        Version: this.version
-      }
+    this.initDDragon()
+  }
 
-      return this
-    })()
+  async initDDragon() {
+    this.version = (await new DDragonVersionEndpoint().list())[0]
 
+    this.DDragon = {
+      Champion: new DDragonChampionEndpoint(this.version),
+      Version: this.version
+    }
   }
 
   set regionName(regionName) {
@@ -43,5 +43,5 @@ class Jax {
 }
 
 module.exports = {
-  Jax
+  Jax: new Jax()
 }
