@@ -14,7 +14,8 @@ app.use(cors({
   origin: [
     'http://localhost:8080',
     'https://leaguestats-gg.netlify.com',
-    'https://leaguestats.valentinkaelin.ch/'
+    'https://leaguestats.valentinkaelin.ch/',
+    'https://leaguestats.gg'
   ]
 }))
 
