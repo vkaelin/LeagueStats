@@ -40,7 +40,9 @@ export default {
   props: {
     matches: {
       type: Array,
-      required: true
+      default() {
+        return []
+      }
     }
   },
 
@@ -48,7 +50,18 @@ export default {
     return {
       gridDays: [],
       indexFirstMonday: 0,
-      nbColumns: 15
+      nbColumns: 15,
+      options: {
+        year: 'numeric',
+        month: '2-digit',
+        day: 'numeric'
+      }
+    }
+  },
+
+  watch: {
+    matches() {
+      this.fillGrid()
     }
   },
 
@@ -62,17 +75,11 @@ export default {
     createGrid() {
       const nbDaysInGrid = this.nbColumns * 7
 
-      const options = {
-        year: 'numeric',
-        month: '2-digit',
-        day: 'numeric'
-      }
-
       // Create array with all the days of the Grid
       for (let i = 1; i <= nbDaysInGrid; i++) {
         const day = new Date()
         day.setDate(day.getDate() - nbDaysInGrid + i)
-        const formattedDay = day.toLocaleString('fr', options)
+        const formattedDay = day.toLocaleString('fr', this.options)
 
         this.gridDays.push({
           date: formattedDay,
@@ -82,11 +89,14 @@ export default {
         })
       }
 
+      this.fillGrid()
+    },
+    fillGrid() {
       // Add all the matches made by the summoner
       for (const key in this.matches) {
         const match = this.matches[key]
         const matchTime = new Date(match.timestamp)
-        const formattedTime = matchTime.toLocaleString('fr', options)
+        const formattedTime = matchTime.toLocaleString('fr', this.options)
 
         const dayOfTheMatch = this.gridDays.filter(
           e => e.date === formattedTime

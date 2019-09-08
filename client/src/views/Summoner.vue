@@ -1,7 +1,5 @@
 <template>
   <div>
-    <button @click="resetLocalStorage" class="debug"></button>
-
     <header class="search mb-4 bg-teal-900 text-teal-100">
       <div class="container mx-auto flex justify-between py-8">
         <router-link
@@ -10,16 +8,6 @@
         >Accueil</router-link>
 
         <SearchForm @formSubmit="redirect" />
-
-        <button
-          v-if="summonerFound"
-          @click="apiCall"
-          id="refresh"
-          class="input btn w-20 rounded-lg ml-2 relative"
-          :disabled="loading"
-        >
-          <v-icon name="sync" class="absolute vertical-center horizontal-center" />
-        </button>
       </div>
     </header>
 
@@ -41,7 +29,7 @@
             class="player__ratio"
           >{{ localInfos.rankedWins ? localInfos.rankedWins + ' wins / ' + localInfos.rankedLosses + ' losses' : "Joueur non classé" }}</h3>
 
-          <RecentActivity v-show="localInfos.allMatches" :matches="localInfos.allMatches" />
+          <RecentActivity :matches="localInfos.allMatches" />
 
           <ul class="list-matches--debug">
             <Match
@@ -68,12 +56,10 @@
 
 <script>
 // import itemsJSON from '@/data/item.json'
-import summonersJSON from '@/data/summoner.json'
+import { mapState, mapActions } from 'vuex'
 import RecentActivity from '@/components/RecentActivity.vue'
 import Match from '@/components/Match.vue'
 import SearchForm from '@/components/SearchForm.vue'
-import { maps, gameModes } from '@/data/data.js'
-import { timeDifference, secToTime, getRankImg } from '@/helpers/functions.js'
 
 export default {
   components: {
@@ -82,194 +68,43 @@ export default {
     SearchForm
   },
 
-  data() {
-    return {
-      championsInfos: [],
-      localInfos: {},
-      summonerFound: false,
-      loading: false,
-      regionsList: {
-        'br': 'br1',
-        'eune': 'eun1',
-        'euw': 'euw1',
-        'jp': 'jp1',
-        'kr': 'kr',
-        'lan': 'la1',
-        'las': 'la2',
-        'na': 'na1',
-        'oce': 'oc1',
-        'tr': 'tr1',
-        'ru': 'ru'
-      }
-    }
-  },
-
   computed: {
     summoner() {
       return this.$route.params.name
     },
     region() {
       return this.$route.params.region
-    }
+    },
+    ...mapState({
+      regionsList: state => state.regionsList,
+      localInfos: state => state.summoner.infos,
+      summonerFound: state => state.summoner.summonerFound,
+      loading: state => state.summoner.loading
+    })
   },
 
   watch: {
     $route() {
       console.log('route changed')
-      this.checkLocalStorage()
+      this.apiCall()
     }
   },
 
-  created: function () {
-    this.getChampionData()
-  },
-  mounted: function () {
-    this.checkLocalStorage()
+  // created() {
+  //   this.getChampionData()
+  // },
+  mounted() {
+    this.apiCall()
   },
 
   methods: {
     async apiCall() {
-      const summoner = this.summoner
-      const region = this.regionsList[this.region]
-      this.loading = true
-      try {
-        const resp = await this.$axios(({ url: 'api', data: { summoner, region }, method: 'POST' }))
-        if (resp.data) {
-          this.summonerFound = true
-          this.createObject(resp.data)
-        } else {
-          this.summonerFound = false
-          this.loading = false
-
-          this.$store.dispatch('notification/add', {
-            type: 'error',
-            message: 'Summoner not found.'
-          })
-          console.log('Summoner not found')
-        }
-      } catch (error) {
-        this.loading = false
-        console.log(error)
-      }
-    },
-    checkLocalStorage() {
-      if (localStorage[`${this.summoner}:${this.region}`]) {
-        console.log('cached')
-        this.summonerFound = true
-        this.localInfos = JSON.parse(localStorage[`${this.summoner}:${this.region}`])
-      } else {
-        this.apiCall()
-      }
-    },
-    createObject(JSONData) {
-      console.time('frontend')
-      console.log('--- ALL INFOS ---')
-      console.log(JSONData)
-
-      const userStats = JSONData.account
-      const soloQStats = JSONData.soloQ
-      const matches = JSONData.matchesDetails
-
-      const matchesInfos = []
-      // Loop on all matches
-      for (let i = 0; i < matches.length; i++) {
-        const currentMatch = matches[i]
-        const participantId = currentMatch.participantIdentities.find((p) => p.player.currentAccountId === userStats.accountId).participantId
-
-        const teamId = currentMatch.participants[participantId - 1].teamId
-        const win = currentMatch.teams.find((t) => t.teamId === teamId).win === 'Win'
-
-        const map = maps[currentMatch.mapId]
-        let mode = gameModes[currentMatch.queueId]
-        if (!mode)
-          mode = 'Undefined gamemode'
-        //console.log(Object.entries(this.championsInfos))
-        //console.log(this.championsInfos)
-        const champion = Object.entries(this.championsInfos).find(([, champion]) => Number(champion.key) === currentMatch.participants[participantId - 1].championId)[0]
-        //const champion = championsId[currentMatch.participants[participantId - 1].championId];
-        const role = currentMatch.participants[participantId - 1].timeline.lane
-        const timeAgo = timeDifference(currentMatch.gameCreation)
-        const time = secToTime(currentMatch.gameDuration)
-        const kills = currentMatch.participants[participantId - 1].stats.kills
-        const deaths = currentMatch.participants[participantId - 1].stats.deaths
-        const assists = currentMatch.participants[participantId - 1].stats.assists
-        const level = currentMatch.participants[participantId - 1].stats.champLevel
-
-        const items = []
-        for (let i = 0; i < 6; i++) {
-          const currentItem = 'item' + i
-          items.push(this.getItemLink(currentMatch.participants[participantId - 1].stats[currentItem]))
-        }
-
-        const gold = (currentMatch.participants[participantId - 1].stats.goldEarned / 1000).toFixed(1) + 'k'
-        const minions = currentMatch.participants[participantId - 1].stats.totalMinionsKilled + currentMatch.participants[participantId - 1].stats.neutralMinionsKilled
-
-        const firstSum = currentMatch.participants[participantId - 1].spell1Id
-        const secondSum = currentMatch.participants[participantId - 1].spell2Id
-
-        matchesInfos.push({
-          result: win,
-          map: map,
-          gamemode: mode,
-          champ: champion,
-          role: role,
-          date: timeAgo,
-          time: time,
-          kills: kills,
-          deaths: deaths,
-          assists: assists,
-          level: level,
-          items: items,
-          gold: gold,
-          minions: minions,
-          firstSum: this.getSummonerLink(firstSum),
-          secondSum: this.getSummonerLink(secondSum)
-        })
-      } // end loop matches
-      console.log('matches infos just below')
-      console.log(matchesInfos)
-
-      this.localInfos = {
-        accountId: userStats.accountId,
-        allMatches: JSONData.allMatches,
-        matches: matchesInfos,
-        profileIconId: userStats.profileIconId,
-        name: userStats.name,
-        level: userStats.summonerLevel,
-        rank: soloQStats ? soloQStats.tier + ' ' + soloQStats.rank : 'Joueur non classé',
-        rankImgLink: getRankImg(soloQStats),
-        rankedWins: soloQStats ? soloQStats.wins : undefined,
-        rankedLosses: soloQStats ? soloQStats.losses : undefined
-      }
-
-      console.log('====== Saved infos ======')
-      console.log(this.localInfos)
-
-      localStorage[`${this.summoner}:${this.region}`] = JSON.stringify(this.localInfos)
-      console.timeEnd('frontend')
-      this.loading = false
-
-    },
-    async getChampionData() {
-      console.log('API CALL FOR CHAMPIONS')
-      const endpoint = 'Champion'
-      const resp = await this.$axios(({ url: 'ddragon', data: { endpoint }, method: 'POST' }))
-      this.championsInfos = resp.data.data
-    },
-    getItemLink(id) {
-      return `url('https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/item/${id === 0 ? 3637 : id}.png') no-repeat center center / contain`
-    },
-    getSummonerLink(id) {
-      const spellName = Object.entries(summonersJSON.data).find(([, spell]) => Number(spell.key) === id)[0]
-      return `https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/spell/${spellName}.png`
+      await this.summonerRequest({ summoner: this.summoner, region: this.region })
     },
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
-    resetLocalStorage() {
-      console.log('CLEAR LOCALSTORAGE')
-      localStorage.clear()
-    }
+    ...mapActions('summoner', ['summonerRequest'])
   }
 }
 </script>
