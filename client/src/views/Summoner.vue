@@ -76,7 +76,6 @@ export default {
       return this.$route.params.region
     },
     ...mapState({
-      regionsList: state => state.regionsList,
       localInfos: state => state.summoner.infos,
       summonerFound: state => state.summoner.summonerFound,
       loading: state => state.summoner.loading

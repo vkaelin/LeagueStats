@@ -39,6 +39,13 @@ class Jax {
 
   set regionName(regionName) {
     this.region = regionName
+    const blacklistedProperties = ['key', 'limiter', 'region', 'version', 'DDragon']
+
+    for (const key of Object.getOwnPropertyNames(this)) {
+      if(blacklistedProperties.includes(key)) continue
+
+      this[key].region = regionName
+    }
   }
 }
 

@@ -29,6 +29,7 @@ export const mutations = {
 export const actions = {
   async summonerRequest({ commit, dispatch, rootState }, { summoner, region }) {
     console.log(summoner, region)
+    region = rootState.regionsList[region]
     commit('SUMMONER_REQUEST')
     try {
       const resp = await axios(({ url: 'api', data: { summoner, region }, method: 'POST' }))

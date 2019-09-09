@@ -7,7 +7,7 @@ const app = express()
 import { Jax } from "./Jax"
 
 /* Set Port */
-app.set('port', (process.env.PORT || 5000))
+app.set('port', (process.env.PORT || 3333))
 
 /* Setup Cors */
 app.use(cors({
