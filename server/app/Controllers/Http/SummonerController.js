@@ -1,7 +1,7 @@
 'use strict'
 
 const Match = use('App/Models/Match')
-const Jax = use('App/Lib/Jax')
+const Jax = use('Jax')
 
 class SummonerController {
 

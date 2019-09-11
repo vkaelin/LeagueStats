@@ -1,4 +1,3 @@
-const Env = use('Env')
 const RiotRateLimiter = require('riot-ratelimiter')
 const { STRATEGY } = require('riot-ratelimiter/dist/RateLimiter')
 const LeagueEndpoint = require('./Endpoints/LeagueEndpoint')
@@ -10,8 +9,7 @@ const DDragonVersionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonVers
 const DDragonChampionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonChampionEndpoint')
 
 class Jax {
-  constructor(key = Env.get('API_KEY'), region = 'euw1') {
-
+  constructor(key, region = 'euw1') {
     this.key = key
     const limiterOptions = {
       strategy: STRATEGY.BURST
@@ -48,4 +46,4 @@ class Jax {
   }
 }
 
-module.exports = new Jax()
+module.exports = Jax

@@ -1,6 +1,6 @@
 'use strict'
 
-const Jax = use('App/Lib/Jax')
+const Jax = use('Jax')
 
 class DDragonController {
   /**
