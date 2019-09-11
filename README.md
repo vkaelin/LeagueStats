@@ -1,9 +1,10 @@
-# RiotAPI
+# LeagueStats
 
 ## Global dependencies
 ```
 Vue CLI
-nodemon
+Adonis CLI
+MongoDB
 ```
 
 ## Project setup
@@ -13,7 +14,8 @@ npm install
 
 cd server
 npm install
-create .env file with API_KEY= your RiotGames API Key
+cp .env.example .env
+adonis migration:run
 ```
 
 ### Compiles and hot-reloads for development
@@ -31,5 +33,5 @@ npm run build
 ### Run NodeJS server
 ```
 cd server
-npm run dev
+adonis serve --dev
 ```
