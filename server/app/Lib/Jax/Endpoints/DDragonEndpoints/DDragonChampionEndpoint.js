@@ -1,4 +1,4 @@
-import DDragonRequest from '../../DDragonRequest'
+const DDragonRequest = require('../../DDragonRequest')
 
 class DDragonChampionEndpoint {
   constructor(version) {
@@ -14,4 +14,4 @@ class DDragonChampionEndpoint {
   }
 }
 
-export default DDragonChampionEndpoint
+module.exports = DDragonChampionEndpoint

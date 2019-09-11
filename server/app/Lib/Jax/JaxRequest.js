@@ -22,4 +22,4 @@ class JaxRequest {
 
 }
 
-export default JaxRequest
+module.exports = JaxRequest

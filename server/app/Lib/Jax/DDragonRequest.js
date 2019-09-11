@@ -1,4 +1,4 @@
-import got from 'got'
+const got = require('got')
 
 class DDragonRequest {
   constructor(endpoint, type, version) {
@@ -30,4 +30,4 @@ class DDragonRequest {
 
 }
 
-export default DDragonRequest
+module.exports = DDragonRequest

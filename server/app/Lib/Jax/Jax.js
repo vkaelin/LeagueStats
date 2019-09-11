@@ -1,17 +1,16 @@
-import RiotRateLimiter from 'riot-ratelimiter'
-import { STRATEGY } from 'riot-ratelimiter/dist/RateLimiter'
+const Env = use('Env')
+const RiotRateLimiter = require('riot-ratelimiter')
+const { STRATEGY } = require('riot-ratelimiter/dist/RateLimiter')
+const LeagueEndpoint = require('./Endpoints/LeagueEndpoint')
+const MatchEndpoint = require('./Endpoints/MatchEndpoint')
+const MatchlistEndpoint = require('./Endpoints/MatchlistEndpoint')
+const SummonerEndpoint = require('./Endpoints/SummonerEndpoint')
 
-
-import LeagueEndpoint from './Endpoints/LeagueEndpoint'
-import MatchEndpoint from './Endpoints/MatchEndpoint'
-import MatchlistEndpoint from './Endpoints/MatchlistEndpoint'
-import SummonerEndpoint from './Endpoints/SummonerEndpoint'
-
-import DDragonVersionEndpoint from './Endpoints/DDragonEndpoints/DDragonVersionEndpoint'
-import DDragonChampionEndpoint from './Endpoints/DDragonEndpoints/DDragonChampionEndpoint'
+const DDragonVersionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonVersionEndpoint')
+const DDragonChampionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonChampionEndpoint')
 
 class Jax {
-  constructor(key = process.env.API_KEY, region = 'euw1') {
+  constructor(key = Env.get('API_KEY'), region = 'euw1') {
 
     this.key = key
     const limiterOptions = {
@@ -49,6 +48,4 @@ class Jax {
   }
 }
 
-module.exports = {
-  Jax: new Jax()
-}
+module.exports = new Jax()

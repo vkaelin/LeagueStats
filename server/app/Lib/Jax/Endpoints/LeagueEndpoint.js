@@ -1,4 +1,4 @@
-import JaxRequest from '../JaxRequest'
+const JaxRequest = require('../JaxRequest')
 
 class LeagueEndpoint {
   constructor(limiter, region) {
@@ -15,4 +15,4 @@ class LeagueEndpoint {
   }
 }
 
-export default LeagueEndpoint
+module.exports = LeagueEndpoint

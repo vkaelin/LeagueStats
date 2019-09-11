@@ -1,4 +1,4 @@
-import JaxRequest from '../JaxRequest'
+const JaxRequest = require('../JaxRequest')
 
 class SummonerEndpoint {
   constructor(limiter, region) {
@@ -15,4 +15,4 @@ class SummonerEndpoint {
   }
 }
 
-export default SummonerEndpoint
+module.exports = SummonerEndpoint

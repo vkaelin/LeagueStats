@@ -1,4 +1,4 @@
-import JaxRequest from '../JaxRequest'
+const JaxRequest = require('../JaxRequest')
 
 class MatchEndpoint {
   constructor(limiter, region) {
@@ -17,4 +17,4 @@ class MatchEndpoint {
   }
 }
 
-export default MatchEndpoint
+module.exports = MatchEndpoint

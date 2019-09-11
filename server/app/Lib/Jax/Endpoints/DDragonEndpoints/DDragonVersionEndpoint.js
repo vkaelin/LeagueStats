@@ -1,4 +1,4 @@
-import DDragonRequest from '../../DDragonRequest'
+const DDragonRequest = require('../../DDragonRequest')
 
 class DDragonVersionEndpoint {
   list() {
@@ -10,4 +10,4 @@ class DDragonVersionEndpoint {
   }
 }
 
-export default DDragonVersionEndpoint
+module.exports = DDragonVersionEndpoint
