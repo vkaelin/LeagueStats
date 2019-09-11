@@ -5,13 +5,13 @@
         <router-link
           to="/"
           class="flex items-center text-lg text-teal-100 mr-8 hover:text-teal-200"
-        >Accueil</router-link>
+        >Home</router-link>
 
         <SearchForm @formSubmit="redirect" />
       </div>
     </header>
 
-    <template v-if="summonerFound && !loading">
+    <template v-if="summonerFound">
       <div class="container mx-auto pb-16">
         <div class="mt-4 mx-auto p-4 text-center bg-blue-100 border border-gray-300 rounded-lg">
           <div
@@ -41,21 +41,21 @@
         </div>
       </div>
     </template>
-    <template v-else-if="loading">
+    <template v-else-if="summonerLoading">
       <div
         class="flex items-center justify-center bg-white max-w-xs mx-auto p-5 rounded-lg shadow-xl"
       >
-        <dot-loader :loading="loading" />
+        <dot-loader :loading="summonerLoading" />
       </div>
     </template>
-    <template v-else>
+    <template v-else-if="summonerNotFound">
       <p>Player can't be found.</p>
     </template>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import RecentActivity from '@/components/RecentActivity.vue'
 import Match from '@/components/Match.vue'
 import SearchForm from '@/components/SearchForm.vue'
@@ -75,10 +75,10 @@ export default {
       return this.$route.params.region
     },
     ...mapState({
-      localInfos: state => state.summoner.infos,
-      summonerFound: state => state.summoner.summonerFound,
-      loading: state => state.summoner.loading
-    })
+      localInfos: state => state.summoner.infos
+    }),
+    ...mapGetters('ddragon', ['areChampionsLoaded']),
+    ...mapGetters('summoner', ['summonerFound', 'summonerNotFound', 'summonerLoading'])
   },
 
   watch: {
@@ -94,14 +94,16 @@ export default {
 
   methods: {
     async apiCall() {
-      await this.getChampions()
+      if (!this.areChampionsLoaded)
+        await this.getChampions()
+
       this.summonerRequest({ summoner: this.summoner, region: this.region })
     },
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
-    ...mapActions('summoner', ['summonerRequest']),
-    ...mapActions('ddragon', ['getChampions'])
+    ...mapActions('ddragon', ['getChampions']),
+    ...mapActions('summoner', ['summonerRequest'])
   }
 }
 </script>

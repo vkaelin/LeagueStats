@@ -20,3 +20,7 @@ export const actions = {
     commit('PUSH_CHAMPIONS', resp.data.data)
   }
 }
+
+export const getters = {
+  areChampionsLoaded: state => !!state.champions.Aatrox
+}

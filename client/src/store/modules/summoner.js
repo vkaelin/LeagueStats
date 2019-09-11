@@ -5,28 +5,24 @@ export const namespaced = true
 
 export const state = {
   infos: [],
-  loading: false,
-  summonerFound: false
+  status: '',
 }
 
 export const mutations = {
   SUMMONER_REQUEST(state) {
-    state.loading = true
+    state.status = 'loading'
   },
   SUMMONER_FOUND(state, infos) {
-    state.summonerFound = true
-    state.loading = false
     state.infos = infos
+    state.status = 'found'
   },
   SUMMONER_NOT_FOUND(state) {
-    state.summonerFound = false
-    state.loading = false
+    state.status = 'error'
   }
 }
 
 export const actions = {
   async summonerRequest({ commit, dispatch, rootState }, { summoner, region }) {
-    console.log(summoner, region)
     region = rootState.regionsList[region]
     commit('SUMMONER_REQUEST')
     try {
@@ -48,4 +44,10 @@ export const actions = {
       console.log(error)
     }
   }
+}
+
+export const getters = {
+  summonerFound: state => state.status === 'found',
+  summonerNotFound: state => state.status === 'error',
+  summonerLoading: state => state.status === 'loading',
 }
