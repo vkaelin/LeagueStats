@@ -9,13 +9,13 @@ const DDragonVersionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonVers
 const DDragonChampionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonChampionEndpoint')
 
 class Jax {
-  constructor(key, region = 'euw1') {
+  constructor(key, env) {
     this.key = key
     const limiterOptions = {
-      strategy: STRATEGY.BURST
+      strategy: env === 'production' ? STRATEGY.SPREAD : STRATEGY.BURST
     }
     this.limiter = new RiotRateLimiter(limiterOptions)
-    this.region = region
+    this.region = 'euw1'
 
     this.League = new LeagueEndpoint(this.limiter, this.region)
     this.Match = new MatchEndpoint(this.limiter, this.region)

@@ -5,7 +5,7 @@ class JaxProvider extends ServiceProvider {
   register () {
     this.app.singleton('Jax', () => {
       const Env = use('Env')
-      return new Jax(Env.get('API_KEY'))
+      return new Jax(Env.get('API_KEY'), Env.get('NODE_ENV'))
     })
   }
 
