@@ -17,11 +17,12 @@ export function createSummonerData(RiotData, championsInfos) {
 
   const soloQ = soloQStats ? {} : null
   if (soloQ) {
-    soloQ.rank = soloQStats.rank
+    soloQ.rank = `${soloQStats.tier} ${soloQStats.rank}`
     soloQ.rankImgLink = getRankImg(soloQStats)
     soloQ.wins = soloQStats.wins
     soloQ.losses = soloQStats.losses
     soloQ.winrate =  (soloQ.wins * 100 / (soloQ.wins + soloQ.losses)).toFixed(1) + '%'
+    soloQ.lp =  soloQStats.leaguePoints
   }
 
   const matchesInfos = []

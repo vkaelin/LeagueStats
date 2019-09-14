@@ -1,56 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900');
 
-.transition-all {
-  transition-property: all;
+button:focus {
+  outline: 0;
 }
 
-.transition-fastest {
-  transition-duration: 50ms;
+.vertical-center {
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-.transition-faster {
-  transition-duration: 100ms;
+.horizontal-center {
+  left: 0;
+  right: 0;
+  margin: 0 auto;
 }
 
-.transition-fast {
-  transition-duration: 150ms;
-}
-
-.transition-medium {
-  transition-duration: 200ms;
-}
-
-.ease-out-quad {
-  transition-timing-function: cubic-bezier(.25, .46, .45, .94);
-}
-
-.ease-in-quad {
-  transition-timing-function: cubic-bezier(.55, .085, .68, .53);
-}
-
-.scale-70 {
-  transform: scale(.7);
-}
-
-.scale-100 {
-  transform: scale(1);
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 2s;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-    transition: all 0.4s;
-}
-
-.slide-fade-enter,
-.slide-fade-leave-to {
-    transform: translateX(400px);
-    opacity: 0;
+.bg-gradient {
+  background: linear-gradient(180deg, #2C5282 0%, rgba(44, 82, 130, 0) 100%);
 }

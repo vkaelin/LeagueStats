@@ -1,12 +1,13 @@
 <template>
-  <form @submit.prevent="formSubmit" class="flex text-teal-100 text-lg w-full">
+  <form @submit.prevent="formSubmit" :class="formClasses" class="flex text-teal-100 text-lg w-full">
     <div v-if="dropdown" @click="dropdown = false" class="fixed z-20 inset-0"></div>
     <div class="relative w-full">
       <input
         v-model="summoner"
         type="text"
         autofocus
-        class="input w-full px-2 py-4 rounded-lg outline-none pl-8 pr-16 font-bold"
+        :class="[elementClasses, inputClasses]"
+        class="input w-full px-2 rounded-lg outline-none pl-8 pr-16 font-bold"
       />
       <div class="absolute right-0 z-30 vertical-center flex items-center h-full mr-2">
         <div
@@ -49,7 +50,11 @@
       </transition>
     </div>
 
-    <button class="input btn w-20 rounded-lg ml-2 relative" type="submit">
+    <button
+      :class="[elementClasses, btnClasses]"
+      class="input btn rounded-lg ml-2 relative"
+      type="submit"
+    >
       <v-icon name="search" class="absolute vertical-center horizontal-center"></v-icon>
     </button>
   </form>
@@ -57,6 +62,12 @@
 
 <script>
 export default {
+  props: {
+    size: {
+      type: String,
+      default: 'xl'
+    }
+  },
   data() {
     return {
       summoner: '',
@@ -75,6 +86,31 @@ export default {
         'RU'
       ],
       selectedRegion: 'EUW'
+    }
+  },
+  computed: {
+    btnClasses() {
+      return {
+        'w-12': this.size === 'small',
+        'w-20': this.size === 'xl'
+      }
+    },
+    elementClasses() {
+      return {
+        'border-2': this.size === 'small',
+        'border-4': this.size === 'xl'
+      }
+    },
+    formClasses() {
+      return {
+        'max-w-lg': this.size === 'small',
+      }
+    },
+    inputClasses() {
+      return {
+        'py-2': this.size === 'small',
+        'py-4': this.size === 'xl'
+      }
     }
   },
   methods: {
@@ -102,5 +138,16 @@ export default {
 
 .offsetIcon {
   left: 4px;
+}
+
+.input {
+  border-color: rgba(129, 230, 217, .7);
+  background: rgba(40, 94, 97, .35);
+}
+
+.input:focus,
+.btn:hover {
+  background: rgba(40, 94, 97, .75);
+  border-color: rgba(129, 230, 217, .9);
 }
 </style>

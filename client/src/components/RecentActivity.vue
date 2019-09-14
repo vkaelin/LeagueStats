@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="inline-block bg-blue-800 rounded-lg p-3">
+    <div class="inline-block bg-gradient rounded-lg p-3">
       <h4 class="font-bold text-base text-white text-left">Recent Activity</h4>
       <div class="flex">
         <span class="ml-12 text-blue-200 font-semibold text-xs">{{ gridDays[0].month }}</span>

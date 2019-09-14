@@ -1,5 +1,5 @@
 <template>
-  <li class="match bg-white shadow text-sm md:text-base" :class="data.result ? 'win' : 'lose'">
+  <li class="match mt-4 bg-white shadow text-sm md:text-base" :class="data.result ? 'win' : 'lose'">
     <div class="match-container">
       <!-- Responsive  -->
       <div
@@ -91,7 +91,6 @@ export default {
 <style scoped>
 .match {
   border-bottom: 1px solid #dae1e7;
-  margin: 16px 0;
 }
 
 .match .flex-container {

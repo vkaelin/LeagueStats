@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="font-sans bg-gray-200 antialiased min-h-screen">
+  <div id="app" class="font-sans bg-blue-900 antialiased min-h-screen">
 
     <NotificationsContainer />
     <router-view />

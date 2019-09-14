@@ -26,6 +26,11 @@ export default {
       required: false,
       default: 'cover'
     },
+    moreBackgrounds: {
+      type: String,
+      required: false,
+      default: ''
+    },
     transitionName: {
       type: String,
       required: false,
@@ -43,7 +48,7 @@ export default {
   computed: {
     computedStyle () {
       if (this.imageState === 'loaded') {
-        return 'background-image: url(' + this.asyncImage.src + '); background-size: ' + this.backgroundSize
+        return `background-image: ${this.moreBackgrounds} url(${this.asyncImage.src}); background-size: ${this.backgroundSize}`
       }
       return ''
     }

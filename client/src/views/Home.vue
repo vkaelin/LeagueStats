@@ -1,7 +1,7 @@
 <template>
   <div class="bg-blue-900">
     <LazyBackground
-      :image-source="require('@/assets/bg-homepage-1.jpg')"
+      :image-source="require('@/assets/img/bg-homepage-1.jpg')"
       image-class="absolute inset-0"
       transition-name="fade"
     ></LazyBackground>
@@ -16,7 +16,7 @@
       </div>
 
       <div class="relative flex flex-col items-center w-full max-w-lg">
-        <img class="absolute logo" src="@/assets/Logo.svg" alt="logo" />
+        <img class="absolute logo" src="@/assets/img/Logo.svg" alt="logo" />
         <SearchForm @formSubmit="redirect" />
       </div>
     </div>

@@ -85,6 +85,7 @@ module.exports = {
         700: '#2b6cb0',
         800: '#2c5282',
         900: '#2a4365',
+        1000: '#17314f'
       },
       indigo: {
         100: '#ebf4ff',
@@ -280,6 +281,7 @@ module.exports = {
       ...theme('spacing'),
       full: '100%',
       screen: '100vh',
+      '200': '50rem'
     }),
     minWidth: {
       '0': '0',
