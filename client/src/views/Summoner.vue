@@ -16,26 +16,28 @@
         <div class="mt-4 mx-auto p-4 text-center bg-blue-100 border border-gray-300 rounded-lg">
           <div
             class="mx-auto w-16 h-16 bg-gray-300"
-            :style="{background: `url(https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/profileicon/${localInfos.profileIconId}.png) center/cover`}"
+            :style="{background: `url(https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/profileicon/${summonerInfos.profileIconId}.png) center/cover`}"
           ></div>
-          <h1 class="player__name">{{ localInfos.name }}</h1>
-          <h3 class="player__level">{{ localInfos.level }}</h3>
-          <h3 class="player__rank">{{ localInfos.rank }}</h3>
-          <div
-            class="mx-auto w-16 h-16 bg-gray-300"
-            :style="{background: `url(${localInfos.rankImgLink}) center/cover`}"
-          ></div>
-          <h3
-            class="player__ratio"
-          >{{ localInfos.rankedWins ? localInfos.rankedWins + ' wins / ' + localInfos.rankedLosses + ' losses' : localInfos.rank }}</h3>
+          <h1>{{ summonerInfos.name }}</h1>
+          <h3>{{ summonerInfos.level }}</h3>
 
-          <RecentActivity :matches="localInfos.allMatches" />
+          <div v-if="summonerInfos.soloQ">
+            <h3>{{ summonerInfos.rank }}</h3>
+            <div
+              class="mx-auto w-16 h-16 bg-gray-300"
+              :style="{background: `url(${summonerInfos.soloQ.rankImgLink}) center/cover`}"
+            ></div>
+            <h3>{{ `${summonerInfos.soloQ.wins} wins / ${summonerInfos.soloQ.losses} losses` }}</h3>
+            <span>Winrate: {{ summonerInfos.soloQ.winrate }}</span>
+          </div>
+
+          <RecentActivity :matches="summonerInfos.allMatches" />
 
           <ul>
             <Match
-              v-for="(match, index) in localInfos.matches"
+              v-for="(match, index) in summonerInfos.matches"
               :key="index"
-              :data="localInfos.matches[index]"
+              :data="summonerInfos.matches[index]"
             />
           </ul>
         </div>
@@ -75,7 +77,7 @@ export default {
       return this.$route.params.region
     },
     ...mapState({
-      localInfos: state => state.summoner.infos
+      summonerInfos: state => state.summoner.infos
     }),
     ...mapGetters('ddragon', ['areChampionsLoaded']),
     ...mapGetters('summoner', ['summonerFound', 'summonerNotFound', 'summonerLoading'])

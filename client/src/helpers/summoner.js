@@ -15,6 +15,15 @@ export function createSummonerData(RiotData, championsInfos) {
   const soloQStats = RiotData.soloQ
   const matches = RiotData.matchesDetails
 
+  const soloQ = soloQStats ? {} : null
+  if (soloQ) {
+    soloQ.rank = soloQStats.rank
+    soloQ.rankImgLink = getRankImg(soloQStats)
+    soloQ.wins = soloQStats.wins
+    soloQ.losses = soloQStats.losses
+    soloQ.winrate =  (soloQ.wins * 100 / (soloQ.wins + soloQ.losses)).toFixed(1) + '%'
+  }
+
   const matchesInfos = []
   // Loop on all matches
   for (let i = 0; i < matches.length; i++) {
@@ -78,10 +87,7 @@ export function createSummonerData(RiotData, championsInfos) {
     profileIconId: userStats.profileIconId,
     name: userStats.name,
     level: userStats.summonerLevel,
-    rank: soloQStats ? soloQStats.tier + ' ' + soloQStats.rank : 'Player is unranked',
-    rankImgLink: getRankImg(soloQStats),
-    rankedWins: soloQStats ? soloQStats.wins : undefined,
-    rankedLosses: soloQStats ? soloQStats.losses : undefined
+    soloQ,
   }
 }
 
