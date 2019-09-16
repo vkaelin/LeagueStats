@@ -152,12 +152,14 @@ export default {
       if (!this.areChampionsLoaded)
         await this.getChampions()
 
+      await this.getRunes()
+
       this.summonerRequest({ summoner: this.summoner, region: this.region })
     },
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
-    ...mapActions('ddragon', ['getChampions']),
+    ...mapActions('ddragon', ['getChampions', 'getRunes']),
     ...mapActions('summoner', ['summonerRequest'])
   }
 }

@@ -1,69 +1,105 @@
 <template>
-  <li class="match mt-4 bg-white shadow text-sm md:text-base" :class="data.result ? 'win' : 'lose'">
+  <li :class="matchResultClass" class="match mt-4 rounded-lg text-white text-sm md:text-base">
     <div class="match-container">
-      <!-- Responsive  -->
-      <div
-        class="flex justify-between lg:hidden text-sm text-gray-800 px-2 border-gray-300 border-b"
-      >
-        <div class="flex">
-          <div class="gamemode mr-1">{{ data.gamemode }}</div>
-          <span>•</span>
-          <div class="date ml-1">Il y a {{ data.date }}</div>
-        </div>
-        <div>
-          <div class="date">{{ data.time }}</div>
-        </div>
-      </div>
+      <div class="flex flex-wrap px-5 py-3">
+        <div class="first w-1/3 text-left">
+          <div>
+            <div
+              class="h-6 text-lg text-teal-500 font-extrabold uppercase leading-none"
+            >{{ data.champ }}</div>
 
-      <div class="flex-container">
-        <div class="first col w-1/3 lg:w-1/4">
-          <div class="icon-and-sums flex flex-col sm:flex-row">
-            <div class="relative">
-              <img
-                :src="`https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.champ}.png`"
-                class="champion-icon mb-2px sm:mb-0 sm:mr-2px"
-                alt="example design"
-              />
-              <span class="level absolute bottom-0 left-0 text-white font-bold">{{ data.level }}</span>
+            <div class="flex">
+              <div class="flex flex-col justify-center items-center">
+                <div
+                  class="w-10 h-10 bg-blue-1000"
+                  :style="{background: `url(${require('@/assets/img/roles/Bot.png')}) center/cover`}"
+                ></div>
+                <span class="text-xs text-teal-500 font-extrabold">LVL {{ data.level }}</span>
+              </div>
+              <div
+                class="ml-2 w-16 h-16 crop-champion bg-blue-1000 rounded-lg mb-2px sm:mb-0 sm:mr-2px"
+                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.champ}.png')`}"
+              ></div>
+              <div class="ml-2 flex flex-row sm:flex-col sm:justify-around">
+                <div
+                  class="w-6 h-6 bg-blue-1000 rounded-md"
+                  :style="{background: `url(${data.firstSum}) center/cover`}"
+                ></div>
+                <div
+                  class="w-6 h-6 bg-blue-1000 rounded-md"
+                  :style="{background: `url(${data.secondSum}) center/cover`}"
+                ></div>
+              </div>
+              <div class="ml-1 flex flex-row sm:flex-col sm:justify-around">
+                <div
+                  class="w-6 h-6 bg-blue-1000 rounded-md"
+                  :style="{background: `url(${data.primaryRune}) center/cover`}"
+                ></div>
+                <div
+                  class="w-6 h-6 bg-blue-1000 rounded-md"
+                  :style="{background: `url(${data.secondaryRune}) center/cover`}"
+                ></div>
+              </div>
+              <div class="ml-12 flex items-center">
+                <div class="text-3xl font-extrabold text-teal-500">
+                  <span class>{{ data.kills }}</span>
+                  <span class>/</span>
+                  <span class>{{ data.deaths }}</span>
+                  <span class>/</span>
+                  <span class>{{ data.assists }}</span>
+                </div>
+              </div>
             </div>
-            <div class="summonerSpells flex flex-row sm:flex-col">
-              <img class="spell-icon mr-2px sm:mr-0 sm:mb-2px" :src="data.firstSum" alt="Ignite" />
-              <img class="spell-icon" :src="data.secondSum" alt="Ignite" />
+
+            <div
+              class="h-6 flex items-end text-sm text-white font-extrabold leading-none"
+            >{{ data.gamemode }}</div>
+          </div>
+        </div>
+
+        <div class="second w-1/3 py-6 flex items-center">
+          <div class="items flex flex-wrap">
+            <div
+              v-for="(item, index) in data.items"
+              :key="index"
+              :style="{background: item}"
+              class="ml-1 w-8 h-8 rounded-md bg-blue-1000"
+            ></div>
+          </div>
+
+          <div class="ml-12 leading-none">
+            <div class="flex items-center">
+              <img src="@/assets/img/icons/Creep.svg" alt="Minions" />
+              <div class="ml-1 text-teal-300 text-lg font-bold">
+                {{ data.minions }}
+                <span class="font-normal">cs</span>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <img src="@/assets/img/icons/Gold.svg" alt="Gold" />
+              <div class="ml-1 gold text-lg font-bold">
+                {{ data.gold }}
+                <span class="font-normal">gold</span>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <img src="@/assets/img/icons/Damage.svg" alt="Damage" />
+              <div class="ml-1 damage text-lg font-bold">
+                {{ data.damage }}
+                <span class="font-normal">damage</span>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <img src="@/assets/img/icons/KillParticipation.svg" alt="KillParticipation" />
+              <div class="ml-1 kp text-lg font-bold">
+                {{ data.kp }}
+                <span class="font-normal">kp</span>
+              </div>
             </div>
           </div>
-          <span class="champion-name hidden sm:block">{{ data.champ }}</span>
         </div>
 
-        <div class="second col hidden lg:block lg:w-1/4">
-          <div class="map">{{ data.map }}</div>
-          <div class="gamemode">{{ data.gamemode }}</div>
-        </div>
-
-        <div class="third col w-1/2 lg:w-1/4 flex-wrap md:flex-no-wrap">
-          <div
-            v-for="(item, index) in data.items"
-            :key="index"
-            :style="{background: item}"
-            class="item"
-          ></div>
-        </div>
-
-        <div
-          class="fourth w-1/6 lg:w-1/4 flex-col items-center justify-center sm:flex-row sm:justify-around"
-        >
-          <div
-            class="score mb-2 sm:mb-0 font-bold"
-          >{{ data.kills }}/{{ data.deaths }}/{{ data.assists }}</div>
-          <div class="gold-farm text-center">
-            <div class="gold flex items-center justify-center mb-2 sm:mb-0">
-              {{ data.gold }}
-              <v-icon name="coins" class="h-3 ml-1 text-blue-800" />
-            </div>
-            <div class="farm flex items-center justify-center">
-              {{ data.minions }}
-              <v-icon name="skull-crossbones" class="h-3 ml-1 text-blue-800" />
-            </div>
-          </div>
+        <div class="third w-1/3 py-6 flex items-center justify-around">
           <div class="duration-date hidden lg:block">
             <div class="duration">{{ data.time }}</div>
             <div class="date">{{ data.date }}</div>
@@ -82,6 +118,16 @@ export default {
     data: {
       type: Object,
       required: true
+    },
+  },
+
+  computed: {
+    matchResultClass() {
+      return {
+        'win': this.data.result === 'Win',
+        'loss': this.data.result === 'Fail',
+        'remake': this.data.result === 'Remake',
+      }
     }
   }
 }
@@ -89,66 +135,52 @@ export default {
 
 
 <style scoped>
-.match {
-  border-bottom: 1px solid #dae1e7;
+.loss {
+  background-image: linear-gradient(
+      89.21deg,
+      rgba(140, 0, 0, 0.38) 0.09%,
+      rgba(44, 82, 130, 0) 68.58%
+    ),
+    linear-gradient(90deg, #2c5282 0%, rgba(44, 82, 130, 0) 101.52%);
 }
 
-.match .flex-container {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 16px 8px;
+.win {
+  background-image: linear-gradient(
+      89.45deg,
+      rgba(1, 97, 28, 0.38) -18.36%,
+      rgba(44, 82, 130, 0) 85.07%
+    ),
+    linear-gradient(90deg, #2c5282 0%, rgba(44, 82, 130, 0) 101.52%);
 }
 
-.match.win .match-container {
-  border-left: 10px solid #48bb78;
+.remake {
+  background-image: linear-gradient(
+      89.45deg,
+      rgba(233, 169, 75, 0.38) -1.14%,
+      rgba(44, 82, 130, 0) 58.83%
+    ),
+    linear-gradient(90deg, #2c5282 0%, rgba(44, 82, 130, 0) 101.52%);
 }
 
-.match.lose .match-container {
-  border-left: 10px solid #f56565;
+.crop-champion {
+  background-size: 74px;
+  background-position: center;
 }
 
-/* First col */
-.match .first {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.items {
+  width: 7rem;
+  height: 4.5rem;
 }
 
-.champion-icon {
-  width: 48px;
-  height: 48px;
-  display: block;
+.gold {
+  color: #f3a05a;
 }
 
-.match .summonerSpells {
-  margin: 0 8px 0 0;
+.damage {
+  color: #e25656;
 }
 
-.spell-icon {
-  width: 23px;
-  height: 23px;
-  display: block;
-}
-
-/* Second col */
-.match .second {
-  text-align: left;
-}
-
-/* Third col */
-.match .third {
-  display: flex;
-}
-
-.third .item {
-  width: 48px;
-  height: 48px;
-  margin: 0 2px 0 0;
-}
-
-/* Fourth col */
-.match .fourth {
-  display: flex;
-  align-items: center;
+.kp {
+  color: #b78787;
 }
 </style>

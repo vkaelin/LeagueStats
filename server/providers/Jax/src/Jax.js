@@ -7,6 +7,7 @@ const SummonerEndpoint = require('./Endpoints/SummonerEndpoint')
 
 const DDragonVersionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonVersionEndpoint')
 const DDragonChampionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonChampionEndpoint')
+const DDragonRuneEndpoint = require('./Endpoints/DDragonEndpoints/DDragonRuneEndpoint')
 
 class Jax {
   constructor(key, env) {
@@ -30,6 +31,7 @@ class Jax {
 
     this.DDragon = {
       Champion: new DDragonChampionEndpoint(this.version),
+      Rune: new DDragonRuneEndpoint(this.version),
       Version: this.version
     }
   }
