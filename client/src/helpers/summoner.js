@@ -29,9 +29,10 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
   // Loop on all matches
   for (let i = 0; i < matches.length; i++) {
     const currentMatch = matches[i]
-    const participantId = currentMatch.participantIdentities.find((p) => p.player.currentAccountId === userStats.accountId).participantId - 1
+    const participantId = currentMatch.participantIdentities.find((p) => p.player.currentAccountId === userStats.accountId).participantId
+    const player = currentMatch.participants[participantId - 1]
+    const teamId = player.teamId
 
-    const teamId = currentMatch.participants[participantId].teamId
     let win = currentMatch.teams.find((t) => t.teamId === teamId).win
 
     // Match less than 5min
@@ -43,27 +44,36 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
     let mode = gameModes[currentMatch.queueId]
     if (!mode)
       mode = 'Undefined gamemode'
-    const champion = Object.entries(championsInfos).find(([, champion]) => Number(champion.key) === currentMatch.participants[participantId].championId)[0]
-    const role = currentMatch.participants[participantId].timeline.lane
+    const champion = Object.entries(championsInfos).find(([, champion]) => Number(champion.key) === player.championId)[0]
+
+    let role = player.timeline.lane
+    if(role === 'BOTTOM') {
+      if(player.timeline.role.includes('SUPPORT')) {
+        role = 'SUPPORT'
+      } else {
+        role = 'BOTTOM'
+      }
+    }
+
     const timeAgo = timeDifference(currentMatch.gameCreation)
     const time = secToTime(currentMatch.gameDuration)
-    const kills = currentMatch.participants[participantId].stats.kills
-    const deaths = currentMatch.participants[participantId].stats.deaths
-    const assists = currentMatch.participants[participantId].stats.assists
+    const kills = player.stats.kills
+    const deaths = player.stats.deaths
+    const assists = player.stats.assists
     const kda = ((kills + assists) / deaths).toFixed(2)
-    const level = currentMatch.participants[participantId].stats.champLevel
-    const damage = (currentMatch.participants[participantId].stats.totalDamageDealtToChampions / 1000).toFixed(1) + 'k'
+    const level = player.stats.champLevel
+    const damage = (player.stats.totalDamageDealtToChampions / 1000).toFixed(1) + 'k'
 
-    const primaryRuneCategory = runesInfos.find(r => r.id === currentMatch.participants[participantId].stats.perkPrimaryStyle)
+    const primaryRuneCategory = runesInfos.find(r => r.id === player.stats.perkPrimaryStyle)
     let primaryRune
     for (const subCat of primaryRuneCategory.slots) {
-      primaryRune = subCat.runes.find(r => r.id === currentMatch.participants[participantId].stats.perk0)
+      primaryRune = subCat.runes.find(r => r.id === player.stats.perk0)
       if (primaryRune) {
         break
       }
     }
     primaryRune = `https://ddragon.leagueoflegends.com/cdn/img/${primaryRune.icon}`
-    let secondaryRune = runesInfos.find(r => r.id === currentMatch.participants[participantId].stats.perkSubStyle)
+    let secondaryRune = runesInfos.find(r => r.id === player.stats.perkSubStyle)
     secondaryRune = `https://ddragon.leagueoflegends.com/cdn/img/${secondaryRune.icon}`
 
 
@@ -78,14 +88,14 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
     const items = []
     for (let i = 0; i < 6; i++) {
       const currentItem = 'item' + i
-      items.push(getItemLink(currentMatch.participants[participantId].stats[currentItem]))
+      items.push(getItemLink(player.stats[currentItem]))
     }
 
-    const gold = (currentMatch.participants[participantId].stats.goldEarned / 1000).toFixed(1) + 'k'
-    const minions = currentMatch.participants[participantId].stats.totalMinionsKilled + currentMatch.participants[participantId].stats.neutralMinionsKilled
+    const gold = (player.stats.goldEarned / 1000).toFixed(1) + 'k'
+    const minions = player.stats.totalMinionsKilled + player.stats.neutralMinionsKilled
 
-    const firstSum = currentMatch.participants[participantId].spell1Id
-    const secondSum = currentMatch.participants[participantId].spell2Id
+    const firstSum = player.spell1Id
+    const secondSum = player.spell2Id
 
     matchesInfos.push({
       result: win,
@@ -126,7 +136,10 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
 }
 
 function getItemLink(id) {
-  return `url('https://ddragon.leagueoflegends.com/cdn/${process.env.VUE_APP_PATCH}/img/item/${id === 0 ? 3637 : id}.png') no-repeat center center / contain`
+  if(id === 0) {
+    return null
+  }
+  return `url('https://ddragon.leagueoflegends.com/cdn/${process.env.VUE_APP_PATCH}/img/item/${id}.png')`
 }
 
 function getSummonerLink(id) {

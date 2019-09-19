@@ -9,10 +9,11 @@
             >{{ data.champ }}</div>
 
             <div class="flex">
-              <div class="flex flex-col justify-center items-center">
+              <div class="flex flex-col justify-end items-center">
                 <div
-                  class="w-10 h-10 bg-blue-1000"
-                  :style="{background: `url(${require('@/assets/img/roles/Bot.png')}) center/cover`}"
+                  v-if="data.role !== 'NONE'"
+                  class="w-10 h-10 bg-center bg-cover"
+                  :style="{backgroundImage: `url(${require('@/assets/img/roles/' + data.role + '.png')})`}"
                 ></div>
                 <span class="text-xs text-teal-500 font-extrabold">LVL {{ data.level }}</span>
               </div>
@@ -22,12 +23,12 @@
               ></div>
               <div class="ml-2 flex flex-row sm:flex-col sm:justify-around">
                 <div
-                  class="w-6 h-6 bg-blue-1000 rounded-md"
-                  :style="{background: `url(${data.firstSum}) center/cover`}"
+                  class="w-6 h-6 bg-blue-1000 rounded-md bg-center bg-cover"
+                  :style="{backgroundImage: `url(${data.firstSum})`}"
                 ></div>
                 <div
-                  class="w-6 h-6 bg-blue-1000 rounded-md"
-                  :style="{background: `url(${data.secondSum}) center/cover`}"
+                  class="w-6 h-6 bg-blue-1000 rounded-md bg-center bg-cover"
+                  :style="{backgroundImage: `url(${data.secondSum})`}"
                 ></div>
               </div>
               <div class="ml-1 flex flex-row sm:flex-col sm:justify-around">
@@ -62,8 +63,8 @@
             <div
               v-for="(item, index) in data.items"
               :key="index"
-              :style="{background: item}"
-              class="ml-1 w-8 h-8 rounded-md bg-blue-1000"
+              :style="{backgroundImage: item}"
+              class="ml-1 w-8 h-8 rounded-md bg-blue-1000 bg-center bg-cover"
             ></div>
           </div>
 
