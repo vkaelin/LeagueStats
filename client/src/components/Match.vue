@@ -15,7 +15,7 @@
                   class="w-10 h-10 bg-center bg-cover"
                   :style="{backgroundImage: `url(${require('@/assets/img/roles/' + data.role + '.png')})`}"
                 ></div>
-                <span class="text-xs text-teal-500 font-extrabold">LVL {{ data.level }}</span>
+                <div class="w-10 text-center text-xs text-teal-500 font-extrabold">LVL {{ data.level }}</div>
               </div>
               <div
                 class="ml-2 w-16 h-16 crop-champion bg-blue-1000 rounded-lg mb-2px sm:mb-0 sm:mr-2px"
