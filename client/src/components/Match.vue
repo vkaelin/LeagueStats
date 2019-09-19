@@ -41,7 +41,7 @@
                   :style="{background: `url(${data.secondaryRune}) center/cover`}"
                 ></div>
               </div>
-              <div class="ml-12 flex items-center">
+              <div class="ml-12 flex flex-col justify-center items-center leading-none">
                 <div class="text-3xl font-extrabold text-teal-500">
                   <span class>{{ data.kills }}</span>
                   <span class>/</span>
@@ -49,6 +49,7 @@
                   <span class>/</span>
                   <span class>{{ data.assists }}</span>
                 </div>
+                <div class="mt-2 text-white text-sm font-extrabold">{{ data.kda }} KDA</div>
               </div>
             </div>
 

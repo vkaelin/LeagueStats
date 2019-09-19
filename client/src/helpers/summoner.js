@@ -21,7 +21,7 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
     soloQ.rankImgLink = getRankImg(soloQStats)
     soloQ.wins = soloQStats.wins
     soloQ.losses = soloQStats.losses
-    soloQ.winrate = (soloQ.wins * 100 / (soloQ.wins + soloQ.losses)).toFixed(1) + '%'
+    soloQ.winrate = +(soloQ.wins * 100 / (soloQ.wins + soloQ.losses)).toFixed(1) + '%'
     soloQ.lp = soloQStats.leaguePoints
   }
 
@@ -60,9 +60,9 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
     const kills = player.stats.kills
     const deaths = player.stats.deaths
     const assists = player.stats.assists
-    const kda = ((kills + assists) / deaths).toFixed(2)
+    const kda = +(deaths === 0 ? 0 : ((kills + assists) / deaths)).toFixed(2)
     const level = player.stats.champLevel
-    const damage = (player.stats.totalDamageDealtToChampions / 1000).toFixed(1) + 'k'
+    const damage = +(player.stats.totalDamageDealtToChampions / 1000).toFixed(1) + 'k'
 
     const primaryRuneCategory = runesInfos.find(r => r.id === player.stats.perkPrimaryStyle)
     let primaryRune
@@ -83,7 +83,7 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
       }
       return prev + current.stats.kills
     }, 0)
-    const kp = ((kills + assists) * 100 / totalKills).toFixed(1) + '%'
+    const kp = +((kills + assists) * 100 / totalKills).toFixed(1) + '%'
 
     const items = []
     for (let i = 0; i < 6; i++) {
@@ -91,7 +91,7 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
       items.push(getItemLink(player.stats[currentItem]))
     }
 
-    const gold = (player.stats.goldEarned / 1000).toFixed(1) + 'k'
+    const gold = +(player.stats.goldEarned / 1000).toFixed(1) + 'k'
     const minions = player.stats.totalMinionsKilled + player.stats.neutralMinionsKilled
 
     const firstSum = player.spell1Id
