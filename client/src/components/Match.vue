@@ -110,9 +110,10 @@
               :key="'player-' + index"
               class="flex items-center leading-none"
             >
-              <div
-                class="w-20 text-right overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium"
-              >{{ ally.name }}</div>
+              <router-link
+                :to="{ name: 'summoner', params: { region: $route.params.region, name: ally.name }}"
+                class="w-20 text-right overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium hover:text-blue-100"
+              >{{ ally.name }}</router-link>
               <div
                 class="ml-1 w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full overflow-hidden"
                 :class="index !== 0 ? '-mt-1': ''"
@@ -127,9 +128,10 @@
                 :class="index !== 0 ? '-mt-1' : ''"
                 :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.enemyTeam[index].champion.id}.png')`}"
               ></div>
-              <div
-                class="ml-1 w-20 text-left overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium"
-              >{{ data.enemyTeam[index].name }}</div>
+              <router-link
+                :to="{ name: 'summoner', params: { region: $route.params.region, name: ally.name }}"
+                class="ml-1 w-20 text-left overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium hover:text-blue-100"
+              >{{ data.enemyTeam[index].name }}</router-link>
             </div>
           </div>
           <div class="ml-auto flex flex-col items-center justify-center">
