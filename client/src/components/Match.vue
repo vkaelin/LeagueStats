@@ -129,7 +129,7 @@
                 :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.enemyTeam[index].champion.id}.png')`}"
               ></div>
               <router-link
-                :to="{ name: 'summoner', params: { region: $route.params.region, name: ally.name }}"
+                :to="{ name: 'summoner', params: { region: $route.params.region, name: data.enemyTeam[index].name }}"
                 class="ml-1 w-20 text-left overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium hover:text-blue-100"
               >{{ data.enemyTeam[index].name }}</router-link>
             </div>
