@@ -6,7 +6,7 @@
           <div>
             <div
               class="h-6 text-lg text-teal-500 font-extrabold uppercase leading-none"
-            >{{ data.champ }}</div>
+            >{{ data.champion.name }}</div>
 
             <div class="flex">
               <div class="flex flex-col justify-end items-center">
@@ -15,11 +15,13 @@
                   class="w-10 h-10 bg-center bg-cover"
                   :style="{backgroundImage: `url(${require('@/assets/img/roles/' + data.role + '.png')})`}"
                 ></div>
-                <div class="w-10 text-center text-xs text-teal-500 font-extrabold">LVL {{ data.level }}</div>
+                <div
+                  class="w-10 text-center text-xs text-teal-500 font-extrabold"
+                >LVL {{ data.level }}</div>
               </div>
               <div
                 class="ml-2 w-16 h-16 crop-champion bg-blue-1000 rounded-lg mb-2px sm:mb-0 sm:mr-2px"
-                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.champ}.png')`}"
+                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.champion.id}.png')`}"
               ></div>
               <div class="ml-2 flex flex-row sm:flex-col sm:justify-around">
                 <div
@@ -101,10 +103,39 @@
           </div>
         </div>
 
-        <div class="third w-1/3 py-6 flex items-center justify-around">
-          <div class="duration-date hidden lg:block">
-            <div class="duration">{{ data.time }}</div>
-            <div class="date">{{ data.date }}</div>
+        <div class="third w-1/3 py-1 flex items-center">
+          <div>
+            <div
+              v-for="(ally, index) in data.allyTeam"
+              :key="'player-' + index"
+              class="flex items-center leading-none"
+            >
+              <div
+                class="w-20 text-right overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium"
+              >{{ ally.name }}</div>
+              <div
+                class="ml-1 w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full overflow-hidden"
+                :class="index !== 0 ? '-mt-1': ''"
+                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${ally.champion.id}.png')`}"
+              ></div>
+              <div
+                class="mx-3 w-4 h-4 bg-center bg-cover"
+                :style="{backgroundImage: `url(${require('@/assets/img/roles/' + roles[index] + '.png')})`}"
+              ></div>
+              <div
+                class="w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full"
+                :class="index !== 0 ? '-mt-1' : ''"
+                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.enemyTeam[index].champion.id}.png')`}"
+              ></div>
+              <div
+                class="ml-1 w-20 text-left overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium"
+              >{{ data.enemyTeam[index].name }}</div>
+            </div>
+          </div>
+          <div class="ml-auto flex flex-col items-center justify-center">
+            <img class="w-5 h-5" src="@/assets/img/icons/Stopwatch.svg" alt="Stopwatch" />
+            <div class="text-lg text-teal-400 font-medium">{{ data.time }}</div>
+            <div class="text-xs text-white font-medium">{{ data.date }}</div>
           </div>
         </div>
       </div>
@@ -113,7 +144,7 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -130,11 +161,13 @@ export default {
         'loss': this.data.result === 'Fail',
         'remake': this.data.result === 'Remake',
       }
-    }
+    },
+    ...mapState({
+      roles: state => state.roles
+    }),
   }
 }
 </script>
-
 
 <style scoped>
 .loss {

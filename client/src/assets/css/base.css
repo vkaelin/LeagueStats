@@ -18,3 +18,7 @@ button:focus {
 .bg-gradient {
   background: linear-gradient(180deg, #2C5282 0%, rgba(44, 82, 130, 0) 100%);
 }
+
+.text-overflow {
+  text-overflow: ellipsis;
+}

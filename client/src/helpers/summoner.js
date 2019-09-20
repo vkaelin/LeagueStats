@@ -44,16 +44,8 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
     let mode = gameModes[currentMatch.queueId]
     if (!mode)
       mode = 'Undefined gamemode'
-    const champion = Object.entries(championsInfos).find(([, champion]) => Number(champion.key) === player.championId)[0]
-
-    let role = player.timeline.lane
-    if(role === 'BOTTOM') {
-      if(player.timeline.role.includes('SUPPORT')) {
-        role = 'SUPPORT'
-      } else {
-        role = 'BOTTOM'
-      }
-    }
+    const champion = (({ id, name }) => ({ id, name }))(Object.entries(championsInfos).find(([, champion]) => Number(champion.key) === player.championId)[1])
+    const role = getRoleName(player.timeline)
 
     const timeAgo = timeDifference(currentMatch.gameCreation)
     const time = secToTime(currentMatch.gameDuration)
@@ -76,7 +68,6 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
     let secondaryRune = runesInfos.find(r => r.id === player.stats.perkSubStyle)
     secondaryRune = `https://ddragon.leagueoflegends.com/cdn/img/${secondaryRune.icon}`
 
-
     const totalKills = currentMatch.participants.reduce((prev, current) => {
       if (current.teamId !== teamId) {
         return prev
@@ -97,28 +88,49 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
     const firstSum = player.spell1Id
     const secondSum = player.spell2Id
 
+    const allyTeam = []
+    const enemyTeam = []
+    for (let summoner of currentMatch.participantIdentities) {
+      const allData = currentMatch.participants[summoner.participantId - 1]
+      const playerInfos = {
+        name: summoner.player.summonerName,
+        role: getRoleName(allData.timeline),
+        champion: (({ id, name }) => ({ id, name }))(Object.entries(championsInfos).find(([, champion]) => Number(champion.key) === allData.championId)[1])
+      }
+
+      if (allData.teamId === teamId) {
+        allyTeam.push(playerInfos)
+      } else {
+        enemyTeam.push(playerInfos)
+      }
+    }
+    allyTeam.sort(sortTeamByRole)
+    enemyTeam.sort(sortTeamByRole)
+
     matchesInfos.push({
       result: win,
-      map: map,
+      map,
       gamemode: mode,
-      champ: champion,
-      role: role,
+      champion,
+      role,
       primaryRune,
       secondaryRune,
       date: timeAgo,
-      time: time,
-      kills: kills,
-      deaths: deaths,
-      assists: assists,
+      time,
+      kills,
+      deaths,
+      assists,
       kda,
-      level: level,
+      level,
       damage,
       kp,
-      items: items,
-      gold: gold,
-      minions: minions,
+      items,
+      gold,
+      minions,
       firstSum: getSummonerLink(firstSum),
-      secondSum: getSummonerLink(secondSum)
+      secondSum: getSummonerLink(secondSum),
+      allyTeam,
+      enemyTeam
     })
   } // end loop matches
   console.log('matches infos just below')
@@ -136,13 +148,25 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
 }
 
 function getItemLink(id) {
-  if(id === 0) {
+  if (id === 0) {
     return null
   }
   return `url('https://ddragon.leagueoflegends.com/cdn/${process.env.VUE_APP_PATCH}/img/item/${id}.png')`
 }
 
+function getRoleName(timeline) {
+  if (timeline.lane === 'BOTTOM' && timeline.role.includes('SUPPORT')) {
+    return 'SUPPORT'
+  }
+  return timeline.lane
+}
+
 function getSummonerLink(id) {
   const spellName = Object.entries(summonersJSON.data).find(([, spell]) => Number(spell.key) === id)[0]
   return `https://ddragon.leagueoflegends.com/cdn/${process.env.VUE_APP_PATCH}/img/spell/${spellName}.png`
+}
+
+function sortTeamByRole(a, b) {
+  const sortingArr = [ 'TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+  return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }

@@ -11,13 +11,13 @@ export function timeDifference(previous) {
   const elapsed = current - previous
 
   if (elapsed < msPerMinute) {
-    return Math.round(elapsed / 1000) + 's'
+    return Math.round(elapsed / 1000) + ' seconds ago'
   } else if (elapsed < msPerHour) {
-    return Math.round(elapsed / msPerMinute) + 'm'
+    return Math.round(elapsed / msPerMinute) + ' minutes ago'
   } else if (elapsed < msPerDay) {
-    return Math.round(elapsed / msPerHour) + 'h'
+    return Math.round(elapsed / msPerHour) + ' hours ago'
   } else if (elapsed < msPerWeek) {
-    return Math.round(elapsed / msPerDay) + 'j'
+    return Math.round(elapsed / msPerDay) + ' days ago'
   } else {
     const oldDate = new Date(previous)
     const day = oldDate.getDate() < 10 ? '0' + oldDate.getDate() : oldDate.getDate()
@@ -34,7 +34,7 @@ export function timeDifference(previous) {
 export function secToTime(sec) {
   const min = Math.floor(sec / 60)
   const newSec = sec - min * 60
-  return min + ':' + (newSec < 10 ? '0' + newSec : newSec) //
+  return min + 'm' + (newSec < 10 ? '0' + newSec : newSec) + 's'
 }
 
 

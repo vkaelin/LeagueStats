@@ -27,7 +27,8 @@ export default new Vuex.Store({
       'oce': 'oc1',
       'tr': 'tr1',
       'ru': 'ru'
-    }
+    },
+    roles: ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
   },
   strict: debug
 })
