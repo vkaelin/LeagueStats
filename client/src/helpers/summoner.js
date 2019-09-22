@@ -52,7 +52,12 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
     const kills = player.stats.kills
     const deaths = player.stats.deaths
     const assists = player.stats.assists
-    const kda = +(deaths === 0 ? 0 : ((kills + assists) / deaths)).toFixed(2)
+    let kda
+    if (kills + assists !== 0 && deaths === 0) {
+      kda = '∞'
+    } else {
+      kda = +(deaths === 0 ? 0 : ((kills + assists) / deaths)).toFixed(2)
+    }
     const level = player.stats.champLevel
     const damage = +(player.stats.totalDamageDealtToChampions / 1000).toFixed(1) + 'k'
 
@@ -167,6 +172,6 @@ function getSummonerLink(id) {
 }
 
 function sortTeamByRole(a, b) {
-  const sortingArr = [ 'TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+  const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }

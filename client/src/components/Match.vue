@@ -112,6 +112,7 @@
             >
               <router-link
                 :to="{ name: 'summoner', params: { region: $route.params.region, name: ally.name }}"
+                :class="isSummonerProfile(ally.name)"
                 class="w-20 text-right overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium hover:text-blue-100"
               >{{ ally.name }}</router-link>
               <div
@@ -167,6 +168,14 @@ export default {
     ...mapState({
       roles: state => state.roles
     }),
+  },
+
+  methods: {
+    isSummonerProfile(allyName) {
+      return {
+        'font-bold': this.$route.params.name.toLowerCase() === allyName.toLowerCase()
+      }
+    }
   }
 }
 </script>
