@@ -34,10 +34,12 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
     const teamId = player.teamId
 
     let win = currentMatch.teams.find((t) => t.teamId === teamId).win
+    let status = win === 'Win' ? 'Victory' : 'Defeat'
 
     // Match less than 5min
     if (currentMatch.gameDuration < 300) {
       win = 'Remake'
+      status = 'Remake'
     }
 
     const map = maps[currentMatch.mapId]
@@ -114,6 +116,7 @@ export function createSummonerData(RiotData, championsInfos, runesInfos) {
 
     matchesInfos.push({
       result: win,
+      status,
       map,
       gamemode: mode,
       champion,

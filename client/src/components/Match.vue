@@ -1,7 +1,13 @@
 <template>
-  <li :class="matchResultClass" class="match mt-4 rounded-lg text-white text-sm md:text-base">
-    <div class="match-container">
-      <div class="flex flex-wrap px-5 py-3">
+  <li class="relative">
+    <div class="game-status absolute left-0 h-32 w-32">
+      <div class="text-2xl text-teal-500 uppercase font-extrabold">{{ data.status }}</div>
+    </div>
+    <div
+      :class="matchResultClass"
+      class="ml-10 match relative mt-4 rounded-lg text-white text-sm md:text-base"
+    >
+      <div class="relative z-20 flex flex-wrap px-5 py-3">
         <div class="first w-1/3 text-left">
           <div>
             <div
@@ -12,35 +18,35 @@
               <div class="flex flex-col justify-end items-center">
                 <div
                   v-if="data.role !== 'NONE'"
-                  class="w-10 h-10 bg-center bg-cover"
                   :style="{backgroundImage: `url(${require('@/assets/img/roles/' + data.role + '.png')})`}"
+                  class="w-10 h-10 bg-center bg-cover"
                 ></div>
                 <div
                   class="w-10 text-center text-xs text-teal-500 font-extrabold"
                 >LVL {{ data.level }}</div>
               </div>
               <div
-                class="ml-2 w-16 h-16 crop-champion bg-blue-1000 rounded-lg mb-2px sm:mb-0 sm:mr-2px"
                 :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.champion.id}.png')`}"
+                class="ml-2 w-16 h-16 crop-champion bg-blue-1000 rounded-lg mb-2px sm:mb-0 sm:mr-2px"
               ></div>
               <div class="ml-2 flex flex-row sm:flex-col sm:justify-around">
                 <div
-                  class="w-6 h-6 bg-blue-1000 rounded-md bg-center bg-cover"
                   :style="{backgroundImage: `url(${data.firstSum})`}"
+                  class="w-6 h-6 bg-blue-1000 rounded-md bg-center bg-cover"
                 ></div>
                 <div
-                  class="w-6 h-6 bg-blue-1000 rounded-md bg-center bg-cover"
                   :style="{backgroundImage: `url(${data.secondSum})`}"
+                  class="w-6 h-6 bg-blue-1000 rounded-md bg-center bg-cover"
                 ></div>
               </div>
               <div class="ml-1 flex flex-row sm:flex-col sm:justify-around">
                 <div
-                  class="w-6 h-6 bg-blue-1000 rounded-md"
                   :style="{background: `url(${data.primaryRune}) center/cover`}"
+                  class="w-6 h-6 bg-blue-1000 rounded-md"
                 ></div>
                 <div
-                  class="w-6 h-6 bg-blue-1000 rounded-md"
                   :style="{background: `url(${data.secondaryRune}) center/cover`}"
+                  class="w-6 h-6 bg-blue-1000 rounded-md"
                 ></div>
               </div>
               <div class="ml-12 flex flex-col justify-center items-center leading-none">
@@ -116,18 +122,18 @@
                 class="w-20 text-right overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium hover:text-blue-100"
               >{{ ally.name }}</router-link>
               <div
-                class="ml-1 w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full overflow-hidden"
                 :class="index !== 0 ? '-mt-1': ''"
                 :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${ally.champion.id}.png')`}"
+                class="ml-1 w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full overflow-hidden"
               ></div>
               <div
                 class="mx-3 w-4 h-4 bg-center bg-cover"
                 :style="{backgroundImage: `url(${require('@/assets/img/roles/' + roles[index] + '.png')})`}"
               ></div>
               <div
-                class="w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full"
                 :class="index !== 0 ? '-mt-1' : ''"
                 :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.enemyTeam[index].champion.id}.png')`}"
+                class="w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full"
               ></div>
               <router-link
                 :to="{ name: 'summoner', params: { region: $route.params.region, name: data.enemyTeam[index].name }}"
@@ -181,31 +187,52 @@ export default {
 </script>
 
 <style scoped>
-.loss {
+.match {
   background-image: linear-gradient(
-      89.21deg,
-      rgba(140, 0, 0, 0.38) 0.09%,
-      rgba(44, 82, 130, 0) 68.58%
-    ),
-    linear-gradient(90deg, #2c5282 0%, rgba(44, 82, 130, 0) 101.52%);
+    90deg,
+    #2c5282 0%,
+    rgba(44, 82, 130, 0) 100%
+  );
 }
 
-.win {
-  background-image: linear-gradient(
-      89.45deg,
-      rgba(1, 97, 28, 0.38) -18.36%,
-      rgba(44, 82, 130, 0) 85.07%
-    ),
-    linear-gradient(90deg, #2c5282 0%, rgba(44, 82, 130, 0) 101.52%);
+.match::after {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0.5rem;
 }
 
-.remake {
+.loss::after {
   background-image: linear-gradient(
-      89.45deg,
-      rgba(233, 169, 75, 0.38) -1.14%,
-      rgba(44, 82, 130, 0) 58.83%
-    ),
-    linear-gradient(90deg, #2c5282 0%, rgba(44, 82, 130, 0) 101.52%);
+    90deg,
+    rgba(140, 0, 0, 0.3) 0%,
+    rgba(44, 82, 130, 0) 45%
+  );
+}
+
+.remake::after {
+  background-image: linear-gradient(
+    90deg,
+    rgba(233, 169, 75, 0.3) 0%,
+    rgba(44, 82, 130, 0) 45%
+  );
+}
+
+.win::after {
+  background-image: linear-gradient(
+    90deg,
+    rgba(1, 97, 28, 0.3) 0%,
+    rgba(44, 82, 130, 0) 45%
+  );
+}
+
+.game-status {
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
 }
 
 .crop-champion {
