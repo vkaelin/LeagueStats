@@ -19,7 +19,7 @@ class JaxRequest {
     } catch ({ statusCode, ...rest }) {
       this.retries--
 
-      if (statusCode !== 503 && status !== 500) return
+      if (statusCode !== 503 && statusCode !== 500) return
 
       console.log('====================================')
       console.log(statusCode)
