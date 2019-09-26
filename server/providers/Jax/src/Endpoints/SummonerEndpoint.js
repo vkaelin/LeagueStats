@@ -1,16 +1,16 @@
 const JaxRequest = require('../JaxRequest')
 
 class SummonerEndpoint {
-  constructor(limiter, region) {
+  constructor(config, limiter) {
+    this.config = config
     this.limiter = limiter
-    this.region = region
   }
 
   summonerName(summonerName) {
     return new JaxRequest(
+      this.config,
       `summoner/v4/summoners/by-name/${encodeURI(summonerName)}`,
-      this.limiter,
-      this.region
+      this.limiter
     ).execute()
   }
 }

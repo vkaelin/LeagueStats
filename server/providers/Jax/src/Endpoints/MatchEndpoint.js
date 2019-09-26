@@ -1,18 +1,18 @@
 const JaxRequest = require('../JaxRequest')
 
 class MatchEndpoint {
-  constructor(limiter, region) {
+  constructor(config, limiter) {
+    this.config = config
     this.limiter = limiter
-    this.region = region
 
     this.get = this.get.bind(this)
   }
 
   get(matchID) {
     return new JaxRequest(
+      this.config,
       `match/v4/matches/${matchID}`,
-      this.limiter,
-      this.region
+      this.limiter
     ).execute()
   }
 }

@@ -1,16 +1,16 @@
 const JaxRequest = require('../JaxRequest')
 
 class LeagueEndpoint {
-  constructor(limiter, region) {
+  constructor(config, limiter) {
+    this.config = config
     this.limiter = limiter
-    this.region = region
   }
 
   summonerID(summonerID) {
     return new JaxRequest(
+      this.config,
       `league/v4/entries/by-summoner/${summonerID}`,
-      this.limiter,
-      this.region
+      this.limiter
     ).execute()
   }
 }

@@ -1,5 +1,4 @@
 const RiotRateLimiter = require('riot-ratelimiter')
-const { STRATEGY } = require('riot-ratelimiter/dist/RateLimiter')
 const LeagueEndpoint = require('./Endpoints/LeagueEndpoint')
 const MatchEndpoint = require('./Endpoints/MatchEndpoint')
 const MatchlistEndpoint = require('./Endpoints/MatchlistEndpoint')
@@ -10,18 +9,18 @@ const DDragonChampionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonCha
 const DDragonRuneEndpoint = require('./Endpoints/DDragonEndpoints/DDragonRuneEndpoint')
 
 class Jax {
-  constructor(key, env) {
-    this.key = key
+  constructor(config) {
+    this.key = config.key
     const limiterOptions = {
-      strategy: env === 'production' ? STRATEGY.SPREAD : STRATEGY.BURST
+      strategy: config.requestOptions.strategy
     }
     this.limiter = new RiotRateLimiter(limiterOptions)
-    this.region = 'euw1'
+    this.config = config
 
-    this.League = new LeagueEndpoint(this.limiter, this.region)
-    this.Match = new MatchEndpoint(this.limiter, this.region)
-    this.Matchlist = new MatchlistEndpoint(this.limiter, this.region)
-    this.Summoner = new SummonerEndpoint(this.limiter, this.region)
+    this.League = new LeagueEndpoint(this.config, this.limiter)
+    this.Match = new MatchEndpoint(this.config, this.limiter)
+    this.Matchlist = new MatchlistEndpoint(this.config, this.limiter)
+    this.Summoner = new SummonerEndpoint(this.config, this.limiter)
 
     this.initDDragon()
   }
@@ -37,8 +36,8 @@ class Jax {
   }
 
   set regionName(regionName) {
-    this.region = regionName
-    const blacklistedProperties = ['key', 'limiter', 'region', 'version', 'DDragon']
+    this.config.region = regionName
+    const blacklistedProperties = ['key', 'limiter', 'config', 'version', 'DDragon']
 
     for (const key of Object.getOwnPropertyNames(this)) {
       if(blacklistedProperties.includes(key)) continue
