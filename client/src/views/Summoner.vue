@@ -132,7 +132,6 @@ export default {
     ...mapState({
       summonerInfos: state => state.summoner.infos
     }),
-    ...mapGetters('ddragon', ['areChampionsLoaded']),
     ...mapGetters('summoner', ['summonerFound', 'summonerNotFound', 'summonerLoading'])
   },
 
@@ -148,18 +147,12 @@ export default {
   },
 
   methods: {
-    async apiCall() {
-      if (!this.areChampionsLoaded)
-        await this.getChampions()
-
-      await this.getRunes()
-
+    apiCall() {
       this.summonerRequest({ summoner: this.summoner, region: this.region })
     },
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
-    ...mapActions('ddragon', ['getChampions', 'getRunes']),
     ...mapActions('summoner', ['summonerRequest'])
   }
 }

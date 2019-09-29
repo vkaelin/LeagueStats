@@ -7,6 +7,7 @@ class MatchSchema extends Schema {
   up () {
     this.create('matches', (collection) => {
       collection.index('gameId', {gameId: 1})
+      collection.index('puuid', {puuid: 1})
     })
   }
 

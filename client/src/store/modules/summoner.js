@@ -28,7 +28,7 @@ export const actions = {
     try {
       const resp = await axios(({ url: 'api', data: { summoner, region }, method: 'POST' }))
       if (resp.data) {
-        const infos = createSummonerData(resp.data, rootState.ddragon.champions, rootState.ddragon.runes)
+        const infos = createSummonerData(resp.data)
         commit('SUMMONER_FOUND', infos)
       } else {
         commit('SUMMONER_NOT_FOUND')
