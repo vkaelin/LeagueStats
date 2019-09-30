@@ -117,7 +117,7 @@ class SummonerController {
       }
 
       /* Sort 10 matches */
-      matchesDetails.sort((a, b) => (a.gameCreation < b.gameCreation) ? -1 : 1)
+      matchesDetails.sort((a, b) => (a.date < b.date) ? 1 : -1)
 
       finalJSON.matchesDetails = matchesDetails
       finalJSON.allMatches = matches
