@@ -3,6 +3,7 @@
 const Match = use('App/Models/Match')
 const Jax = use('Jax')
 const MatchTransformer = use('App/Transformers/MatchTransformer')
+const MatchHelper = use('App/Helpers/MatchHelper')
 
 class SummonerController {
 
@@ -15,30 +16,6 @@ class SummonerController {
 
     const data = await this.getSummonerData(summoner, region, transform)
     response.json(data)
-  }
-
-  /**
-   *  Get the matchlist of all matches made less than 4 months ago by the Summoner
-   * @param today 
-   * @param accountId 
-   * @param beginIndex 
-   * @param allMatches 
-   */
-  async getMatchList(today, accountId, beginIndex, allMatches) {
-    const { matches } = await Jax.Matchlist.accountID(accountId, beginIndex)
-
-    allMatches = [...allMatches, ...matches]
-
-    const lastMatch = matches[matches.length - 1].timestamp
-    const diff = today - lastMatch
-    console.log(diff)
-    // More matches to get from Riot API if they are younger than 4 months
-    if (matches.length === 100 && diff < 10368000000) {
-      return this.getMatchList(today, accountId, (beginIndex + 100), allMatches)
-    } else {
-      console.log('return all matches bro')
-      return allMatches
-    }
   }
 
   /**
@@ -72,9 +49,12 @@ class SummonerController {
       finalJSON.soloQ = soloQ.length ? soloQ[0] : null;
 
       console.time('getMatches')
-      const today = Date.now()
-      const matches = await this.getMatchList(today, account.accountId, 0, [])
-      const gameIds = matches.slice(0, 10).map(({ gameId }) => gameId)
+
+      // MATCH LIST
+      const matchList = await MatchHelper.getFullMatchList(account)
+
+      // MATCHES DETAILS
+      const gameIds = matchList.slice(0, 10).map(({ gameId }) => gameId)
 
       let matchesDetails = []
       const matchesToGetFromRiot = []
@@ -93,7 +73,7 @@ class SummonerController {
       const requests = matchesToGetFromRiot.map(Jax.Match.get)
       let matchesFromApi = await Promise.all(requests)
 
-      /* If we have to same some matches in the db */
+      /* If we have to store some matches in the db */
       if (matchesFromApi.length !== 0) {
         const champions = await Jax.DDragon.Champion.list()
         const runes = await Jax.DDragon.Rune.list()
@@ -120,7 +100,7 @@ class SummonerController {
       matchesDetails.sort((a, b) => (a.date < b.date) ? 1 : -1)
 
       finalJSON.matchesDetails = matchesDetails
-      finalJSON.allMatches = matches
+      finalJSON.allMatches = matchList
 
       console.timeEnd('getMatches')
       console.timeEnd('all')

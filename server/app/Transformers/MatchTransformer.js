@@ -1,7 +1,7 @@
 'use strict'
 
 const BumblebeeTransformer = use('Bumblebee/Transformer')
-const MatchHelper = use('App/Helpers/Match')
+const MatchHelper = use('App/Helpers/MatchHelper')
 const Logger = use('Logger')
 
 /**
