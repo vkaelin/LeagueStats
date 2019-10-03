@@ -48,12 +48,11 @@ class SummonerController {
       const soloQ = ranked.filter(e => e.queueType === 'RANKED_SOLO_5x5')
       finalJSON.soloQ = soloQ.length ? soloQ[0] : null;
 
-      console.time('getMatches')
-
       // MATCH LIST
       const matchList = await MatchHelper.getFullMatchList(account)
 
       // MATCHES DETAILS
+      console.time('getMatches')
       const gameIds = matchList.slice(0, 10).map(({ gameId }) => gameId)
 
       let matchesDetails = []

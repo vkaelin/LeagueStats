@@ -31,33 +31,40 @@ class MatchHelper {
    * @param account of the summoner
    */
   async getFullMatchList(account) {
+    console.time('matchList')
     const today = Date.now()
-    let matches
+    let matchList = []
 
     let summonerDB = await Summoner.where({ puuid: account.puuid }).first()
     // Summoner has already been searched : we already have a MatchList and we need to update it
     if (summonerDB) {
-      matches = (await Jax.Matchlist.accountID(account.accountId, 0)).matches
-      let alreadyIn = summonerDB.matchList.some(m => m.gameId === matches[matches.length - 1].gameId)
-      let index = 100
-      while (!alreadyIn) {
+      let alreadyIn = false
+      let index = 0
+      do {
         let newMatchList = (await Jax.Matchlist.accountID(account.accountId, index)).matches
-        matches = [...matches, ...newMatchList]
-        alreadyIn = summonerDB.matchList.some(m => m.gameId === matches[matches.length - 1].gameId)
-        index += 100
-      }
 
-      // Update Summoner
-      summonerDB.matchList = [...new Set([...summonerDB.matchList, ...matches])]
+        matchList = [...matchList, ...newMatchList]
+        alreadyIn = summonerDB.matchList.some(m => m.gameId === matchList[matchList.length - 1].gameId)
+        index += 100
+      } while (!alreadyIn);
+
+      // Update Summoner's MatchList
+      for (const match of matchList) {
+        if (!summonerDB.matchList.some(m => m.gameId === match.gameId)) {
+          Logger.transport('file').info(`Match ${match.gameId} has been added to  ${account.name}'s MatchList.`)
+          summonerDB.matchList.push(match)
+        }
+      }
       await summonerDB.save()
       Logger.transport('file').info(`Summoner ${account.name} has been updated.`)
     }
     // First search of the Summoner 
     else {
-      matches = await this.getMatchListFourMonths(today, account.accountId, 0, [])
-      summonerDB = await Summoner.create({ puuid: account.puuid, matchList: matches })
+      matchList = await this.getMatchListFourMonths(today, account.accountId, 0, [])
+      summonerDB = await Summoner.create({ puuid: account.puuid, matchList: matchList })
       Logger.transport('file').info(`Summoner ${account.name} has been created.`)
     }
+    console.timeEnd('matchList')
 
     return summonerDB.matchList
   }
