@@ -4,50 +4,37 @@ const Logger = use('Logger')
 
 class MatchHelper {
   /**
-   * Get the matchlist of all matches made less than 4 months ago by the Summoner
-   * @param today timestamp of the day
-   * @param accountId id of the Summoner
-   * @param beginIndex index of the first match to fetch
-   * @param allMatches matchList completing
+   * Add 100 matches at a time to MatchList until the stopFetching condition is true
+   * @param account of the summoner
+   * @param stopFetching condition to stop fetching the MatchList
    */
-  async getMatchListFourMonths(today, accountId, beginIndex, allMatches) {
-    const { matches } = await Jax.Matchlist.accountID(accountId, beginIndex)
+  async fetchMatchListUntil(account, stopFetching) {
+    let matchList = []
+    let alreadyIn = false
+    let index = 0
+    do {
+      let newMatchList = (await Jax.Matchlist.accountID(account.accountId, index)).matches
+      matchList = [...matchList, ...newMatchList]
+      alreadyIn = stopFetching(newMatchList)
+      index += 100
+    } while (!alreadyIn);
 
-    allMatches = [...allMatches, ...matches]
-
-    const lastMatch = matches[matches.length - 1].timestamp
-    const diff = today - lastMatch
-    console.log(diff)
-    // More matches to get from Riot API if they are younger than 4 months
-    if (matches.length === 100 && diff < 10368000000) {
-      return this.getMatchListFourMonths(today, accountId, (beginIndex + 100), allMatches)
-    } else {
-      return allMatches
-    }
+    return matchList
   }
-
   /**
    * Return the full MatchList of the summoner (min. 4 months)
    * @param account of the summoner
    */
   async getFullMatchList(account) {
     console.time('matchList')
-    const today = Date.now()
-    let matchList = []
-
     let summonerDB = await Summoner.where({ puuid: account.puuid }).first()
+
     // Summoner has already been searched : we already have a MatchList and we need to update it
     if (summonerDB) {
-      let alreadyIn = false
-      let index = 0
-      do {
-        let newMatchList = (await Jax.Matchlist.accountID(account.accountId, index)).matches
-
-        matchList = [...matchList, ...newMatchList]
-        alreadyIn = summonerDB.matchList.some(m => m.gameId === matchList[matchList.length - 1].gameId)
-        index += 100
-      } while (!alreadyIn);
-
+      // Get MatchList
+      const matchList = await this.fetchMatchListUntil(account, (newMatchList) => {
+        return summonerDB.matchList.some(m => m.gameId === newMatchList[newMatchList.length - 1].gameId)
+      })
       // Update Summoner's MatchList
       for (const match of matchList) {
         if (!summonerDB.matchList.some(m => m.gameId === match.gameId)) {
@@ -60,7 +47,12 @@ class MatchHelper {
     }
     // First search of the Summoner 
     else {
-      matchList = await this.getMatchListFourMonths(today, account.accountId, 0, [])
+      const today = Date.now()
+      // Get MatchList
+      const matchList = await this.fetchMatchListUntil(account, (newMatchList) => {
+        return (newMatchList.length !== 100 || today - newMatchList[newMatchList.length - 1].timestamp > 10368000000)
+      })
+      // Create Summoner in Database
       summonerDB = await Summoner.create({ puuid: account.puuid, matchList: matchList })
       Logger.transport('file').info(`Summoner ${account.name} has been created.`)
     }
