@@ -1,6 +1,11 @@
+'use strict'
+
+const Bumblebee = use('Adonis/Addons/Bumblebee')
+const Logger = use('Logger')
+const Match = use('App/Models/Match')
 const Summoner = use('App/Models/Summoner')
 const Jax = use('Jax')
-const Logger = use('Logger')
+const MatchTransformer = use('App/Transformers/MatchTransformer')
 
 class MatchHelper {
   /**
@@ -59,6 +64,62 @@ class MatchHelper {
     console.timeEnd('matchList')
 
     return summonerDB.matchList
+  }
+
+  /**
+   * Fetch list of matches for a specific Summoner
+   * @param account of the summoner
+   * @param gameIds of the matches to fetch
+   */
+  async getMatches(account, gameIds) {
+    console.time('getMatches')
+
+    let matchesDetails = []
+    const matchesToGetFromRiot = []
+    for (let i = 0; i < gameIds.length; ++i) {
+      const matchSaved = await Match.where({ gameId: gameIds[i], puuid: account.puuid }).first()
+      if (matchSaved) {
+        console.log('match in mongodb')
+        matchesDetails.push(matchSaved)
+      } else {
+        console.log('match to get from api')
+        matchesToGetFromRiot.push(gameIds[i])
+      }
+    }
+
+    const requests = matchesToGetFromRiot.map(Jax.Match.get)
+    let matchesFromApi = await Promise.all(requests)
+
+    /* If we have to store some matches in the db */
+    if (matchesFromApi.length !== 0) {
+      const champions = await Jax.DDragon.Champion.list()
+      const runes = await Jax.DDragon.Rune.list()
+      const ctx = {
+        account,
+        champions: champions.data,
+        runes,
+        MatchHelper: this
+      }
+
+      matchesFromApi = await Bumblebee.create().collection(matchesFromApi)
+        .transformWith(MatchTransformer)
+        .withContext(ctx)
+        .toJSON()
+
+      matchesDetails = [...matchesDetails, ...matchesFromApi]
+
+      /* Save all matches from Riot Api in db */
+      for (const match of matchesFromApi) {
+        await Match.create(match)
+        console.log('match saved')
+      }
+    }
+
+    /* Sort matches */
+    matchesDetails.sort((a, b) => (a.date < b.date) ? 1 : -1)
+    console.timeEnd('getMatches')
+
+    return matchesDetails
   }
 
   /**

@@ -1,8 +1,6 @@
 'use strict'
 
 const BumblebeeTransformer = use('Bumblebee/Transformer')
-const MatchHelper = use('App/Helpers/MatchHelper')
-const Logger = use('Logger')
 
 /**
  * MatchTransformer class
@@ -14,11 +12,7 @@ class MatchTransformer extends BumblebeeTransformer {
   /**
    * This method is used to transform the data.
    */
-  transform(match, { account, champions, runes }) {
-
-    // console.log(champions)
-    // Logger.transport('file').info(champions)
-
+  transform(match, { account, champions, runes, MatchHelper }) {
     const participantId = match.participantIdentities.find((p) => p.player.currentAccountId === account.accountId).participantId
     const player = match.participants[participantId - 1]
     const teamId = player.teamId
