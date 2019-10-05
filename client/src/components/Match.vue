@@ -41,11 +41,11 @@
               </div>
               <div class="ml-1 flex flex-row sm:flex-col sm:justify-around">
                 <div
-                  :style="{background: `url(${data.primaryRune}) center/cover`}"
+                  :style="[data.primaryRune ? {background: `url(${data.primaryRune}) center/cover`} : '']"
                   class="w-6 h-6 bg-blue-1000 rounded-md"
                 ></div>
                 <div
-                  :style="{background: `url(${data.secondaryRune}) center/cover`}"
+                  :style="[data.secondaryRune ? {background: `url(${data.secondaryRune}) center/cover`} : '']"
                   class="w-6 h-6 bg-blue-1000 rounded-md"
                 ></div>
               </div>
@@ -110,7 +110,7 @@
         </div>
 
         <div class="third w-1/3 py-1 flex items-center">
-          <div>
+          <div v-if="data.allyTeam.length > 1">
             <div
               v-for="(ally, index) in data.allyTeam"
               :key="'player-' + index"

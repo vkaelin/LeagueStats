@@ -55,17 +55,20 @@ class MatchTransformer extends BumblebeeTransformer {
     }, 0)
     const kp = +((kills + assists) * 100 / totalKills).toFixed(1) + '%'
 
-    const primaryRuneCategory = runes.find(r => r.id === player.stats.perkPrimaryStyle)
-    let primaryRune
-    for (const subCat of primaryRuneCategory.slots) {
-      primaryRune = subCat.runes.find(r => r.id === player.stats.perk0)
-      if (primaryRune) {
-        break
+    let primaryRune = null
+    let secondaryRune = null
+    if(player.stats.perkPrimaryStyle) {
+      const primaryRuneCategory = runes.find(r => r.id === player.stats.perkPrimaryStyle)
+      for (const subCat of primaryRuneCategory.slots) {
+        primaryRune = subCat.runes.find(r => r.id === player.stats.perk0)
+        if (primaryRune) {
+          break
+        }
       }
+      primaryRune = `https://ddragon.leagueoflegends.com/cdn/img/${primaryRune.icon}`
+      secondaryRune = runes.find(r => r.id === player.stats.perkSubStyle)
+      secondaryRune = `https://ddragon.leagueoflegends.com/cdn/img/${secondaryRune.icon}`
     }
-    primaryRune = `https://ddragon.leagueoflegends.com/cdn/img/${primaryRune.icon}`
-    let secondaryRune = runes.find(r => r.id === player.stats.perkSubStyle)
-    secondaryRune = `https://ddragon.leagueoflegends.com/cdn/img/${secondaryRune.icon}`
 
     const items = []
     for (let i = 0; i < 6; i++) {

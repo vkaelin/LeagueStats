@@ -1,19 +1,34 @@
 import { axios } from '@/plugins/axios'
-import { createSummonerData } from '@/helpers/summoner'
+import { createMatchData, createSummonerData } from '@/helpers/summoner'
 
 export const namespaced = true
 
 export const state = {
-  infos: [],
+  infos: {
+    account: {},
+    matchIndex: 0,
+    matchList: [],
+    matches: [],
+    soloQ: {}
+  },
   status: '',
 }
 
 export const mutations = {
+  MATCHES_FOUND(state, newMatches) {
+    state.infos.matches = [...state.infos.matches, ...newMatches]
+
+    state.infos.matchIndex += newMatches.length
+  },
   SUMMONER_REQUEST(state) {
     state.status = 'loading'
   },
   SUMMONER_FOUND(state, infos) {
-    state.infos = infos
+    state.infos.account = infos.account
+    state.infos.matchList = infos.matchList
+    state.infos.matches = infos.matches
+    state.infos.soloQ = infos.soloQ
+    state.infos.matchIndex = infos.matches.length
     state.status = 'found'
   },
   SUMMONER_NOT_FOUND(state) {
@@ -22,6 +37,13 @@ export const mutations = {
 }
 
 export const actions = {
+  async moreMatches({ commit }) {
+    const account = state.infos.account
+    const gameIds = state.infos.matchList.slice(state.infos.matchIndex, state.infos.matchIndex + 10).map(({ gameId }) => gameId)
+
+    const resp = await axios(({ url: 'match', data: { account, gameIds }, method: 'POST' })).catch(() => { })
+    commit('MATCHES_FOUND', createMatchData(resp.data))
+  },
   async summonerRequest({ commit, dispatch, rootState }, { summoner, region }) {
     region = rootState.regionsList[region]
     commit('SUMMONER_REQUEST')
@@ -47,6 +69,7 @@ export const actions = {
 }
 
 export const getters = {
+  moreMatchesToFetch: state => state.infos.matchIndex < state.infos.matchList.length,
   summonerFound: state => state.status === 'found',
   summonerNotFound: state => state.status === 'error',
   summonerLoading: state => state.status === 'loading',

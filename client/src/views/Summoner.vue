@@ -23,8 +23,8 @@
           <div class="flex justify-between xl:px-12">
             <div>
               <h1 class="text-4xl font-extrabold uppercase">
-                <span class="text-5xl">{{ summonerInfos.name[0] }}</span>
-                <span>{{ summonerInfos.name.substring(1) }}</span>
+                <span class="text-5xl">{{ summonerInfos.account.name[0] }}</span>
+                <span>{{ summonerInfos.account.name.substring(1) }}</span>
               </h1>
               <div class="flex">
                 <div>
@@ -34,7 +34,7 @@
                   >
                     <div
                       class="absolute left-0 bottom-0 w-8 h-8 flex items-center justify-center bg-blue-900 rounded-full text-xs text-teal-500 font-extrabold border-2 border-teal-400"
-                    >{{ summonerInfos.level }}</div>
+                    >{{ summonerInfos.account.summonerLevel }}</div>
                   </div>
                 </div>
                 <div v-if="summonerInfos.soloQ" class="ml-6 leading-none">
@@ -73,7 +73,7 @@
             </div>
 
             <div>
-              <RecentActivity :matches="summonerInfos.allMatches" />
+              <RecentActivity :matches="summonerInfos.matchList" />
             </div>
           </div>
 
@@ -86,6 +86,12 @@
               />
             </ul>
           </div>
+
+          <button
+            v-if="moreMatchesToFetch"
+            @click="moreMatches"
+            class="mt-4 block mx-auto bg-blue-800 px-4 py-2 rounded-md font-semibold hover:bg-blue-1000 shadow-lg"
+          >More matches</button>
         </div>
       </template>
 
@@ -121,7 +127,7 @@ export default {
 
   computed: {
     getSummonerIcon() {
-      return `url(https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/profileicon/${this.summonerInfos.profileIconId}.png) center/cover`
+      return `url(https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/profileicon/${this.summonerInfos.account.profileIconId}.png) center/cover`
     },
     summoner() {
       return this.$route.params.name
@@ -132,7 +138,7 @@ export default {
     ...mapState({
       summonerInfos: state => state.summoner.infos
     }),
-    ...mapGetters('summoner', ['summonerFound', 'summonerNotFound', 'summonerLoading'])
+    ...mapGetters('summoner', ['moreMatchesToFetch', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
   },
 
   watch: {
@@ -153,7 +159,7 @@ export default {
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
-    ...mapActions('summoner', ['summonerRequest'])
+    ...mapActions('summoner', ['summonerRequest', 'moreMatches']),
   }
 }
 </script>

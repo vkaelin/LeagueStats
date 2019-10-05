@@ -4,7 +4,6 @@ const Jax = use('Jax')
 const MatchHelper = use('App/Helpers/MatchHelper')
 
 class SummonerController {
-
   /**
    *  POST Endpoint : get summoner data
    */
