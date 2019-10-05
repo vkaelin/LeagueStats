@@ -3,10 +3,10 @@
     <div class="inline-block bg-gradient rounded-lg p-3">
       <h4 class="font-bold text-base text-white text-left">Recent Activity</h4>
       <div class="flex">
-        <span class="ml-12 text-blue-200 font-semibold text-xs">{{ gridDays[0].month }}</span>
-        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[37].month }}</span>
-        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[68].month }}</span>
-        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[99].month }}</span>
+        <span class="ml-12 text-blue-200 font-semibold text-xs">{{ gridDays[11].month }}</span>
+        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[42].month }}</span>
+        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[73].month }}</span>
+        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[104].month }}</span>
       </div>
       <div class="mt-1 flex">
         <div class="flex flex-col">
