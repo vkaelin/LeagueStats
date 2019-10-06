@@ -11,11 +11,17 @@ export const state = {
     matches: [],
     soloQ: {}
   },
+  matchesLoading: false,
   status: '',
 }
 
 export const mutations = {
+  MATCHES_LOADING(state) {
+    state.matchesLoading = true
+  },
   MATCHES_FOUND(state, newMatches) {
+    state.matchesLoading = false
+
     state.infos.matches = [...state.infos.matches, ...newMatches]
 
     state.infos.matchIndex += newMatches.length
@@ -38,6 +44,8 @@ export const mutations = {
 
 export const actions = {
   async moreMatches({ commit }) {
+    commit('MATCHES_LOADING')
+
     const account = state.infos.account
     const gameIds = state.infos.matchList.slice(state.infos.matchIndex, state.infos.matchIndex + 10).map(({ gameId }) => gameId)
 
@@ -69,6 +77,7 @@ export const actions = {
 }
 
 export const getters = {
+  matchesLoading: state => state.matchesLoading,
   moreMatchesToFetch: state => state.infos.matchIndex < state.infos.matchList.length,
   summonerFound: state => state.status === 'found',
   summonerNotFound: state => state.status === 'error',

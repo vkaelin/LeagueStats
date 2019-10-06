@@ -87,11 +87,13 @@
             </ul>
           </div>
 
-          <button
+          <LoadingButton
             v-if="moreMatchesToFetch"
-            @click="moreMatches"
-            class="mt-4 block mx-auto bg-blue-800 px-4 py-2 rounded-md font-semibold hover:bg-blue-1000 shadow-lg"
-          >More matches</button>
+            @clicked="moreMatches"
+            :loading="matchesLoading"
+            btn-class="mt-4 block mx-auto bg-blue-800 px-4 py-2 rounded-md font-semibold hover:bg-blue-1000 shadow-lg"
+          >More matches</LoadingButton>
+
         </div>
       </template>
 
@@ -113,6 +115,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import LazyBackground from '@/components/LazyBackgroundImage.vue'
+import LoadingButton from '@/components/LoadingButton.vue'
 import RecentActivity from '@/components/RecentActivity.vue'
 import Match from '@/components/Match.vue'
 import SearchForm from '@/components/SearchForm.vue'
@@ -120,6 +123,7 @@ import SearchForm from '@/components/SearchForm.vue'
 export default {
   components: {
     LazyBackground,
+    LoadingButton,
     Match,
     RecentActivity,
     SearchForm
@@ -138,7 +142,7 @@ export default {
     ...mapState({
       summonerInfos: state => state.summoner.infos
     }),
-    ...mapGetters('summoner', ['moreMatchesToFetch', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
+    ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
   },
 
   watch: {
