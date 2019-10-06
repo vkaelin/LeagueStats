@@ -41,10 +41,10 @@ class MatchHelper {
         return summonerDB.matchList.some(m => m.gameId === newMatchList[newMatchList.length - 1].gameId)
       })
       // Update Summoner's MatchList
-      for (const match of matchList) {
+      for (const match of matchList.reverse()) {
         if (!summonerDB.matchList.some(m => m.gameId === match.gameId)) {
           Logger.transport('file').info(`Match ${match.gameId} has been added to  ${account.name}'s MatchList.`)
-          summonerDB.matchList.push(match)
+          summonerDB.matchList.unshift(match)
         }
       }
       await summonerDB.save()
