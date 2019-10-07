@@ -106,7 +106,12 @@
       </template>
 
       <template v-else-if="summonerNotFound">
-        <p>Player can't be found.</p>
+        <div class="mt-12 flex justify-center">
+          <div class="bg-gradient px-4 py-3 rounded-lg text-center text-lg text-blue-100 font-bold">
+            <div>Player can't be found.</div>
+            <div>😕</div>
+          </div>
+        </div>
       </template>
     </div>
   </div>
