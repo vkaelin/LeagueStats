@@ -34,20 +34,16 @@ export function createSummonerData(RiotData) {
   console.log(RiotData)
 
   // Ranked Stats
-  const soloQStats = RiotData.soloQ
-  const soloQ = soloQStats ? {} : null
-  if (soloQ) {
-    soloQ.rank = `${soloQStats.tier} ${soloQStats.rank}`
-    soloQ.rankImgLink = getRankImg(soloQStats)
-    soloQ.wins = soloQStats.wins
-    soloQ.losses = soloQStats.losses
-    soloQ.winrate = +(soloQ.wins * 100 / (soloQ.wins + soloQ.losses)).toFixed(1) + '%'
-    soloQ.lp = soloQStats.leaguePoints
-  }
+  const uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
+  RiotData.ranked.soloQ = getLeagueData(uniqueLeagues, RiotData.ranked.soloQ)
+  RiotData.ranked.soloQ ? RiotData.ranked.soloQ.name = 'Solo/Duo' : delete RiotData.ranked.soloQ
+
+  RiotData.ranked.flex5v5 = getLeagueData(uniqueLeagues, RiotData.ranked.flex5v5)
+  RiotData.ranked.flex5v5 ? RiotData.ranked.flex5v5.name = 'Flex 5vs5' : delete RiotData.ranked.flex5v5
 
   return {
     account: RiotData.account,
-    soloQ,
+    ranked: RiotData.ranked,
     matchList: RiotData.allMatches,
     matches: createMatchData(RiotData.matchesDetails)
   }
@@ -58,6 +54,15 @@ function getItemLink(id) {
     return null
   }
   return `url('https://ddragon.leagueoflegends.com/cdn/${process.env.VUE_APP_PATCH}/img/item/${id}.png')`
+}
+
+function getLeagueData(uniqueLeagues, leagueData) {
+  if (!leagueData) return null
+
+  leagueData.rank = uniqueLeagues.includes(leagueData.tier) ? leagueData.tier : `${leagueData.tier} ${leagueData.rank}`
+  leagueData.rankImgLink = getRankImg(leagueData)
+  leagueData.winrate = +(leagueData.wins * 100 / (leagueData.wins + leagueData.losses)).toFixed(1) + '%'
+  return leagueData
 }
 
 function getSummonerLink(id) {

@@ -9,7 +9,7 @@ export const state = {
     matchIndex: 0,
     matchList: [],
     matches: [],
-    soloQ: {}
+    ranked: {}
   },
   matchesLoading: false,
   status: '',
@@ -33,7 +33,7 @@ export const mutations = {
     state.infos.account = infos.account
     state.infos.matchList = infos.matchList
     state.infos.matches = infos.matches
-    state.infos.soloQ = infos.soloQ
+    state.infos.ranked = infos.ranked
     state.infos.matchIndex = infos.matches.length
     state.status = 'found'
   },

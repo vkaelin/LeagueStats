@@ -37,38 +37,11 @@
                     >{{ summonerInfos.account.summonerLevel }}</div>
                   </div>
                 </div>
-                <div v-if="summonerInfos.soloQ" class="ml-6 leading-none">
-                  <div class="text-lg font-extrabold">Solo/Duo</div>
-                  <div
-                    class="text-teal-500 text-4xl uppercase font-extrabold"
-                  >{{ summonerInfos.soloQ.rank }}</div>
-                  <div class="mt-4 flex items-start bg-gradient px-4 py-3 rounded-lg">
-                    <div class="flex items-center">
-                      <div
-                        class="w-20 h-20 bg-blue-1000"
-                        :style="{background: `url(${summonerInfos.soloQ.rankImgLink}) center/cover`}"
-                      ></div>
-                      <div class="ml-2 text-xl font-extrabold">{{ summonerInfos.soloQ.lp }} LP</div>
-                    </div>
-                    <div class="ml-10 mt-2 font-extrabold uppercase leading-none">
-                      <div class="text-teal-500 text-base">Record</div>
-                      <div class="flex">
-                        <div class="mt-2 text-sm leading-tight text-right">
-                          <div>{{ summonerInfos.soloQ.wins }}</div>
-                          <div>{{ summonerInfos.soloQ.losses }}</div>
-                        </div>
-                        <div class="ml-2 mt-2 text-sm leading-tight">
-                          <div class="text-teal-500">Wins</div>
-                          <div class="text-red-300">Losses</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="ml-10 mt-2 font-extrabold">
-                      <div class="text-teal-500 text-base uppercase">Winrate</div>
-                      <div class="mt-2 text-xl leading-tight">{{ summonerInfos.soloQ.winrate }}</div>
-                    </div>
-                  </div>
-                </div>
+
+                <SummonerRanked
+                  v-if="Object.entries(summonerInfos.ranked).length !== 0"
+                  :ranked="summonerInfos.ranked"
+                />
               </div>
             </div>
 
@@ -93,7 +66,6 @@
             :loading="matchesLoading"
             btn-class="mt-4 block mx-auto bg-blue-800 px-4 py-2 rounded-md font-semibold hover:bg-blue-1000 shadow-lg"
           >More matches</LoadingButton>
-
         </div>
       </template>
 
@@ -117,6 +89,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import LazyBackground from '@/components/LazyBackgroundImage.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
 import RecentActivity from '@/components/RecentActivity.vue'
+import SummonerRanked from '@/components/SummonerRanked.vue'
 import Match from '@/components/Match.vue'
 import SearchForm from '@/components/SearchForm.vue'
 
@@ -126,7 +99,8 @@ export default {
     LoadingButton,
     Match,
     RecentActivity,
-    SearchForm
+    SearchForm,
+    SummonerRanked
   },
 
   computed: {
