@@ -21,8 +21,15 @@ class MatchHelper {
       let newMatchList = (await Jax.Matchlist.accountID(account.accountId, index)).matches
       matchList = [...matchList, ...newMatchList]
       alreadyIn = stopFetching(newMatchList)
+      // If the match is made in another region : we stop fetching
+      if (matchList[matchList.length - 1].platformId.toLowerCase() !== account.region) {
+        alreadyIn = true;
+      }
       index += 100
     } while (!alreadyIn);
+
+    // Remove matches from MatchList made in another region
+    matchList = matchList.filter(m => m.platformId.toLowerCase() === account.region)
 
     return matchList
   }

@@ -25,6 +25,7 @@ class SummonerController {
       const account = await Jax.Summoner.summonerName(summoner)
       // Check if the summoner is found
       if (!account) return response.json(null)
+      account.region = region
       finalJSON.account = account
 
       // RANKED STATS

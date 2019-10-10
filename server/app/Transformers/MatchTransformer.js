@@ -57,7 +57,7 @@ class MatchTransformer extends BumblebeeTransformer {
 
     let primaryRune = null
     let secondaryRune = null
-    if(player.stats.perkPrimaryStyle) {
+    if (player.stats.perkPrimaryStyle) {
       const primaryRuneCategory = runes.find(r => r.id === player.stats.perkPrimaryStyle)
       for (const subCat of primaryRuneCategory.slots) {
         primaryRune = subCat.runes.find(r => r.id === player.stats.perk0)
