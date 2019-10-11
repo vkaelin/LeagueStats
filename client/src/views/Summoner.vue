@@ -8,10 +8,10 @@
     ></LazyBackground>
 
     <div class="relative z-10">
-      <header class="mb-4 text-teal-100">
+      <header class="text-teal-100">
         <div class="container mx-auto flex justify-between items-center">
           <router-link to="/">
-            <img class="w-56" src="@/assets/img/Logo.svg" alt="LeagueStats logo" />
+            <img class="h-24" src="@/assets/img/Logo.svg" alt="LeagueStats logo" />
           </router-link>
 
           <SearchForm @formSubmit="redirect" size="small" />
@@ -19,7 +19,7 @@
       </header>
 
       <template v-if="summonerFound">
-        <div class="container mx-auto text-white pb-12">
+        <div class="mt-4 container mx-auto text-white pb-12">
           <div class="flex justify-between xl:px-12">
             <div>
               <h1 class="text-4xl font-extrabold uppercase">
@@ -70,15 +70,11 @@
       </template>
 
       <template v-else-if="summonerLoading">
-        <div
-          class="flex items-center justify-center bg-white max-w-xs mx-auto p-5 rounded-lg shadow-xl"
-        >
-          <dot-loader :loading="summonerLoading" />
-        </div>
+        <SummonerLoader />
       </template>
 
       <template v-else-if="summonerNotFound">
-        <div class="mt-12 flex justify-center">
+        <div class="mt-16 flex justify-center">
           <div class="bg-gradient px-4 py-3 rounded-lg text-center text-lg text-blue-100 font-bold">
             <div>Player can't be found.</div>
             <div>😕</div>
@@ -94,6 +90,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import LazyBackground from '@/components/LazyBackgroundImage.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
 import RecentActivity from '@/components/RecentActivity.vue'
+import SummonerLoader from '@/components/SummonerLoader.vue'
 import SummonerRanked from '@/components/SummonerRanked.vue'
 import Match from '@/components/Match.vue'
 import SearchForm from '@/components/SearchForm.vue'
@@ -105,7 +102,8 @@ export default {
     Match,
     RecentActivity,
     SearchForm,
-    SummonerRanked
+    SummonerLoader,
+    SummonerRanked,
   },
 
   computed: {
