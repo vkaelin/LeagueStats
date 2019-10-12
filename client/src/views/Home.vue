@@ -1,8 +1,8 @@
 <template>
-  <div class="bg-blue-900">
+  <div class="relative bg-blue-900 page-wrapper mx-auto overflow-hidden">
     <LazyBackground
       :image-source="require('@/assets/img/bg-homepage-1.jpg')"
-      image-class="absolute inset-0"
+      image-class="absolute inset-0 bg-center"
       transition-name="fade"
     ></LazyBackground>
 
