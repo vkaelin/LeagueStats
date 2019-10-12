@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900');
 
+.min-w-1200 {
+  min-width: 1200px;;
+}
+
+.page-wrapper {
+  width: 1200px;
+}
+
 button:focus {
   outline: 0;
 }

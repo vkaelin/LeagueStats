@@ -5,7 +5,6 @@
       <input
         v-model="summoner"
         type="text"
-        autofocus
         :class="[elementClasses, inputClasses]"
         class="input w-full px-2 rounded-lg outline-none pl-8 pr-16 font-bold"
       />

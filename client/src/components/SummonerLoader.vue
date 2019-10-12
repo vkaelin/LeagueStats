@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4 container mx-auto text-white pb-12">
+  <div class="mt-4 text-white pb-12">
     <div class="flex justify-between xl:px-12">
       <div style="width: 517px; height: 272px;">
         <content-loader
@@ -156,11 +156,11 @@
           v-for="index in 10"
           :key="index"
           class="ml-10 mt-4 rounded-lg w-full bg-blue-800"
-          style="width: 1240px; height: 144px;"
+          style="width: 1160px; height: 144px;"
         >
           <content-loader
             :height="144"
-            :width="1240"
+            :width="1160"
             :speed="2"
             primary-color="#17314f"
             secondary-color="#2b6cb0"
@@ -171,42 +171,42 @@
             <rect x="312" y="94.67" rx="0" ry="0" width="0" height="0" />
             <rect x="305" y="65.67" rx="0" ry="0" width="0" height="0" />
             <rect x="258" y="80.34" rx="3" ry="3" width="59.5" height="16.7" />
-            <rect x="68" y="37" rx="8" ry="8" width="64" height="64" />
-            <rect x="142" y="41" rx="6" ry="6" width="24" height="24" />
-            <rect x="142" y="73" rx="6" ry="6" width="24" height="24" />
-            <rect x="424" y="37" rx="6" ry="6" width="32" height="32" />
-            <rect x="460" y="37" rx="6" ry="6" width="32" height="32" />
-            <rect x="496" y="37" rx="6" ry="6" width="32" height="32" />
-            <rect x="424" y="73" rx="6" ry="6" width="32" height="32" />
-            <rect x="460" y="73" rx="6" ry="6" width="32" height="32" />
-            <rect x="496" y="73" rx="6" ry="6" width="32" height="32" />
-            <rect x="580" y="38" rx="3" ry="3" width="72" height="13" />
-            <rect x="580" y="57" rx="3" ry="3" width="103" height="13" />
-            <rect x="580" y="76" rx="3" ry="3" width="131" height="13" />
-            <rect x="580" y="95" rx="3" ry="3" width="131" height="13" />
-            <circle cx="916" cy="33" r="12" />
-            <circle cx="916" cy="53" r="12" />
-            <circle cx="916" cy="73" r="12" />
-            <circle cx="916" cy="93" r="12" />
-            <circle cx="916" cy="113" r="12" />
-            <circle cx="980" cy="33" r="12" />
-            <circle cx="980" cy="53" r="12" />
-            <circle cx="980" cy="73" r="12" />
-            <circle cx="980" cy="93" r="12" />
-            <circle cx="980" cy="113" r="12" />
-            <rect x="827" y="29" rx="3" ry="3" width="72" height="9" />
-            <rect x="827" y="49" rx="3" ry="3" width="72" height="9" />
-            <rect x="827" y="69" rx="3" ry="3" width="72" height="9" />
-            <rect x="827" y="89" rx="3" ry="3" width="72" height="9" />
-            <rect x="827" y="109" rx="3" ry="3" width="72" height="9" />
-            <rect x="997" y="29" rx="3" ry="3" width="72" height="9" />
-            <rect x="997" y="49" rx="3" ry="3" width="72" height="9" />
-            <rect x="997" y="69" rx="3" ry="3" width="72" height="9" />
-            <rect x="997" y="89" rx="3" ry="3" width="72" height="9" />
-            <rect x="997" y="109" rx="3" ry="3" width="72" height="9" />
-            <circle cx="1188.58" cy="50.55" r="11.88" />
-            <rect x="1156" y="66" rx="3" ry="3" width="64" height="17" />
-            <rect x="1158" y="90" rx="3" ry="3" width="59" height="14" />
+            <rect x="68" y="36" rx="8" ry="8" width="64" height="64" />
+            <rect x="142" y="40" rx="6" ry="6" width="24" height="24" />
+            <rect x="142" y="72" rx="6" ry="6" width="24" height="24" />
+            <rect x="396" y="36" rx="6" ry="6" width="32" height="32" />
+            <rect x="432" y="36" rx="6" ry="6" width="32" height="32" />
+            <rect x="468" y="36" rx="6" ry="6" width="32" height="32" />
+            <rect x="396" y="72" rx="6" ry="6" width="32" height="32" />
+            <rect x="432" y="72" rx="6" ry="6" width="32" height="32" />
+            <rect x="468" y="72" rx="6" ry="6" width="32" height="32" />
+            <rect x="555" y="38" rx="3" ry="3" width="72" height="13" />
+            <rect x="555" y="57" rx="3" ry="3" width="103" height="13" />
+            <rect x="555" y="76" rx="3" ry="3" width="131" height="13" />
+            <rect x="555" y="95" rx="3" ry="3" width="131" height="13" />
+            <circle cx="862" cy="32" r="12" />
+            <circle cx="862" cy="52" r="12" />
+            <circle cx="862" cy="72" r="12" />
+            <circle cx="862" cy="92" r="12" />
+            <circle cx="862" cy="112" r="12" />
+            <circle cx="926" cy="32" r="12" />
+            <circle cx="926" cy="52" r="12" />
+            <circle cx="926" cy="72" r="12" />
+            <circle cx="926" cy="92" r="12" />
+            <circle cx="926" cy="112" r="12" />
+            <rect x="770" y="29" rx="3" ry="3" width="72" height="9" />
+            <rect x="770" y="49" rx="3" ry="3" width="72" height="9" />
+            <rect x="770" y="69" rx="3" ry="3" width="72" height="9" />
+            <rect x="770" y="89" rx="3" ry="3" width="72" height="9" />
+            <rect x="770" y="109" rx="3" ry="3" width="72" height="9" />
+            <rect x="945" y="29" rx="3" ry="3" width="72" height="9" />
+            <rect x="945" y="49" rx="3" ry="3" width="72" height="9" />
+            <rect x="945" y="69" rx="3" ry="3" width="72" height="9" />
+            <rect x="945" y="89" rx="3" ry="3" width="72" height="9" />
+            <rect x="945" y="109" rx="3" ry="3" width="72" height="9" />
+            <circle cx="1106" cy="50.55" r="11.88" />
+            <rect x="1074" y="66" rx="3" ry="3" width="64" height="17" />
+            <rect x="1077" y="90" rx="3" ry="3" width="59" height="14" />
           </content-loader>
         </div>
       </ul>

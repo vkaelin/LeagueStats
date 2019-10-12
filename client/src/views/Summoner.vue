@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-blue-900">
+  <div class="bg-blue-900 overflow-hidden">
     <LazyBackground
       :image-source="require('@/assets/img/bg-homepage-1.jpg')"
       image-class="fixed w-full h-200 z-0"
@@ -7,9 +7,9 @@
       transition-name="fade"
     ></LazyBackground>
 
-    <div class="relative z-10">
+    <div class="relative page-wrapper mx-auto z-10">
       <header class="text-teal-100">
-        <div class="container mx-auto flex justify-between items-center">
+        <div class="flex justify-between items-center">
           <router-link to="/">
             <img class="h-24" src="@/assets/img/Logo.svg" alt="LeagueStats logo" />
           </router-link>
@@ -19,7 +19,7 @@
       </header>
 
       <template v-if="summonerFound">
-        <div class="mt-4 container mx-auto text-white pb-12">
+        <div class="mt-4 text-white pb-12">
           <div class="flex justify-between xl:px-12">
             <div>
               <h1 class="text-4xl font-extrabold uppercase">
