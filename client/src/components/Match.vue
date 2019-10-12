@@ -5,7 +5,7 @@
     </div>
     <div
       :class="matchResultClass"
-      class="ml-10 match relative mt-4 rounded-lg text-white text-sm md:text-base"
+      class="ml-10 match relative mt-4 rounded-lg text-white text-base"
     >
       <div class="relative z-20 flex flex-wrap px-5 py-3">
         <div class="first w-1/3 text-left">
@@ -27,9 +27,9 @@
               </div>
               <div
                 :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.champion.id}.png')`}"
-                class="ml-2 w-16 h-16 crop-champion bg-blue-1000 rounded-lg mb-2px sm:mb-0 sm:mr-2px"
+                class="ml-2 w-16 h-16 crop-champion bg-blue-1000 rounded-lg"
               ></div>
-              <div class="ml-2 flex flex-row sm:flex-col sm:justify-around">
+              <div class="ml-2 flex flex-col justify-around">
                 <div
                   :style="{backgroundImage: `url(${data.firstSum})`}"
                   class="w-6 h-6 bg-blue-1000 rounded-md bg-center bg-cover"
@@ -39,7 +39,7 @@
                   class="w-6 h-6 bg-blue-1000 rounded-md bg-center bg-cover"
                 ></div>
               </div>
-              <div class="ml-1 flex flex-row sm:flex-col sm:justify-around">
+              <div class="ml-1 flex flex-col justify-around">
                 <div
                   :style="[data.primaryRune ? {background: `url(${data.primaryRune}) center/cover`} : '']"
                   class="w-6 h-6 bg-blue-1000 rounded-md"

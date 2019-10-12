@@ -20,7 +20,7 @@
 
       <template v-if="summonerFound">
         <div class="mt-4 text-white pb-12">
-          <div class="flex justify-between xl:px-12">
+          <div class="flex justify-between px-12">
             <div>
               <h1 class="text-4xl font-extrabold uppercase">
                 <span class="text-5xl">{{ summonerInfos.account.name[0] }}</span>

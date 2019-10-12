@@ -1,6 +1,6 @@
 <template>
   <div class="mt-4 text-white pb-12">
-    <div class="flex justify-between xl:px-12">
+    <div class="flex justify-between px-12">
       <div style="width: 517px; height: 272px;">
         <content-loader
           :height="272"
