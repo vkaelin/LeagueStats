@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-blue-900 page-wrapper mx-auto overflow-hidden">
+  <div class="relative bg-blue-900 overflow-hidden">
     <LazyBackground
       :image-source="require('@/assets/img/bg-homepage-1.jpg')"
       image-class="absolute inset-0 bg-center"
