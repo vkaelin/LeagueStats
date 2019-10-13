@@ -82,6 +82,8 @@
         </div>
       </template>
     </div>
+    
+    <MainFooter />
   </div>
 </template>
 
@@ -89,16 +91,18 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import LazyBackground from '@/components/LazyBackgroundImage.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
+import MainFooter from '@/components/MainFooter.vue'
+import Match from '@/components/Match.vue'
 import RecentActivity from '@/components/RecentActivity.vue'
+import SearchForm from '@/components/SearchForm.vue'
 import SummonerLoader from '@/components/SummonerLoader.vue'
 import SummonerRanked from '@/components/SummonerRanked.vue'
-import Match from '@/components/Match.vue'
-import SearchForm from '@/components/SearchForm.vue'
 
 export default {
   components: {
     LazyBackground,
     LoadingButton,
+    MainFooter,
     Match,
     RecentActivity,
     SearchForm,
