@@ -26,7 +26,7 @@ class JaxRequest {
       console.log('====================================')
 
       if (this.retries > 0) {
-        setTimeout(
+        return setTimeout(
           () => this.execute(),
           this.config.requestOptions.delayBeforeRetry,
         )
