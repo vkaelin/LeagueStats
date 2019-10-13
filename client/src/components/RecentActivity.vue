@@ -22,13 +22,22 @@
           class="ml-2 flex flex-col flex-wrap"
           style="width: calc(20px * 15); height: calc(20px * 7)"
         >
-          <div
-            v-for="(day, index) in gridDays.slice(indexFirstMonday)"
-            :key="day.timestamp"
-            :title="day.date + ' : ' + day.matches + ' game(s)'"
-            :class="[getCaseMargin(index), getCaseColor(day.matches)]"
-            class="ml-1 w-4 h-4 cursor-pointer"
-          />
+          <Dropdown v-for="(day, index) in gridDays.slice(indexFirstMonday)" :key="day.timestamp">
+            <template v-slot:trigger>
+              <div
+                :class="[getCaseMargin(index), getCaseColor(day.matches)]"
+                class="ml-1 w-4 h-4 cursor-pointer"
+              />
+            </template>
+            <template v-slot:default>
+              <div class="px-2 text-white text-center text-xs">
+                <div>{{ day.date }}</div>
+                <div>
+                  <span class="font-bold text-teal-400">{{ day.matches }}</span> game(s)
+                </div>
+              </div>
+            </template>
+          </Dropdown>
         </div>
       </div>
     </div>
@@ -36,7 +45,13 @@
 </template>
 
 <script>
+import Dropdown from '@/components/Dropdown.vue'
+
 export default {
+  components: {
+    Dropdown,
+  },
+
   props: {
     matches: {
       type: Array,
