@@ -1,6 +1,7 @@
 import { timeDifference, getRankImg } from '@/helpers/functions.js'
 import { maps, gameModes } from '@/data/data.js'
 import summonersJSON from '@/data/summoner.json'
+import store from '@/store'
 
 /**
  * Return all the infos about a list of matches built with the Riot API data
@@ -53,7 +54,7 @@ function getItemLink(id) {
   if (id === 0) {
     return null
   }
-  return `url('https://ddragon.leagueoflegends.com/cdn/${process.env.VUE_APP_PATCH}/img/item/${id}.png')`
+  return `url('https://ddragon.leagueoflegends.com/cdn/${store.getters['ddragon/version']}/img/item/${id}.png')`
 }
 
 function getLeagueData(uniqueLeagues, leagueData) {
@@ -67,5 +68,5 @@ function getLeagueData(uniqueLeagues, leagueData) {
 
 function getSummonerLink(id) {
   const spellName = Object.entries(summonersJSON.data).find(([, spell]) => Number(spell.key) === id)[0]
-  return `https://ddragon.leagueoflegends.com/cdn/${process.env.VUE_APP_PATCH}/img/spell/${spellName}.png`
+  return `https://ddragon.leagueoflegends.com/cdn/${store.getters['ddragon/version']}/img/spell/${spellName}.png`
 }

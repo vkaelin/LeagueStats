@@ -112,7 +112,7 @@ export default {
 
   computed: {
     getSummonerIcon() {
-      return `url(https://ddragon.leagueoflegends.com/cdn/${this.$patch}/img/profileicon/${this.summonerInfos.account.profileIconId}.png) center/cover`
+      return `url(https://ddragon.leagueoflegends.com/cdn/${this.version}/img/profileicon/${this.summonerInfos.account.profileIconId}.png) center/cover`
     },
     summoner() {
       return this.$route.params.name
@@ -123,6 +123,7 @@ export default {
     ...mapState({
       summonerInfos: state => state.summoner.infos
     }),
+    ...mapGetters('ddragon', ['version']),
     ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
   },
 

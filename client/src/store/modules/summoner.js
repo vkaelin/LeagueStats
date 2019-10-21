@@ -58,6 +58,7 @@ export const actions = {
     try {
       const resp = await axios(({ url: 'api', data: { summoner, region }, method: 'POST' }))
       if (resp.data) {
+        dispatch('ddragon/getVersion', resp.data.version, { root: true })
         const infos = createSummonerData(resp.data)
         commit('SUMMONER_FOUND', infos)
       } else {

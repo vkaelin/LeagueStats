@@ -15,9 +15,6 @@ Vue.use(VueAxios)
 
 Vue.component('v-icon', Icon)
 
-Vue.prototype.$patch = process.env.VUE_APP_PATCH
-
-
 new Vue({
   router,
   store,

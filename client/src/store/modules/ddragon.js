@@ -4,7 +4,8 @@ export const namespaced = true
 
 export const state = {
   champions: [],
-  runes: []
+  runes: [],
+  version: ''
 }
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
   },
   PUSH_RUNES(state, runes) {
     state.runes = runes
+  },
+  PUSH_VERSION(state, version) {
+    state.version = version
   }
 }
 
@@ -30,8 +34,13 @@ export const actions = {
     const resp = await axios(({ url: 'ddragon', data: { endpoint }, method: 'POST' }))
     commit('PUSH_RUNES', resp.data)
   },
+
+  getVersion({ commit }, version) {
+    commit('PUSH_VERSION', version)
+  },
 }
 
 export const getters = {
-  areChampionsLoaded: state => !!state.champions.Aatrox
+  areChampionsLoaded: state => !!state.champions.Aatrox,
+  version: state => state.version
 }

@@ -1,4 +1,4 @@
-# riot-vue
+# LeagueStats Frontend
 
 ## Project setup
 ```

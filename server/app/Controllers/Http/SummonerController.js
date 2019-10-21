@@ -42,6 +42,9 @@ class SummonerController {
       // MATCHES DETAILS
       const gameIds = matchList.slice(0, 10).map(({ gameId }) => gameId)
       finalJSON.matchesDetails = await MatchHelper.getMatches(account, gameIds)
+
+      // PATCH VERSION
+      finalJSON.version = Jax.DDragon.Version
     } catch (error) {
       console.log('username not found')
       console.log(error)

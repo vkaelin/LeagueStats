@@ -26,7 +26,7 @@
                 >LVL {{ data.level }}</div>
               </div>
               <div
-                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.champion.id}.png')`}"
+                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${data.champion.id}.png')`}"
                 class="ml-2 w-16 h-16 crop-champion bg-blue-1000 rounded-lg"
               ></div>
               <div class="ml-2 flex flex-col justify-around">
@@ -123,7 +123,7 @@
               >{{ ally.name }}</router-link>
               <div
                 :class="index !== 0 ? '-mt-1': ''"
-                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${ally.champion.id}.png')`}"
+                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${ally.champion.id}.png')`}"
                 class="ml-1 w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full overflow-hidden"
               ></div>
               <div
@@ -132,7 +132,7 @@
               ></div>
               <div
                 :class="index !== 0 ? '-mt-1' : ''"
-                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${$patch}/img/champion/${data.enemyTeam[index].champion.id}.png')`}"
+                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${data.enemyTeam[index].champion.id}.png')`}"
                 class="w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full"
               ></div>
               <router-link
@@ -153,7 +153,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -174,6 +174,7 @@ export default {
     ...mapState({
       roles: state => state.roles
     }),
+    ...mapGetters('ddragon', ['version']),
   },
 
   methods: {
