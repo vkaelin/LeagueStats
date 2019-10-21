@@ -36,24 +36,3 @@ export function secToTime(sec) {
   const newSec = sec - min * 60
   return min + 'm' + (newSec < 10 ? '0' + newSec : newSec) + 's'
 }
-
-
-/**
- *  Return the link of the rank image
- * @param soloQStats : stats in soloQ of the player
- */
-export function getRankImg(soloQStats) {
-  if (!soloQStats) {
-    return 'https://cdn.valentinkaelin.ch/riot/tier-icons/provisional.png'
-  }
-  return 'https://cdn.valentinkaelin.ch/riot/tier-icons/Emblem_' + capitalize(soloQStats.tier.toLowerCase()) + '.png'
-}
-
-
-/**
- * Capitalize first letter of params string
- * @param string  : string to capitalize
- */
-function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1)
-}

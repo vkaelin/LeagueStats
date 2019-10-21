@@ -1,7 +1,10 @@
-import { timeDifference, getRankImg } from '@/helpers/functions.js'
+import { timeDifference } from '@/helpers/functions.js'
 import { maps, gameModes } from '@/data/data.js'
 import summonersJSON from '@/data/summoner.json'
 import store from '@/store'
+
+const uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
+const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
 
 /**
  * Return all the infos about a list of matches built with the Riot API data
@@ -35,12 +38,27 @@ export function createSummonerData(RiotData) {
   console.log(RiotData)
 
   // Ranked Stats
-  const uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
-  RiotData.ranked.soloQ = getLeagueData(uniqueLeagues, RiotData.ranked.soloQ)
-  RiotData.ranked.soloQ ? RiotData.ranked.soloQ.name = 'Solo/Duo' : delete RiotData.ranked.soloQ
+  RiotData.ranked.soloQ = getLeagueData(RiotData.ranked.soloQ, 'Solo/Duo')
+  if (!RiotData.ranked.soloQ) delete RiotData.ranked.soloQ
 
-  RiotData.ranked.flex5v5 = getLeagueData(uniqueLeagues, RiotData.ranked.flex5v5)
-  RiotData.ranked.flex5v5 ? RiotData.ranked.flex5v5.name = 'Flex 5vs5' : delete RiotData.ranked.flex5v5
+  RiotData.ranked.flex5v5 = getLeagueData(RiotData.ranked.flex5v5, 'Flex 5vs5')
+  if (!RiotData.ranked.flex5v5) delete RiotData.ranked.flex5v5
+
+  RiotData.ranked.flex3v3 = getLeagueData(RiotData.ranked.flex3v3, 'Flex 3vs3')
+  if (!RiotData.ranked.flex3v3) delete RiotData.ranked.flex3v3
+
+  // If Summoner is Unranked
+  if (Object.entries(RiotData.ranked).length === 0) {
+    RiotData.ranked.soloQ = {
+      fullRank: 'Unranked',
+      rankImgLink: 'https://res.cloudinary.com/kln/image/upload/v1571671133/ranks/unranked.png',
+      leaguePoints: 0,
+      wins: 0,
+      losses: 0,
+      winrate: '0%',
+      name: 'Solo/Duo'
+    }
+  }
 
   return {
     account: RiotData.account,
@@ -57,13 +75,22 @@ function getItemLink(id) {
   return `url('https://ddragon.leagueoflegends.com/cdn/${store.getters['ddragon/version']}/img/item/${id}.png')`
 }
 
-function getLeagueData(uniqueLeagues, leagueData) {
+function getLeagueData(leagueData, leagueName) {
   if (!leagueData) return null
 
-  leagueData.rank = uniqueLeagues.includes(leagueData.tier) ? leagueData.tier : `${leagueData.tier} ${leagueData.rank}`
+  leagueData.fullRank = uniqueLeagues.includes(leagueData.tier) ? leagueData.tier : `${leagueData.tier} ${leagueData.rank}`
   leagueData.rankImgLink = getRankImg(leagueData)
   leagueData.winrate = +(leagueData.wins * 100 / (leagueData.wins + leagueData.losses)).toFixed(1) + '%'
+  leagueData.name = leagueName
   return leagueData
+}
+
+/**
+ *  Return the link of the rank image
+ * @param leagueData : stats in soloQ of the player
+ */
+export function getRankImg(leagueData) {
+  return `https://res.cloudinary.com/kln/image/upload/v1571671133/ranks/${leagueData.tier}_${leaguesNumbers[leagueData.rank]}.png`
 }
 
 function getSummonerLink(id) {

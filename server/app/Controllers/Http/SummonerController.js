@@ -32,7 +32,8 @@ class SummonerController {
       const ranked = await Jax.League.summonerID(account.id)
       finalJSON.ranked = {
         soloQ: ranked.find(e => e.queueType === 'RANKED_SOLO_5x5') || null,
-        flex5v5: ranked.find(e => e.queueType === 'RANKED_FLEX_SR') || null
+        flex5v5: ranked.find(e => e.queueType === 'RANKED_FLEX_SR') || null,
+        flex3v3: ranked.find(e => e.queueType === 'RANKED_FLEX_TT') || null
       }
 
       // MATCH LIST

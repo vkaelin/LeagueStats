@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="mt-1 text-teal-500 text-4xl uppercase font-extrabold">{{ selectedLeague.rank }}</div>
+    <div class="mt-1 text-teal-500 text-4xl uppercase font-extrabold">{{ selectedLeague.fullRank }}</div>
     <div class="mt-4 flex items-start bg-gradient px-4 py-3 rounded-lg">
       <div class="flex items-center">
         <div
