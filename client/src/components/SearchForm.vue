@@ -15,7 +15,15 @@
           class="cursor-pointer flex items-center px-2 py-1 rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
         >
           <span class="selected font-bold select-none">{{ selectedRegion }}</span>
-          <v-icon name="caret-down" class="ml-1"></v-icon>
+          <svg
+            class="ml-1 w-4 h-4 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 320 512"
+          >
+            <path
+              d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
+            />
+          </svg>
         </div>
       </div>
       <transition
@@ -37,12 +45,16 @@
             :class="classRegions(index)"
             class="relative px-4b py-1 text-xs bg-teal-600 hover:bg-teal-500"
           >
-            <v-icon
+            <svg
               v-if="region === selectedRegion"
-              name="check"
-              scale="0.7"
-              class="absolute vertical-center offsetIcon"
-            ></v-icon>
+              class="absolute vertical-center offsetIcon w-3 h-3 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <path
+                d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
+              />
+            </svg>
             {{ region }}
           </div>
         </div>
@@ -54,7 +66,15 @@
       class="input btn rounded-lg ml-2 relative"
       type="submit"
     >
-      <v-icon name="search" class="absolute vertical-center horizontal-center"></v-icon>
+      <svg
+        class="absolute vertical-center horizontal-center w-4 h-4 fill-current"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+      >
+        <path
+          d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+        />
+      </svg>
     </button>
   </form>
 </template>
@@ -140,13 +160,13 @@ export default {
 }
 
 .input {
-  border-color: rgba(129, 230, 217, .7);
-  background: rgba(40, 94, 97, .35);
+  border-color: rgba(129, 230, 217, 0.7);
+  background: rgba(40, 94, 97, 0.35);
 }
 
 .input:focus,
 .btn:hover {
-  background: rgba(40, 94, 97, .75);
-  border-color: rgba(129, 230, 217, .9);
+  background: rgba(40, 94, 97, 0.75);
+  border-color: rgba(129, 230, 217, 0.9);
 }
 </style>
