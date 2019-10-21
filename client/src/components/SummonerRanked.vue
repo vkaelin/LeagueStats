@@ -25,30 +25,32 @@
     </div>
 
     <div class="mt-1 text-teal-500 text-4xl uppercase font-extrabold">{{ selectedLeague.fullRank }}</div>
-    <div class="mt-4 flex items-start bg-gradient px-4 py-3 rounded-lg">
-      <div class="flex items-center">
+    <div class="mt-4 flex items-start bg-gradient px-4 py-3 rounded-lg" style="width: 430px;">
+      <div class="flex items-center w-1/2">
         <div
           class="w-20 h-20 bg-blue-1000"
           :style="{background: `url(${selectedLeague.rankImgLink}) center/cover`}"
         ></div>
         <div class="ml-2 text-xl font-extrabold">{{ selectedLeague.leaguePoints }} LP</div>
       </div>
-      <div class="ml-10 mt-2 font-extrabold uppercase leading-none">
-        <div class="text-teal-500 text-base">Record</div>
-        <div class="flex">
-          <div class="mt-2 text-sm leading-tight text-right">
-            <div>{{ selectedLeague.wins }}</div>
-            <div>{{ selectedLeague.losses }}</div>
-          </div>
-          <div class="ml-2 mt-2 text-sm leading-tight">
-            <div class="text-teal-500">Wins</div>
-            <div class="text-red-300">Losses</div>
+      <div class="flex justify-between w-1/2">
+        <div class="mt-2 font-extrabold uppercase leading-none">
+          <div class="text-teal-500 text-base">Record</div>
+          <div class="flex">
+            <div class="mt-2 text-sm leading-tight text-right">
+              <div>{{ selectedLeague.wins }}</div>
+              <div>{{ selectedLeague.losses }}</div>
+            </div>
+            <div class="ml-2 mt-2 text-sm leading-tight">
+              <div class="text-teal-500">Wins</div>
+              <div class="text-red-300">Losses</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="ml-10 mt-2 font-extrabold">
-        <div class="text-teal-500 text-base uppercase">Winrate</div>
-        <div class="mt-2 text-xl leading-tight">{{ selectedLeague.winrate }}</div>
+        <div class="mt-2 font-extrabold">
+          <div class="text-teal-500 text-base uppercase">Winrate</div>
+          <div class="mt-2 text-xl leading-tight">{{ selectedLeague.winrate }}</div>
+        </div>
       </div>
     </div>
   </div>
