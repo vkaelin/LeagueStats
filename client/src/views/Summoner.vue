@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-blue-900 overflow-hidden">
+  <div class="bg-blue-900 overflow-hidden min-h-screen flex flex-col">
     <LazyBackground
       :image-source="require('@/assets/img/bg-homepage-1.jpg')"
       image-class="fixed w-full h-200 z-0"
@@ -7,7 +7,7 @@
       transition-name="fade"
     ></LazyBackground>
 
-    <div class="relative page-wrapper mx-auto z-10">
+    <div class="relative page-wrapper mx-auto z-10 flex-grow">
       <header class="text-teal-100">
         <div class="flex justify-between items-center">
           <router-link to="/">
