@@ -1,9 +1,13 @@
+const { promisify } = require('util')
+
 class JaxRequest {
   constructor(config, endpoint, limiter) {
     this.config = config
     this.endpoint = endpoint
     this.limiter = limiter
     this.retries = config.requestOptions.retriesBeforeAbort
+
+    this.sleep = promisify(setTimeout)
   }
 
   async execute() {
@@ -26,10 +30,8 @@ class JaxRequest {
       console.log('====================================')
 
       if (this.retries > 0) {
-        return setTimeout(
-          () => this.execute(),
-          this.config.requestOptions.delayBeforeRetry,
-        )
+        await this.sleep(this.config.requestOptions.delayBeforeRetry)
+        return this.execute()
       }
 
     }
