@@ -53,7 +53,8 @@ class MatchTransformer extends BumblebeeTransformer {
       }
       return prev + current.stats.kills
     }, 0)
-    const kp = +((kills + assists) * 100 / totalKills).toFixed(1) + '%'
+
+    const kp = totalKills === 0 ? '0%' : +((kills + assists) * 100 / totalKills).toFixed(1) + '%'
 
     let primaryRune = null
     let secondaryRune = null

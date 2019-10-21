@@ -9,16 +9,16 @@
           primary-color="#17314f"
           secondary-color="#2b6cb0"
         >
-          <rect x="2" y="23" rx="3" ry="3" width="164" height="31" /> 
-          <circle cx="49" cy="121" r="48" /> 
-          <rect x="119" y="75" rx="3" ry="3" width="123" height="31" /> 
-          <rect x="119" y="116" rx="3" ry="3" width="164" height="31" /> 
-          <rect x="136" y="179" rx="3" ry="3" width="80" height="80" /> 
-          <rect x="222" y="209" rx="3" ry="3" width="59" height="22" /> 
-          <rect x="330" y="183" rx="3" ry="3" width="75" height="19" /> 
-          <rect x="458" y="185" rx="3" ry="3" width="75" height="19" /> 
-          <rect x="330" y="212" rx="3" ry="3" width="75" height="10" /> 
-          <rect x="340" y="232" rx="3" ry="3" width="65" height="10" /> 
+          <rect x="2" y="23" rx="3" ry="3" width="164" height="31" />
+          <circle cx="49" cy="121" r="48" />
+          <rect x="119" y="75" rx="3" ry="3" width="123" height="31" />
+          <rect x="119" y="116" rx="3" ry="3" width="164" height="31" />
+          <rect x="136" y="179" rx="3" ry="3" width="80" height="80" />
+          <rect x="222" y="209" rx="3" ry="3" width="59" height="22" />
+          <rect x="330" y="183" rx="3" ry="3" width="75" height="19" />
+          <rect x="458" y="185" rx="3" ry="3" width="75" height="19" />
+          <rect x="330" y="212" rx="3" ry="3" width="75" height="10" />
+          <rect x="340" y="232" rx="3" ry="3" width="65" height="10" />
           <rect x="468" y="218" rx="3" ry="3" width="65" height="10" />
         </content-loader>
       </div>
