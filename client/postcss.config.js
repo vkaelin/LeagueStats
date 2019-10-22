@@ -1,32 +1,21 @@
-const tailwindcss = require("tailwindcss");
-const autoprefixer = require("autoprefixer");
-const purgecss = require("@fullhuman/postcss-purgecss");
-const postcssImport = require('postcss-import')
+const purgecss = require('@fullhuman/postcss-purgecss')({
 
-class TailwindExtractor {
-  static extract(content) {
-    return content.match(/[A-Za-z0-9-_:\/]+/g) || [];
-  }
-}
+  // Specify the paths to all of the template files in your project 
+  content: [
+    './src/**/*.vue',
+    './public/**/*.html',
+  ],
+
+  // Include any special characters you're using in this regular expression
+  defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
+})
 
 module.exports = {
   plugins: [
-    postcssImport,
-    tailwindcss('./tailwind.config.js'),
-
-    // --- !!! purgecss not working !!! ---
-
-    // purgecss({
-    //   content: ['./src/**/*.vue'],
-    //   whitelist: ['html', 'body'],
-    //   extractors: [
-    //     {
-    //       extractor: TailwindExtractor,
-
-    //       extensions: ['html', 'js', 'vue']
-    //     }
-    //   ]
-    // }),
-    autoprefixer
+    require('tailwindcss'),
+    require('autoprefixer'),
+    ...process.env.NODE_ENV === 'production'
+      ? [purgecss]
+      : []
   ]
 }
