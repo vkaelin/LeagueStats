@@ -22,14 +22,24 @@
         <div class="mt-4 text-white pb-12">
           <div class="flex justify-between px-12">
             <div>
-              <h1 class="text-4xl font-extrabold uppercase">
-                <span class="text-5xl">{{ summonerInfos.account.name[0] }}</span>
-                <span>{{ summonerInfos.account.name.substring(1) }}</span>
-              </h1>
+              <div class="flex items-center">
+                <h1 class="text-4xl font-extrabold uppercase">
+                  <span class="text-5xl">{{ summonerInfos.account.name[0] }}</span>
+                  <span>{{ summonerInfos.account.name.substring(1) }}</span>
+                </h1>
+                <div
+                  v-if="playing"
+                  class="ml-4 flex items-center px-3 py-1 rounded-full bg-teal-800 border border-teal-400"
+                >
+                  <div class="playing-dot bg-teal-flashy w-2 h-2 rounded-full"></div>
+                  <span class="ml-2 text-teal-flashy font-semibold text-sm">In Game</span>
+                </div>
+              </div>
               <div class="flex">
-                <div>
+                <div :class="{'playing': playing}" class="relative w-24 h-24">
                   <div
-                    class="relative w-24 h-24 rounded-full bg-blue-1000 border-2 border-teal-400"
+                    :class="{'border-2': !playing}"
+                    class="relative z-10 w-24 h-24 rounded-full bg-blue-1000 border-teal-400"
                     :style="{background: getSummonerIcon}"
                   >
                     <div
@@ -82,7 +92,7 @@
         </div>
       </template>
     </div>
-    
+
     <MainFooter />
   </div>
 </template>
@@ -124,7 +134,7 @@ export default {
       summonerInfos: state => state.summoner.infos
     }),
     ...mapGetters('ddragon', ['version']),
-    ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
+    ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'playing', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
   },
 
   watch: {
@@ -149,3 +159,62 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.playing::before {
+  z-index: 0;
+  background: rgba(137, 160, 181, 0.2);
+}
+
+.playing::before,
+.playing::after {
+  content: "";
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  top: -2px;
+  left: -2px;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+}
+
+.playing::after {
+  z-index: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0) 30%,
+    rgb(36, 232, 204) 100%
+  );
+  animation: 0.75s linear 0s infinite normal none running rotate;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.playing-dot {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  transform: scale(1);
+  animation: 2.5s ease-in-out 0s infinite normal none running pulse;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(36, 232, 204, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+</style>

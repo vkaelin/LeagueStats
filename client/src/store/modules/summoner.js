@@ -9,7 +9,8 @@ export const state = {
     matchIndex: 0,
     matchList: [],
     matches: [],
-    ranked: {}
+    ranked: {},
+    playing: false
   },
   matchesLoading: false,
   status: '',
@@ -35,6 +36,7 @@ export const mutations = {
     state.infos.matches = infos.matches
     state.infos.ranked = infos.ranked
     state.infos.matchIndex = infos.matches.length
+    state.infos.playing = infos.playing
     state.status = 'found'
   },
   SUMMONER_NOT_FOUND(state) {
@@ -80,6 +82,7 @@ export const actions = {
 export const getters = {
   matchesLoading: state => state.matchesLoading,
   moreMatchesToFetch: state => state.infos.matchIndex < state.infos.matchList.length,
+  playing: state => state.infos.playing,
   summonerFound: state => state.status === 'found',
   summonerNotFound: state => state.status === 'error',
   summonerLoading: state => state.status === 'loading',

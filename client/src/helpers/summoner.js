@@ -64,7 +64,8 @@ export function createSummonerData(RiotData) {
     account: RiotData.account,
     ranked: RiotData.ranked,
     matchList: RiotData.allMatches,
-    matches: createMatchData(RiotData.matchesDetails)
+    matches: createMatchData(RiotData.matchesDetails),
+    playing: RiotData.playing
   }
 }
 

@@ -2,6 +2,7 @@ const RiotRateLimiter = require('riot-ratelimiter')
 const LeagueEndpoint = require('./Endpoints/LeagueEndpoint')
 const MatchEndpoint = require('./Endpoints/MatchEndpoint')
 const MatchlistEndpoint = require('./Endpoints/MatchlistEndpoint')
+const SpectatorEndpoint = require('./Endpoints/SpectatorEndpoint')
 const SummonerEndpoint = require('./Endpoints/SummonerEndpoint')
 
 const DDragonVersionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonVersionEndpoint')
@@ -20,6 +21,7 @@ class Jax {
     this.League = new LeagueEndpoint(this.config, this.limiter)
     this.Match = new MatchEndpoint(this.config, this.limiter)
     this.Matchlist = new MatchlistEndpoint(this.config, this.limiter)
+    this.Spectator = new SpectatorEndpoint(this.config, this.limiter)
     this.Summoner = new SummonerEndpoint(this.config, this.limiter)
 
     this.initDDragon()

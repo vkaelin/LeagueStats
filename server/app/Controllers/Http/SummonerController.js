@@ -28,6 +28,9 @@ class SummonerController {
       account.region = region
       finalJSON.account = account
 
+      // CURRENT GAME
+      const currentGame = await Jax.Spectator.summonerID(account.id)
+      finalJSON.playing = !!currentGame
       // RANKED STATS
       const ranked = await Jax.League.summonerID(account.id)
       finalJSON.ranked = {

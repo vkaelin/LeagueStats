@@ -80,6 +80,7 @@ module.exports = {
         700: '#2c7a7b',
         800: '#285e61',
         900: '#234e52',
+        'flashy': '#24e8cc',
       },
       blue: {
         100: '#ebf8ff',
