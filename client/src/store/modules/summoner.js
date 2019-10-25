@@ -1,5 +1,5 @@
 import { axios } from '@/plugins/axios'
-import { createMatchData, createSummonerData } from '@/helpers/summoner'
+import { createMatchData, createMatesData, createSummonerData } from '@/helpers/summoner'
 
 export const namespaced = true
 
@@ -9,6 +9,7 @@ export const state = {
     matchIndex: 0,
     matchList: [],
     matches: [],
+    mates: [],
     ranked: {},
     playing: false
   },
@@ -20,12 +21,14 @@ export const mutations = {
   MATCHES_LOADING(state) {
     state.matchesLoading = true
   },
-  MATCHES_FOUND(state, newMatches) {
+  MATCHES_FOUND(state, { newMatches, mates }) {
     state.matchesLoading = false
 
     state.infos.matches = [...state.infos.matches, ...newMatches]
 
     state.infos.matchIndex += newMatches.length
+
+    state.infos.mates = mates
   },
   SUMMONER_REQUEST(state) {
     state.status = 'loading'
@@ -36,6 +39,7 @@ export const mutations = {
     state.infos.matches = infos.matches
     state.infos.ranked = infos.ranked
     state.infos.matchIndex = infos.matches.length
+    state.infos.mates = infos.mates
     state.infos.playing = infos.playing
     state.status = 'found'
   },
@@ -52,7 +56,11 @@ export const actions = {
     const gameIds = state.infos.matchList.slice(state.infos.matchIndex, state.infos.matchIndex + 10).map(({ gameId }) => gameId)
 
     const resp = await axios(({ url: 'match', data: { account, gameIds }, method: 'POST' })).catch(() => { })
-    commit('MATCHES_FOUND', createMatchData(resp.data))
+    console.log('--- MATCHES INFOS ---')
+    console.log(resp.data)
+    const newMatches = createMatchData(resp.data.matches)
+    const mates = createMatesData(resp.data.mates)
+    commit('MATCHES_FOUND', { newMatches, mates })
   },
   async summonerRequest({ commit, dispatch, rootState }, { summoner, region }) {
     region = rootState.regionsList[region]
@@ -60,6 +68,8 @@ export const actions = {
     try {
       const resp = await axios(({ url: 'api', data: { summoner, region }, method: 'POST' }))
       if (resp.data) {
+        console.log('--- SUMMONER INFOS ---')
+        console.log(resp.data)
         dispatch('ddragon/getVersion', resp.data.version, { root: true })
         const infos = createSummonerData(resp.data)
         commit('SUMMONER_FOUND', infos)

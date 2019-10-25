@@ -1,6 +1,7 @@
 'use strict'
 
 const MatchHelper = use('App/Helpers/MatchHelper')
+const Summoner = use('App/Models/Summoner')
 
 class MatchController {
   /**
@@ -11,8 +12,15 @@ class MatchController {
     const account = request.input('account')
     const gameIds = request.input('gameIds')
 
-    const result = await MatchHelper.getMatches(account, gameIds)
-    return response.json(result)
+    const summonerDB = await Summoner.where({ puuid: account.puuid }).first()
+    const matches = await MatchHelper.getMatches(account, gameIds, summonerDB)
+
+    await summonerDB.save()
+
+    return response.json({
+      matches,
+      mates: summonerDB.mates.filter(m => m.wins + m.losses > 1)
+    })
   }
 }
 

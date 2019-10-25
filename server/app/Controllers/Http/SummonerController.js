@@ -2,6 +2,7 @@
 
 const Jax = use('Jax')
 const MatchHelper = use('App/Helpers/MatchHelper')
+const Summoner = use('App/Models/Summoner')
 
 class SummonerController {
   /**
@@ -28,9 +29,16 @@ class SummonerController {
       account.region = region
       finalJSON.account = account
 
+      // Summoner in DB
+      let summonerDB = await Summoner.where({ puuid: account.puuid }).first()
+      if (!summonerDB) {
+        summonerDB = await Summoner.create({ puuid: account.puuid })
+      }
+
       // CURRENT GAME
       const currentGame = await Jax.Spectator.summonerID(account.id)
       finalJSON.playing = !!currentGame
+
       // RANKED STATS
       const ranked = await Jax.League.summonerID(account.id)
       finalJSON.ranked = {
@@ -40,15 +48,22 @@ class SummonerController {
       }
 
       // MATCH LIST
-      const matchList = await MatchHelper.getFullMatchList(account)
+      await MatchHelper.updateMatchList(account, summonerDB)
+      const matchList = summonerDB.matchList
       finalJSON.allMatches = matchList
 
       // MATCHES DETAILS
       const gameIds = matchList.slice(0, 10).map(({ gameId }) => gameId)
-      finalJSON.matchesDetails = await MatchHelper.getMatches(account, gameIds)
+      finalJSON.matchesDetails = await MatchHelper.getMatches(account, gameIds, summonerDB)
+
+      // MATES
+      finalJSON.mates = summonerDB.mates.filter(m => m.wins + m.losses > 1)
 
       // PATCH VERSION
       finalJSON.version = Jax.DDragon.Version
+
+      // SAVE IN DB
+      await summonerDB.save()
     } catch (error) {
       console.log('username not found')
       console.log(error)

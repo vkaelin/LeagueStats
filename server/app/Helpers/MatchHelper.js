@@ -6,6 +6,7 @@ const Match = use('App/Models/Match')
 const Summoner = use('App/Models/Summoner')
 const Jax = use('Jax')
 const MatchTransformer = use('App/Transformers/MatchTransformer')
+const SummonerHelper = use('App/Helpers/SummonerHelper')
 
 class MatchHelper {
   /**
@@ -34,15 +35,15 @@ class MatchHelper {
     return matchList
   }
   /**
-   * Return the full MatchList of the summoner (min. 4 months)
+   * Update the full MatchList of the summoner (min. 4 months)
    * @param account of the summoner
+   * @param summonerDB summoner in the database
    */
-  async getFullMatchList(account) {
+  async updateMatchList(account, summonerDB) {
     console.time('matchList')
-    let summonerDB = await Summoner.where({ puuid: account.puuid }).first()
 
     // Summoner has already been searched : we already have a MatchList and we need to update it
-    if (summonerDB) {
+    if (summonerDB.matchList) {
       // Get MatchList
       const matchList = await this.fetchMatchListUntil(account, (newMatchList) => {
         return summonerDB.matchList.some(m => m.gameId === newMatchList[newMatchList.length - 1].gameId)
@@ -54,7 +55,6 @@ class MatchHelper {
           summonerDB.matchList.unshift(match)
         }
       }
-      await summonerDB.save()
       Logger.transport('file').info(`Summoner ${account.name} has been updated.`)
     }
     // First search of the Summoner 
@@ -64,21 +64,20 @@ class MatchHelper {
       const matchList = await this.fetchMatchListUntil(account, (newMatchList) => {
         return (newMatchList.length !== 100 || today - newMatchList[newMatchList.length - 1].timestamp > 10368000000)
       })
-      // Create Summoner in Database
-      summonerDB = await Summoner.create({ puuid: account.puuid, matchList: matchList })
+      // Create Summoner's MatchList in Database
+      summonerDB.matchList = matchList
       Logger.transport('file').info(`Summoner ${account.name} has been created.`)
     }
     console.timeEnd('matchList')
-
-    return summonerDB.matchList
   }
 
   /**
    * Fetch list of matches for a specific Summoner
    * @param account of the summoner
    * @param gameIds of the matches to fetch
+   * @param summonerDB summoner in the database
    */
-  async getMatches(account, gameIds) {
+  async getMatches(account, gameIds, summonerDB) {
     console.time('getMatches')
 
     let matchesDetails = []
@@ -112,6 +111,9 @@ class MatchHelper {
         .transformWith(MatchTransformer)
         .withContext(ctx)
         .toJSON()
+
+      // Update teamMates
+      SummonerHelper.updatePlayedWith(account, summonerDB, matchesFromApi)
 
       matchesDetails = [...matchesDetails, ...matchesFromApi]
 

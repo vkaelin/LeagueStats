@@ -2,7 +2,7 @@
   <div class="bg-blue-900 overflow-hidden min-h-screen flex flex-col">
     <LazyBackground
       :image-source="require('@/assets/img/bg-homepage-1.jpg')"
-      image-class="fixed w-full h-200 z-0"
+      image-class="absolute w-full h-200 z-0"
       more-backgrounds="linear-gradient(180deg, rgba(42, 67, 101, 0) 0%, #2A4365 50%),"
       transition-name="fade"
     ></LazyBackground>
@@ -60,8 +60,11 @@
             </div>
           </div>
 
-          <div class="mt-12 text-center">
-            <ul class="text-gray-900">
+          <div class="mt-12 text-center flex">
+            <div class="mt-4 w-3/12">
+              <SummonerMates />
+            </div>
+            <ul class="w-9/12 text-gray-900">
               <Match
                 v-for="(match, index) in summonerInfos.matches"
                 :key="index"
@@ -103,10 +106,11 @@ import LazyBackground from '@/components/LazyBackgroundImage.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import Match from '@/components/Match.vue'
-import RecentActivity from '@/components/RecentActivity.vue'
+import RecentActivity from '@/components/Summoner/RecentActivity.vue'
 import SearchForm from '@/components/SearchForm.vue'
-import SummonerLoader from '@/components/SummonerLoader.vue'
-import SummonerRanked from '@/components/SummonerRanked.vue'
+import SummonerLoader from '@/components/Summoner/SummonerLoader.vue'
+import SummonerMates from '@/components/Summoner/SummonerMates.vue'
+import SummonerRanked from '@/components/Summoner/SummonerRanked.vue'
 
 export default {
   components: {
@@ -117,6 +121,7 @@ export default {
     RecentActivity,
     SearchForm,
     SummonerLoader,
+    SummonerMates,
     SummonerRanked,
   },
 

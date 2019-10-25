@@ -1,14 +1,14 @@
 <template>
   <li class="relative">
-    <div class="game-status absolute left-0 h-32 w-32">
+    <!-- <div class="game-status absolute left-0 h-32 w-32">
       <div class="text-2xl text-teal-500 uppercase font-extrabold">{{ data.status }}</div>
-    </div>
+    </div> -->
     <div
       :class="matchResultClass"
-      class="ml-10 match relative mt-4 rounded-lg text-white text-base"
+      class="ml-4 match relative mt-4 bg-blue-800 rounded-lg text-white text-base"
     >
       <div class="relative z-20 flex flex-wrap px-5 py-3">
-        <div class="first w-1/3 text-left">
+        <div class="first w-4/12 text-left">
           <div>
             <div
               class="h-6 text-lg text-teal-500 font-extrabold uppercase leading-none"
@@ -49,15 +49,15 @@
                   class="w-6 h-6 bg-blue-1000 rounded-md"
                 ></div>
               </div>
-              <div class="ml-12 flex flex-col justify-center items-center leading-none">
-                <div class="text-3xl font-extrabold text-teal-500">
+              <div class="mx-auto flex flex-col justify-center items-center leading-none">
+                <div class="text-xl font-extrabold text-teal-500">
                   <span class>{{ data.kills }}</span>
                   <span class>/</span>
                   <span class>{{ data.deaths }}</span>
                   <span class>/</span>
                   <span class>{{ data.assists }}</span>
                 </div>
-                <div class="mt-2 text-white text-sm font-extrabold">{{ data.kda }} KDA</div>
+                <div class="mt-2 text-white text-xs font-extrabold">{{ data.kda }} KDA</div>
               </div>
             </div>
 
@@ -67,7 +67,7 @@
           </div>
         </div>
 
-        <div class="second w-1/3 py-6 flex items-center">
+        <div class="second w-3/12 py-6 flex items-center">
           <div class="items flex flex-wrap">
             <div
               v-for="(item, index) in data.items"
@@ -77,49 +77,49 @@
             ></div>
           </div>
 
-          <div class="ml-12 leading-none">
+          <div class="ml-4 leading-none">
             <div class="flex items-center">
               <img src="@/assets/img/icons/Creep.svg" alt="Minions" />
-              <div class="ml-1 text-teal-300 text-lg font-bold">
+              <div class="ml-1 text-teal-300 text-sm font-bold">
                 {{ data.minions }}
                 <span class="font-normal">cs</span>
               </div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/Gold.svg" alt="Gold" />
-              <div class="ml-1 gold text-lg font-bold">
+              <div class="ml-1 gold text-sm font-bold">
                 {{ data.gold }}
-                <span class="font-normal">gold</span>
+                <!-- <span class="font-normal">gold</span> -->
               </div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/Damage.svg" alt="Damage" />
-              <div class="ml-1 damage text-lg font-bold">
+              <div class="ml-1 damage text-sm font-bold">
                 {{ data.damage }}
-                <span class="font-normal">damage</span>
+                <!-- <span class="font-normal">dmg</span> -->
               </div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/KillParticipation.svg" alt="KillParticipation" />
-              <div class="ml-1 kp text-lg font-bold">
+              <div class="ml-1 kp text-sm font-bold">
                 {{ data.kp }}
-                <span class="font-normal">kp</span>
+                <!-- <span class="font-normal">kp</span> -->
               </div>
             </div>
           </div>
         </div>
 
-        <div class="third w-1/3 py-1 flex items-center">
+        <div class="third w-5/12 py-1 flex items-center">
           <div v-if="data.allyTeam.length > 1">
             <div
               v-for="(ally, index) in data.allyTeam"
               :key="'player-' + index"
-              class="flex items-center leading-none"
+              class="ml-4 flex items-center leading-none"
             >
               <router-link
                 :to="{ name: 'summoner', params: { region: $route.params.region, name: ally.name }}"
                 :class="isSummonerProfile(ally.name)"
-                class="w-20 text-right overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium hover:text-blue-100"
+                class="w-16 text-right overflow-hidden text-overflow whitespace-no-wrap text-xs text-blue-200 font-medium hover:text-blue-100"
               >{{ ally.name }}</router-link>
               <div
                 :class="index !== 0 ? '-mt-1': ''"
@@ -137,7 +137,7 @@
               ></div>
               <router-link
                 :to="{ name: 'summoner', params: { region: $route.params.region, name: data.enemyTeam[index].name }}"
-                class="ml-1 w-20 text-left overflow-hidden text-overflow whitespace-no-wrap text-sm text-blue-200 font-medium hover:text-blue-100"
+                class="ml-1 w-16 text-left overflow-hidden text-overflow whitespace-no-wrap text-xs text-blue-200 font-medium hover:text-blue-100"
               >{{ data.enemyTeam[index].name }}</router-link>
             </div>
           </div>
@@ -189,11 +189,11 @@ export default {
 
 <style scoped>
 .match {
-  background-image: linear-gradient(
+  /* background-image: linear-gradient(
     90deg,
     #2c5282 0%,
     rgba(44, 82, 130, 0) 100%
-  );
+  ); */
 }
 
 .match::after {
@@ -233,6 +233,7 @@ export default {
 
 .game-status {
   top: 50%;
+  left: 6px;
   transform: translateY(-50%) rotate(-90deg);
 }
 
