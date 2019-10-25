@@ -43,7 +43,7 @@
           <div class="w-1/4">Winrate</div>
         </div>
         <ul class="mt-1 text-gray-100">
-          <li v-for="mate in mates" :key="mate.name" class="flex justify-between items-center">
+          <li v-for="mate in mates.slice(0, maxMates)" :key="mate.name" class="flex justify-between items-center">
             <router-link
               :to="{ name: 'summoner', params: { region: $route.params.region, name: mate.name }}"
               class="w-2/4 hover:text-teal-200"
@@ -91,6 +91,12 @@ import Dropdown from '@/components/Dropdown.vue'
 export default {
   components: {
     Dropdown,
+  },
+
+  data() {
+    return {
+      maxMates: 15
+    }
   },
 
   computed: {
