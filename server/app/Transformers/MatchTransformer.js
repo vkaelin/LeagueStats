@@ -103,7 +103,7 @@ class MatchTransformer extends BumblebeeTransformer {
     enemyTeam.sort(MatchHelper.sortTeamByRole)
 
     return {
-      puuid: account.puuid,
+      summoner_puuid: account.puuid,
       gameId: match.gameId,
       result: win,
       status,

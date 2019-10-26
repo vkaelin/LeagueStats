@@ -30,10 +30,10 @@ class SummonerController {
       finalJSON.account = account
 
       // Summoner in DB
-      let summonerDB = await Summoner.where({ puuid: account.puuid }).first()
-      if (!summonerDB) {
-        summonerDB = await Summoner.create({ puuid: account.puuid })
-      }
+      const summonerDB = await Summoner.findOrCreate(
+        { puuid: account.puuid },
+        { puuid: account.puuid }
+      )
 
       // CURRENT GAME
       const currentGame = await Jax.Spectator.summonerID(account.id)

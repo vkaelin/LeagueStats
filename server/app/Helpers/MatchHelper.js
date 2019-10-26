@@ -83,7 +83,7 @@ class MatchHelper {
     let matchesDetails = []
     const matchesToGetFromRiot = []
     for (let i = 0; i < gameIds.length; ++i) {
-      const matchSaved = await Match.where({ gameId: gameIds[i], puuid: account.puuid }).first()
+      const matchSaved = await summonerDB.matches().where({ gameId: gameIds[i] }).first()
       if (matchSaved) {
         console.log('match in mongodb')
         matchesDetails.push(matchSaved)
@@ -119,7 +119,7 @@ class MatchHelper {
 
       /* Save all matches from Riot Api in db */
       for (const match of matchesFromApi) {
-        await Match.create(match)
+        await summonerDB.matches().create(match)
         console.log('match saved')
       }
     }
