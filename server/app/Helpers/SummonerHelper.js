@@ -14,6 +14,7 @@ class SummonerHelper {
     let teamMates = summonerDB.mates || []
 
     for (const match of matches) {
+      if(match.result === 'Remake') continue
       const win = match.result === 'Win'
 
       for (const ally of match.allyTeam) {
