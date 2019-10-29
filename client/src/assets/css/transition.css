@@ -1,3 +1,4 @@
+/* purgecss start ignore */
 .transition-all {
   transition-property: all;
 }
@@ -52,3 +53,4 @@
     transform: translateX(400px);
     opacity: 0;
 }
+/* purgecss end ignore */
