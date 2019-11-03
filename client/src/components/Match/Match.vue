@@ -1,11 +1,9 @@
 <template>
-  <li class="relative">
-    <!-- <div class="game-status absolute left-0 h-32 w-32">
-      <div class="text-2xl text-teal-500 uppercase font-extrabold">{{ data.status }}</div>
-    </div> -->
+  <li class="ml-4 relative">
     <div
-      :class="matchResultClass"
-      class="ml-4 match relative mt-4 bg-blue-800 rounded-lg text-white text-base"
+      @click="displayDetails"
+      :class="[matchResultClass, showDetails ? 'rounded-t-lg' : 'rounded-lg']"
+      class="match relative mt-4 bg-blue-800 text-white text-base cursor-pointer hover:shadow-xl"
     >
       <div class="relative z-20 flex flex-wrap px-5 py-3">
         <div class="first w-4/12 text-left">
@@ -116,11 +114,10 @@
               :key="'player-' + index"
               class="ml-4 flex items-center leading-none"
             >
-              <router-link
-                :to="{ name: 'summoner', params: { region: $route.params.region, name: ally.name }}"
+              <div
                 :class="isSummonerProfile(ally.name)"
-                class="w-16 text-right overflow-hidden text-overflow whitespace-no-wrap text-xs text-blue-200 font-medium hover:text-blue-100"
-              >{{ ally.name }}</router-link>
+                class="w-16 text-right overflow-hidden text-overflow whitespace-no-wrap text-xs text-blue-200 font-medium"
+              >{{ ally.name }}</div>
               <div
                 :class="index !== 0 ? '-mt-1': ''"
                 :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${ally.champion.id}.png')`}"
@@ -135,10 +132,9 @@
                 :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${data.enemyTeam[index].champion.id}.png')`}"
                 class="w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full"
               ></div>
-              <router-link
-                :to="{ name: 'summoner', params: { region: $route.params.region, name: data.enemyTeam[index].name }}"
+              <div
                 class="ml-1 w-16 text-left overflow-hidden text-overflow whitespace-no-wrap text-xs text-blue-200 font-medium hover:text-blue-100"
-              >{{ data.enemyTeam[index].name }}</router-link>
+              >{{ data.enemyTeam[index].name }}</div>
             </div>
           </div>
           <div class="ml-auto flex flex-col items-center justify-center">
@@ -149,18 +145,30 @@
         </div>
       </div>
     </div>
+    <DetailedMatch :data="getMatchDetails(data.gameId) || {}" :details-open="showDetails" />
   </li>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
+import DetailedMatch from '@/components/Match/DetailedMatch'
 
 export default {
+  components: {
+    DetailedMatch
+  },
+
   props: {
     data: {
       type: Object,
       required: true
     },
+  },
+
+  data() {
+    return {
+      showDetails: false
+    }
   },
 
   computed: {
@@ -175,39 +183,34 @@ export default {
       roles: state => state.roles
     }),
     ...mapGetters('ddragon', ['version']),
+    ...mapGetters('detailedMatch', ['getMatchDetails']),
   },
 
   methods: {
+    displayDetails() {
+      this.showDetails = !this.showDetails
+
+      if (!this.getMatchDetails(this.data.gameId)) {
+        this.matchDetails(this.data.gameId)
+      }
+    },
     isSummonerProfile(allyName) {
       return {
         'font-bold': this.$route.params.name.toLowerCase() === allyName.toLowerCase()
       }
-    }
+    },
+    ...mapActions('detailedMatch', ['matchDetails']),
   }
 }
 </script>
 
 <style scoped>
 .match {
-  /* background-image: linear-gradient(
-    90deg,
-    #2c5282 0%,
-    rgba(44, 82, 130, 0) 100%
-  ); */
+  transition-duration: 0.3s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 
-.match::after {
-  content: "";
-  position: absolute;
-  z-index: 10;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 0.5rem;
-}
-
-.loss::after {
+.loss {
   background-image: linear-gradient(
     90deg,
     rgba(140, 0, 0, 0.3) 0%,
@@ -215,7 +218,7 @@ export default {
   );
 }
 
-.remake::after {
+.remake {
   background-image: linear-gradient(
     90deg,
     rgba(233, 169, 75, 0.3) 0%,
@@ -223,7 +226,7 @@ export default {
   );
 }
 
-.win::after {
+.win {
   background-image: linear-gradient(
     90deg,
     rgba(1, 97, 28, 0.3) 0%,

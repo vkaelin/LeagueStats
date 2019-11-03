@@ -7,6 +7,29 @@ const uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
 const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
 
 /**
+ * Return all the infos about a detailed match
+ * @param  detailedMatch : all data about the match from the Riot API
+ */
+export function createDetailedMatchData(detailedMatch) {
+  detailedMatch.blueTeam.players = detailedMatch.blueTeam.players.map(p => getPlayerData(p))
+  detailedMatch.redTeam.players = detailedMatch.redTeam.players.map(p => getPlayerData(p))
+
+  function getPlayerData(p) {
+    // Items
+    for (let i = 0; i < p.items.length; i++) {
+      p.items[i] = getItemLink(p.items[i])
+    }
+
+    // Summoner Spells
+    p.firstSum = getSummonerLink(p.firstSum)
+    p.secondSum = getSummonerLink(p.secondSum)
+    return p
+  }
+
+  return detailedMatch
+}
+
+/**
  * Return all the infos about a list of matches built with the Riot API data
  * @param {Object} RiotData : all data from the Riot API
  */
@@ -107,6 +130,7 @@ export function getRankImg(leagueData) {
 }
 
 function getSummonerLink(id) {
+  if(id === 0) return null
   const spellName = Object.entries(summonersJSON.data).find(([, spell]) => Number(spell.key) === id)[0]
   return `https://ddragon.leagueoflegends.com/cdn/${store.getters['ddragon/version']}/img/spell/${spellName}.png`
 }

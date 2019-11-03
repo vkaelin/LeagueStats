@@ -1,5 +1,8 @@
 'use strict'
 
+const Jax = use('Jax')
+const DetailedMatch = use('App/Models/DetailedMatch')
+const DetailedMatchTransformer = use('App/Transformers/DetailedMatchTransformer')
 const MatchHelper = use('App/Helpers/MatchHelper')
 const Summoner = use('App/Models/Summoner')
 
@@ -20,6 +23,34 @@ class MatchController {
     return response.json({
       matches,
       mates: summonerDB.mates.filter(m => m.wins + m.losses > 1)
+    })
+  }
+
+  /**
+   * POST - Return details data for one specific match
+   */
+  async show({ request, response }) {
+    console.log('Match details request')
+    const gameId = request.input('gameId')
+    const region = request.input('region')
+    console.log(gameId, region)
+
+    let matchFromRiot = await Jax.Match.get(gameId)
+
+    const champions = await Jax.DDragon.Champion.list()
+    const runes = await Jax.DDragon.Rune.list()
+    const ctx = {
+      champions: champions.data,
+      runes,
+      MatchHelper
+    }
+
+    matchFromRiot = DetailedMatchTransformer.transform(matchFromRiot, ctx)
+
+    // DetailedMatch.save(matchFromRiot)
+
+    return response.json({
+      matchDetails: matchFromRiot
     })
   }
 }

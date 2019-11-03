@@ -1,11 +1,8 @@
 'use strict'
 
-const Bumblebee = use('Adonis/Addons/Bumblebee')
 const Logger = use('Logger')
-const Match = use('App/Models/Match')
-const Summoner = use('App/Models/Summoner')
 const Jax = use('Jax')
-const MatchTransformer = use('App/Transformers/MatchTransformer')
+const BasicMatchTransformer = use('App/Transformers/BasicMatchTransformer')
 const SummonerHelper = use('App/Helpers/SummonerHelper')
 
 class MatchHelper {
@@ -107,10 +104,20 @@ class MatchHelper {
         MatchHelper: this
       }
 
-      matchesFromApi = await Bumblebee.create().collection(matchesFromApi)
-        .transformWith(MatchTransformer)
-        .withContext(ctx)
-        .toJSON()
+      // matchesFromApi = await Bumblebee.create().collection(matchesFromApi)
+      //   .transformWith(MatchTransformer)
+      //   .withContext(ctx)
+      //   .toJSON()
+
+      console.time('newTransformer')
+      matchesFromApi = matchesFromApi.map(m => {
+        if (m) return BasicMatchTransformer.transform(m, ctx)
+      })
+      console.timeEnd('newTransformer')
+
+      console.log(matchesFromApi.length)
+      Logger.transport('file').info(matchesFromApi)
+
 
       // Update teamMates
       SummonerHelper.updatePlayedWith(account, summonerDB, matchesFromApi)

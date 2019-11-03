@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as ddragon from '@/store/modules/ddragon'
+import * as detailedMatch from '@/store/modules/detailedMatch'
 import * as notification from '@/store/modules/notification'
 import * as summoner from '@/store/modules/summoner'
 
@@ -11,10 +12,12 @@ const debug = process.env.NODE_ENV !== 'production'
 export default new Vuex.Store({
   modules: {
     ddragon,
+    detailedMatch,
     notification,
     summoner
   },
   state: {
+    currentRegion: 'euw1',
     regionsList: {
       'br': 'br1',
       'eune': 'eun1',
@@ -29,6 +32,16 @@ export default new Vuex.Store({
       'ru': 'ru'
     },
     roles: ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+  },
+  mutations: {
+    UPDATE_REGION(state, newRegion) {
+      state.currentRegion = state.regionsList[newRegion]
+    }
+  },
+  actions: {
+    updateCurrentRegion({ commit }, newRegion) {
+      commit('UPDATE_REGION', newRegion)
+    }
   },
   strict: debug
 })

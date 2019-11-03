@@ -105,7 +105,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import LazyBackground from '@/components/LazyBackgroundImage.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
 import MainFooter from '@/components/MainFooter.vue'
-import Match from '@/components/Match.vue'
+import Match from '@/components/Match/Match.vue'
 import RecentActivity from '@/components/Summoner/RecentActivity.vue'
 import SearchForm from '@/components/SearchForm.vue'
 import SummonerLoader from '@/components/Summoner/SummonerLoader.vue'
@@ -145,11 +145,13 @@ export default {
   watch: {
     $route() {
       console.log('route changed')
+      this.updateCurrentRegion(this.region)
       this.apiCall()
     }
   },
 
   mounted() {
+    this.updateCurrentRegion(this.region)
     this.apiCall()
   },
 
@@ -160,6 +162,7 @@ export default {
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
+    ...mapActions(['updateCurrentRegion']),
     ...mapActions('summoner', ['summonerRequest', 'moreMatches']),
   }
 }

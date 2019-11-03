@@ -81,8 +81,6 @@ export default {
   },
 
   created() {
-    console.log('activity')
-
     this.createGrid()
   },
 
