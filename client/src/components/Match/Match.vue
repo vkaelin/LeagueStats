@@ -79,21 +79,21 @@
             <div class="flex items-center">
               <img src="@/assets/img/icons/Creep.svg" alt="Minions" />
               <div class="ml-1 text-teal-300 text-sm font-bold">
-                {{ data.minions }}
+                {{ data.stats.minions }}
                 <span class="font-normal">cs</span>
               </div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/Gold.svg" alt="Gold" />
               <div class="ml-1 gold text-sm font-bold">
-                {{ data.gold }}
+                {{ data.stats.gold }}
                 <!-- <span class="font-normal">gold</span> -->
               </div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/Damage.svg" alt="Damage" />
               <div class="ml-1 damage text-sm font-bold">
-                {{ data.damage }}
+                {{ data.stats.dmgChamp }}
                 <!-- <span class="font-normal">dmg</span> -->
               </div>
             </div>
