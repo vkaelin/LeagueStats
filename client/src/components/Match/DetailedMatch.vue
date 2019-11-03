@@ -1,47 +1,49 @@
 <template>
   <transition name="slide">
     <div v-if="data.status === 'loaded' && detailsOpen" class="bg-blue-800 rounded-b-lg">
-      <DetailedMatchTeam :data="data.blueTeam" />
+      <DetailedMatchTeam :data="allyTeam" />
 
       <div class="py-5">
         <div class="px-3 flex justify-between">
-          <div v-if="data.blueTeam.bans">
+          <div v-if="allyTeam.bans">
             <div
-              v-for="ban in data.blueTeam.bans"
+              v-for="ban in allyTeam.bans"
               :key="'ban-' + ban.pickTurn"
-              :class="{'ml-2': ban.pickTurn !== 1}"
-              class="relative ban ban-blue inline-block border-2 border-teal-500 rounded-full"
+              :class="[{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}, banColorChampion(allyTeam.color)]"
+              class="relative ban inline-block border-2 rounded-full"
             >
               <div
                 :style="[ban.champion.id ? {backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${ban.champion.id}.png')`} : '']"
                 class="ban-img w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
               ></div>
               <div
-                class="absolute ban-order w-4 h-4 flex items-center justify-center bg-teal-500 text-xs text-teal-100 font-bold rounded-full"
+                :class="banColorPickOrder(allyTeam.color)"
+                class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs font-bold rounded-full"
               >{{ ban.pickTurn }}</div>
             </div>
           </div>
 
-          <div v-if="data.redTeam.bans">
+          <div v-if="enemyTeam.bans">
             <div
-              v-for="ban in data.redTeam.bans"
+              v-for="ban in enemyTeam.bans"
               :key="'ban-' + ban.pickTurn"
-              :class="{'ml-2': ban.pickTurn !== 6}"
-              class="relative ban ban-red inline-block border-2 border-red-500 rounded-full"
+              :class="[{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}, banColorChampion(enemyTeam.color)]"
+              class="relative ban inline-block border-2 rounded-full"
             >
               <div
                 :style="[ban.champion.id ? {backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${ban.champion.id}.png')`} : '']"
                 class="ban-img w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
               ></div>
               <div
-                class="absolute ban-order w-4 h-4 flex items-center justify-center bg-red-500 text-xs text-red-100 font-bold rounded-full"
+                :class="banColorPickOrder(enemyTeam.color)"
+                class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs font-bold rounded-full"
               >{{ ban.pickTurn }}</div>
             </div>
           </div>
         </div>
       </div>
 
-      <DetailedMatchTeam :data="data.redTeam" />
+      <DetailedMatchTeam :data="enemyTeam" />
     </div>
     <div v-else-if="data.status === 'loading' && detailsOpen">
       <p class="bg-blue-800 py-5 text-blue-100 text-lg font-semibold">Loading...</p>
@@ -68,7 +70,22 @@ export default {
   },
 
   computed: {
+    allyTeam() {
+      return this.data.blueTeam.players.some(p => p.name.toLowerCase() === this.$route.params.name.toLowerCase()) ? this.data.blueTeam : this.data.redTeam
+    },
+    enemyTeam() {
+      return this.data.blueTeam.players.some(p => p.name.toLowerCase() === this.$route.params.name.toLowerCase()) ? this.data.redTeam : this.data.blueTeam
+    },
     ...mapGetters('ddragon', ['version']),
+  },
+
+  methods: {
+    banColorChampion(colorTeam) {
+      return colorTeam === 'Blue' ? 'ban-blue border-teal-500' : 'ban-red border-red-500'
+    },
+    banColorPickOrder(colorTeam) {
+      return colorTeam === 'Blue' ? 'text-teal-100 bg-teal-500' : 'text-red-100 bg-red-500'
+    }
   }
 }
 </script>

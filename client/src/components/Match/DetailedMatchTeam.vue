@@ -1,5 +1,5 @@
 <template>
-  <table :class="{'rounded-b-lg overflow-hidden': !blueTeam}" class="w-full table-auto">
+  <table :class="{'rounded-b-lg overflow-hidden': !allyTeam}" class="w-full table-auto">
     <thead class="leading-none">
       <tr :class="`heading-${data.result}`" class="heading text-blue-200 font-semibold">
         <th class="py-5 border-r border-blue-700">
@@ -38,7 +38,7 @@
         <th class="px-2 py-5 text-sm">kp</th>
       </tr>
     </thead>
-    <tbody :class="[{'border-b border-blue-700': blueTeam}, data.result]" class="leading-none">
+    <tbody :class="[{'border-b border-blue-700': allyTeam}, data.result]" class="leading-none">
       <tr v-for="(player, index) in data.players" :key="player.name + index">
         <td class="py-2 border-r border-blue-700">
           <div class="px-2 flex justify-between">
@@ -170,7 +170,7 @@ export default {
 
   data() {
     return {
-      blueTeam: this.data.color === 'Blue'
+      allyTeam: this.data.players.some(p => p.name.toLowerCase() === this.$route.params.name.toLowerCase())
     }
   },
 
@@ -180,7 +180,7 @@ export default {
 
   methods: {
     displayBorderbottom(index) {
-      return this.blueTeam || index !== this.data.players.length - 1
+      return this.allyTeam || index !== this.data.players.length - 1
     }
   }
 }
