@@ -8,12 +8,15 @@
               :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
               class="pl-2"
             >{{ allyTeam ? 'Ally' : 'Enemy' }} Team</span>
-            <span>{{ `${data.teamStats.kills}/${data.teamStats.deaths}/${data.teamStats.assists}` }}</span>
-            <div class="flex pr-2">
+            <div
+              v-if="data.result === 'Win'"
+              :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
+              class="flex pr-2"
+            >
               <svg class="w-4 h-4 items-center">
-                <use xlink:href="#gold" />
+                <use xlink:href="#award" />
               </svg>
-              <span class="ml-2px">{{ +(data.teamStats.gold / 1000).toFixed(2) + 'k' }}</span>
+              <span class="ml-2px">VICTORY</span>
             </div>
           </div>
         </th>
