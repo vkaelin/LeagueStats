@@ -5,9 +5,9 @@
         <th class="py-5 border-r border-blue-700">
           <div class="flex justify-between">
             <span
-              :class="data.color === 'Blue' ? 'text-teal-400' : 'text-red-400'"
+              :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
               class="pl-2"
-            >{{ data.color }} Team</span>
+            >{{ allyTeam ? 'Ally' : 'Enemy' }} Team</span>
             <span>{{ `${data.teamStats.kills}/${data.teamStats.deaths}/${data.teamStats.assists}` }}</span>
             <div class="flex pr-2">
               <svg class="w-4 h-4 items-center">
@@ -55,9 +55,10 @@
                 class="ml-3 relative w-8 h-8 bg-cover bg-center bg-blue-1000 rounded-full"
               >
                 <div
-                  class="absolute level-position bottom-0 w-5 h-5 bg-blue-900 rounded-full text-teal-100 text-xs"
+                  :class="allyTeam ? 'bg-teal-500 text-teal-100' : 'bg-red-500 text-red-100'"
+                  class="absolute level-position bottom-0 flex items-center justify-center w-4 h-4 rounded-full text-xxs"
                 >
-                  <span class="leading-relaxed">{{ player.level }}</span>
+                  <span>{{ player.level }}</span>
                 </div>
               </div>
               <div class="ml-1 flex flex-col justify-around">
@@ -253,6 +254,6 @@ export default {
 }
 
 .level-position {
-  left: -10px;
+  left: -5px;
 }
 </style>

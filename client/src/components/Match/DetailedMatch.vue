@@ -9,16 +9,15 @@
             <div
               v-for="ban in allyTeam.bans"
               :key="'ban-' + ban.pickTurn"
-              :class="[{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}, banColorChampion(allyTeam.color)]"
-              class="relative ban inline-block border-2 rounded-full"
+              :class="[{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}]"
+              class="relative ban ban-blue inline-block border-2 border-teal-500 rounded-full"
             >
               <div
                 :style="[ban.champion.id ? {backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${ban.champion.id}.png')`} : '']"
                 class="ban-img w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
               ></div>
               <div
-                :class="banColorPickOrder(allyTeam.color)"
-                class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs font-bold rounded-full"
+                class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs text-teal-100 bg-teal-500 font-bold rounded-full"
               >{{ ban.pickTurn }}</div>
             </div>
           </div>
@@ -27,16 +26,15 @@
             <div
               v-for="ban in enemyTeam.bans"
               :key="'ban-' + ban.pickTurn"
-              :class="[{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}, banColorChampion(enemyTeam.color)]"
-              class="relative ban inline-block border-2 rounded-full"
+              :class="[{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}]"
+              class="relative ban ban-red inline-block border-2 border-red-500 rounded-full"
             >
               <div
                 :style="[ban.champion.id ? {backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${ban.champion.id}.png')`} : '']"
                 class="ban-img w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
               ></div>
               <div
-                :class="banColorPickOrder(enemyTeam.color)"
-                class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs font-bold rounded-full"
+                class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs text-red-100 bg-red-500 font-bold rounded-full"
               >{{ ban.pickTurn }}</div>
             </div>
           </div>
@@ -77,15 +75,6 @@ export default {
       return this.data.blueTeam.players.some(p => p.name.toLowerCase() === this.$route.params.name.toLowerCase()) ? this.data.redTeam : this.data.blueTeam
     },
     ...mapGetters('ddragon', ['version']),
-  },
-
-  methods: {
-    banColorChampion(colorTeam) {
-      return colorTeam === 'Blue' ? 'ban-blue border-teal-500' : 'ban-red border-red-500'
-    },
-    banColorPickOrder(colorTeam) {
-      return colorTeam === 'Blue' ? 'text-teal-100 bg-teal-500' : 'text-red-100 bg-red-500'
-    }
   }
 }
 </script>
