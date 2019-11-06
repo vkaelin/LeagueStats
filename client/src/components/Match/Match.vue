@@ -49,13 +49,13 @@
               </div>
               <div class="mx-auto flex flex-col justify-center items-center leading-none">
                 <div class="text-xl font-extrabold text-teal-500">
-                  <span class>{{ data.kills }}</span>
+                  <span class>{{ data.stats.kills }}</span>
                   <span class>/</span>
-                  <span class>{{ data.deaths }}</span>
+                  <span class>{{ data.stats.deaths }}</span>
                   <span class>/</span>
-                  <span class>{{ data.assists }}</span>
+                  <span class>{{ data.stats.assists }}</span>
                 </div>
-                <div class="mt-2 text-white text-xs font-extrabold">{{ data.kda }} KDA</div>
+                <div class="mt-2 text-white text-xs font-extrabold">{{ data.stats.kda }} KDA</div>
               </div>
             </div>
 
@@ -100,7 +100,7 @@
             <div class="flex items-center">
               <img src="@/assets/img/icons/KillParticipation.svg" alt="KillParticipation" />
               <div class="ml-1 kp text-sm font-bold">
-                {{ data.kp }}
+                {{ data.stats.kp }}
                 <!-- <span class="font-normal">kp</span> -->
               </div>
             </div>

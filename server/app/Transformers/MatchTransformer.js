@@ -34,20 +34,13 @@ class MatchTransformer {
     const name = identity.player.summonerName
     const champion = (({ id, name }) => ({ id, name }))(Object.entries(this.champions).find(([, champion]) => Number(champion.key) === player.championId)[1])
     const role = this.MatchHelper.getRoleName(player.timeline)
-
-    const kills = player.stats.kills
-    const deaths = player.stats.deaths
-    const assists = player.stats.assists
-    let kda
-    if (kills + assists !== 0 && deaths === 0) {
-      kda = '∞'
-    } else {
-      kda = +(deaths === 0 ? 0 : ((kills + assists) / deaths)).toFixed(2)
-    }
     const level = player.stats.champLevel
 
     // Regular stats / Full match stats
     const stats = {
+      kills: player.stats.kills,
+      deaths: player.stats.deaths,
+      assists: player.stats.assists,
       minions: player.stats.totalMinionsKilled + player.stats.neutralMinionsKilled,
       vision: player.stats.visionScore,
       gold: +(player.stats.goldEarned / 1000).toFixed(1) + 'k',
@@ -56,19 +49,25 @@ class MatchTransformer {
       dmgTaken: +(player.stats.totalDamageTaken / 1000).toFixed(1) + 'k',
     }
 
+    if (stats.kills + stats.assists !== 0 && stats.deaths === 0) {
+      stats.kda = '∞'
+    } else {
+      stats.kda = +(stats.deaths === 0 ? 0 : ((stats.kills + stats.assists) / stats.deaths)).toFixed(2)
+    }
+
     // Percent stats / Per minute stats : only for detailed match
     let percentStats
-    let kp
     if (detailed) {
       percentStats = {
         minions: +(stats.minions / (this.match.gameDuration / 60)).toFixed(2),
         vision: +(stats.vision / (this.match.gameDuration / 60)).toFixed(2),
+        gold: +(player.stats.goldEarned * 100 / teamStats.gold).toFixed(1) + '%',
         dmgChamp: +(player.stats.totalDamageDealtToChampions * 100 / teamStats.dmgChamp).toFixed(1) + '%',
         dmgObj: +(player.stats.damageDealtToObjectives * 100 / teamStats.dmgObj).toFixed(1) + '%',
         dmgTaken: +(player.stats.totalDamageTaken * 100 / teamStats.dmgTaken).toFixed(1) + '%',
       }
 
-      kp = teamStats.kills === 0 ? '0%' : +((kills + assists) * 100 / teamStats.kills).toFixed(1) + '%'
+      stats.kp = teamStats.kills === 0 ? '0%' : +((stats.kills + stats.assists) * 100 / teamStats.kills).toFixed(1) + '%'
     } else {
       const totalKills = this.match.participants.reduce((prev, current) => {
         if (current.teamId !== player.teamId) {
@@ -77,7 +76,7 @@ class MatchTransformer {
         return prev + current.stats.kills
       }, 0)
 
-      kp = totalKills === 0 ? '0%' : +((kills + assists) * 100 / totalKills).toFixed(1) + '%'
+      stats.kp = totalKills === 0 ? '0%' : +((stats.kills + stats.assists) * 100 / totalKills).toFixed(1) + '%'
     }
 
 
@@ -111,12 +110,7 @@ class MatchTransformer {
       role,
       primaryRune,
       secondaryRune,
-      kills,
-      deaths,
-      assists,
-      kda,
       level,
-      kp,
       items,
       firstSum,
       secondSum,

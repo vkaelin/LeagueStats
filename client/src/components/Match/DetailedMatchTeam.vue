@@ -117,45 +117,45 @@
           </div>
         </td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
-        >{{ player.kills }}</td>
+          :style="bgColor(player, '71, 132, 116', 'kills')"
+          class="p-2 text-white text-sm"
+        >{{ player.stats.kills }}</td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
-        >{{ player.deaths }}</td>
+          :style="bgColor(player, '156, 71, 109', 'deaths')"
+          class="p-2 text-white text-sm"
+        >{{ player.stats.deaths }}</td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
-        >{{ player.assists }}</td>
+          :style="bgColor(player, '146, 100, 79', 'assists')"
+          class="p-2 text-white text-sm"
+        >{{ player.stats.assists }}</td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
+          class="p-2 text-white text-sm"
+          :style="bgColor(player, '140, 101, 182', 'minions')"
         >{{ player.percentStats.minions }}</td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
+          class="p-2 text-white text-sm"
+          :style="bgColor(player, '55, 118, 179', 'vision')"
         >{{ player.percentStats.vision }}</td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
+          class="p-2 text-white text-sm"
+          :style="bgColor(player, '146, 100, 79', 'gold')"
         >{{ player.stats.gold }}</td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
+          :style="bgColor(player, '156, 71, 109', 'dmgChamp')"
+          class="p-2 text-white text-sm"
         >{{ player.stats.dmgChamp }}</td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
+          :style="bgColor(player, '156, 71, 109', 'dmgObj')"
+          class="p-2 text-white text-sm text-red"
         >{{ player.stats.dmgObj }}</td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
+          :style="bgColor(player, '146, 145, 106', 'dmgTaken')"
+          class="p-2 text-white text-sm"
         >{{ player.stats.dmgTaken }}</td>
         <td
-          :class="{'border-b border-blue-700': displayBorderbottom(index)}"
-          class="p-2 text-white text-xs font-semibold"
-        >{{ player.kp }}</td>
+          :style="bgColor(player, '71, 132, 116', 'kp')"
+          class="p-2 text-white text-sm"
+        >{{ player.stats.kp }}</td>
       </tr>
     </tbody>
   </table>
@@ -166,6 +166,10 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
+    allPlayers: {
+      type: Array,
+      required: true
+    },
     data: {
       type: Object,
       required: true
@@ -183,6 +187,16 @@ export default {
   },
 
   methods: {
+    bgColor(player, rgb, stats) {
+      const value = parseFloat(player.stats[stats])
+      const biggestValue = Math.max(...this.allPlayers.map(p => parseFloat(p.stats[stats])), 0)
+      const opacity = (value / biggestValue).toFixed(2)
+
+      return {
+        backgroundColor: `rgba(${rgb}, ${opacity})`,
+        boxShadow: value === biggestValue ? '#abb4d0 0px 0px 0px 2px inset' : ''
+      }
+    },
     displayBorderbottom(index) {
       return this.allyTeam || index !== this.data.players.length - 1
     }
