@@ -57,7 +57,7 @@
           </li>
           <li class="flex justify-between items-center px-4 py-1 leading-tight">
             <div class="w-1/4 text-left whitespace-no-wrap">kda</div>
-            <div class="w-1/4">{{ globalStats.kills / globalStats.deaths|round }}</div>
+            <div class="w-1/4">{{ (globalStats.kills + globalStats.assists) / globalStats.deaths|round }}</div>
           </li>
         </ul>
         <template v-if="leagueStatsByType('Ranked').length">
