@@ -20,6 +20,10 @@ Vue.filter('percent', (value) => {
   return `${+value.toFixed(2)}%`
 })
 
+Vue.filter('round', (value) => {
+  return `${+value.toFixed(2)}`
+})
+
 new Vue({
   router,
   store,

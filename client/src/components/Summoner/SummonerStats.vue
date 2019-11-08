@@ -78,6 +78,10 @@
             <div class="w-1/4 text-left whitespace-no-wrap">kill participation</div>
             <div class="w-1/4">{{ globalStats.kp|percent }}</div>
           </li>
+          <li class="flex justify-between items-center px-4 py-1 leading-tight">
+            <div class="w-1/4 text-left whitespace-no-wrap">kda</div>
+            <div class="w-1/4">{{ globalStats.kills / globalStats.deaths|round }}</div>
+          </li>
         </ul>
         <template v-if="leagueStatsByType('Ranked').length">
           <div class="mt-3 px-4 flex items-baseline font-bold text-sm text-blue-300 uppercase">
