@@ -93,6 +93,56 @@ class SummonerController {
         }
       ])
 
+      const roleStats = await Match.query().aggregate([
+        {
+          $match: {
+            summoner_puuid: account.puuid,
+            role: { $not: { $eq: 'NONE' } }
+          }
+        },
+        {
+          $group: {
+            _id: "$role",
+            count: { $sum: 1 },
+            wins: {
+              $sum: {
+                $cond: [
+                  { $eq: ["$result", "Win"] }, 1, 0
+                ]
+              }
+            },
+            losses: {
+              $sum: {
+                $cond: [
+                  { $eq: ["$result", "Fail"] }, 1, 0
+                ]
+              }
+            }
+          },
+        },
+        {
+          $project: {
+            role: "$_id",
+            count: "$count",
+            wins: "$wins",
+            losses: "$losses",
+          }
+        }
+      ])
+
+      // Check if all roles are in the array
+      const roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+      for (const role of roles) {
+        if (!roleStats.find(r => r.role === role)) {
+          roleStats.push({
+            count: 0,
+            losses: 0,
+            role,
+            wins: 0
+          })
+        }
+      }
+
       const globalStats = await Match.query().aggregate([
         {
           $match: {
@@ -127,7 +177,11 @@ class SummonerController {
           }
         }
       ])
-      finalJSON.stats = [...globalStats, ...gamemodeStats]
+      finalJSON.stats = {
+        global: globalStats[0],
+        league: gamemodeStats,
+        role: roleStats.sort(MatchHelper.sortTeamByRole),
+      }
       console.timeEnd('STATS')
 
       // SAVE IN DB

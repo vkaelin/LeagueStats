@@ -20,7 +20,7 @@
               <div class="px-2 text-white text-center text-sm select-none">
                 <div>Stats based on</div>
                 <div>
-                  <span class="text-teal-400 font-bold">{{ globalStats.count }}</span> matches
+                  <span class="text-teal-400 font-bold">{{ stats.global.count }}</span> matches
                 </div>
                 <div class="mt-2 leading-tight text-xs text-blue-100 font-normal italic">
                   Load more matches
@@ -30,6 +30,29 @@
               </div>
             </template>
           </Dropdown>
+        </div>
+      </div>
+      <div class="mt-2 flex items-center py-2">
+        <div
+          v-for="(role, index) in stats.role"
+          :key="index"
+          class="flex flex-col items-center w-1/5"
+        >
+          <div class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full">
+            <div
+              :style="{height: (role.count * 3 / mostPlayedRole) * role.losses / role.count + 'rem'}"
+              class="bg-green-400 rounded-t-full"
+            ></div>
+            <div
+              :style="{height: (role.count * 3 / mostPlayedRole) * role.wins / role.count + 'rem'}"
+              class="bg-red-400 rounded-b-full"
+            ></div>
+          </div>
+          <div
+            :style="{backgroundImage: `url(${require('@/assets/img/roles/' + role.role + '.png')})`}"
+            class="mt-1 w-4 h-4 bg-center bg-cover"
+          ></div>
+          <div class="text-xs text-blue-200">{{ role.count }}</div>
         </div>
       </div>
       <div class="py-2 text-sm text-center">
@@ -48,16 +71,18 @@
           >
             <div class="w-1/4 text-left">{{ name }}</div>
             <div class="w-1/4">{{ stat }}</div>
-            <div class="w-1/4">{{ (stat / (globalStats.time / 60)).toFixed(2) }}</div>
-            <div class="w-1/4">{{ (stat / globalStats.count).toFixed(2) }}</div>
+            <div class="w-1/4">{{ (stat / (stats.global.time / 60)).toFixed(2) }}</div>
+            <div class="w-1/4">{{ (stat / stats.global.count).toFixed(2) }}</div>
           </li>
           <li class="flex justify-between items-center px-4 py-1 bg-blue-760 leading-tight">
             <div class="w-1/4 text-left whitespace-no-wrap">kill participation</div>
-            <div class="w-1/4">{{ globalStats.kp|percent }}</div>
+            <div class="w-1/4">{{ stats.global.kp|percent }}</div>
           </li>
           <li class="flex justify-between items-center px-4 py-1 leading-tight">
             <div class="w-1/4 text-left whitespace-no-wrap">kda</div>
-            <div class="w-1/4">{{ (globalStats.kills + globalStats.assists) / globalStats.deaths|round }}</div>
+            <div
+              class="w-1/4"
+            >{{ (stats.global.kills + stats.global.assists) / stats.global.deaths|round }}</div>
           </li>
         </ul>
         <template v-if="leagueStatsByType('Ranked').length">
@@ -128,16 +153,13 @@ export default {
   },
 
   computed: {
-    globalStats() {
-      return this.stats.find(s => s._id === null)
+    mostPlayedRole() {
+      return Math.max(...this.stats.role.map(r => r.count), 0)
     },
     globalStatsKeys() {
       // eslint-disable-next-line no-unused-vars
-      const { _id, wins, losses, count, time, kp, ...rest } = this.globalStats
+      const { _id, wins, losses, count, time, kp, ...rest } = this.stats.global
       return rest
-    },
-    leagueStats() {
-      return this.stats.filter(s => s._id !== null)
     },
     ...mapState({
       stats: state => state.summoner.infos.stats
@@ -154,7 +176,7 @@ export default {
       }
     },
     leagueStatsByType(typeName) {
-      return this.leagueStats
+      return this.stats.league
         .map(l => {
           return { ...l, ...gameModes[l._id] }
         })
