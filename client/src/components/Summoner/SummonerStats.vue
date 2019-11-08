@@ -115,7 +115,7 @@
             <li
               v-for="(league, index) in leagueStatsByType('Normal')"
               :key="index"
-              :class="{'bg-blue-750': index % 2 !== 0}"
+              :class="{'bg-blue-760': index % 2 !== 0}"
               class="flex justify-between items-center px-4 py-1 leading-tight"
             >
               <div class="w-2/4 text-left">{{ `${league.type} ${league.name.toLowerCase()}` }}</div>
