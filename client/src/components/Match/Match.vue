@@ -87,21 +87,18 @@
               <img src="@/assets/img/icons/Gold.svg" alt="Gold" />
               <div class="ml-1 gold text-sm font-bold">
                 {{ data.stats.gold }}
-                <!-- <span class="font-normal">gold</span> -->
               </div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/Damage.svg" alt="Damage" />
               <div class="ml-1 damage text-sm font-bold">
                 {{ data.stats.dmgChamp }}
-                <!-- <span class="font-normal">dmg</span> -->
               </div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/KillParticipation.svg" alt="KillParticipation" />
               <div class="ml-1 kp text-sm font-bold">
                 {{ data.stats.kp|percent }}
-                <!-- <span class="font-normal">kp</span> -->
               </div>
             </div>
           </div>
@@ -133,7 +130,7 @@
                 class="w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full"
               ></div>
               <div
-                class="ml-1 w-16 text-left overflow-hidden text-overflow whitespace-no-wrap text-xs text-blue-200 font-medium hover:text-blue-100"
+                class="ml-1 w-16 text-left overflow-hidden text-overflow whitespace-no-wrap text-xs text-blue-200 font-medium"
               >{{ data.enemyTeam[index].name }}</div>
             </div>
           </div>
