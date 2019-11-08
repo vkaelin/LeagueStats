@@ -3,6 +3,7 @@
 const Jax = use('Jax')
 const MatchHelper = use('App/Helpers/MatchHelper')
 const Summoner = use('App/Models/Summoner')
+const Match = use('App/Models/Match')
 
 class SummonerController {
   /**
@@ -61,6 +62,73 @@ class SummonerController {
 
       // PATCH VERSION
       finalJSON.version = Jax.DDragon.Version
+
+      // STATS
+      console.time('STATS')
+      const gamemodeStats = await Match.query().aggregate([
+        {
+          $match: {
+            summoner_puuid: account.puuid
+          }
+        },
+        {
+          $group: {
+            _id: "$gamemode",
+            count: { $sum: 1 },
+            wins: {
+              $sum: {
+                $cond: [
+                  { $eq: ["$result", "Win"] }, 1, 0
+                ]
+              }
+            },
+            losses: {
+              $sum: {
+                $cond: [
+                  { $eq: ["$result", "Fail"] }, 1, 0
+                ]
+              }
+            }
+          }
+        }
+      ])
+
+      const globalStats = await Match.query().aggregate([
+        {
+          $match: {
+            summoner_puuid: account.puuid
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            count: { $sum: 1 },
+            time: { $sum: "$time" },
+            wins: {
+              $sum: {
+                $cond: [
+                  { $eq: ["$result", "Win"] }, 1, 0
+                ]
+              }
+            },
+            losses: {
+              $sum: {
+                $cond: [
+                  { $eq: ["$result", "Fail"] }, 1, 0
+                ]
+              }
+            },
+            kills: { $sum: "$stats.kills" },
+            deaths: { $sum: "$stats.deaths" },
+            assists: { $sum: "$stats.assists" },
+            minions: { $sum: "$stats.minions" },
+            vision: { $sum: "$stats.vision" },
+            kp: { $avg: "$stats.kp" },
+          }
+        }
+      ])
+      finalJSON.stats = [...globalStats, ...gamemodeStats]
+      console.timeEnd('STATS')
 
       // SAVE IN DB
       await summonerDB.save()

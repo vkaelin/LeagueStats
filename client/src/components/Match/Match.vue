@@ -61,7 +61,7 @@
 
             <div
               class="h-6 flex items-end text-sm text-white font-extrabold leading-none"
-            >{{ data.gamemode }}</div>
+            >{{ data.gamemode.name }}</div>
           </div>
         </div>
 
@@ -100,7 +100,7 @@
             <div class="flex items-center">
               <img src="@/assets/img/icons/KillParticipation.svg" alt="KillParticipation" />
               <div class="ml-1 kp text-sm font-bold">
-                {{ data.stats.kp }}
+                {{ data.stats.kp|percent }}
                 <!-- <span class="font-normal">kp</span> -->
               </div>
             </div>
@@ -139,7 +139,7 @@
           </div>
           <div class="ml-auto flex flex-col items-center justify-center">
             <img class="w-5 h-5" src="@/assets/img/icons/Stopwatch.svg" alt="Stopwatch" />
-            <div class="text-lg text-teal-400 font-medium">{{ data.time }}</div>
+            <div class="text-lg text-teal-400 font-medium">{{ data.time|secToTime }}</div>
             <div class="text-xs text-white font-medium">{{ data.date }}</div>
           </div>
         </div>

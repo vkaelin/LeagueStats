@@ -62,6 +62,7 @@
 
           <div class="mt-12 text-center flex">
             <div class="mt-4 w-3/12">
+              <SummonerStats />
               <SummonerMates />
             </div>
             <ul class="w-9/12 text-gray-900">
@@ -111,6 +112,7 @@ import SearchForm from '@/components/SearchForm.vue'
 import SummonerLoader from '@/components/Summoner/SummonerLoader.vue'
 import SummonerMates from '@/components/Summoner/SummonerMates.vue'
 import SummonerRanked from '@/components/Summoner/SummonerRanked.vue'
+import SummonerStats from '@/components/Summoner/SummonerStats.vue'
 
 export default {
   components: {
@@ -123,6 +125,7 @@ export default {
     SummonerLoader,
     SummonerMates,
     SummonerRanked,
+    SummonerStats,
   },
 
   computed: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-blue-800 rounded-lg">
+  <div class="mt-4 bg-blue-800 rounded-lg">
     <div class="pb-2">
       <div class="flex items-center justify-center py-4 heading rounded-t-lg text-blue-200">
         <svg
@@ -37,7 +37,7 @@
         </svg>
       </div>
       <div v-if="hasMates" class="px-4 py-2 text-sm text-left">
-        <div class="flex font-bold text-base text-teal-400">
+        <div class="flex font-bold text-base text-blue-400">
           <div class="w-2/4">Summoner</div>
           <div class="w-1/4">W / L</div>
           <div class="w-1/4">Winrate</div>
@@ -123,14 +123,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.heading {
-  background: linear-gradient(
-    to top,
-    rgb(34, 92, 155) 0%,
-    rgb(34, 92, 135) 100%
-  );
-  box-shadow: rgba(235, 248, 255, 0.1) 0px -1px inset;
-}
-</style>

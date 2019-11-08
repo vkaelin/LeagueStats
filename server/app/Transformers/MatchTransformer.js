@@ -13,7 +13,8 @@ class MatchTransformer {
     const map = this.match.mapId
     const gamemode = this.match.queueId
     const date = this.match.gameCreation
-    const time = this.MatchHelper.secToTime(this.match.gameDuration)
+    // const time = this.MatchHelper.secToTime(this.match.gameDuration)
+    const time = this.match.gameDuration
 
     return {
       map,
@@ -76,7 +77,7 @@ class MatchTransformer {
         return prev + current.stats.kills
       }, 0)
 
-      stats.kp = totalKills === 0 ? '0%' : +((stats.kills + stats.assists) * 100 / totalKills).toFixed(1) + '%'
+      stats.kp = totalKills === 0 ? 0 : +((stats.kills + stats.assists) * 100 / totalKills).toFixed(1)
     }
 
 
