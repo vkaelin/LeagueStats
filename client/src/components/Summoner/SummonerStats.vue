@@ -2,35 +2,12 @@
   <div class="bg-blue-800 rounded-lg">
     <div class="pb-2">
       <div class="relative flex justify-center py-4 heading rounded-t-lg text-blue-200">
-        <svg
-          class="w-6 h-6"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <line x1="18" y1="20" x2="18" y2="10" />
-          <line x1="12" y1="20" x2="12" y2="4" />
-          <line x1="6" y1="20" x2="6" y2="14" />
+        <svg class="w-6 h-6">
+          <use xlink:href="#graph" />
         </svg>
         <span class="mx-4 text-lg font-bold uppercase">STATS</span>
-        <svg
-          class="w-6 h-6"
-          style="transform: scaleX(-1);"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <line x1="18" y1="20" x2="18" y2="10" />
-          <line x1="12" y1="20" x2="12" y2="4" />
-          <line x1="6" y1="20" x2="6" y2="14" />
+        <svg class="w-6 h-6" style="transform: scaleX(-1);">
+          <use xlink:href="#graph" />
         </svg>
         <div class="absolute right-0 top-0 mt-3 mr-2">
           <Dropdown>
