@@ -2,9 +2,9 @@
   <div>
     <!-- trigger -->
     <div
-      @mouseenter="isOpen = true"
+      @mouseenter="showDropdown"
       @mousemove="mousemove"
-      @mouseleave="isOpen = false"
+      @mouseleave="hideDropdown"
       :aria-expanded="isOpen"
       aria-haspopup="true"
     >
@@ -14,6 +14,7 @@
     <!-- dropdown content -->
     <div
       v-show="isOpen"
+      ref="content"
       class="fixed z-40 bg-blue-1000 py-2 rounded-md shadow"
       :style="{ width, ...position }"
     >
@@ -25,10 +26,6 @@
 <script>
 export default {
   props: {
-    openMethod: {
-      type: String,
-      default: 'click'
-    },
     width: {
       type: String,
       default: 'auto'
@@ -40,23 +37,58 @@ export default {
       isOpen: false,
       left: 0,
       offset: 12,
-      top: 0
+      top: 0,
+      directionBottom: true,
+      directionChecked: false,
     }
   },
 
   computed: {
     position() {
+      const valuetoRemove = this.directionBottom ? 0 : this.height()
       return {
         left: `${this.left + this.offset}px`,
-        top: `${this.top + this.offset}px`,
+        top: `${this.top + this.offset - valuetoRemove}px`,
       }
     }
   },
 
+  created() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
+
   methods: {
-    mousemove(event) {
+    checkDropdownVisibility() {
+      this.directionChecked = true
+      const rect = this.$refs.content.getBoundingClientRect()
+      const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight)
+      this.directionBottom = (rect.bottom + this.offset) < viewHeight
+    },
+    handleScroll() {
+      this.isOpen = false
+    },
+    height() {
+      return this.$refs.content ? this.$refs.content.clientHeight : 0
+    },
+    hideDropdown() {
+      this.isOpen = false
+      this.directionBottom = true
+      this.directionChecked = false
+    },
+    async mousemove(event) {
       this.left = event.clientX
       this.top = event.clientY
+
+      if (!this.directionChecked) {
+        await this.$nextTick()
+        this.checkDropdownVisibility()
+      }
+    },
+    showDropdown() {
+      this.isOpen = true
     }
   }
 }
