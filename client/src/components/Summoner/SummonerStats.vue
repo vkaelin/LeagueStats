@@ -130,9 +130,15 @@
                 class="w-1/4"
               >{{ calculateWinrate(league.wins, league.count).winrate|percent }}</div>
               <div class="w-1/4">
-                <span class="text-green-400 font-bold">{{ league.wins }}</span>
+                <span
+                  :class="winLossColor(league.wins, league.losses).win"
+                  class="font-bold"
+                >{{ league.wins }}</span>
                 <span class="mx-1 text-gray-400 font-bold">-</span>
-                <span class="text-gray-200 font-bold">{{ league.losses }}</span>
+                <span
+                  :class="winLossColor(league.wins, league.losses).loss"
+                  class="font-bold"
+                >{{ league.losses }}</span>
               </div>
             </li>
           </ul>
@@ -181,6 +187,15 @@ export default {
           return { ...l, ...gameModes[l._id] }
         })
         .filter(l => l.type === typeName)
+        .sort((a, b) => b.count - a.count)
+    },
+    winLossColor(win, loss) {
+      const colors = {
+        win: 'text-gray-200',
+        loss: 'text-gray-200'
+      }
+      win >= loss ? colors.win = 'text-green-400' : colors.loss = 'text-red-400'
+      return colors
     }
   }
 }
