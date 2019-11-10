@@ -10,6 +10,10 @@ import store from './store'
 Vue.config.productionTip = false
 Vue.use(VueAxios)
 
+Vue.filter('capitalize', (value) => {
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+})
+
 Vue.filter('secToTime', (sec) => {
   const min = Math.floor(sec / 60)
   const newSec = sec - min * 60

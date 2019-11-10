@@ -38,16 +38,40 @@
           :key="index"
           class="flex flex-col items-center w-1/5"
         >
-          <div class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full">
-            <div
-              :style="{height: (role.count * 3 / mostPlayedRole) * role.wins / role.count + 'rem'}"
-              class="bg-green-400 rounded-t-full"
-            ></div>
-            <div
-              :style="{height: (role.count * 3 / mostPlayedRole) * role.losses / role.count + 'rem'}"
-              class="bg-red-400 rounded-b-full"
-            ></div>
-          </div>
+          <Dropdown>
+            <template v-slot:trigger>
+              <div
+                class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full cursor-pointer"
+              >
+                <div
+                  :style="{height: (role.count * 3 / mostPlayedRole) * role.wins / role.count + 'rem'}"
+                  class="bg-green-400 rounded-t-full"
+                ></div>
+                <div
+                  :style="{height: (role.count * 3 / mostPlayedRole) * role.losses / role.count + 'rem'}"
+                  class="bg-red-400 rounded-b-full"
+                ></div>
+              </div>
+            </template>
+            <template v-slot:default>
+              <div class="px-2 text-white text-center text-sm select-none">
+                <div>{{ role.role|capitalize }}</div>
+                <span
+                  :class="winLossColor(role.wins, role.losses).win"
+                  class="font-bold"
+                >{{ role.wins }}</span>
+                <span class="mx-1 text-gray-400 font-bold">-</span>
+                <span
+                  :class="winLossColor(role.wins, role.losses).loss"
+                  class="font-bold"
+                >{{ role.losses }}</span>
+                <div
+                  :class="calculateWinrate(role.wins, role.count).color"
+                  class="mt-1 font-bold"
+                >{{ calculateWinrate(role.wins, role.count).winrate|round }}%</div>
+              </div>
+            </template>
+          </Dropdown>
           <div
             :style="{backgroundImage: `url(${require('@/assets/img/roles/' + role.role + '.png')})`}"
             class="mt-1 w-4 h-4 bg-center bg-cover"
@@ -104,9 +128,15 @@
                 class="w-1/4"
               >{{ calculateWinrate(league.wins, league.count).winrate|percent }}</div>
               <div class="w-1/4">
-                <span class="text-green-400 font-bold">{{ league.wins }}</span>
+                <span
+                  :class="winLossColor(league.wins, league.losses).win"
+                  class="font-bold"
+                >{{ league.wins }}</span>
                 <span class="mx-1 text-gray-400 font-bold">-</span>
-                <span class="text-gray-200 font-bold">{{ league.losses }}</span>
+                <span
+                  :class="winLossColor(league.wins, league.losses).loss"
+                  class="font-bold"
+                >{{ league.losses }}</span>
               </div>
             </li>
           </ul>
