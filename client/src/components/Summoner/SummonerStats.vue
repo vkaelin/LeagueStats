@@ -40,11 +40,11 @@
         >
           <div class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full">
             <div
-              :style="{height: (role.count * 3 / mostPlayedRole) * role.losses / role.count + 'rem'}"
+              :style="{height: (role.count * 3 / mostPlayedRole) * role.wins / role.count + 'rem'}"
               class="bg-green-400 rounded-t-full"
             ></div>
             <div
-              :style="{height: (role.count * 3 / mostPlayedRole) * role.wins / role.count + 'rem'}"
+              :style="{height: (role.count * 3 / mostPlayedRole) * role.losses / role.count + 'rem'}"
               class="bg-red-400 rounded-b-full"
             ></div>
           </div>
