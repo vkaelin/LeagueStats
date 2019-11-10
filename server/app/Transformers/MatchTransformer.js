@@ -33,7 +33,7 @@ class MatchTransformer {
   getPlayerData(player, detailed, teamStats = {}) {
     const identity = this.match.participantIdentities.find(p => p.participantId === player.participantId)
     const name = identity.player.summonerName
-    const champion = (({ id, name }) => ({ id, name }))(Object.entries(this.champions).find(([, champion]) => Number(champion.key) === player.championId)[1])
+    const champion = (({ id, name, tags }) => ({ id, name, tags }))(Object.entries(this.champions).find(([, champion]) => Number(champion.key) === player.championId)[1])
     const role = this.MatchHelper.getRoleName(player.timeline)
     const level = player.stats.champLevel
 

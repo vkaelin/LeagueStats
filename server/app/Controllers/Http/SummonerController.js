@@ -53,7 +53,7 @@ class SummonerController {
       const matchList = summonerDB.matchList
       finalJSON.allMatches = matchList
 
-      // MATCHES DETAILS
+      // MATCHES BASIC
       const gameIds = matchList.slice(0, 10).map(({ gameId }) => gameId)
       finalJSON.matchesDetails = await MatchHelper.getMatches(account, gameIds, summonerDB)
 
@@ -65,71 +65,9 @@ class SummonerController {
 
       // STATS
       console.time('STATS')
-      const gamemodeStats = await Match.query().aggregate([
-        {
-          $match: {
-            summoner_puuid: account.puuid
-          }
-        },
-        {
-          $group: {
-            _id: "$gamemode",
-            count: { $sum: 1 },
-            wins: {
-              $sum: {
-                $cond: [
-                  { $eq: ["$result", "Win"] }, 1, 0
-                ]
-              }
-            },
-            losses: {
-              $sum: {
-                $cond: [
-                  { $eq: ["$result", "Fail"] }, 1, 0
-                ]
-              }
-            }
-          }
-        }
-      ])
-
-      const roleStats = await Match.query().aggregate([
-        {
-          $match: {
-            summoner_puuid: account.puuid,
-            role: { $not: { $eq: 'NONE' } }
-          }
-        },
-        {
-          $group: {
-            _id: "$role",
-            count: { $sum: 1 },
-            wins: {
-              $sum: {
-                $cond: [
-                  { $eq: ["$result", "Win"] }, 1, 0
-                ]
-              }
-            },
-            losses: {
-              $sum: {
-                $cond: [
-                  { $eq: ["$result", "Fail"] }, 1, 0
-                ]
-              }
-            }
-          },
-        },
-        {
-          $project: {
-            role: "$_id",
-            count: "$count",
-            wins: "$wins",
-            losses: "$losses",
-          }
-        }
-      ])
-
+      const globalStats = await Match.globalStats(account.puuid)
+      const gamemodeStats = await Match.gamemodeStats(account.puuid)
+      const roleStats = await Match.roleStats(account.puuid)
       // Check if all roles are in the array
       const roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
       for (const role of roles) {
@@ -142,45 +80,13 @@ class SummonerController {
           })
         }
       }
+      const championClassStats = await Match.championClassStats(account.puuid);
 
-      const globalStats = await Match.query().aggregate([
-        {
-          $match: {
-            summoner_puuid: account.puuid
-          }
-        },
-        {
-          $group: {
-            _id: null,
-            count: { $sum: 1 },
-            time: { $sum: "$time" },
-            wins: {
-              $sum: {
-                $cond: [
-                  { $eq: ["$result", "Win"] }, 1, 0
-                ]
-              }
-            },
-            losses: {
-              $sum: {
-                $cond: [
-                  { $eq: ["$result", "Fail"] }, 1, 0
-                ]
-              }
-            },
-            kills: { $sum: "$stats.kills" },
-            deaths: { $sum: "$stats.deaths" },
-            assists: { $sum: "$stats.assists" },
-            minions: { $sum: "$stats.minions" },
-            vision: { $sum: "$stats.vision" },
-            kp: { $avg: "$stats.kp" },
-          }
-        }
-      ])
       finalJSON.stats = {
         global: globalStats[0],
         league: gamemodeStats,
         role: roleStats.sort(MatchHelper.sortTeamByRole),
+        class: championClassStats,
       }
       console.timeEnd('STATS')
 
