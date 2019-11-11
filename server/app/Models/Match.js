@@ -17,7 +17,7 @@ class Match extends Model {
       },
       {
         $group: {
-          _id: { "$arrayElemAt": [ "$champion.tags", 0 ] },
+          _id: { "$arrayElemAt": ["$champion.tags", 0] },
           count: { $sum: 1 },
           wins: {
             $sum: {
@@ -153,6 +153,50 @@ class Match extends Model {
           losses: "$losses",
         }
       }
+    ])
+  }
+
+  /**
+   * Get Summoner's mates list
+   * @param puuid of the summoner
+   * @param summonerName of the summoner
+   */
+  static mates(puuid, summonerName) {
+    return Match.query().aggregate([
+      {
+        $match: {
+          summoner_puuid: puuid
+        }
+      },
+      { $unwind: "$allyTeam" },
+      {
+        $group: {
+          _id: "$allyTeam.name",
+          count: { $sum: 1 },
+          wins: {
+            $sum: {
+              $cond: [
+                { $eq: ["$result", "Win"] }, 1, 0
+              ]
+            }
+          },
+          losses: {
+            $sum: {
+              $cond: [
+                { $eq: ["$result", "Fail"] }, 1, 0
+              ]
+            }
+          }
+        },
+      },
+      {
+        $match: {
+          _id: { $not: { $eq: summonerName } },
+          'count': { $gte: 2 }
+        }
+      },
+      { $sort: { 'count': -1 } },
+      { $limit: 15 },
     ])
   }
 }

@@ -99,7 +99,6 @@ export function createSummonerData(RiotData) {
     ranked: RiotData.ranked,
     matchList: RiotData.allMatches,
     matches: createMatchData(RiotData.matchesDetails),
-    mates: createMatesData(RiotData.mates),
     playing: RiotData.playing,
     stats: RiotData.stats,
   }

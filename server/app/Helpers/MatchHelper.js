@@ -3,7 +3,6 @@
 const Logger = use('Logger')
 const Jax = use('Jax')
 const BasicMatchTransformer = use('App/Transformers/BasicMatchTransformer')
-const SummonerHelper = use('App/Helpers/SummonerHelper')
 
 class MatchHelper {
   /**
@@ -117,10 +116,6 @@ class MatchHelper {
 
       console.log(matchesFromApi.length)
       Logger.transport('file').info(matchesFromApi)
-
-
-      // Update teamMates
-      SummonerHelper.updatePlayedWith(account, summonerDB, matchesFromApi)
 
       matchesDetails = [...matchesDetails, ...matchesFromApi]
 

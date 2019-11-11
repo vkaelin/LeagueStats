@@ -57,9 +57,6 @@ class SummonerController {
       const gameIds = matchList.slice(0, 10).map(({ gameId }) => gameId)
       finalJSON.matchesDetails = await MatchHelper.getMatches(account, gameIds, summonerDB)
 
-      // MATES
-      finalJSON.mates = summonerDB.mates.filter(m => m.wins + m.losses > 1)
-
       // PATCH VERSION
       finalJSON.version = Jax.DDragon.Version
 
@@ -80,13 +77,15 @@ class SummonerController {
           })
         }
       }
-      const championClassStats = await Match.championClassStats(account.puuid);
+      const championClassStats = await Match.championClassStats(account.puuid)
+      const mates = await Match.mates(account.puuid, account.name)
 
       finalJSON.stats = {
         global: globalStats[0],
         league: gamemodeStats,
         role: roleStats.sort(MatchHelper.sortTeamByRole),
         class: championClassStats,
+        mates,
       }
       console.timeEnd('STATS')
 

@@ -39,7 +39,6 @@ export const mutations = {
     state.infos.matches = infos.matches
     state.infos.ranked = infos.ranked
     state.infos.matchIndex = infos.matches.length
-    state.infos.mates = infos.mates
     state.infos.playing = infos.playing
     state.infos.stats = infos.stats
     state.status = 'found'

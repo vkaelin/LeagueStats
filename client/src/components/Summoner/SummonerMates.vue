@@ -19,21 +19,21 @@
         <ul class="mt-1 text-gray-100">
           <li
             v-for="mate in mates.slice(0, maxMates)"
-            :key="mate.name"
+            :key="mate._id"
             class="flex justify-between items-center"
           >
             <router-link
-              :to="{ name: 'summoner', params: { region: $route.params.region, name: mate.name }}"
+              :to="{ name: 'summoner', params: { region: $route.params.region, name: mate._id }}"
               class="w-2/4 hover:text-teal-200"
-            >{{ mate.name }}</router-link>
+            >{{ mate._id }}</router-link>
             <div class="w-1/4">{{ mate.wins }} / {{ mate.losses }}</div>
             <div class="w-1/4">
               <Dropdown>
                 <template v-slot:trigger>
                   <div class="bg-blue-900 rounded-full h-2 cursor-pointer">
                     <div
-                      :class="getWinrateColor(mate.winrate)"
-                      :style="{width: mate.winrate}"
+                      :class="getWinrateColor(mate.wins, mate.count)"
+                      :style="{width: `${winrate(mate.wins, mate.count)}%`}"
                       class="rounded-full h-full"
                     ></div>
                   </div>
@@ -43,9 +43,9 @@
                     <div>Winrate</div>
                     <div>
                       <span
-                        :class="getWinrateColor(mate.winrate, false)"
+                        :class="getWinrateColor(mate.wins, mate.count, false)"
                         class="font-bold"
-                      >{{ mate.winrate }}</span>
+                      >{{ winrate(mate.wins, mate.count)|percent }}</span>
                     </div>
                   </div>
                 </template>
@@ -82,13 +82,13 @@ export default {
       return this.mates.length > 0
     },
     ...mapState({
-      mates: state => state.summoner.infos.mates
+      mates: state => state.summoner.infos.stats.mates
     }),
   },
 
   methods: {
-    getWinrateColor(winrate, background = true) {
-      winrate = winrate.slice(0, -1)
+    getWinrateColor(wins, count, background = true) {
+      const winrate = this.winrate(wins, count)
       if (winrate >= 70) {
         return background ? 'bg-yellow-400' : 'text-yellow-400'
       } else if (winrate >= 60) {
@@ -97,6 +97,9 @@ export default {
         return background ? 'bg-teal-300' : 'text-teal-300'
       }
       return background ? 'bg-teal-200' : 'text-teal-200'
+    },
+    winrate(wins, count) {
+      return wins * 100 / count
     }
   }
 }

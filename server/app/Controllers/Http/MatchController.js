@@ -3,6 +3,7 @@
 const Jax = use('Jax')
 const DetailedMatch = use('App/Models/DetailedMatch')
 const DetailedMatchTransformer = use('App/Transformers/DetailedMatchTransformer')
+const Match = use('App/Models/Match')
 const MatchHelper = use('App/Helpers/MatchHelper')
 const Summoner = use('App/Models/Summoner')
 
@@ -22,7 +23,7 @@ class MatchController {
 
     return response.json({
       matches,
-      mates: summonerDB.mates.filter(m => m.wins + m.losses > 1)
+      mates: await Match.mates(account.puuid, account.name)
     })
   }
 
