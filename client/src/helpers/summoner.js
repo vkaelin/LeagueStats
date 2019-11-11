@@ -53,20 +53,6 @@ export function createMatchData(matches) {
 }
 
 /**
- * Return the list of teammates of the summoner in a nice way
- * @param {Object} mates : mates list from the API
- */
-export function createMatesData(mates) {
-  return mates
-    .map(mate => {
-      mate.total = mate.wins + mate.losses
-      mate.winrate = +(100 * mate.wins / mate.total).toFixed(1) + '%'
-      return mate
-    })
-    .sort((a, b) => (a.total < b.total) ? 1 : -1)
-}
-
-/**
  * Return all the infos about a summoner built with the Riot API data
  * @param {Object} RiotData : all data from the Riot API
  */

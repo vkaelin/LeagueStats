@@ -23,7 +23,6 @@
               </div>
               <div class="mt-2 leading-tight text-xs text-blue-100 font-normal italic">
                 Load more matches
-                <br />and refresh the page
                 <br />to have better results.
               </div>
             </div>

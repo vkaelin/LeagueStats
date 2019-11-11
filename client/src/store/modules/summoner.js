@@ -1,5 +1,5 @@
 import { axios } from '@/plugins/axios'
-import { createMatchData, createMatesData, createSummonerData } from '@/helpers/summoner'
+import { createMatchData, createSummonerData } from '@/helpers/summoner'
 
 export const namespaced = true
 
@@ -11,6 +11,7 @@ export const state = {
     matches: [],
     mates: [],
     ranked: {},
+    stats: {},
     playing: false
   },
   matchesLoading: false,
@@ -21,14 +22,14 @@ export const mutations = {
   MATCHES_LOADING(state) {
     state.matchesLoading = true
   },
-  MATCHES_FOUND(state, { newMatches, mates }) {
+  MATCHES_FOUND(state, { newMatches, stats }) {
     state.matchesLoading = false
 
     state.infos.matches = [...state.infos.matches, ...newMatches]
 
     state.infos.matchIndex += newMatches.length
 
-    state.infos.mates = mates
+    state.infos.stats = stats
   },
   SUMMONER_REQUEST(state) {
     state.status = 'loading'
@@ -59,8 +60,7 @@ export const actions = {
     console.log('--- MATCHES INFOS ---')
     console.log(resp.data)
     const newMatches = createMatchData(resp.data.matches)
-    const mates = createMatesData(resp.data.mates)
-    commit('MATCHES_FOUND', { newMatches, mates })
+    commit('MATCHES_FOUND', { newMatches, stats: resp.data.stats })
   },
   async summonerRequest({ commit, dispatch, rootState }, { summoner, region }) {
     region = rootState.regionsList[region]
