@@ -222,7 +222,7 @@ export default {
 
   methods: {
     calculateWinrate(wins, count) {
-      const winrate = wins / count * 100
+      const winrate = count !== 0 ? wins / count * 100 : 0
       const color = winrate >= 50 ? 'text-green-400' : 'text-red-400'
       return {
         winrate,
