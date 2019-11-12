@@ -2,8 +2,8 @@
 
 const Jax = use('Jax')
 const MatchHelper = use('App/Helpers/MatchHelper')
+const StatsHelper = use('App/Helpers/StatsHelper')
 const Summoner = use('App/Models/Summoner')
-const Match = use('App/Models/Match')
 
 class SummonerController {
   /**
@@ -62,31 +62,7 @@ class SummonerController {
 
       // STATS
       console.time('STATS')
-      const globalStats = await Match.globalStats(account.puuid)
-      const gamemodeStats = await Match.gamemodeStats(account.puuid)
-      const roleStats = await Match.roleStats(account.puuid)
-      // Check if all roles are in the array
-      const roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
-      for (const role of roles) {
-        if (!roleStats.find(r => r.role === role)) {
-          roleStats.push({
-            count: 0,
-            losses: 0,
-            role,
-            wins: 0
-          })
-        }
-      }
-      const championClassStats = await Match.championClassStats(account.puuid)
-      const mates = await Match.mates(account.puuid, account.name)
-
-      finalJSON.stats = {
-        global: globalStats[0],
-        league: gamemodeStats,
-        role: roleStats.sort(MatchHelper.sortTeamByRole),
-        class: championClassStats,
-        mates,
-      }
+      finalJSON.stats = await StatsHelper.getSummonerStats(account)
       console.timeEnd('STATS')
 
       // SAVE IN DB
