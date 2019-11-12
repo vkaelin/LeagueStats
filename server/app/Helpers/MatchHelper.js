@@ -17,7 +17,7 @@ class MatchHelper {
     do {
       let newMatchList = (await Jax.Matchlist.accountID(account.accountId, index)).matches
       matchList = [...matchList, ...newMatchList]
-      alreadyIn = stopFetching(newMatchList)
+      alreadyIn = newMatchList.length === 0 || stopFetching(newMatchList)
       // If the match is made in another region : we stop fetching
       if (matchList[matchList.length - 1].platformId.toLowerCase() !== account.region) {
         alreadyIn = true;
@@ -25,8 +25,15 @@ class MatchHelper {
       index += 100
     } while (!alreadyIn);
 
-    // Remove matches from MatchList made in another region
-    matchList = matchList.filter(m => m.platformId.toLowerCase() === account.region)
+    // Remove matches from MatchList made in another region and tutorial games
+    const tutorialModes = [2000, 2010, 2020]
+    matchList = matchList
+      .filter(m => {
+        const sameRegion = m.platformId.toLowerCase() === account.region
+        const notATutorialGame = !tutorialModes.includes(m.queue)
+
+        return sameRegion && notATutorialGame
+      })
 
     return matchList
   }
@@ -103,16 +110,9 @@ class MatchHelper {
         MatchHelper: this
       }
 
-      // matchesFromApi = await Bumblebee.create().collection(matchesFromApi)
-      //   .transformWith(MatchTransformer)
-      //   .withContext(ctx)
-      //   .toJSON()
-
-      console.time('newTransformer')
       matchesFromApi = matchesFromApi.map(m => {
         if (m) return BasicMatchTransformer.transform(m, ctx)
       })
-      console.timeEnd('newTransformer')
 
       console.log(matchesFromApi.length)
       Logger.transport('file').info(matchesFromApi)
