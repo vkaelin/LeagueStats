@@ -17,7 +17,8 @@ class MatchRepository {
     return this.Match.query().aggregate([
       {
         $match: {
-          summoner_puuid: puuid
+          summoner_puuid: puuid,
+          result: { $not: { $eq: 'Remake' } }
         }
       },
       {
@@ -47,7 +48,8 @@ class MatchRepository {
     return this.Match.query().aggregate([
       {
         $match: {
-          summoner_puuid: puuid
+          summoner_puuid: puuid,
+          result: { $not: { $eq: 'Remake' } }
         }
       },
       {
@@ -77,7 +79,8 @@ class MatchRepository {
     return this.Match.query().aggregate([
       {
         $match: {
-          summoner_puuid: puuid
+          summoner_puuid: puuid,
+          result: { $not: { $eq: 'Remake' } }
         }
       },
       {
@@ -115,7 +118,8 @@ class MatchRepository {
       {
         $match: {
           summoner_puuid: puuid,
-          role: { $not: { $eq: 'NONE' } }
+          role: { $not: { $eq: 'NONE' } },
+          result: { $not: { $eq: 'Remake' } }
         }
       },
       {
@@ -154,7 +158,8 @@ class MatchRepository {
     return this.Match.query().aggregate([
       {
         $match: {
-          summoner_puuid: puuid
+          summoner_puuid: puuid,
+          result: { $not: { $eq: 'Remake' } }
         }
       },
       { $unwind: "$allyTeam" },
