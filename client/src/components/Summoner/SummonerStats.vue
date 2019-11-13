@@ -41,11 +41,13 @@
             <div class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full cursor-pointer">
               <div
                 :style="{height: (role.count * 3 / mostPlayedRole) * role.wins / role.count + 'rem'}"
-                class="bg-green-400 rounded-t-full"
+                :class="roundedRoleWins(role.wins, role.count)"
+                class="bg-green-400"
               ></div>
               <div
                 :style="{height: (role.count * 3 / mostPlayedRole) * role.losses / role.count + 'rem'}"
-                class="bg-red-400 rounded-b-full"
+                :class="roundedRoleLosses(role.losses, role.count)"
+                class="bg-red-400"
               ></div>
             </div>
           </template>
@@ -177,7 +179,7 @@
       </div>
       <ul class="mt-1 text-gray-100">
         <li
-          v-for="(championClass, index) in stats.class.sort((a, b) => b.count - a.count)"
+          v-for="(championClass, index) in championClasses"
           :key="index"
           :class="{'bg-blue-760': index % 2 !== 0}"
           class="flex justify-between items-center px-4 py-1 leading-tight"
@@ -233,6 +235,10 @@ export default {
   },
 
   computed: {
+    championClasses() {
+      const classes = [...this.stats.class]
+      return classes.sort((a, b) => b.count - a.count)
+    },
     mostPlayedRole() {
       return Math.max(...this.stats.role.map(r => r.count), 0)
     },
@@ -262,6 +268,12 @@ export default {
         })
         .filter(l => l.type === typeName)
         .sort((a, b) => b.count - a.count)
+    },
+    roundedRoleLosses(win, count) {
+      return win === count ? 'rounded-full' : 'rounded-b-full'
+    },
+    roundedRoleWins(win, count) {
+      return win === count ? 'rounded-full' : 'rounded-t-full'
     },
     winLossColor(win, loss) {
       const colors = {
