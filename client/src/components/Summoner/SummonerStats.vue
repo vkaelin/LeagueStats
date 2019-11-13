@@ -38,9 +38,7 @@
       >
         <Dropdown>
           <template v-slot:trigger>
-            <div
-              class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full cursor-pointer"
-            >
+            <div class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full cursor-pointer">
               <div
                 :style="{height: (role.count * 3 / mostPlayedRole) * role.wins / role.count + 'rem'}"
                 class="bg-green-400 rounded-t-full"
@@ -172,6 +170,36 @@
         </ul>
       </template>
 
+      <div class="mt-3 px-4 flex items-baseline font-bold text-sm text-blue-300 uppercase">
+        <div class="w-2/4 text-left text-base text-blue-400">Stats by Class</div>
+        <div class="w-1/4">Winrate</div>
+        <div class="w-1/4">Record</div>
+      </div>
+      <ul class="mt-1 text-gray-100">
+        <li
+          v-for="(championClass, index) in stats.class.sort((a, b) => b.count - a.count)"
+          :key="index"
+          :class="{'bg-blue-760': index % 2 !== 0}"
+          class="flex justify-between items-center px-4 py-1 leading-tight"
+        >
+          <div class="w-2/4 text-left">{{ championClass._id }}</div>
+          <div
+            :class="calculateWinrate(championClass.wins, championClass.count).color"
+            class="w-1/4"
+          >{{ calculateWinrate(championClass.wins, championClass.count).winrate|percent }}</div>
+          <div class="w-1/4">
+            <span
+              :class="winLossColor(championClass.wins, championClass.losses).win"
+              class="font-bold"
+            >{{ championClass.wins }}</span>
+            <span class="mx-1 text-gray-400 font-bold">-</span>
+            <span
+              :class="winLossColor(championClass.wins, championClass.losses).loss"
+              class="font-bold"
+            >{{ championClass.losses }}</span>
+          </div>
+        </li>
+      </ul>
     </div>
 
     <div class="flex flex-col items-center pb-2 leading-snug">
@@ -181,18 +209,16 @@
       <div class="flex text-sm">
         <span
           :class="winLossColor(stats.global.wins, stats.global.losses).win"
-          class=""
+          class
         >{{ stats.global.wins }}</span>
         <span class="mx-1 text-gray-400 font-bold">-</span>
         <span
           :class="winLossColor(stats.global.wins, stats.global.losses).loss"
-          class=""
+          class
         >{{ stats.global.losses }}</span>
       </div>
       <span class="text-xs">Global winrate</span>
     </div>
-
-
   </div>
 </template>
 
