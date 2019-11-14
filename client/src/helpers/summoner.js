@@ -15,11 +15,6 @@ export function createDetailedMatchData(detailedMatch) {
   detailedMatch.redTeam.players = detailedMatch.redTeam.players.map(p => getPlayerData(p))
 
   function getPlayerData(p) {
-    // Items
-    for (let i = 0; i < p.items.length; i++) {
-      p.items[i] = getItemLink(p.items[i])
-    }
-
     // Summoner Spells
     p.firstSum = getSummonerLink(p.firstSum)
     p.secondSum = getSummonerLink(p.secondSum)
@@ -35,10 +30,6 @@ export function createDetailedMatchData(detailedMatch) {
  */
 export function createMatchData(matches) {
   for (const match of matches) {
-    for (let i = 0; i < match.items.length; i++) {
-      match.items[i] = getItemLink(match.items[i])
-    }
-
     match.firstSum = getSummonerLink(match.firstSum)
     match.secondSum = getSummonerLink(match.secondSum)
 
@@ -88,13 +79,6 @@ export function createSummonerData(RiotData) {
     playing: RiotData.playing,
     stats: RiotData.stats,
   }
-}
-
-function getItemLink(id) {
-  if (id === 0) {
-    return null
-  }
-  return `url('https://ddragon.leagueoflegends.com/cdn/${store.getters['ddragon/version']}/img/item/${id}.png')`
 }
 
 function getLeagueData(leagueData, leagueName) {

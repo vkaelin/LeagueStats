@@ -105,14 +105,7 @@
                 </svg>
                 <div class="text-blue-200 text-xs">S2</div>
               </div>
-              <div class="ml-2 flex items-center">
-                <div
-                  v-for="(item, indexItem) in player.items"
-                  :key="indexItem"
-                  :style="{backgroundImage: item}"
-                  class="ml-2px w-6 h-6 rounded-md bg-blue-1000 bg-center bg-cover"
-                ></div>
-              </div>
+              <MatchItems :items="player.items" :one-row="true" />
             </div>
           </div>
         </td>
@@ -163,8 +156,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import MatchItems from '@/components/Match/MatchItems'
 
 export default {
+  components: {
+    MatchItems,
+  },
+
   props: {
     allPlayers: {
       type: Array,

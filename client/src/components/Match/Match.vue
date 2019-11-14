@@ -5,7 +5,7 @@
       :class="[matchResultClass, showDetails ? 'rounded-t-lg' : 'rounded-lg']"
       class="match relative mt-4 bg-blue-800 text-white text-base cursor-pointer hover:shadow-xl"
     >
-      <div class="relative z-20 flex flex-wrap px-5 py-3">
+      <div class="relative flex flex-wrap px-5 py-3">
         <div class="first w-4/12 text-left">
           <div>
             <div
@@ -66,14 +66,7 @@
         </div>
 
         <div class="second w-3/12 py-6 flex items-center">
-          <div class="items flex flex-wrap">
-            <div
-              v-for="(item, index) in data.items"
-              :key="index"
-              :style="{backgroundImage: item}"
-              class="ml-1 w-8 h-8 rounded-md bg-blue-1000 bg-center bg-cover"
-            ></div>
-          </div>
+          <MatchItems :items="data.items" />
 
           <div class="ml-4 leading-none">
             <div class="flex items-center">
@@ -85,21 +78,15 @@
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/Gold.svg" alt="Gold" />
-              <div class="ml-1 gold text-sm font-bold">
-                {{ data.stats.gold }}
-              </div>
+              <div class="ml-1 gold text-sm font-bold">{{ data.stats.gold }}</div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/Damage.svg" alt="Damage" />
-              <div class="ml-1 damage text-sm font-bold">
-                {{ data.stats.dmgChamp }}
-              </div>
+              <div class="ml-1 damage text-sm font-bold">{{ data.stats.dmgChamp }}</div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/KillParticipation.svg" alt="KillParticipation" />
-              <div class="ml-1 kp text-sm font-bold">
-                {{ data.stats.kp|percent }}
-              </div>
+              <div class="ml-1 kp text-sm font-bold">{{ data.stats.kp|percent }}</div>
             </div>
           </div>
         </div>
@@ -149,10 +136,12 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import DetailedMatch from '@/components/Match/DetailedMatch'
+import MatchItems from '@/components/Match/MatchItems'
 
 export default {
   components: {
-    DetailedMatch
+    DetailedMatch,
+    MatchItems,
   },
 
   props: {
@@ -240,11 +229,6 @@ export default {
 .crop-champion {
   background-size: 74px;
   background-position: center;
-}
-
-.items {
-  width: 7rem;
-  height: 4.5rem;
 }
 
 .gold {

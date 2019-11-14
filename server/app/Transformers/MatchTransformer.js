@@ -98,8 +98,17 @@ class MatchTransformer {
 
     const items = []
     for (let i = 0; i < 6; i++) {
-      const currentItem = 'item' + i
-      items.push(player.stats[currentItem])
+      const id = player.stats['item' + i]
+      if(id === 0) {
+        items.push(null)
+        continue
+      }
+      items.push({
+        image: `https://ddragon.leagueoflegends.com/cdn/${this.version}/img/item/${id}.png`,
+        name: this.items[id].name,
+        description: this.items[id].description,
+        price: this.items[id].gold.total
+      })
     }
 
     const firstSum = player.spell1Id

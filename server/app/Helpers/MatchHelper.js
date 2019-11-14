@@ -101,12 +101,16 @@ class MatchHelper {
 
     /* If we have to store some matches in the db */
     if (matchesFromApi.length !== 0) {
+      const items = await Jax.DDragon.Item.list()
       const champions = await Jax.DDragon.Champion.list()
       const runes = await Jax.DDragon.Rune.list()
+      const version = Jax.DDragon.Version
       const ctx = {
         account,
         champions: champions.data,
+        items: items.data,
         runes,
+        version,
         MatchHelper: this
       }
 

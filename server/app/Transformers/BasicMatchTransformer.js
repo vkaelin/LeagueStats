@@ -13,10 +13,12 @@ class BasicMatchTransformer extends MatchTransformer {
    * @param match data from Riot API
    * @param ctx context
    */
-  transform(match, { account, champions, runes, MatchHelper }) {
+  transform(match, { account, champions, items, runes, version, MatchHelper }) {
     this.match = match
     this.champions = champions
+    this.items = items
     this.runes = runes
+    this.version = version
     this.MatchHelper = MatchHelper
 
     // Global data about the match
