@@ -93,8 +93,8 @@
         >
           <div class="w-1/4 text-left">{{ name }}</div>
           <div class="w-1/4">{{ stat }}</div>
-          <div class="w-1/4">{{ (stat / (stats.global.time / 60)).toFixed(2) }}</div>
-          <div class="w-1/4">{{ (stat / stats.global.count).toFixed(2) }}</div>
+          <div class="w-1/4">{{ stat / (stats.global.time / 60)|round }}</div>
+          <div class="w-1/4">{{ stat / stats.global.count|round }}</div>
         </li>
         <li class="flex justify-between items-center px-4 py-1 bg-blue-760 leading-tight">
           <div class="w-1/4 text-left whitespace-no-wrap">kill participation</div>
