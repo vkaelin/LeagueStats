@@ -11,22 +11,16 @@ class DetailedMatchTransformer extends MatchTransformer {
   /**
    * Transform raw data from Riot API
    * @param match data from Riot API
-   * @param ctx context
    */
-  transform(match, { champions, items, runes, version, MatchHelper }) {
-    this.match = match
-    this.champions = champions
-    this.items = items
-    this.runes = runes
-    this.version = version
-    this.MatchHelper = MatchHelper
+  async transform(match) {
+    await super.getContext()
 
     // Global data
-    const globalInfos = super.getGameInfos()
+    const globalInfos = super.getGameInfos(match)
 
     // Teams
-    const firstTeam = this.getTeamData(match.teams[0])
-    const secondTeam = this.getTeamData(match.teams[1])
+    const firstTeam = this.getTeamData(match, match.teams[0])
+    const secondTeam = this.getTeamData(match, match.teams[1])
 
     return {
       gameId: match.gameId,
@@ -39,16 +33,17 @@ class DetailedMatchTransformer extends MatchTransformer {
 
   /**
    * Get all data of one team
+   * @param match raw match data from Riot API
    * @param team raw team data from Riot API
    */
-  getTeamData(team) {
+  getTeamData(match, team) {
     let win = team.win
-    if (this.match.gameDuration < 300) {
+    if (match.gameDuration < 300) {
       win = 'Remake'
     }
 
     // Global stats of the team
-    const teamPlayers = this.match.participants.filter(p => p.teamId === team.teamId)
+    const teamPlayers = match.participants.filter(p => p.teamId === team.teamId)
     const teamStats = teamPlayers.reduce((prev, cur) => {
       prev.kills += cur.stats.kills
       prev.deaths += cur.stats.deaths
@@ -78,8 +73,8 @@ class DetailedMatchTransformer extends MatchTransformer {
 
     // Players
     const players = teamPlayers
-      .map(p => super.getPlayerData(p, true, teamStats))
-      .sort(this.MatchHelper.sortTeamByRole)
+      .map(p => super.getPlayerData(match, p, true, teamStats))
+      .sort(super.sortTeamByRole)
 
     return {
       bans,

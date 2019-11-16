@@ -40,19 +40,7 @@ class MatchController {
 
     let matchFromRiot = await Jax.Match.get(gameId)
 
-    const champions = await Jax.DDragon.Champion.list()
-    const items = await Jax.DDragon.Item.list()
-    const runes = await Jax.DDragon.Rune.list()
-    const version = Jax.DDragon.Version
-    const ctx = {
-      champions: champions.data,
-      items: items.data,
-      runes,
-      version,
-      MatchHelper
-    }
-
-    matchFromRiot = DetailedMatchTransformer.transform(matchFromRiot, ctx)
+    matchFromRiot = await DetailedMatchTransformer.transform(matchFromRiot)
 
     // DetailedMatch.save(matchFromRiot)
 

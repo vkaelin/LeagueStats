@@ -101,24 +101,12 @@ class MatchHelper {
 
     /* If we have to store some matches in the db */
     if (matchesFromApi.length !== 0) {
-      const items = await Jax.DDragon.Item.list()
-      const champions = await Jax.DDragon.Champion.list()
-      const runes = await Jax.DDragon.Rune.list()
-      const version = Jax.DDragon.Version
       const ctx = {
         account,
-        champions: champions.data,
-        items: items.data,
-        runes,
-        version,
         MatchHelper: this
       }
-
-      matchesFromApi = matchesFromApi.map(m => {
-        if (m) return BasicMatchTransformer.transform(m, ctx)
-      })
-
-      console.log(matchesFromApi.length)
+      // Transform raw matches data
+      await BasicMatchTransformer.transform(matchesFromApi, ctx)
       Logger.transport('file').info(matchesFromApi)
 
       matchesDetails = [...matchesDetails, ...matchesFromApi]
@@ -135,37 +123,6 @@ class MatchHelper {
     console.timeEnd('getMatches')
 
     return matchesDetails
-  }
-
-  /**
-   * Return the lane of the summoner according to timeline
-   * @param timeline from Riot Api
-   */
-  getRoleName(timeline) {
-    if (timeline.lane === 'BOTTOM' && timeline.role.includes('SUPPORT')) {
-      return 'SUPPORT'
-    }
-    return timeline.lane
-  }
-
-  /**
-   * Return time in a formatted way
-   * @param sec time in seconds to convert
-   */
-  secToTime(sec) {
-    const min = Math.floor(sec / 60)
-    const newSec = sec - min * 60
-    return min + 'm' + (newSec < 10 ? '0' + newSec : newSec) + 's'
-  }
-
-  /**
-   * Sort array of Roles according to a specific order
-   * @param a first role
-   * @param b second role
-   */
-  sortTeamByRole(a, b) {
-    const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
-    return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
   }
 }
 

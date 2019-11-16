@@ -1,5 +1,7 @@
 'use strict'
 
+const Jax = use('Jax')
+
 /**
  * MatchTransformer class
  *
@@ -7,34 +9,44 @@
  */
 class MatchTransformer {
   /**
+   * Get global Context with DDragon Data
+   */
+  async getContext() {
+    const items = await Jax.DDragon.Item.list()
+    const champions = await Jax.DDragon.Champion.list()
+    const runes = await Jax.DDragon.Rune.list()
+    const version = Jax.DDragon.Version
+
+    this.champions = champions.data
+    this.items = items.data
+    this.runes = runes
+    this.version = version
+  }
+
+  /**
    *  Get global data about the match
    */
-  getGameInfos() {
-    const map = this.match.mapId
-    const gamemode = this.match.queueId
-    const date = this.match.gameCreation
-    // const time = this.MatchHelper.secToTime(this.match.gameDuration)
-    const time = this.match.gameDuration
-
+  getGameInfos(match) {
     return {
-      map,
-      gamemode,
-      date,
-      time
+      map: match.mapId,
+      gamemode: match.queueId,
+      date: match.gameCreation,
+      time: match.gameDuration
     }
   }
 
   /**
    * Get player specific data during the match
+   * @param match 
    * @param player 
    * @param detailed : detailed or not stats 
    * @param teamStats : if detailed, the teamStats argument is mandatory
    */
-  getPlayerData(player, detailed, teamStats = {}) {
-    const identity = this.match.participantIdentities.find(p => p.participantId === player.participantId)
+  getPlayerData(match, player, detailed, teamStats = {}) {
+    const identity = match.participantIdentities.find(p => p.participantId === player.participantId)
     const name = identity.player.summonerName
     const champion = (({ id, name, tags }) => ({ id, name, tags }))(Object.entries(this.champions).find(([, champion]) => Number(champion.key) === player.championId)[1])
-    const role = this.MatchHelper.getRoleName(player.timeline)
+    const role = this.getRoleName(player.timeline)
     const level = player.stats.champLevel
 
     // Regular stats / Full match stats
@@ -60,8 +72,8 @@ class MatchTransformer {
     let percentStats
     if (detailed) {
       percentStats = {
-        minions: +(stats.minions / (this.match.gameDuration / 60)).toFixed(2),
-        vision: +(stats.vision / (this.match.gameDuration / 60)).toFixed(2),
+        minions: +(stats.minions / (match.gameDuration / 60)).toFixed(2),
+        vision: +(stats.vision / (match.gameDuration / 60)).toFixed(2),
         gold: +(player.stats.goldEarned * 100 / teamStats.gold).toFixed(1) + '%',
         dmgChamp: +(player.stats.totalDamageDealtToChampions * 100 / teamStats.dmgChamp).toFixed(1) + '%',
         dmgObj: +(player.stats.damageDealtToObjectives * 100 / teamStats.dmgObj).toFixed(1) + '%',
@@ -70,7 +82,7 @@ class MatchTransformer {
 
       stats.kp = teamStats.kills === 0 ? '0%' : +((stats.kills + stats.assists) * 100 / teamStats.kills).toFixed(1) + '%'
     } else {
-      const totalKills = this.match.participants.reduce((prev, current) => {
+      const totalKills = match.participants.reduce((prev, current) => {
         if (current.teamId !== player.teamId) {
           return prev
         }
@@ -99,7 +111,7 @@ class MatchTransformer {
     const items = []
     for (let i = 0; i < 6; i++) {
       const id = player.stats['item' + i]
-      if(id === 0) {
+      if (id === 0) {
         items.push(null)
         continue
       }
@@ -127,6 +139,27 @@ class MatchTransformer {
       stats,
       percentStats,
     }
+  }
+
+  /**
+  * Return the lane of the summoner according to timeline
+  * @param timeline from Riot Api
+  */
+  getRoleName(timeline) {
+    if (timeline.lane === 'BOTTOM' && timeline.role.includes('SUPPORT')) {
+      return 'SUPPORT'
+    }
+    return timeline.lane
+  }
+
+  /**
+  * Sort array of Roles according to a specific order
+  * @param a first role
+  * @param b second role
+  */
+  sortTeamByRole(a, b) {
+    const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+    return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
   }
 }
 

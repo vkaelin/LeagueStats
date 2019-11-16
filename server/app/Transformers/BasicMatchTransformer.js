@@ -10,19 +10,27 @@ const MatchTransformer = use('App/Transformers/MatchTransformer')
 class BasicMatchTransformer extends MatchTransformer {
   /**
    * Transform raw data from Riot API
-   * @param match data from Riot API
+   * @param matches data from Riot API, Array of match or a single match
    * @param ctx context
    */
-  transform(match, { account, champions, items, runes, version, MatchHelper }) {
-    this.match = match
-    this.champions = champions
-    this.items = items
-    this.runes = runes
-    this.version = version
-    this.MatchHelper = MatchHelper
+  async transform(matches, { account }) {
+    await super.getContext()
 
+    if (Array.isArray(matches)) {
+      matches.forEach((match, index) => {
+        matches[index] = this.transformOneMatch(match, account)
+      });
+    } else {
+      matches = this.transformOneMatch(matches, account)
+    }
+  }
+
+  /**
+   * Transform raw data for 1 match
+   */
+  transformOneMatch(match, account) {
     // Global data about the match
-    const globalInfos = super.getGameInfos()
+    const globalInfos = super.getGameInfos(match)
 
     const participantId = match.participantIdentities.find((p) => p.player.currentAccountId === account.accountId).participantId
     const player = match.participants[participantId - 1]
@@ -35,7 +43,7 @@ class BasicMatchTransformer extends MatchTransformer {
     }
 
     // Player data
-    const playerData = super.getPlayerData(player, false)
+    const playerData = super.getPlayerData(match, player, false)
 
     // Teams data
     const allyTeam = []
@@ -44,8 +52,8 @@ class BasicMatchTransformer extends MatchTransformer {
       const allData = match.participants[summoner.participantId - 1]
       const playerInfos = {
         name: summoner.player.summonerName,
-        role: MatchHelper.getRoleName(allData.timeline),
-        champion: (({ id, name }) => ({ id, name }))(Object.entries(champions).find(([, champion]) => Number(champion.key) === allData.championId)[1])
+        role: super.getRoleName(allData.timeline),
+        champion: (({ id, name }) => ({ id, name }))(Object.entries(this.champions).find(([, champion]) => Number(champion.key) === allData.championId)[1])
       }
 
       if (allData.teamId === player.teamId) {
@@ -54,8 +62,8 @@ class BasicMatchTransformer extends MatchTransformer {
         enemyTeam.push(playerInfos)
       }
     }
-    allyTeam.sort(MatchHelper.sortTeamByRole)
-    enemyTeam.sort(MatchHelper.sortTeamByRole)
+    allyTeam.sort(super.sortTeamByRole)
+    enemyTeam.sort(super.sortTeamByRole)
 
     return {
       summoner_puuid: account.puuid,
