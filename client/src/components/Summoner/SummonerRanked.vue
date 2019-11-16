@@ -1,55 +1,45 @@
 <template>
-  <div class="ml-6 leading-none">
-    <div class="relative inline-block text-white">
-      <select
-        v-model="selectedKey"
-        class="block appearance-none bg-select w-full px-4 py-2 pr-8 rounded-md leading-tight text-lg font-extrabold cursor-pointer focus:outline-none"
-      >
-        <option
-          v-for="(data, leagueName) in ranked"
-          :key="leagueName"
-          :value="leagueName"
-        >{{ data.name }}</option>
-      </select>
-      <div
-        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-      >
-        <svg
-          class="text-white fill-current h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-        </svg>
+  <div class="ml-2 leading-none flex">
+    <div
+      class="w-24 h-24"
+      :style="{background: `url(${selectedLeague.rankImgLink}) center/cover`}"
+    ></div>
+    <div class="flex flex-col justify-center">
+      <div class="flex items-center">
+        <div class="text-teal-500 text-4xl uppercase font-extrabold">{{ selectedLeague.fullRank }}</div>
+        <div class="ml-4 text-3xl font-extrabold">{{ selectedLeague.leaguePoints }} LP</div>
       </div>
-    </div>
-
-    <div class="mt-1 text-teal-500 text-4xl uppercase font-extrabold">{{ selectedLeague.fullRank }}</div>
-    <div class="mt-4 flex items-start bg-gradient px-4 py-3 rounded-lg" style="width: 430px;">
-      <div class="flex items-center w-1/2">
-        <div
-          class="w-20 h-20 bg-blue-1000"
-          :style="{background: `url(${selectedLeague.rankImgLink}) center/cover`}"
-        ></div>
-        <div class="ml-2 text-xl font-extrabold">{{ selectedLeague.leaguePoints }} LP</div>
-      </div>
-      <div class="flex justify-between w-1/2">
-        <div class="mt-2 font-extrabold uppercase leading-none">
-          <div class="text-teal-500 text-base">Record</div>
-          <div class="flex">
-            <div class="mt-2 text-sm leading-tight text-right">
-              <div>{{ selectedLeague.wins }}</div>
-              <div>{{ selectedLeague.losses }}</div>
-            </div>
-            <div class="ml-2 mt-2 text-sm leading-tight">
-              <div class="text-teal-500">Wins</div>
-              <div class="text-red-300">Losses</div>
-            </div>
+      <div class="flex mt-2 items-center">
+        <div class="relative inline-block text-white">
+          <select
+            v-model="selectedKey"
+            class="block appearance-none bg-blue-800 hover:bg-blue-700 w-full px-4 py-2 pr-8 rounded-md leading-tight text-lg font-extrabold cursor-pointer focus:outline-none"
+          >
+            <option
+              v-for="(data, leagueName) in ranked"
+              :key="leagueName"
+              :value="leagueName"
+            >{{ data.name }}</option>
+          </select>
+          <div
+            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+          >
+            <svg
+              class="text-white fill-current h-5 w-5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
           </div>
         </div>
-        <div class="mt-2 font-extrabold">
-          <div class="text-teal-500 text-base uppercase">Winrate</div>
-          <div class="mt-2 text-xl leading-tight">{{ selectedLeague.winrate }}</div>
+        <div class="ml-2 p-2 flex bg-blue-800 rounded items-center">
+          <div class="text-base uppercase font-bold">Record</div>
+          <div class="ml-2 text-green-400 font-bold">{{ selectedLeague.wins }}</div>
+          <span class="mx-1"> - </span>
+          <div class="text-red-400 font-bold">{{ selectedLeague.losses }}</div>
+          <div class="ml-3 text-base uppercase font-bold">Winrate</div>
+          <div :class="['ml-2 text-base leading-tight font-bold', parseFloat(selectedLeague.winrate) > 50 ? 'text-green-400' : 'text-red-400', parseFloat(selectedLeague.winrate) == 50 ? 'text-blue-100' : '' ]">{{ selectedLeague.winrate }}</div>
         </div>
       </div>
     </div>

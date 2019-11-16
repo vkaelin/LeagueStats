@@ -1,6 +1,6 @@
 <template>
-  <div class="mt-4 text-white pb-12">
-    <div class="flex justify-between px-12">
+  <div class="text-white pb-12">
+    <div class="flex justify-between">
       <div style="width: 517px; height: 272px;">
         <content-loader
           :height="272"
@@ -150,7 +150,7 @@
       </div>
     </div>
 
-    <div class="mt-12 text-center">
+    <div class="mt-4 text-center">
       <div
         v-for="index in 10"
         :key="index"
