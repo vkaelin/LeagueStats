@@ -5,18 +5,18 @@
       <input
         v-model="summoner"
         type="text"
-        :class="[elementClasses, inputClasses]"
-        class="input w-full px-2 rounded-lg outline-none pl-8 pr-16 font-bold"
+        :class="[inputClasses]"
+        class="input w-full rounded-lg outline-none pl-6 pr-32 font-bold"
       />
-      <div class="absolute right-0 z-30 vertical-center flex items-center h-full mr-2">
+      <div class="absolute right-0 z-30 vertical-center flex items-center h-full mr-12">
         <div
           @click="dropdown = !dropdown"
-          :class="{'bg-teal-600' : dropdown}"
-          class="cursor-pointer flex items-center px-2 py-1 rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
+          :class="{'border-2 border-teal-200' : dropdown}"
+          class="border border-transparent cursor-pointer flex items-center px-2 py-1 rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
         >
           <span class="selected font-bold select-none">{{ selectedRegion }}</span>
           <svg
-            class="ml-1 w-4 h-4 fill-current"
+            class="ml-1 -mr-1 w-4 h-4 fill-current"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 320 512"
           >
@@ -29,21 +29,22 @@
       <transition
         enter-active-class="transition-all transition-fastest ease-out-quad"
         leave-active-class="transition-all transition-faster ease-in-quad"
-        enter-class="opacity-0 scale-70"
+        enter-class="opacity-0 scale-90"
         enter-to-class="opacity-100 scale-100"
         leave-class="opacity-100 scale-100"
-        leave-to-class="opacity-0 scale-70"
+        leave-to-class="opacity-0 scale-90"
       >
         <div
           v-if="dropdown"
-          class="absolute right-0 z-30 text-white rounded-b shadow cursor-pointer mr-2 offsetDropDown"
+          :class="[dropdownClasses]"
+          class="absolute right-0 z-30 text-white rounded-b shadow cursor-pointer"
         >
           <div
             v-for="(region, index) in regions"
             :key="region"
             @click="selectedRegion = region"
             :class="classRegions(index)"
-            class="relative px-4b py-1 text-xs bg-teal-600 hover:bg-teal-500"
+            class="relative pr-2 pl-5 py-1 text-xs dropdown text-right"
           >
             <svg
               v-if="region === selectedRegion"
@@ -59,23 +60,22 @@
           </div>
         </div>
       </transition>
-    </div>
-
-    <button
-      :class="[elementClasses, btnClasses]"
-      class="input btn rounded-lg ml-2 relative"
-      type="submit"
-    >
-      <svg
-        class="absolute vertical-center horizontal-center w-4 h-4 fill-current"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 512 512"
+      <button
+        :class="[btnClasses]"
+        class="absolute right-0 z-30 btn rounded-lg h-full hover:text-teal-500"
+        type="submit"
       >
-        <path
-          d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
-        />
-      </svg>
-    </button>
+        <svg
+          class="absolute vertical-center horizontal-center w-4 h-4 fill-current "
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+        >
+          <path
+            d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+          />
+        </svg>
+      </button>
+    </div>
   </form>
 </template>
 
@@ -110,32 +110,31 @@ export default {
   computed: {
     btnClasses() {
       return {
-        'w-12': this.size === 'small',
-        'w-20': this.size === 'xl'
-      }
-    },
-    elementClasses() {
-      return {
-        'border-2': this.size === 'small',
-        'border-4': this.size === 'xl'
+        'w-8 mr-3': this.size === 'small',
+        'w-12': this.size === 'xl'
       }
     },
     formClasses() {
       return {
-        'max-w-lg': this.size === 'small',
+        'max-w-md': this.size === 'small',
       }
     },
     inputClasses() {
       return {
-        'py-2': this.size === 'small',
-        'py-4': this.size === 'xl'
+        'py-2 px-1': this.size === 'small',
+        'py-4 px-2': this.size === 'xl'
+      }
+    },
+    dropdownClasses() {
+      return {
+        'offsetDropDown': this.size === 'small',
+        'offsetDropDownXl': this.size === 'xl'
       }
     }
   },
   methods: {
     classRegions(index) {
       return {
-        'rounded-t': index === 0,
         'rounded-b': index === this.regions.length - 1
       }
     },
@@ -151,22 +150,28 @@ export default {
 
 <style scoped>
 .offsetDropDown {
-  top: 57px;
-  right: 1px;
+  top: 43px;
+  right: 48px;
+}
+
+.offsetDropDownXl {
+  top: 58px;
+  right: 50px;
 }
 
 .offsetIcon {
   left: 4px;
 }
 
-.input {
-  border-color: rgba(129, 230, 217, 0.7);
-  background: rgba(40, 94, 97, 0.35);
+.input, .dropdown {
+  background: rgba(23,49,79,0.60);
 }
 
-.input:focus,
-.btn:hover {
-  background: rgba(40, 94, 97, 0.75);
-  border-color: rgba(129, 230, 217, 0.9);
+.dropdown:hover {
+  background: rgba(23,49,79,0.90);
+}
+
+.input:focus{
+  background: rgba(23,49,79,0.70);
 }
 </style>
