@@ -1,43 +1,53 @@
 <template>
   <div>
-    <div class="inline-block bg-gradient rounded-lg p-3">
-      <h4 class="font-bold text-base text-white text-left">Recent Activity</h4>
-      <div class="flex">
-        <span class="ml-12 text-blue-200 font-semibold text-xs">{{ gridDays[11].month }}</span>
-        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[42].month }}</span>
-        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[73].month }}</span>
-        <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[104].month }}</span>
+    <div class="inline-block bg-blue-800 rounded-lg">
+      <div class="relative heading flex justify-center items-center py-2 rounded-t-lg text-blue-200">
+        <svg class="w-4 h-4">
+          <use xlink:href="#time" />
+        </svg>
+        <span class="mx-3 text-sm font-bold uppercase">Recent Activity</span>
+        <svg class="w-4 h-4">
+          <use xlink:href="#time" />
+        </svg>
       </div>
-      <div class="mt-1 flex">
-        <div class="flex flex-col">
-          <span class="text-blue-200 font-semibold text-xs leading-snug">Mo</span>
-          <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Tu</span>
-          <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">We</span>
-          <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Th</span>
-          <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Fr</span>
-          <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Sa</span>
-          <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Su</span>
+      <div class="p-3 pt-1">
+        <div class="flex">
+          <span class="ml-12 text-blue-200 font-semibold text-xs">{{ gridDays[11].month }}</span>
+          <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[42].month }}</span>
+          <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[73].month }}</span>
+          <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[104].month }}</span>
         </div>
-        <div
-          class="ml-2 flex flex-col flex-wrap"
-          style="width: calc(20px * 15); height: calc(20px * 7)"
-        >
-          <Dropdown v-for="(day, index) in gridDays.slice(indexFirstMonday)" :key="day.timestamp">
-            <template v-slot:trigger>
-              <div
-                :class="[getCaseMargin(index), getCaseColor(day.matches)]"
-                class="ml-1 w-4 h-4 cursor-pointer"
-              />
-            </template>
-            <template v-slot:default>
-              <div class="px-2 text-white text-center text-xs">
-                <div>{{ day.date }}</div>
-                <div>
-                  <span class="font-bold text-teal-400">{{ day.matches }}</span> game(s)
+        <div class="mt-1 flex">
+          <div class="flex flex-col">
+            <span class="text-blue-200 font-semibold text-xs leading-snug">Mo</span>
+            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Tu</span>
+            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">We</span>
+            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Th</span>
+            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Fr</span>
+            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Sa</span>
+            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Su</span>
+          </div>
+          <div
+            class="ml-1 flex flex-col flex-wrap"
+            style="width: calc(20px * 15); height: calc(20px * 7)"
+          >
+            <Dropdown v-for="(day, index) in gridDays.slice(indexFirstMonday)" :key="day.timestamp">
+              <template v-slot:trigger>
+                <div
+                  :class="[getCaseMargin(index), getCaseColor(day.matches)]"
+                  class="ml-1 w-4 h-4 cursor-pointer"
+                />
+              </template>
+              <template v-slot:default>
+                <div class="px-2 text-white text-center text-xs">
+                  <div>{{ day.date }}</div>
+                  <div>
+                    <span class="font-bold text-teal-400">{{ day.matches }}</span> game(s)
+                  </div>
                 </div>
-              </div>
-            </template>
-          </Dropdown>
+              </template>
+            </Dropdown>
+          </div>
         </div>
       </div>
     </div>
