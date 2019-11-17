@@ -19,8 +19,8 @@
       </header>
 
       <template v-if="summonerFound">
-        <div class="mt-4 text-white pb-12">
-          <div class="flex justify-between px-12">
+        <div class="text-white pb-12">
+          <div class="flex justify-between items-center">
             <div>
               <div class="flex items-center">
                 <h1 class="text-4xl font-extrabold uppercase">
@@ -29,7 +29,7 @@
                 </h1>
                 <div
                   v-if="playing"
-                  class="ml-4 flex items-center px-3 py-1 rounded-full bg-teal-800 border border-teal-400"
+                  class="ml-4 mt-2 flex items-center px-3 py-1 rounded-full bg-teal-800 border border-teal-400"
                 >
                   <div class="playing-dot bg-teal-flashy w-2 h-2 rounded-full"></div>
                   <span class="ml-2 text-teal-flashy font-semibold text-sm">In Game</span>
@@ -60,7 +60,7 @@
             </div>
           </div>
 
-          <div class="mt-12 text-center flex">
+          <div class="mt-3 text-center flex">
             <div class="mt-4 w-3/12">
               <SummonerStats />
               <SummonerMates />

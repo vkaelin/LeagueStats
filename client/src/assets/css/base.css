@@ -54,3 +54,7 @@ button:focus {
   );
   box-shadow: rgba(235, 248, 255, 0.1) 0px -1px inset;
 }
+
+.input-color {
+  background: rgba(23, 49, 79, 0.6);
+}
