@@ -6,13 +6,13 @@
         v-model="summoner"
         type="text"
         :class="[inputClasses]"
-        class="input w-full rounded-lg outline-none pl-6 pr-32 font-bold"
+        class="w-full rounded-lg outline-none pl-6 pr-32 font-bold focus:bg-blue-1000"
       />
       <div class="absolute right-0 z-30 vertical-center flex items-center h-full mr-12">
         <div
           @click="dropdown = !dropdown"
-          :class="{'border-2 border-teal-200' : dropdown}"
-          class="border border-transparent cursor-pointer flex items-center px-2 py-1 rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
+          :class="{'border-teal-200': dropdown}"
+          class="border-2 border-transparent cursor-pointer flex items-center px-2 py-1 rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
         >
           <span class="selected font-bold select-none">{{ selectedRegion }}</span>
           <svg
@@ -35,7 +35,7 @@
         leave-to-class="opacity-0 scale-90"
       >
         <div
-          v-if="dropdown"
+          v-show="dropdown"
           :class="[dropdownClasses]"
           class="absolute right-0 z-30 text-white rounded-b shadow cursor-pointer"
         >
@@ -44,7 +44,7 @@
             :key="region"
             @click="selectedRegion = region"
             :class="classRegions(index)"
-            class="relative pr-2 pl-5 py-1 text-xs dropdown text-right"
+            class="relative pr-2 pl-5 py-1 text-xs text-right bg-blue-1000 hover:bg-blue-800"
           >
             <svg
               v-if="region === selectedRegion"
@@ -62,11 +62,11 @@
       </transition>
       <button
         :class="[btnClasses]"
-        class="absolute right-0 z-30 btn rounded-lg h-full hover:text-teal-500"
+        class="absolute right-0 z-30 h-full hover:text-teal-200"
         type="submit"
       >
         <svg
-          class="absolute vertical-center horizontal-center w-4 h-4 fill-current "
+          class="absolute vertical-center horizontal-center w-4 h-4 fill-current"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"
         >
@@ -122,7 +122,9 @@ export default {
     inputClasses() {
       return {
         'py-2 px-1': this.size === 'small',
-        'py-4 px-2': this.size === 'xl'
+        'py-4 px-2': this.size === 'xl',
+        'input-color': !this.dropdown,
+        'bg-blue-1000': this.dropdown
       }
     },
     dropdownClasses() {
@@ -161,17 +163,5 @@ export default {
 
 .offsetIcon {
   left: 4px;
-}
-
-.input, .dropdown {
-  background: rgba(23,49,79,0.60);
-}
-
-.dropdown:hover {
-  background: rgba(23,49,79,0.90);
-}
-
-.input:focus{
-  background: rgba(23,49,79,0.70);
 }
 </style>
