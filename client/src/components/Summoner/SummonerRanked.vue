@@ -1,13 +1,22 @@
 <template>
-  <div class="ml-2 leading-none flex">
-    <div
-      class="w-24 h-24"
-      :style="{background: `url(${selectedLeague.rankImgLink}) center/cover`}"
-    ></div>
-    <div class="flex flex-col justify-center">
+  <div class="ml-2 leading-none flex items-center">
+    <div class="ml-1 flex flex-col justify-center">
       <div class="flex items-center">
-        <div class="text-teal-500 text-4xl uppercase font-extrabold">{{ selectedLeague.fullRank }}</div>
-        <div class="ml-4 text-3xl font-extrabold">{{ selectedLeague.leaguePoints }} LP</div>
+        <div
+          :style="[borderLeaguePoints, {backgroundColor: colorBorder}]"
+          class="percentage-circle relative w-12 h-12 flex items-center justify-center rounded-full"
+        >
+          <div class="relative w-11 h-11 p-1 bg-blue-900 rounded-full">
+            <div
+              class="h-full bg-center bg-cover"
+              :style="{backgroundImage: `url(${selectedLeague.rankImgLink})`}"
+            ></div>
+          </div>
+        </div>
+        <div
+          class="ml-2 text-teal-500 text-3xl uppercase font-extrabold"
+        >{{ selectedLeague.fullRank }}</div>
+        <div class="ml-4 text-2xl font-extrabold">{{ selectedLeague.leaguePoints }} LP</div>
       </div>
       <div class="flex mt-2 items-center">
         <div class="relative inline-block text-white">
@@ -36,10 +45,12 @@
         <div class="ml-2 p-2 flex bg-blue-800 rounded items-center">
           <div class="text-base uppercase font-bold">Record</div>
           <div class="ml-2 text-green-400 font-bold">{{ selectedLeague.wins }}</div>
-          <span class="mx-1"> - </span>
+          <span class="mx-1">-</span>
           <div class="text-red-400 font-bold">{{ selectedLeague.losses }}</div>
           <div class="ml-3 text-base uppercase font-bold">Winrate</div>
-          <div :class="['ml-2 text-base leading-tight font-bold', parseFloat(selectedLeague.winrate) > 50 ? 'text-green-400' : 'text-red-400', parseFloat(selectedLeague.winrate) == 50 ? 'text-blue-100' : '' ]">{{ selectedLeague.winrate }}</div>
+          <div
+            :class="['ml-2 text-base leading-tight font-bold', parseFloat(selectedLeague.winrate) >= 50 ? 'text-green-400' : 'text-red-400']"
+          >{{ selectedLeague.winrate }}</div>
         </div>
       </div>
     </div>
@@ -56,11 +67,35 @@ export default {
   },
   data() {
     return {
+      rankColors: {
+        'iron': '#574D4F',
+        'bronze': '#8C523A',
+        'silver': '#80989D',
+        'gold': '#CD8837',
+        'platinum': '#4E9996',
+        'diamond': '#576BCE',
+        'master': '#9D48E0',
+        'grandmaster': '#CD4545',
+        'challenger': '#F4C874',
+      },
       selectedKey: Object.keys(this.ranked)[0]
     }
   },
 
   computed: {
+    borderLeaguePoints() {
+      const degrees = (this.selectedLeague.leaguePoints <= 100 ? this.selectedLeague.leaguePoints : 100) * 360 / 100
+      const linearGradient = degrees <= 180 ? `linear-gradient(${90 + degrees}deg, transparent 50%, #2c5282 50%)` : `linear-gradient(${degrees - 90}deg, transparent 50%, ${this.colorBorder} 50%)`
+      return {
+        backgroundImage: `${linearGradient}, linear-gradient(90deg, #2c5282 50%, transparent 50%)`
+      }
+    },
+    colorBorder() {
+      if (!this.selectedLeague.tier) {
+        return 'transparent'
+      }
+      return this.rankColors[this.selectedLeague.tier.toLowerCase()]
+    },
     selectedLeague() {
       return this.ranked[this.selectedKey]
     }
