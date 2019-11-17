@@ -1,0 +1,110 @@
+<template>
+  <div
+    ref="container"
+    @mousedown="addRipple"
+    class="relative overflow-hidden cursor-pointer"
+    style="z-index: 1;"
+  >
+    <transition-group
+      class="absolute top-0 left-0 w-full h-full pointer-events-none"
+      style="z-index: -1;"
+      name="grow"
+      tag="div"
+    >
+      <div
+        v-for="ripple in ripples"
+        :key="ripple.id"
+        class="absolute w-full h-full opacity-0 rounded-full pointer-events-none"
+        :style="{
+          top: ripple.top,
+          left: ripple.left,
+          width: ripple.width,
+          height: ripple.height,
+          background: color
+        }"
+      ></div>
+    </transition-group>
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    color: {
+      type: String,
+      default: 'rgba(255, 255, 255, 0.3)'
+    }
+  },
+
+  data() {
+    return {
+      ripples: [],
+      rippleWidth: 0,
+      halfRippleWidth: 0,
+    }
+  },
+
+  mounted() {
+    const width = this.$refs.container.offsetWidth
+    const height = this.$refs.container.offsetHeight
+    this.rippleWidth = width > height ? width : height
+    this.halfRippleWidth = this.rippleWidth / 2
+
+    window.addEventListener('mouseup', this.purgeRipples)
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('mouseup', this.purgeRipples)
+  },
+
+  methods: {
+    addRipple(e) {
+      const { left, top } = this.$refs.container.getBoundingClientRect()
+      const rippleId = Date.now()
+      this.ripples.push({
+        width: `${this.rippleWidth}px`,
+        height: `${this.rippleWidth}px`,
+        left: `${e.clientX - left - this.halfRippleWidth}px`,
+        top: `${e.clientY - top - this.halfRippleWidth}px`,
+        id: rippleId
+      })
+    },
+    purgeRipples() {
+      this.ripples = []
+    }
+  }
+}
+</script>
+
+<style>
+.grow-enter-active,
+.grow-enter-to-active {
+  transition: all 1500ms ease-out;
+}
+
+.grow-leave-active,
+.grow-leave-to-active {
+  transition: all 700ms ease-out;
+}
+
+.grow-enter {
+  transform: scale(0);
+  opacity: 1;
+}
+
+.grow-enter-to {
+  transform: scale(4);
+  opacity: 1;
+}
+
+.grow-leave {
+  transform: scale(4);
+  opacity: 1;
+}
+
+.grow-leave-to {
+  transform: scale(4);
+  opacity: 0;
+}
+</style>

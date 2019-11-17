@@ -1,7 +1,8 @@
 <template>
   <li class="ml-4 relative">
-    <div
-      @click="displayDetails"
+    <Ripple
+      @click.native="displayDetails"
+      color="rgba(43, 108, 176, 0.7)"
       :class="[matchResultClass, showDetails ? 'rounded-t-lg' : 'rounded-lg']"
       class="match relative mt-4 bg-blue-800 text-white text-base cursor-pointer hover:shadow-xl"
     >
@@ -128,7 +129,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </Ripple>
     <DetailedMatch :data="getMatchDetails(data.gameId) || {}" :details-open="showDetails" />
   </li>
 </template>
@@ -137,11 +138,13 @@
 import { mapActions, mapState, mapGetters } from 'vuex'
 import DetailedMatch from '@/components/Match/DetailedMatch'
 import MatchItems from '@/components/Match/MatchItems'
+import Ripple from '@/components/Ripple.vue'
 
 export default {
   components: {
     DetailedMatch,
     MatchItems,
+    Ripple,
   },
 
   props: {
