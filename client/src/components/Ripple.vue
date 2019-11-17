@@ -3,11 +3,10 @@
     ref="container"
     @mousedown="addRipple"
     class="relative overflow-hidden cursor-pointer"
-    style="z-index: 1;"
   >
+
     <transition-group
       class="absolute top-0 left-0 w-full h-full pointer-events-none"
-      style="z-index: -1;"
       name="grow"
       tag="div"
     >
