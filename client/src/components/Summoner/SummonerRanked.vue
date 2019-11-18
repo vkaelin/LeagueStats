@@ -3,7 +3,8 @@
     <div class="ml-1 flex flex-col justify-center">
       <div class="flex items-center">
         <div
-          :style="[borderLeaguePoints, {backgroundColor: colorBorder}]"
+          ref="leagueBorder"
+          :style="{backgroundColor: colorBorder}"
           class="percentage-circle relative w-12 h-12 flex items-center justify-center rounded-full"
         >
           <div class="relative w-11 h-11 p-1 bg-blue-900 rounded-full">
@@ -67,6 +68,7 @@ export default {
   },
   data() {
     return {
+      currentDegree: 0,
       rankColors: {
         'iron': '#574D4F',
         'bronze': '#8C523A',
@@ -83,32 +85,54 @@ export default {
   },
 
   computed: {
-    borderLeaguePoints() {
-      const degrees = (this.selectedLeague.leaguePoints <= 100 ? this.selectedLeague.leaguePoints : 100) * 360 / 100
-      const linearGradient = degrees <= 180 ? `linear-gradient(${90 + degrees}deg, transparent 50%, #2c5282 50%)` : `linear-gradient(${degrees - 90}deg, transparent 50%, ${this.colorBorder} 50%)`
-      return {
-        backgroundImage: `${linearGradient}, linear-gradient(90deg, #2c5282 50%, transparent 50%)`
-      }
-    },
     colorBorder() {
       if (!this.selectedLeague.tier) {
         return 'transparent'
       }
+      if (this.selectedLeague.leaguePoints === 0) {
+        return '#2c5282'
+      }
       return this.rankColors[this.selectedLeague.tier.toLowerCase()]
+    },
+    leagueDegrees() {
+      return (this.selectedLeague.leaguePoints <= 100 ? this.selectedLeague.leaguePoints : 100) * 360 / 100
     },
     selectedLeague() {
       return this.ranked[this.selectedKey]
     }
+  },
+
+  watch: {
+    selectedKey() {
+      this.currentDegree = 0
+      this.$refs.leagueBorder.style.backgroundImage = null
+      this.triggerAnimation()
+    }
+  },
+
+  mounted() {
+    this.triggerAnimation()
+  },
+
+  methods: {
+    animateLeagueDegrees(stop = false) {
+      if (stop) return
+      this.selectedLeague.leaguePoints > 50 ? this.currentDegree += 2 : this.currentDegree++
+
+
+      const linearGradient = this.currentDegree <= 180 ? `linear-gradient(${90 + this.currentDegree}deg, transparent 50%, #2c5282 50%)` : `linear-gradient(${this.currentDegree - 90}deg, transparent 50%, ${this.colorBorder} 50%)`
+      this.$refs.leagueBorder.style.backgroundImage = `${linearGradient}, linear-gradient(90deg, #2c5282 50%, transparent 50%)`
+
+      this.triggerAnimation()
+    },
+    triggerAnimation() {
+      setTimeout(() => {
+        if (this.currentDegree < 360 && this.currentDegree < this.leagueDegrees)
+          this.animateLeagueDegrees()
+        else
+          this.animateLeagueDegrees(true)
+      }, 1)
+    }
   }
 }
 </script>
-
-<style scoped>
-.bg-select {
-  background-color: rgba(49, 130, 206, 0.2);
-}
-
-.bg-select:focus {
-  background-color: #2c5282;
-}
-</style>
