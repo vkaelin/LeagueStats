@@ -56,12 +56,12 @@
                   <span class>/</span>
                   <span class>{{ data.stats.assists }}</span>
                 </div>
-                <div class="mt-2 text-white text-xs font-extrabold">{{ data.stats.kda }} KDA</div>
+                <div class="relative z-30 mt-2 text-white text-xs font-extrabold">{{ data.stats.kda }} KDA</div>
               </div>
             </div>
 
             <div
-              class="h-6 flex items-end text-sm text-white font-extrabold leading-none"
+              class="relative z-30 h-6 flex items-end text-sm text-white font-extrabold leading-none"
             >{{ data.gamemode.name }}</div>
           </div>
         </div>
@@ -69,7 +69,7 @@
         <div class="second w-3/12 py-6 flex items-center">
           <MatchItems :items="data.items" />
 
-          <div class="ml-4 leading-none">
+          <div class="relative z-30 ml-4 leading-none">
             <div class="flex items-center">
               <img src="@/assets/img/icons/Creep.svg" alt="Minions" />
               <div class="ml-1 text-teal-300 text-sm font-bold">
@@ -92,7 +92,7 @@
           </div>
         </div>
 
-        <div class="third w-5/12 py-1 flex items-center">
+        <div class="relative z-30 third w-5/12 py-1 flex items-center">
           <div v-if="data.allyTeam.length > 1">
             <div
               v-for="(ally, index) in data.allyTeam"
