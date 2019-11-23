@@ -87,7 +87,9 @@ export default {
         this.checkDropdownVisibility()
       }
     },
-    showDropdown() {
+    showDropdown(event) {
+      this.left = event.clientX
+      this.top = event.clientY
       this.isOpen = true
     }
   }
