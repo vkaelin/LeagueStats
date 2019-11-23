@@ -1,3 +1,4 @@
+/* purgecss start ignore */
 .Win {
   background-image: linear-gradient(
     90deg,
@@ -21,3 +22,4 @@
     rgba(44, 82, 130, 0) 45%
   );
 }
+/* purgecss end ignore */
