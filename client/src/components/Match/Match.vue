@@ -3,7 +3,7 @@
     <Ripple
       @click.native="displayDetails"
       color="rgba(43, 108, 176, 0.7)"
-      :class="[matchResultClass, showDetails ? 'rounded-t-lg' : 'rounded-lg']"
+      :class="[data.result, showDetails ? 'rounded-t-lg' : 'rounded-lg']"
       class="match relative mt-4 bg-blue-800 text-white text-base cursor-pointer hover:shadow-xl"
     >
       <div class="relative flex flex-wrap px-5 py-3">
@@ -161,13 +161,6 @@ export default {
   },
 
   computed: {
-    matchResultClass() {
-      return {
-        'win': this.data.result === 'Win',
-        'loss': this.data.result === 'Fail',
-        'remake': this.data.result === 'Remake',
-      }
-    },
     ...mapState({
       roles: state => state.roles
     }),
@@ -197,30 +190,6 @@ export default {
 .match {
   transition-duration: 0.3s;
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-}
-
-.loss {
-  background-image: linear-gradient(
-    90deg,
-    rgba(140, 0, 0, 0.3) 0%,
-    rgba(44, 82, 130, 0) 45%
-  );
-}
-
-.remake {
-  background-image: linear-gradient(
-    90deg,
-    rgba(233, 169, 75, 0.3) 0%,
-    rgba(44, 82, 130, 0) 45%
-  );
-}
-
-.win {
-  background-image: linear-gradient(
-    90deg,
-    rgba(1, 97, 28, 0.3) 0%,
-    rgba(44, 82, 130, 0) 45%
-  );
 }
 
 .game-status {

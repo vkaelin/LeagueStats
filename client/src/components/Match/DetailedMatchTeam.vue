@@ -1,8 +1,8 @@
 <template>
-  <table :class="{'rounded-b-lg overflow-hidden': !allyTeam}" class="w-full table-auto">
+  <table :class="{'rounded-b-lg overflow-hidden': !allyTeam}" class="w-full table-fixed">
     <thead class="leading-none">
-      <tr :class="`heading-${data.result}`" class="heading text-blue-200 font-semibold">
-        <th class="py-5 border-r border-blue-700">
+      <tr :class="`heading-${data.result}`" class="heading-detailed text-blue-200 font-semibold">
+        <th class="w-players py-5 border-r border-blue-700">
           <div class="flex justify-between">
             <span
               :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
@@ -20,31 +20,31 @@
             </div>
           </div>
         </th>
-        <th class="px-2 py-5 text-sm">K</th>
-        <th class="px-2 py-5 text-sm">D</th>
-        <th class="px-2 py-5 text-sm">A</th>
-        <th class="px-2 py-5 text-sm">cs/m</th>
-        <th class="px-2 py-5 text-sm">vs/m</th>
-        <th class="px-2 py-5 text-sm">gold</th>
-        <th class="px-2 py-5 text-sm">
+        <th class="w-kda px-2 py-5 text-sm">K</th>
+        <th class="w-kda px-2 py-5 text-sm">D</th>
+        <th class="w-kda px-2 py-5 text-sm">A</th>
+        <th class="w-minions px-2 py-5 text-sm">{{ statsFormat === 'stats' ? 'cs' : 'cs/m' }}</th>
+        <th class="w-vision px-2 py-5 text-sm">{{ statsFormat === 'stats' ? 'vs' : 'vs/m' }}</th>
+        <th class="w-gold-dmg-kp px-2 py-5 text-sm">gold</th>
+        <th class="w-gold-dmg-kp px-2 py-5 text-sm">
           dmg
           <br />champ
         </th>
-        <th class="px-2 py-5 text-sm">
+        <th class="w-gold-dmg-kp px-2 py-5 text-sm">
           dmg
           <br />obj
         </th>
-        <th class="px-2 py-5 text-sm">
+        <th class="w-gold-dmg-kp px-2 py-5 text-sm">
           dmg
           <br />taken
         </th>
-        <th class="px-2 py-5 text-sm">kp</th>
+        <th class="w-gold-dmg-kp px-2 py-5 text-sm">kp</th>
       </tr>
     </thead>
     <tbody :class="[{'border-b border-blue-700': allyTeam}, data.result]" class="leading-none">
       <tr v-for="(player, index) in data.players" :key="player.name + index">
         <td class="py-2 border-r border-blue-700">
-          <div class="px-2 flex justify-between">
+          <div class="px-1 flex justify-between">
             <div class="flex">
               <div class="flex items-center">
                 <div
@@ -55,7 +55,7 @@
               </div>
               <div
                 :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${player.champion.id}.png')`}"
-                class="ml-3 relative w-8 h-8 bg-cover bg-center bg-blue-1000 rounded-full"
+                class="ml-2 relative w-8 h-8 bg-cover bg-center bg-blue-1000 rounded-full"
               >
                 <div
                   :class="allyTeam ? 'bg-teal-500 text-teal-100' : 'bg-red-500 text-red-100'"
@@ -98,12 +98,12 @@
                 <div class="text-xs text-teal-500">{{ player.champion.name }}</div>
               </div>
             </div>
-            <div>
-              <div v-if="false" class="ml-2">
+            <div class="flex items-center">
+              <div v-show="false" class="ml-1">
                 <svg class="w-6 h-6">
                   <use xlink:href="#rank-silver" />
                 </svg>
-                <div class="text-blue-200 text-xs">S2</div>
+                <div class="-mt-1 text-blue-200 text-xs">S2</div>
               </div>
               <MatchItems :items="player.items" :one-row="true" />
             </div>
@@ -124,27 +124,27 @@
         <td
           class="p-2 text-white text-sm"
           :style="bgColor(player, '140, 101, 182', 'minions')"
-        >{{ player.percentStats.minions }}</td>
+        >{{ player[statsFormat].minions }}</td>
         <td
           class="p-2 text-white text-sm"
           :style="bgColor(player, '55, 118, 179', 'vision')"
-        >{{ player.percentStats.vision }}</td>
+        >{{ player[statsFormat].vision }}</td>
         <td
           class="p-2 text-white text-sm"
           :style="bgColor(player, '146, 100, 79', 'gold')"
-        >{{ player.stats.gold }}</td>
+        >{{ player[statsFormat].gold }}</td>
         <td
           :style="bgColor(player, '156, 71, 109', 'dmgChamp')"
           class="p-2 text-white text-sm"
-        >{{ player.stats.dmgChamp }}</td>
+        >{{ player[statsFormat].dmgChamp }}</td>
         <td
           :style="bgColor(player, '156, 71, 109', 'dmgObj')"
           class="p-2 text-white text-sm text-red"
-        >{{ player.stats.dmgObj }}</td>
+        >{{ player[statsFormat].dmgObj }}</td>
         <td
           :style="bgColor(player, '146, 145, 106', 'dmgTaken')"
           class="p-2 text-white text-sm"
-        >{{ player.stats.dmgTaken }}</td>
+        >{{ player[statsFormat].dmgTaken }}</td>
         <td
           :style="bgColor(player, '71, 132, 116', 'kp')"
           class="p-2 text-white text-sm"
@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import MatchItems from '@/components/Match/MatchItems'
 
 export default {
@@ -176,12 +176,18 @@ export default {
 
   data() {
     return {
-      allyTeam: this.data.players.some(p => p.name.toLowerCase() === this.$route.params.name.toLowerCase())
+      allyTeam: this.data.players.some(p => p.name.toLowerCase().replace(/ /g, '') === this.$route.params.name.toLowerCase().replace(/ /g, ''))
     }
   },
 
   computed: {
+    statsFormat() {
+      return this.percentSettings === 'true' ? 'percentStats' : 'stats'
+    },
     ...mapGetters('ddragon', ['version']),
+    ...mapState({
+      percentSettings: state => state.settings.percent
+    }),
   },
 
   methods: {
@@ -203,7 +209,7 @@ export default {
 </script>
 
 <style scoped>
-.heading {
+.heading-detailed {
   box-shadow: #2b6cb0 0px -1px inset;
 }
 
@@ -234,41 +240,27 @@ export default {
     linear-gradient(#2a4365 0%, #2b4c77 55%, #235a93 100%);
 }
 
-.team::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.Win {
-  background-image: linear-gradient(
-    90deg,
-    rgba(1, 97, 28, 0.3) 0%,
-    rgba(44, 82, 130, 0) 45%
-  );
-}
-
-.Fail {
-  background-image: linear-gradient(
-    90deg,
-    rgba(140, 0, 0, 0.3) 0%,
-    rgba(44, 82, 130, 0) 45%
-  );
-}
-
-.Remake {
-  background-image: linear-gradient(
-    90deg,
-    rgba(233, 169, 75, 0.3) 0%,
-    rgba(44, 82, 130, 0) 45%
-  );
-}
-
 .level-position {
   left: -5px;
+}
+
+.w-players {
+  width: 392px;
+}
+
+.w-kda {
+  width: 36px;
+}
+
+.w-minions {
+  width: 45px;
+}
+
+.w-vision {
+  width: 45px;
+}
+
+.w-gold-dmg-kp {
+  width: 58px;
 }
 </style>

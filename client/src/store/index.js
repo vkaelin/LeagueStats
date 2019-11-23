@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import * as ddragon from '@/store/modules/ddragon'
 import * as detailedMatch from '@/store/modules/detailedMatch'
 import * as notification from '@/store/modules/notification'
+import * as settings from '@/store/modules/settings'
 import * as summoner from '@/store/modules/summoner'
 
 Vue.use(Vuex)
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     ddragon,
     detailedMatch,
     notification,
+    settings,
     summoner
   },
   state: {

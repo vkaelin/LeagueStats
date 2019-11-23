@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import NotificationsContainer from '@/components/NotificationsContainer.vue'
 import SVGContainer from '@/components/SVGContainer.vue'
 
@@ -17,5 +18,13 @@ export default {
     NotificationsContainer,
     SVGContainer
   },
+
+  created() {
+    this.updatePercent()
+  },
+
+  methods: {
+    ...mapActions('settings', ['updatePercent']),
+  }
 }
 </script>

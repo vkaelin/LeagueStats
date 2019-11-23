@@ -3,8 +3,9 @@
     <div v-if="data.status === 'loaded' && detailsOpen" class="bg-blue-800 rounded-b-lg">
       <DetailedMatchTeam :data="allyTeam" :all-players="[...allyTeam.players, ...enemyTeam.players]" />
 
-      <div class="px-3 py-2 flex justify-between">
+      <div class="px-3 py-2 flex justify-between items-start">
         <DetailedMatchGlobalStats :team="allyTeam" :ally-team="true" />
+        <SwitchToggle class="mt-2"></SwitchToggle>
         <DetailedMatchGlobalStats :team="enemyTeam" :ally-team="false" />
       </div>
 
@@ -20,10 +21,13 @@
 import { mapGetters } from 'vuex'
 import DetailedMatchGlobalStats from '@/components/Match/DetailedMatchGlobalStats.vue'
 import DetailedMatchTeam from '@/components/Match/DetailedMatchTeam.vue'
+import SwitchToggle from '@/components/SwitchToggle.vue'
+
 export default {
   components: {
     DetailedMatchGlobalStats,
-    DetailedMatchTeam
+    DetailedMatchTeam,
+    SwitchToggle,
   },
   props: {
     data: {
