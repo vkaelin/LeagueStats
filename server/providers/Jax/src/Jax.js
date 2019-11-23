@@ -10,6 +10,8 @@ const DDragonChampionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonCha
 const DDragonRuneEndpoint = require('./Endpoints/DDragonEndpoints/DDragonRuneEndpoint')
 const DDragonItemEndpoint = require('./Endpoints/DDragonEndpoints/DDragonItemEndpoint')
 
+const CDragonEndpoint = require('./Endpoints/CDragonEndpoint')
+
 class Jax {
   constructor(config) {
     this.key = config.key
@@ -26,6 +28,8 @@ class Jax {
     this.Summoner = new SummonerEndpoint(this.config, this.limiter)
 
     this.initDDragon()
+
+    this.CDragon = new CDragonEndpoint()
   }
 
   async initDDragon() {

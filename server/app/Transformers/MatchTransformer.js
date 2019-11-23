@@ -12,14 +12,16 @@ class MatchTransformer {
    * Get global Context with DDragon Data
    */
   async getContext() {
-    const items = await Jax.DDragon.Item.list()
+    const items = await Jax.CDragon.items()
     const champions = await Jax.DDragon.Champion.list()
-    const runes = await Jax.DDragon.Rune.list()
+    const perks = await Jax.CDragon.perks()
+    const perkstyles = await Jax.CDragon.perkstyles()
     const version = Jax.DDragon.Version
 
     this.champions = champions.data
-    this.items = items.data
-    this.runes = runes
+    this.items = items
+    this.perks = perks
+    this.perkstyles = perkstyles.styles
     this.version = version
   }
 
@@ -92,20 +94,16 @@ class MatchTransformer {
       stats.kp = totalKills === 0 ? 0 : +((stats.kills + stats.assists) * 100 / totalKills).toFixed(1)
     }
 
-
     let primaryRune = null
     let secondaryRune = null
     if (player.stats.perkPrimaryStyle) {
-      const primaryRuneCategory = this.runes.find(r => r.id === player.stats.perkPrimaryStyle)
-      for (const subCat of primaryRuneCategory.slots) {
-        primaryRune = subCat.runes.find(r => r.id === player.stats.perk0)
-        if (primaryRune) {
-          break
-        }
-      }
-      primaryRune = `https://ddragon.leagueoflegends.com/cdn/img/${primaryRune.icon}`
-      secondaryRune = this.runes.find(r => r.id === player.stats.perkSubStyle)
-      secondaryRune = `https://ddragon.leagueoflegends.com/cdn/img/${secondaryRune.icon}`
+      const firstRune = this.perks.find(p => p.id === player.stats.perk0)
+      const firstRuneUrl = firstRune.iconPath.split('/assets/')[1].toLowerCase()
+      primaryRune = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${firstRuneUrl}`
+
+      const secondRuneStyle = this.perkstyles.find(p => p.id === player.stats.perkSubStyle)
+      const secondRuneStyleUrl = secondRuneStyle.iconPath.split('/assets/')[1].toLowerCase()
+      secondaryRune = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${secondRuneStyleUrl}`
     }
 
     const items = []
@@ -115,11 +113,15 @@ class MatchTransformer {
         items.push(null)
         continue
       }
+
+      const item = this.items.find(i => i.id === id)
+      const itemUrl = item.iconPath.split('/assets/')[1].toLowerCase()
+
       items.push({
-        image: `https://ddragon.leagueoflegends.com/cdn/${this.version}/img/item/${id}.png`,
-        name: this.items[id].name,
-        description: this.items[id].description,
-        price: this.items[id].gold.total
+        image: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${itemUrl}`,
+        name: item.name,
+        description: item.description,
+        price: item.priceTotal
       })
     }
 
