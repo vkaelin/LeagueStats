@@ -86,10 +86,7 @@ export default {
 
   computed: {
     colorBorder() {
-      if (!this.selectedLeague.tier) {
-        return 'transparent'
-      }
-      if (this.selectedLeague.leaguePoints === 0) {
+      if (!this.selectedLeague.tier || this.selectedLeague.leaguePoints === 0) {
         return '#2c5282'
       }
       return this.rankColors[this.selectedLeague.tier.toLowerCase()]
