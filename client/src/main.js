@@ -21,7 +21,7 @@ Vue.filter('secToTime', (sec) => {
 })
 
 Vue.filter('percent', (value) => {
-  return `${+value.toFixed(2)}%`
+  return `${+value.toFixed(1)}%`
 })
 
 Vue.filter('round', (value) => {

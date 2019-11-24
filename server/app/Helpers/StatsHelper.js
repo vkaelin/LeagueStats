@@ -24,6 +24,7 @@ class StatsHelper {
         })
       }
     }
+    const championStats = await this.matchRepository.championStats(account.puuid)
     const championClassStats = await this.matchRepository.championClassStats(account.puuid)
     const mates = await this.matchRepository.mates(account.puuid, account.name)
 
@@ -33,6 +34,7 @@ class StatsHelper {
       role: roleStats.sort(this.sortTeamByRole),
       class: championClassStats,
       mates,
+      champion: championStats,
     }
   }
 

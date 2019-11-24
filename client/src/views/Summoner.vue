@@ -62,24 +62,26 @@
 
           <div class="mt-3 text-center flex">
             <div class="mt-4 w-3/12">
+              <SummonerChampions />
               <SummonerStats />
               <SummonerMates />
             </div>
-            <ul class="w-9/12 text-gray-900">
-              <Match
-                v-for="(match, index) in summonerInfos.matches"
-                :key="index"
-                :data="summonerInfos.matches[index]"
-              />
-            </ul>
+            <div class="w-9/12">
+              <ul>
+                <Match
+                  v-for="(match, index) in summonerInfos.matches"
+                  :key="index"
+                  :data="summonerInfos.matches[index]"
+                />
+              </ul>
+              <LoadingButton
+                v-if="moreMatchesToFetch"
+                @clicked="moreMatches"
+                :loading="matchesLoading"
+                btn-class="mt-4 block mx-auto bg-blue-800 px-4 py-2 rounded-md font-semibold hover:bg-blue-1000 shadow-lg"
+              >More matches</LoadingButton>
+            </div>
           </div>
-
-          <LoadingButton
-            v-if="moreMatchesToFetch"
-            @clicked="moreMatches"
-            :loading="matchesLoading"
-            btn-class="mt-4 block mx-auto bg-blue-800 px-4 py-2 rounded-md font-semibold hover:bg-blue-1000 shadow-lg"
-          >More matches</LoadingButton>
         </div>
       </template>
 
@@ -109,6 +111,7 @@ import MainFooter from '@/components/MainFooter.vue'
 import Match from '@/components/Match/Match.vue'
 import RecentActivity from '@/components/Summoner/RecentActivity.vue'
 import SearchForm from '@/components/SearchForm.vue'
+import SummonerChampions from '@/components/Summoner/SummonerChampions.vue'
 import SummonerLoader from '@/components/Summoner/SummonerLoader.vue'
 import SummonerMates from '@/components/Summoner/SummonerMates.vue'
 import SummonerRanked from '@/components/Summoner/SummonerRanked.vue'
@@ -122,6 +125,7 @@ export default {
     Match,
     RecentActivity,
     SearchForm,
+    SummonerChampions,
     SummonerLoader,
     SummonerMates,
     SummonerRanked,

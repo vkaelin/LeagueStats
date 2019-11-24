@@ -10,6 +10,43 @@ class MatchRepository {
   }
 
   /**
+   * Get Summoner's statistics for the 5 most played champions
+   * @param puuid of the summoner
+   */
+  championStats(puuid) {
+    return this.Match.query().aggregate([
+      {
+        $match: {
+          summoner_puuid: puuid,
+          result: { $not: { $eq: 'Remake' } }
+        }
+      },
+      {
+        $group: {
+          _id: "$champion.id",
+          champion: { $first: "$champion.name" },
+          count: { $sum: 1 },
+          wins: {
+            $sum: {
+              $cond: [{ $eq: ["$result", "Win"] }, 1, 0]
+            }
+          },
+          losses: {
+            $sum: {
+              $cond: [{ $eq: ["$result", "Fail"] }, 1, 0]
+            }
+          },
+          kills: { $sum: "$stats.kills" },
+          deaths: { $sum: "$stats.deaths" },
+          assists: { $sum: "$stats.assists" },
+        }
+      },
+      { $sort: { 'count': -1 } },
+      { $limit: 5 },
+    ])
+  }
+
+  /**
    * Get Summoner's statistics for all played champion classes
    * @param puuid of the summoner
    */
