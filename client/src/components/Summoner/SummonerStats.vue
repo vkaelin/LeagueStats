@@ -184,7 +184,7 @@
           :class="{'bg-blue-760': index % 2 !== 0}"
           class="flex justify-between items-center px-4 py-1 leading-tight"
         >
-          <div class="w-2/4 text-left">{{ championClass._id }}</div>
+          <div class="w-2/4 text-left capitalize">{{ championClass._id }}</div>
           <div
             :class="calculateWinrate(championClass.wins, championClass.count).color"
             class="w-1/4"

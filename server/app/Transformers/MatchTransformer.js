@@ -13,16 +13,27 @@ class MatchTransformer {
    */
   async getContext() {
     const items = await Jax.CDragon.items()
-    const champions = await Jax.DDragon.Champion.list()
+    const champions = await Jax.CDragon.champions()
     const perks = await Jax.CDragon.perks()
     const perkstyles = await Jax.CDragon.perkstyles()
     const version = Jax.DDragon.Version
 
-    this.champions = champions.data
+    this.champions = champions
     this.items = items
     this.perks = perks
     this.perkstyles = perkstyles.styles
     this.version = version
+  }
+
+  /**
+   * Get champion specific data
+   * @param id of the champion
+   */
+  getChampion(id) {
+    const champion = { ...this.champions.find(c => c.id === id) }
+    champion.icon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${champion.squarePortraitPath.split('/assets/')[1].toLowerCase()}`
+    delete champion.squarePortraitPath
+    return champion
   }
 
   /**
@@ -47,7 +58,7 @@ class MatchTransformer {
   getPlayerData(match, player, detailed, teamStats = {}) {
     const identity = match.participantIdentities.find(p => p.participantId === player.participantId)
     const name = identity.player.summonerName
-    const champion = (({ id, name, tags }) => ({ id, name, tags }))(Object.entries(this.champions).find(([, champion]) => Number(champion.key) === player.championId)[1])
+    const champion = this.getChampion(player.championId)
     const role = this.getRoleName(player.timeline)
     const level = player.stats.champLevel
 

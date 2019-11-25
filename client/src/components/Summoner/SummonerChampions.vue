@@ -46,10 +46,10 @@
         <div class="absolute text-xs" style="left: 6px;">{{ index + 1 }}.</div>
         <div class="ml-2 w-champion flex items-center">
           <div
-            :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champion._id}.png')`}"
+            :style="{backgroundImage: `url('${champion.champion.icon}')`}"
             class="w-8 h-8 bg-center bg-cover bg-blue-1000 rounded-full flex-shrink-0"
           ></div>
-          <div class="mx-1 truncate">{{ champion.champion }}</div>
+          <div class="mx-1 truncate">{{ champion.champion.name }}</div>
         </div>
         <div class="w-plays">
           <div class="text-blue-400 text-xs">{{ champion.count }}</div>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import Dropdown from '@/components/Dropdown.vue'
 
 export default {
@@ -98,7 +98,6 @@ export default {
     mostPlayed() {
       return this.stats.champion.reduce((a, b) => a.count > b.count ? a : b).count
     },
-    ...mapGetters('ddragon', ['version']),
     ...mapState({
       stats: state => state.summoner.infos.stats
     }),

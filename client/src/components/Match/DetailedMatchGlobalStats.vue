@@ -8,7 +8,7 @@
         class="relative ban inline-block border-2 rounded-full"
       >
         <div
-          :style="[ban.champion.id ? {backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${ban.champion.id}.png')`} : '']"
+          :style="[ban.champion.id ? {backgroundImage: `url('${ban.champion.icon}')`} : '']"
           class="ban-img w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
         ></div>
         <div
@@ -61,8 +61,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   props: {
     team: {
@@ -84,8 +82,7 @@ export default {
     },
     bgColor() {
       return this.allyTeam ? 'bg-teal-500' : 'bg-red-500'
-    },
-    ...mapGetters('ddragon', ['version']),
+    }
   }
 }
 </script>

@@ -24,7 +24,7 @@ class MatchRepository {
       {
         $group: {
           _id: "$champion.id",
-          champion: { $first: "$champion.name" },
+          champion: { $first: "$champion" },
           count: { $sum: 1 },
           wins: {
             $sum: {
@@ -60,7 +60,7 @@ class MatchRepository {
       },
       {
         $group: {
-          _id: { "$arrayElemAt": ["$champion.tags", 0] },
+          _id: { "$arrayElemAt": ["$champion.roles", 0] },
           count: { $sum: 1 },
           wins: {
             $sum: {

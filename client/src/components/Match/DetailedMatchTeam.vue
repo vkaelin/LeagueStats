@@ -54,7 +54,7 @@
                 ></div>
               </div>
               <div
-                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${player.champion.id}.png')`}"
+                :style="{backgroundImage: `url('${player.champion.icon}')`}"
                 class="ml-2 relative w-8 h-8 bg-cover bg-center bg-blue-1000 rounded-full"
               >
                 <div
@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import MatchItems from '@/components/Match/MatchItems'
 
 export default {
@@ -184,7 +184,6 @@ export default {
     statsFormat() {
       return this.percentSettings === 'true' ? 'percentStats' : 'stats'
     },
-    ...mapGetters('ddragon', ['version']),
     ...mapState({
       percentSettings: state => state.settings.percent
     }),

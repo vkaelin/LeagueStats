@@ -53,7 +53,7 @@ class BasicMatchTransformer extends MatchTransformer {
       const playerInfos = {
         name: summoner.player.summonerName,
         role: super.getRoleName(allData.timeline),
-        champion: (({ id, name }) => ({ id, name }))(Object.entries(this.champions).find(([, champion]) => Number(champion.key) === allData.championId)[1])
+        champion: super.getChampion(allData.championId)
       }
 
       if (allData.teamId === player.teamId) {

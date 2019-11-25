@@ -25,7 +25,7 @@
                 >LVL {{ data.level }}</div>
               </div>
               <div
-                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${data.champion.id}.png')`}"
+                :style="{backgroundImage: `url('${data.champion.icon}')`}"
                 class="ml-2 w-16 h-16 crop-champion bg-blue-1000 rounded-lg"
               ></div>
               <div class="ml-2 flex flex-col justify-around">
@@ -56,7 +56,9 @@
                   <span class>/</span>
                   <span class>{{ data.stats.assists }}</span>
                 </div>
-                <div class="relative z-30 mt-2 text-white text-xs font-extrabold">{{ data.stats.kda }} KDA</div>
+                <div
+                  class="relative z-30 mt-2 text-white text-xs font-extrabold"
+                >{{ data.stats.kda }} KDA</div>
               </div>
             </div>
 
@@ -105,7 +107,7 @@
               >{{ ally.name }}</div>
               <div
                 :class="index !== 0 ? '-mt-1': ''"
-                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${ally.champion.id}.png')`}"
+                :style="{backgroundImage: `url('${ally.champion.icon}')`}"
                 class="ml-1 w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full overflow-hidden"
               ></div>
               <div
@@ -114,7 +116,7 @@
               ></div>
               <div
                 :class="index !== 0 ? '-mt-1' : ''"
-                :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${data.enemyTeam[index].champion.id}.png')`}"
+                :style="{backgroundImage: `url('${data.enemyTeam[index].champion.icon}')`}"
                 class="w-6 h-6 bg-blue-1000 bg-center bg-cover rounded-full"
               ></div>
               <div
@@ -164,7 +166,6 @@ export default {
     ...mapState({
       roles: state => state.roles
     }),
-    ...mapGetters('ddragon', ['version']),
     ...mapGetters('detailedMatch', ['getMatchDetails']),
   },
 

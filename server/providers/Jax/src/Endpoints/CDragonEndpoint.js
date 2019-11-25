@@ -1,6 +1,10 @@
 const CDragonRequest = require('../CDragonRequest')
 
 class CDragonEndpoint {
+  champions() {
+    return new CDragonRequest('champion-summary.json').execute()
+  }
+
   items() {
     return new CDragonRequest('items.json').execute()
   }

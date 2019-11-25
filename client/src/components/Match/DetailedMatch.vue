@@ -1,7 +1,10 @@
 <template>
   <transition name="slide">
     <div v-if="data.status === 'loaded' && detailsOpen" class="bg-blue-800 rounded-b-lg">
-      <DetailedMatchTeam :data="allyTeam" :all-players="[...allyTeam.players, ...enemyTeam.players]" />
+      <DetailedMatchTeam
+        :data="allyTeam"
+        :all-players="[...allyTeam.players, ...enemyTeam.players]"
+      />
 
       <div class="px-3 py-2 flex justify-between items-start">
         <DetailedMatchGlobalStats :team="allyTeam" :ally-team="true" />
@@ -9,7 +12,10 @@
         <DetailedMatchGlobalStats :team="enemyTeam" :ally-team="false" />
       </div>
 
-      <DetailedMatchTeam :data="enemyTeam" :all-players="[...allyTeam.players, ...enemyTeam.players]" />
+      <DetailedMatchTeam
+        :data="enemyTeam"
+        :all-players="[...allyTeam.players, ...enemyTeam.players]"
+      />
     </div>
     <div v-else-if="data.status === 'loading' && detailsOpen">
       <p class="bg-blue-800 py-5 text-blue-100 text-lg font-semibold">Loading...</p>
@@ -18,7 +24,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import DetailedMatchGlobalStats from '@/components/Match/DetailedMatchGlobalStats.vue'
 import DetailedMatchTeam from '@/components/Match/DetailedMatchTeam.vue'
 import SwitchToggle from '@/components/SwitchToggle.vue'
@@ -46,8 +51,7 @@ export default {
     },
     enemyTeam() {
       return this.data.blueTeam.players.some(p => p.name.toLowerCase() === this.$route.params.name.toLowerCase()) ? this.data.redTeam : this.data.blueTeam
-    },
-    ...mapGetters('ddragon', ['version']),
+    }
   }
 }
 </script>

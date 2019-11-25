@@ -65,7 +65,7 @@ class DetailedMatchTransformer extends MatchTransformer {
             name: null
           }
         } else {
-          b.champion = (({ id, name }) => ({ id, name }))(Object.entries(this.champions).find(([, champion]) => Number(champion.key) === b.championId)[1])
+          b.champion = super.getChampion(b.championId)
         }
         return b
       })

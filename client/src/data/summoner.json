@@ -1,2021 +1,302 @@
-{
-  "type": "summoner",
-  "version": "9.6.1",
-  "data": {
-    "SummonerBarrier": {
-      "id": "SummonerBarrier",
-      "name": "Barrière",
-      "description": "Protège votre champion contre 115-455 pts de dégâts (selon le niveau du champion) pendant 2 secondes.",
-      "tooltip": "Protège temporairement votre champion contre {{ f1 }} pts de dégâts pendant 2 sec.",
-      "maxrank": 1,
-      "cooldown": [
-        180
-      ],
-      "cooldownBurn": "180",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          95
-        ],
-        [
-          20
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "95",
-        "20",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "21",
-      "summonerLevel": 4,
-      "modes": [
-        "ARAM",
-        "CLASSIC",
-        "TUTORIAL",
-        "ODIN",
-        "ASCENSION",
-        "FIRSTBLOOD",
-        "ASSASSINATE",
-        "URF",
-        "ARSR",
-        "DOOMBOTSTEEMO",
-        "STARGUARDIAN",
-        "PROJECT",
-        "ONEFORALL",
-        "GAMEMODEX",
-        "PRACTICETOOL"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        1200
-      ],
-      "rangeBurn": "1200",
-      "image": {
-        "full": "SummonerBarrier.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerBoost": {
-      "id": "SummonerBoost",
-      "name": "Purge",
-      "description": "Dissipe toutes les entraves (sauf les neutralisations et les projections en l'air) et tous les effets de sorts d'invocateur qui affectent votre champion, en plus de réduire de 65% la durée des nouveaux effets entravants subis pendant 3 sec.",
-      "tooltip": "Dissipe toutes les entraves (sauf les neutralisations et les projections en l'air) et tous les effets de sorts d'invocateur qui affectent votre champion, et réduit de 65% la durée des entraves pendant {{ f1 }} sec.",
-      "maxrank": 1,
-      "cooldown": [
-        210
-      ],
-      "cooldownBurn": "210",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          0.65
-        ],
-        [
-          3
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "0.65",
-        "3",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [
-        {
-          "link": "@text",
-          "coeff": 3,
-          "key": "f1"
-        }
-      ],
-      "key": "1",
-      "summonerLevel": 9,
-      "modes": [
-        "CLASSIC",
-        "ODIN",
-        "TUTORIAL",
-        "ARAM",
-        "ASCENSION",
-        "FIRSTBLOOD",
-        "URF",
-        "ARSR",
-        "DOOMBOTSTEEMO",
-        "PROJECT",
-        "ONEFORALL",
-        "GAMEMODEX",
-        "PRACTICETOOL"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        200
-      ],
-      "rangeBurn": "200",
-      "image": {
-        "full": "SummonerBoost.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 48,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerDarkStarChampSelect1": {
-      "id": "SummonerDarkStarChampSelect1",
-      "name": "Sorts d'invocateur désactivés",
-      "description": "Les sorts d'invocateur sont désactivés dans ce mode.",
-      "tooltip": "",
-      "maxrank": 1,
-      "cooldown": [
-        0
-      ],
-      "cooldownBurn": "0",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "35",
-      "summonerLevel": 1,
-      "modes": [
-        "DARKSTAR"
-      ],
-      "costType": "",
-      "maxammo": "-1",
-      "range": [
-        2500
-      ],
-      "rangeBurn": "2500",
-      "image": {
-        "full": "SummonerDarkStarChampSelect1.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 96,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      }
-    },
-    "SummonerDarkStarChampSelect2": {
-      "id": "SummonerDarkStarChampSelect2",
-      "name": "Sorts d'invocateur désactivés",
-      "description": "Les sorts d'invocateur sont désactivés dans ce mode.",
-      "tooltip": "",
-      "maxrank": 1,
-      "cooldown": [
-        0
-      ],
-      "cooldownBurn": "0",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "36",
-      "summonerLevel": 1,
-      "modes": [
-        "DARKSTAR"
-      ],
-      "costType": "",
-      "maxammo": "-1",
-      "range": [
-        2500
-      ],
-      "rangeBurn": "2500",
-      "image": {
-        "full": "SummonerDarkStarChampSelect2.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 144,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      }
-    },
-    "SummonerDot": {
-      "id": "SummonerDot",
-      "name": "Embrasement",
-      "description": "Inflige 70-410 pts de dégâts bruts (selon le niveau du champion) en 5 sec à un champion ennemi, permet de voir la cible et réduit les effets des soins dont elle bénéficie pendant la durée de l'effet.",
-      "tooltip": "Inflige <span class=\"colorFEFCFF\">{{ f1 }}</span> pts de dégâts bruts au champion ennemi visé en 5 sec, vous permet de voir la cible et applique Hémorragie pour la durée de l'effet.<br /><br /><rules>(Hémorragie réduit de 40% les soins. Les ennemis camouflés ne sont pas révélés.)</rules>",
-      "maxrank": 1,
-      "cooldown": [
-        180
-      ],
-      "cooldownBurn": "180",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          5
-        ],
-        [
-          10
-        ],
-        [
-          4
-        ],
-        [
-          100
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "5",
-        "10",
-        "4",
-        "100",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [
-        {
-          "link": "@player.level",
-          "coeff": [
-            70,
-            90,
-            110,
-            130,
-            150,
-            170,
-            190,
-            210,
-            230,
-            250,
-            270,
-            290,
-            310,
-            330,
-            350,
-            370,
-            390,
-            410
-          ],
-          "key": "f1"
-        }
-      ],
-      "key": "14",
-      "summonerLevel": 9,
-      "modes": [
-        "CLASSIC",
-        "ODIN",
-        "TUTORIAL",
-        "ARAM",
-        "ASCENSION",
-        "FIRSTBLOOD",
-        "ASSASSINATE",
-        "URF",
-        "ARSR",
-        "DOOMBOTSTEEMO",
-        "ONEFORALL",
-        "GAMEMODEX",
-        "PRACTICETOOL"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        600
-      ],
-      "rangeBurn": "600",
-      "image": {
-        "full": "SummonerDot.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 192,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerExhaust": {
-      "id": "SummonerExhaust",
-      "name": "Fatigue",
-      "description": "Épuise le champion ennemi ciblé, réduisant sa vitesse de déplacement de 30% et les dégâts qu'il inflige de 40% pendant 2,5 sec.",
-      "tooltip": "Épuise le champion ennemi ciblé, réduisant sa vitesse de déplacement de {{ f3 }}% et les dégâts qu'il inflige de {{ f2 }}% pendant 2,5 sec.",
-      "maxrank": 1,
-      "cooldown": [
-        210
-      ],
-      "cooldownBurn": "210",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          2.5
-        ],
-        [
-          40
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          30
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "2.5",
-        "40",
-        "0",
-        "0",
-        "30",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "3",
-      "summonerLevel": 4,
-      "modes": [
-        "CLASSIC",
-        "ODIN",
-        "TUTORIAL",
-        "ARAM",
-        "ASCENSION",
-        "FIRSTBLOOD",
-        "URF",
-        "ARSR",
-        "DOOMBOTSTEEMO",
-        "ONEFORALL",
-        "GAMEMODEX",
-        "PRACTICETOOL"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        650
-      ],
-      "rangeBurn": "650",
-      "image": {
-        "full": "SummonerExhaust.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 240,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerFlash": {
-      "id": "SummonerFlash",
-      "name": "Saut éclair",
-      "description": "Téléporte votre champion sur une courte distance vers l'emplacement de votre curseur.",
-      "tooltip": "Téléporte votre champion sur une courte distance vers l'emplacement de votre curseur.",
-      "maxrank": 1,
-      "cooldown": [
-        300
-      ],
-      "cooldownBurn": "300",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          400
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "400",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "4",
-      "summonerLevel": 7,
-      "modes": [
-        "CLASSIC",
-        "ODIN",
-        "TUTORIAL",
-        "ARAM",
-        "ASCENSION",
-        "FIRSTBLOOD",
-        "ASSASSINATE",
-        "URF",
-        "ARSR",
-        "DOOMBOTSTEEMO",
-        "STARGUARDIAN",
-        "PROJECT",
-        "SNOWURF",
-        "ONEFORALL",
-        "GAMEMODEX",
-        "PRACTICETOOL"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        425
-      ],
-      "rangeBurn": "425",
-      "image": {
-        "full": "SummonerFlash.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 288,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerHaste": {
-      "id": "SummonerHaste",
-      "name": "Fantôme",
-      "description": "Votre champion augmente sa vitesse de déplacement et peut traverser les unités pendant 10 sec. Octroie un maximum de 28-45% (selon le niveau du champion) de vitesse de déplacement après avoir accéléré pendant 2 sec.",
-      "tooltip": "Votre champion augmente sa vitesse de déplacement et peut traverser les unités pendant 10 sec. Octroie un maximum de {{ f1 }}% de vitesse de déplacement après avoir accéléré pendant 2 sec.",
-      "maxrank": 1,
-      "cooldown": [
-        180
-      ],
-      "cooldownBurn": "180",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          27
-        ],
-        [
-          0
-        ],
-        [
-          2
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "27",
-        "0",
-        "2",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [
-        {
-          "link": "@text",
-          "coeff": 27,
-          "key": "f1"
-        }
-      ],
-      "key": "6",
-      "summonerLevel": 1,
-      "modes": [
-        "CLASSIC",
-        "ODIN",
-        "TUTORIAL",
-        "ARAM",
-        "ASCENSION",
-        "FIRSTBLOOD",
-        "ASSASSINATE",
-        "URF",
-        "ARSR",
-        "DOOMBOTSTEEMO",
-        "STARGUARDIAN",
-        "PROJECT",
-        "ONEFORALL",
-        "TUTORIAL_MODULE_1",
-        "TUTORIAL_MODULE_2",
-        "GAMEMODEX",
-        "PRACTICETOOL"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        200
-      ],
-      "rangeBurn": "200",
-      "image": {
-        "full": "SummonerHaste.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 336,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerHeal": {
-      "id": "SummonerHeal",
-      "name": "Soins",
-      "description": "Rend 90-345 PV (selon le niveau du champion) à votre champion et au champion allié ciblé et augmente de 30% vos vitesses de déplacement pendant 1 sec. Ce soin est divisé par deux sur les unités récemment touchées par le sort d'invocateur Soins.",
-      "tooltip": "Rend {{ f1 }} PV à votre champion et au champion allié ciblé, en plus d'augmenter vos vitesses de déplacement de 30% pendant 1 sec. Ce soin est divisé par deux sur les unités récemment touchées par le sort d'invocateur Soins.<br /><br /><span class=\"colorFFFF00\">Si le sort n'a pas de cible, il sera lancé sur le champion allié le plus mal en point à portée.</span>",
-      "maxrank": 1,
-      "cooldown": [
-        240
-      ],
-      "cooldownBurn": "240",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          0.3
-        ],
-        [
-          75
-        ],
-        [
-          15
-        ],
-        [
-          0.5
-        ],
-        [
-          826
-        ],
-        [
-          0.5
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "0.3",
-        "75",
-        "15",
-        "0.5",
-        "826",
-        "0.5",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [
-        {
-          "link": "@player.level",
-          "coeff": [
-            90,
-            105,
-            120,
-            135,
-            150,
-            165,
-            180,
-            195,
-            210,
-            225,
-            240,
-            255,
-            270,
-            285,
-            300,
-            315,
-            330,
-            345
-          ],
-          "key": "f1"
-        }
-      ],
-      "key": "7",
-      "summonerLevel": 1,
-      "modes": [
-        "CLASSIC",
-        "ODIN",
-        "TUTORIAL",
-        "ARAM",
-        "ASCENSION",
-        "FIRSTBLOOD",
-        "ASSASSINATE",
-        "URF",
-        "ARSR",
-        "DOOMBOTSTEEMO",
-        "STARGUARDIAN",
-        "PROJECT",
-        "ONEFORALL",
-        "TUTORIAL_MODULE_1",
-        "TUTORIAL_MODULE_2",
-        "GAMEMODEX",
-        "PRACTICETOOL"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        850
-      ],
-      "rangeBurn": "850",
-      "image": {
-        "full": "SummonerHeal.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 384,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerMana": {
-      "id": "SummonerMana",
-      "name": "Clarté",
-      "description": "Rend 50% de son mana max à votre champion. Rend aussi 25% de leur mana max aux alliés proches.",
-      "tooltip": "Rend {{ f1 }}% de son mana max à votre champion et {{ f2 }}% de leur mana max aux alliés proches.",
-      "maxrank": 1,
-      "cooldown": [
-        240
-      ],
-      "cooldownBurn": "240",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          50
-        ],
-        [
-          25
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "50",
-        "25",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [
-        {
-          "link": "@player.level",
-          "coeff": [
-            190,
-            220,
-            250,
-            280,
-            310,
-            340,
-            370,
-            400,
-            430,
-            460,
-            490,
-            520,
-            550,
-            580,
-            610,
-            640,
-            670,
-            700
-          ],
-          "key": "f1"
-        },
-        {
-          "link": "@player.level",
-          "coeff": [
-            95,
-            110,
-            125,
-            140,
-            155,
-            170,
-            185,
-            200,
-            215,
-            230,
-            245,
-            260,
-            275,
-            290,
-            305,
-            320,
-            335,
-            350
-          ],
-          "key": "f2"
-        }
-      ],
-      "key": "13",
-      "summonerLevel": 6,
-      "modes": [
-        "ODIN",
-        "ARAM",
-        "ASCENSION",
-        "FIRSTBLOOD"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        600
-      ],
-      "rangeBurn": "600",
-      "image": {
-        "full": "SummonerMana.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 432,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerOdysseyFlash": {
-      "id": "SummonerOdysseyFlash",
-      "name": "Distorsion",
-      "description": "Traversez l'espace-temps tout en devenant brièvement impossible à cibler et invulnérable.",
-      "tooltip": "Vous devenez brièvement <attention>impossible à cibler</attention> et <attention>invulnérable</attention> tout en vous projetant dans la direction ciblée.<br /><br /><rules>Gardez vos bras et vos jambes à l'intérieur du trou de ver.</rules>",
-      "maxrank": 1,
-      "cooldown": [
-        0.5
-      ],
-      "cooldownBurn": "0.5",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          1000
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "1000",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "52",
-      "summonerLevel": 1,
-      "modes": [
-        "ODYSSEY"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "3",
-      "range": [
-        825
-      ],
-      "rangeBurn": "825",
-      "image": {
-        "full": "SummonerOdysseyFlash.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 0,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerOdysseyGhost": {
-      "id": "SummonerOdysseyGhost",
-      "name": "Fantôme",
-      "description": "Votre champion augmente sa vitesse de déplacement et peut traverser les unités pendant 10 sec. Octroie un maximum de 28-45% (selon le niveau du champion) de vitesse de déplacement après avoir accéléré pendant 2 sec.",
-      "tooltip": "Votre champion augmente sa vitesse de déplacement et peut traverser les unités pendant 10 sec. Octroie un maximum de {{ f1 }}% de vitesse de déplacement après avoir accéléré pendant 2 sec.",
-      "maxrank": 1,
-      "cooldown": [
-        120
-      ],
-      "cooldownBurn": "120",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          40
-        ],
-        [
-          0
-        ],
-        [
-          2
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "40",
-        "0",
-        "2",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "51",
-      "summonerLevel": 1,
-      "modes": [],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        200
-      ],
-      "rangeBurn": "200",
-      "image": {
-        "full": "SummonerOdysseyGhost.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 48,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerOdysseyRevive": {
-      "id": "SummonerOdysseyRevive",
-      "name": "Défibrillation",
-      "description": "Réanimez un membre d'équipage tombé au combat en restant près de lui pendant 2 sec. Quitter la zone prématurément ne déclenche pas le délai de récupération. ",
-      "tooltip": "<keywordWard>Réanimez</keywordWard> un membre d'équipage tombé au combat en restant près de lui pendant <attention>2</attention> sec. <br /><br /><rules>Quitter la zone prématurément ne déclenche pas le délai de récupération. </rules>",
-      "maxrank": 1,
-      "cooldown": [
-        100
-      ],
-      "cooldownBurn": "100",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          1
-        ],
-        [
-          2
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "1",
-        "2",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "50",
-      "summonerLevel": 1,
-      "modes": [
-        "ODYSSEY"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        350
-      ],
-      "rangeBurn": "350",
-      "image": {
-        "full": "SummonerOdysseyRevive.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 96,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerPoroRecall": {
-      "id": "SummonerPoroRecall",
-      "name": "Au roi !",
-      "description": "Rendez-vous rapidement près du roi des Poros.",
-      "tooltip": "<span class=\"colorFFE076\">Passive :</span> toucher un champion ennemi avec un Poro octroie une Marque de Poro à votre équipe. À 10 Marques de Poro, votre équipe invoque le roi des Poros pour qu'il combatte à vos côtés. Tant que le roi des Poros est actif, les équipes ne gagnent aucune Marque de Poro.<br /><br /><span class=\"colorFFE076\">Active :</span> permet de foncer rapidement auprès du roi des Poros. Ne peut être utilisé que si le roi des Poros a été invoqué par votre équipe.<br /><br /><i><span class=\"colorFDD017\">''Les Poros font vibrer votre corde sensible, et ce sont ces vibrations qui vous rapprochent d'eux.''</span></i>",
-      "maxrank": 1,
-      "cooldown": [
-        10
-      ],
-      "cooldownBurn": "10",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          3000
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "3000",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "30",
-      "summonerLevel": 1,
-      "modes": [
-        "KINGPORO"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        200
-      ],
-      "rangeBurn": "200",
-      "image": {
-        "full": "SummonerPoroRecall.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 144,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerPoroThrow": {
-      "id": "SummonerPoroThrow",
-      "name": "Jet de Poro",
-      "description": "Lancez un Poro sur vos ennemis. S'il touche une cible, vous pouvez vous rendre rapidement près de la cible.",
-      "tooltip": "Lance un Poro sur une longue distance, infligeant {{ f2 }} pts de dégâts bruts au premier ennemi touché et vous octroyant une <span class=\"coloree91d7\">vision pure</span> de la cible.<br /><br />Si le Poro touche un ennemi, cette compétence peut être réactivée dans les 3 sec pour foncer sur la cible touchée, infligeant de nouveau {{ f2 }} pts de dégâts bruts et réduisant de {{ e4 }} sec le délai de récupération du prochain Jet de Poro.<br /><br />Les Poros ne sont pas bloqués par les boucliers antisorts ou par les murs de vent, parce que ce sont des animaux, pas des sorts !<br /><br /><i><span class=\"colorFDD017\">''Les Poros sont la parfaite incarnation de l'aérodynamisme runeterran.''</span></i>",
-      "maxrank": 1,
-      "cooldown": [
-        20
-      ],
-      "cooldownBurn": "20",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          20
-        ],
-        [
-          10
-        ],
-        [
-          3
-        ],
-        [
-          5
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "20",
-        "10",
-        "3",
-        "5",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "31",
-      "summonerLevel": 1,
-      "modes": [
-        "KINGPORO"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        2500
-      ],
-      "rangeBurn": "2500",
-      "image": {
-        "full": "SummonerPoroThrow.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 192,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerSiegeChampSelect1": {
-      "id": "SummonerSiegeChampSelect1",
-      "name": "Emplacement d'arme de siège",
-      "description": "En mode Siège du Nexus, les sorts d'invocateur sont remplacés par des emplacements d'arme de siège. Dépensez des Éclats de cristal pour acheter des armes de siège à usage unique dans la boutique, puis utilisez les touches des sorts d'invocateur pour les activer !",
-      "tooltip": "",
-      "maxrank": 1,
-      "cooldown": [
-        0
-      ],
-      "cooldownBurn": "0",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "33",
-      "summonerLevel": 1,
-      "modes": [
-        "SIEGE"
-      ],
-      "costType": "",
-      "maxammo": "-1",
-      "range": [
-        2500
-      ],
-      "rangeBurn": "2500",
-      "image": {
-        "full": "SummonerSiegeChampSelect1.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 240,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      }
-    },
-    "SummonerSiegeChampSelect2": {
-      "id": "SummonerSiegeChampSelect2",
-      "name": "Emplacement d'arme de siège",
-      "description": "En mode Siège du Nexus, les sorts d'invocateur sont remplacés par des emplacements d'arme de siège. Dépensez des Éclats de cristal pour acheter des armes de siège à usage unique dans la boutique, puis utilisez les touches des sorts d'invocateur pour les activer !",
-      "tooltip": "",
-      "maxrank": 1,
-      "cooldown": [
-        0
-      ],
-      "cooldownBurn": "0",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "34",
-      "summonerLevel": 1,
-      "modes": [
-        "SIEGE"
-      ],
-      "costType": "",
-      "maxammo": "-1",
-      "range": [
-        2500
-      ],
-      "rangeBurn": "2500",
-      "image": {
-        "full": "SummonerSiegeChampSelect2.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 288,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      }
-    },
-    "SummonerSmite": {
-      "id": "SummonerSmite",
-      "name": "Châtiment",
-      "description": "Inflige 390-1000 pts de dégâts bruts (selon le niveau du champion) au monstre épique, au grand monstre, au monstre moyen ou au sbire ennemi ciblé. Châtiment vous rend des PV en fonction de vos PV max quand il est utilisé sur des monstres.",
-      "tooltip": "Inflige <span class=\"colorFEFCFF\">{{ f1 }}</span> pts de dégâts bruts au monstre épique, au grand monstre, au monstre moyen ou au sbire ennemi ciblé. Contre les monstres, restaure également <span class=\"colorFFFFFF\">{{ f6 }}</span> <span class=\"colorFF6666\">(+{{ f7 }})</span> PV.<br /><br />Châtiment regagne une charge toutes les {{ ammorechargetime }} sec, jusqu'à un maximum de 2 charges.",
-      "maxrank": 1,
-      "cooldown": [
-        15
-      ],
-      "cooldownBurn": "15",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          15
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "15",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [
-        {
-          "link": "@player.level",
-          "coeff": [
-            390,
-            410,
-            430,
-            450,
-            480,
-            510,
-            540,
-            570,
-            600,
-            640,
-            680,
-            720,
-            760,
-            800,
-            850,
-            900,
-            950,
-            1000
-          ],
-          "key": "f1"
-        }
-      ],
-      "key": "11",
-      "summonerLevel": 9,
-      "modes": [
-        "CLASSIC",
-        "TUTORIAL",
-        "FIRSTBLOOD",
-        "URF",
-        "ARSR",
-        "DOOMBOTSTEEMO",
-        "ONEFORALL",
-        "PRACTICETOOL",
-        "GAMEMODEX"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "2",
-      "range": [
-        500
-      ],
-      "rangeBurn": "500",
-      "image": {
-        "full": "SummonerSmite.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 336,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerSnowURFSnowball_Mark": {
-      "id": "SummonerSnowURFSnowball_Mark",
-      "name": "Marquage ultra (rudement froid)",
-      "description": "C'est une boule de neige ! C'est un Poro ! C'est... euh... un machin.",
-      "tooltip": "Lance une boule de neige à une distance d'environ 1 unité relativement fantastique, infligeant {{ f1 }} pts de dégâts bruts au premier ennemi touché et vous octroyant une <span class=\"coloree91d7\">vision pure</span> de la cible.<br /><br />Si votre Marquage ultra touche un ennemi, cette compétence peut être réactivée dans les {{ e3 }} sec pour foncer sur la cible touchée, infligeant {{ f1 }} pts de dégâts bruts supplémentaires et augmentant votre classe de treize millions par centimètre carré.<br /><br />Si des Poros vous suivent, vous lancez un Poro au lieu d'une boule de neige, parce que nous sommes des gens sans cœur.",
-      "maxrank": 1,
-      "cooldown": [
-        80
-      ],
-      "cooldownBurn": "80",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          10
-        ],
-        [
-          5
-        ],
-        [
-          3
-        ],
-        [
-          0.25
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "10",
-        "5",
-        "3",
-        "0.25",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "39",
-      "summonerLevel": 6,
-      "modes": [
-        "SNOWURF"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        8000
-      ],
-      "rangeBurn": "8000",
-      "image": {
-        "full": "SummonerSnowURFSnowball_Mark.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 384,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerSnowball": {
-      "id": "SummonerSnowball",
-      "name": "Marquage",
-      "description": "Lancez une boule de neige en ligne droite. Si elle touche un ennemi, celui-ci est marqué, vous obtenez une vision pure de cet ennemi et votre champion peut foncer vers lui.",
-      "tooltip": "Lancez une boule de neige sur une longue distance, infligeant {{ f1 }} pts de dégâts bruts à la première unité ennemie touchée et vous octroyant une <span class=\"coloree91d7\">vision pure</span> de la cible. Si la boule touche un ennemi, ce sort peut être relancé dans les {{ e3 }} sec pour foncer vers l'unité marquée et infliger {{ f1 }} pts de dégâts bruts supplémentaires. Foncer vers la cible réduira de {{ e4 }}% le délai de récupération de Marquage.<br /><br /><span class=\"colorFFFF00\">Les projectiles de Marquage ne sont pas affectés par les boucliers antisorts ou par l'affaiblissement des projectiles.</span>",
-      "maxrank": 1,
-      "cooldown": [
-        80
-      ],
-      "cooldownBurn": "80",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          10
-        ],
-        [
-          5
-        ],
-        [
-          3
-        ],
-        [
-          25
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "10",
-        "5",
-        "3",
-        "25",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [],
-      "key": "32",
-      "summonerLevel": 6,
-      "modes": [
-        "ARAM",
-        "FIRSTBLOOD"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        1600
-      ],
-      "rangeBurn": "1600",
-      "image": {
-        "full": "SummonerSnowball.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 432,
-        "y": 48,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    },
-    "SummonerTeleport": {
-      "id": "SummonerTeleport",
-      "name": "Téléportation",
-      "description": "Après 4 sec de canalisation, votre champion est téléporté près du bâtiment, du sbire ou de la balise alliés ciblés.",
-      "tooltip": "Après {{ f1 }} sec de canalisation, votre champion est téléporté près du bâtiment, du sbire ou de la balise alliés ciblés.",
-      "maxrank": 1,
-      "cooldown": [
-        360
-      ],
-      "cooldownBurn": "360",
-      "cost": [
-        0
-      ],
-      "costBurn": "0",
-      "datavalues": {},
-      "effect": [
-        null,
-        [
-          4
-        ],
-        [
-          240
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ]
-      ],
-      "effectBurn": [
-        null,
-        "4",
-        "240",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "vars": [
-        {
-          "link": "@text",
-          "coeff": 4,
-          "key": "f1"
-        }
-      ],
-      "key": "12",
-      "summonerLevel": 7,
-      "modes": [
-        "CLASSIC",
-        "TUTORIAL",
-        "ASSASSINATE",
-        "ARSR",
-        "DOOMBOTSTEEMO",
-        "ONEFORALL",
-        "PRACTICETOOL",
-        "GAMEMODEX"
-      ],
-      "costType": "Pas de coût",
-      "maxammo": "-1",
-      "range": [
-        25000
-      ],
-      "rangeBurn": "25000",
-      "image": {
-        "full": "SummonerTeleport.png",
-        "sprite": "spell0.png",
-        "group": "spell",
-        "x": 0,
-        "y": 96,
-        "w": 48,
-        "h": 48
-      },
-      "resource": "Pas de coût"
-    }
+[
+  {
+    "id": 1,
+    "name": "Cleanse",
+    "description": "Removes all disables (excluding suppression and airborne) and summoner spell debuffs affecting your champion and lowers the duration of incoming disables by 65% for 3 seconds.",
+    "summonerLevel": 9,
+    "cooldown": 210,
+    "gameModes": [
+      "CLASSIC",
+      "ODIN",
+      "TUTORIAL",
+      "ARAM",
+      "ASCENSION",
+      "FIRSTBLOOD",
+      "URF",
+      "ARSR",
+      "DOOMBOTSTEEMO",
+      "PROJECT",
+      "ONEFORALL",
+      "GAMEMODEX",
+      "PRACTICETOOL"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_boost.png"
+  },
+  {
+    "id": 3,
+    "name": "Exhaust",
+    "description": "Exhausts target enemy champion, reducing their Movement Speed by 30%, and their damage dealt by 40% for 2.5 seconds.",
+    "summonerLevel": 4,
+    "cooldown": 210,
+    "gameModes": [
+      "ARAM",
+      "TUTORIAL",
+      "CLASSIC",
+      "GAMEMODEX",
+      "URF",
+      "ARSR",
+      "DOOMBOTSTEEMO",
+      "ONEFORALL",
+      "PRACTICETOOL"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_exhaust.png"
+  },
+  {
+    "id": 4,
+    "name": "Flash",
+    "description": "Teleports your champion a short distance toward your cursor's location.",
+    "summonerLevel": 7,
+    "cooldown": 300,
+    "gameModes": [
+      "CLASSIC",
+      "ODIN",
+      "TUTORIAL",
+      "ARAM",
+      "ASCENSION",
+      "FIRSTBLOOD",
+      "ASSASSINATE",
+      "URF",
+      "ARSR",
+      "DOOMBOTSTEEMO",
+      "STARGUARDIAN",
+      "PROJECT",
+      "SNOWURF",
+      "ONEFORALL",
+      "GAMEMODEX",
+      "PRACTICETOOL"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_flash.png"
+  },
+  {
+    "id": 5,
+    "name": "Backtrack",
+    "description": "Temporarily shields 75-330 (depending on champion level) damage from your champion. After 2.5 seconds the shield expires and your champion is teleported to safety. Melee champions travel extra distance.",
+    "summonerLevel": 4,
+    "cooldown": 180,
+    "gameModes": [],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_Backtrack.png"
+  },
+  {
+    "id": 6,
+    "name": "Ghost",
+    "description": "Your champion gains increased Movement Speed and can move through units for 10 seconds. Grants a maximum of 28-45% (depending on champion level) Movement Speed after accelerating for 2 seconds.",
+    "summonerLevel": 1,
+    "cooldown": 180,
+    "gameModes": [
+      "CLASSIC",
+      "ODIN",
+      "TUTORIAL",
+      "ARAM",
+      "ASCENSION",
+      "FIRSTBLOOD",
+      "ASSASSINATE",
+      "URF",
+      "ARSR",
+      "DOOMBOTSTEEMO",
+      "STARGUARDIAN",
+      "PROJECT",
+      "ONEFORALL",
+      "TUTORIAL_MODULE_1",
+      "TUTORIAL_MODULE_2",
+      "GAMEMODEX",
+      "PRACTICETOOL"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_haste.png"
+  },
+  {
+    "id": 7,
+    "name": "Heal",
+    "description": "Restores 90-345 Health (depending on champion level) and grants 30% Movement Speed for 1 second to you and target allied champion. This healing is halved for units recently affected by Summoner Heal.",
+    "summonerLevel": 1,
+    "cooldown": 240,
+    "gameModes": [
+      "ARAM",
+      "TUTORIAL",
+      "CLASSIC",
+      "STARGUARDIAN",
+      "GAMEMODEX",
+      "TUTORIAL_MODULE_2",
+      "URF",
+      "ARSR",
+      "ASSASSINATE",
+      "DOOMBOTSTEEMO",
+      "ONEFORALL",
+      "PRACTICETOOL",
+      "TUTORIAL_MODULE_1",
+      "PROJECT"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_heal.png"
+  },
+  {
+    "id": 11,
+    "name": "Smite",
+    "description": "Deals 390-1000 true damage (depending on champion level) to target epic, large, or medium monster or enemy minion. Restores Health based on your maximum life when used against monsters.",
+    "summonerLevel": 9,
+    "cooldown": 15,
+    "gameModes": [
+      "URF",
+      "CLASSIC",
+      "ARSR",
+      "DOOMBOTSTEEMO",
+      "ONEFORALL",
+      "PRACTICETOOL",
+      "TUTORIAL",
+      "GAMEMODEX"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_smite.png"
+  },
+  {
+    "id": 12,
+    "name": "Teleport",
+    "description": "After channeling for 4 seconds, teleports your champion to target allied structure, minion, or ward.",
+    "summonerLevel": 7,
+    "cooldown": 360,
+    "gameModes": [
+      "CLASSIC",
+      "TUTORIAL",
+      "ASSASSINATE",
+      "ARSR",
+      "DOOMBOTSTEEMO",
+      "ONEFORALL",
+      "PRACTICETOOL",
+      "GAMEMODEX"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_teleport.png"
+  },
+  {
+    "id": 13,
+    "name": "Clarity",
+    "description": "Restores 50% of your champion's maximum Mana. Also restores allies for 25% of their maximum Mana.",
+    "summonerLevel": 6,
+    "cooldown": 240,
+    "gameModes": [
+      "ODIN",
+      "ARAM",
+      "ASCENSION",
+      "FIRSTBLOOD"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/SummonerMana.png"
+  },
+  {
+    "id": 14,
+    "name": "Ignite",
+    "description": "Ignites target enemy champion, dealing 70-410 true damage (depending on champion level) over 5 seconds, grants you vision of the target, and reduces healing effects on them for the duration.",
+    "summonerLevel": 9,
+    "cooldown": 180,
+    "gameModes": [
+      "CLASSIC",
+      "ODIN",
+      "TUTORIAL",
+      "ARAM",
+      "ASCENSION",
+      "FIRSTBLOOD",
+      "ASSASSINATE",
+      "URF",
+      "ARSR",
+      "DOOMBOTSTEEMO",
+      "ONEFORALL",
+      "GAMEMODEX",
+      "PRACTICETOOL"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/SummonerIgnite.png"
+  },
+  {
+    "id": 21,
+    "name": "Barrier",
+    "description": "Shields your champion from 115-455 damage (depending on champion level) for 2 seconds.",
+    "summonerLevel": 4,
+    "cooldown": 180,
+    "gameModes": [
+      "ARAM",
+      "FIRSTBLOOD",
+      "TUTORIAL",
+      "CLASSIC",
+      "STARGUARDIAN",
+      "GAMEMODEX",
+      "PROJECT",
+      "ARSR",
+      "ASSASSINATE",
+      "DOOMBOTSTEEMO",
+      "ONEFORALL",
+      "PRACTICETOOL",
+      "URF"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/SummonerBarrier.png"
+  },
+  {
+    "id": 30,
+    "name": "To the King!",
+    "description": "Quickly travel to the Poro King's side.",
+    "summonerLevel": 1,
+    "cooldown": 10,
+    "gameModes": [
+      "KINGPORO"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Benevolence_Of_King_Poro_Icon.png"
+  },
+  {
+    "id": 31,
+    "name": "Poro Toss",
+    "description": "Toss a Poro at your enemies. If it hits, you can quickly travel to your target as a follow up.",
+    "summonerLevel": 1,
+    "cooldown": 20,
+    "gameModes": [
+      "KINGPORO"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Trailblazer_Poro_Icon.png"
+  },
+  {
+    "id": 32,
+    "name": "Mark",
+    "description": "Throw a snowball in a straight line at your enemies. If it hits an enemy, they become marked, granting True Sight, and your champion can quickly travel to the marked target as a follow up.",
+    "summonerLevel": 6,
+    "cooldown": 80,
+    "gameModes": [
+      "ARAM",
+      "FIRSTBLOOD"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_Mark.png"
+  },
+  {
+    "id": 39,
+    "name": "Ultra (Rapidly Flung) Mark",
+    "description": "It's a snowball! It's a Poro! It's...uh...one of those.",
+    "summonerLevel": 6,
+    "cooldown": 80,
+    "gameModes": [
+      "SNOWURF"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_Mark.png"
+  },
+  {
+    "id": 50,
+    "name": "Resuscitate",
+    "description": "Revive a fallen friend by remaining next to them for 2 seconds. Exiting the area early does not consume your cooldown. ",
+    "summonerLevel": 1,
+    "cooldown": 100,
+    "gameModes": [
+      "ODYSSEY"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/SummonerTemp2.png"
+  },
+  {
+    "id": 51,
+    "name": "Ghost",
+    "description": "Your champion gains increased Movement Speed and can move through units for 10 seconds. Grants a maximum of 28-45% (depending on champion level) Movement Speed after accelerating for 2 seconds.",
+    "summonerLevel": 1,
+    "cooldown": 120,
+    "gameModes": [],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_haste.png"
+  },
+  {
+    "id": 52,
+    "name": "Warp",
+    "description": "Dash through spacetime, becoming briefly untargetable and invulnerable as you rapidly move towards a location.",
+    "summonerLevel": 1,
+    "cooldown": 0,
+    "gameModes": [
+      "ODYSSEY"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/SummonerTemp1.png"
   }
-}
+]

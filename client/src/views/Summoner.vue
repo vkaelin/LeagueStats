@@ -40,7 +40,7 @@
                   <div
                     :class="{'border-2': !playing}"
                     class="relative z-10 w-24 h-24 rounded-full bg-blue-1000 bg-center bg-cover border-teal-400"
-                    :style="{backgroundImage: getSummonerIcon}"
+                    :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${summonerInfos.account.profileIconId}.jpg')`}"
                   >
                     <div
                       class="absolute left-0 bottom-0 w-8 h-8 flex items-center justify-center bg-blue-900 rounded-full text-xs text-teal-500 font-extrabold border-2 border-teal-400"
@@ -133,9 +133,6 @@ export default {
   },
 
   computed: {
-    getSummonerIcon() {
-      return `url(https://ddragon.leagueoflegends.com/cdn/${this.version}/img/profileicon/${this.summonerInfos.account.profileIconId}.png)`
-    },
     summoner() {
       return this.$route.params.name
     },
