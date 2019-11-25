@@ -47,7 +47,7 @@
         <div class="ml-2 w-champion flex items-center">
           <div
             :style="{backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champion._id}.png')`}"
-            class="w-8 h-8 bg-center bg-cover rounded-full flex-shrink-0"
+            class="w-8 h-8 bg-center bg-cover bg-blue-1000 rounded-full flex-shrink-0"
           ></div>
           <div class="mx-1 truncate">{{ champion.champion }}</div>
         </div>

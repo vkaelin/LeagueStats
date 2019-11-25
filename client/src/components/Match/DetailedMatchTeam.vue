@@ -198,7 +198,7 @@ export default {
 
       return {
         backgroundColor: `rgba(${rgb}, ${opacity})`,
-        boxShadow: value === biggestValue ? '#abb4d0 0px 0px 0px 2px inset' : ''
+        boxShadow: value === biggestValue && value !== 0 ? '#abb4d0 0px 0px 0px 2px inset' : ''
       }
     },
     displayBorderbottom(index) {

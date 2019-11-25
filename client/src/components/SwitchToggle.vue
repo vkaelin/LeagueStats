@@ -1,5 +1,5 @@
 <template>
-  <div class="switch relative z-10 text-teal-400 text-sm select-none">
+  <div class="switch relative z-10 text-teal-400 text-sm select-none leading-tight">
     <input
       v-model="selected"
       id="toggle-on"
@@ -59,7 +59,7 @@ export default {
 
 <style scoped>
 .switch label {
-  min-width: 50px;
+  min-width: 45px;
 }
 
 .selected-label {

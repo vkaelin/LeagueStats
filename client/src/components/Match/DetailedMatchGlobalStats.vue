@@ -32,14 +32,14 @@
         <div
           :class="textColor"
           class="text-base font-semibold"
-        >{{ +(team.teamStats.gold / 1000).toFixed(2) + 'k' }}</div>
+        >{{ +(team.teamStats.gold / 1000).toFixed(1) + 'k' }}</div>
         <div class="text-white text-xs">gold</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'">
         <div
           :class="textColor"
           class="text-base font-semibold"
-        >{{ +(team.teamStats.dmgChamp / 1000).toFixed(2) + 'k' }}</div>
+        >{{ +(team.teamStats.dmgChamp / 1000).toFixed(1) + 'k' }}</div>
         <div class="text-white text-xs">dmg</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'" class="flex flex-col justify-end">
