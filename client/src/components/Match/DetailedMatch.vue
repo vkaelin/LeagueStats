@@ -47,10 +47,16 @@ export default {
 
   computed: {
     allyTeam() {
-      return this.data.blueTeam.players.some(p => p.name.toLowerCase() === this.$route.params.name.toLowerCase()) ? this.data.blueTeam : this.data.redTeam
+      return this.data.blueTeam.players.some(p => this.compareSummonernames(p.name, this.$route.params.name)) ? this.data.blueTeam : this.data.redTeam
     },
     enemyTeam() {
-      return this.data.blueTeam.players.some(p => p.name.toLowerCase() === this.$route.params.name.toLowerCase()) ? this.data.redTeam : this.data.blueTeam
+      return this.data.blueTeam.players.some(p => this.compareSummonernames(p.name, this.$route.params.name)) ? this.data.redTeam : this.data.blueTeam
+    }
+  },
+
+  methods: {
+    compareSummonernames(a, b) {
+      return a.toLowerCase().replace(/ /g, '') === b.toLowerCase().replace(/ /g, '')
     }
   }
 }
