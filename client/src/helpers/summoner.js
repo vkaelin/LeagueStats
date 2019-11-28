@@ -32,6 +32,10 @@ export function createMatchData(matches) {
     match.firstSum = getSummonerLink(match.firstSum)
     match.secondSum = getSummonerLink(match.secondSum)
 
+    const date = new Date(match.date)
+    const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
+    const timeOptions = { hour12: false, hour: '2-digit', minute:'2-digit' }
+    match.fullDate = { date: date.toLocaleString('fr', dateOptions), time: date.toLocaleString('fr', timeOptions) }
     match.date = timeDifference(match.date)
 
     match.map = maps[match.map]

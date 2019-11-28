@@ -127,7 +127,20 @@
           <div class="ml-auto flex flex-col items-center justify-center">
             <img class="w-5 h-5" src="@/assets/img/icons/Stopwatch.svg" alt="Stopwatch" />
             <div class="text-lg text-teal-400 font-medium">{{ data.time|secToTime }}</div>
-            <div class="text-xs text-white font-medium">{{ data.date }}</div>
+            <Dropdown>
+              <template v-slot:trigger>
+                <div class="text-xs text-white font-medium">{{ data.date }}</div>
+              </template>
+              <template v-slot:default>
+                <div class="px-2 text-white text-center text-xs leading-tight select-none">
+                  <svg class="w-4 h-4 mx-auto text-teal-400">
+                    <use xlink:href="#time" />
+                  </svg>
+                  <div class="mt-1">{{ data.fullDate.date }}</div>
+                  <div>{{ data.fullDate.time }}</div>
+                </div>
+              </template>
+            </Dropdown>
           </div>
         </div>
       </div>
@@ -138,6 +151,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import Dropdown from '@/components/Dropdown'
 import DetailedMatch from '@/components/Match/DetailedMatch'
 import MatchItems from '@/components/Match/MatchItems'
 import Ripple from '@/components/Ripple.vue'
@@ -145,6 +159,7 @@ import Ripple from '@/components/Ripple.vue'
 export default {
   components: {
     DetailedMatch,
+    Dropdown,
     MatchItems,
     Ripple,
   },

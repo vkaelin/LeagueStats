@@ -25,14 +25,3 @@ export function timeDifference(previous) {
     return day + '.' + month + '.' + oldDate.getFullYear().toString().substr(-2)
   }
 }
-
-
-/**
- *  Return time in a formatted way
- * @param sec  : time in seconds to convert
- */
-export function secToTime(sec) {
-  const min = Math.floor(sec / 60)
-  const newSec = sec - min * 60
-  return min + 'm' + (newSec < 10 ? '0' + newSec : newSec) + 's'
-}
