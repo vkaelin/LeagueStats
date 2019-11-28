@@ -25,7 +25,7 @@ Vue.filter('percent', (value) => {
 })
 
 Vue.filter('round', (value) => {
-  return `${+value.toFixed(2)}`
+  return parseFloat(value.toFixed(2))
 })
 
 new Vue({
