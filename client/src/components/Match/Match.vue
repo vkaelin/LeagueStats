@@ -151,6 +151,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import { compareSummonernames } from '@/helpers/functions.js'
 import Dropdown from '@/components/Dropdown'
 import DetailedMatch from '@/components/Match/DetailedMatch'
 import MatchItems from '@/components/Match/MatchItems'
@@ -194,7 +195,7 @@ export default {
     },
     isSummonerProfile(allyName) {
       return {
-        'font-bold': this.$route.params.name.toLowerCase() === allyName.toLowerCase()
+        'font-bold': compareSummonernames(this.$route.params.name, allyName)
       }
     },
     ...mapActions('detailedMatch', ['matchDetails']),

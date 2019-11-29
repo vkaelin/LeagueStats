@@ -4,6 +4,7 @@
       <DetailedMatchTeam
         :data="allyTeam"
         :all-players="[...allyTeam.players, ...enemyTeam.players]"
+        :ally-team="true"
       />
 
       <div class="px-3 py-2 flex justify-between items-start">
@@ -15,6 +16,7 @@
       <DetailedMatchTeam
         :data="enemyTeam"
         :all-players="[...allyTeam.players, ...enemyTeam.players]"
+        :ally-team="false"
       />
     </div>
     <div v-else-if="data.status === 'loading' && detailsOpen">
@@ -24,6 +26,7 @@
 </template>
 
 <script>
+import { compareSummonernames } from '@/helpers/functions.js'
 import DetailedMatchGlobalStats from '@/components/Match/DetailedMatchGlobalStats.vue'
 import DetailedMatchTeam from '@/components/Match/DetailedMatchTeam.vue'
 import SwitchToggle from '@/components/SwitchToggle.vue'
@@ -47,16 +50,10 @@ export default {
 
   computed: {
     allyTeam() {
-      return this.data.blueTeam.players.some(p => this.compareSummonernames(p.name, this.$route.params.name)) ? this.data.blueTeam : this.data.redTeam
+      return this.data.blueTeam.players.some(p => compareSummonernames(p.name, this.$route.params.name)) ? this.data.blueTeam : this.data.redTeam
     },
     enemyTeam() {
-      return this.data.blueTeam.players.some(p => this.compareSummonernames(p.name, this.$route.params.name)) ? this.data.redTeam : this.data.blueTeam
-    }
-  },
-
-  methods: {
-    compareSummonernames(a, b) {
-      return a.toLowerCase().replace(/ /g, '') === b.toLowerCase().replace(/ /g, '')
+      return this.data.blueTeam.players.some(p => compareSummonernames(p.name, this.$route.params.name)) ? this.data.redTeam : this.data.blueTeam
     }
   }
 }

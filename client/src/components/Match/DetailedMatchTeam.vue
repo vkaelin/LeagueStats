@@ -88,7 +88,7 @@
                 <router-link
                   v-if="player.firstSum"
                   :to="{ name: 'summoner', params: { region: $route.params.region, name: player.name }}"
-                  :class="{'font-semibold text-yellow-400': $route.params.name.toLowerCase() === player.name.toLowerCase()}"
+                  :class="{'font-semibold text-yellow-400': compareSummonernames($route.params.name, player.name)}"
                   class="w-24 text-sm text-white text-left overflow-hidden text-overflow whitespace-no-wrap hover:text-blue-200"
                 >{{ player.name }}</router-link>
                 <div
@@ -156,6 +156,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { compareSummonernames } from '@/helpers/functions.js'
 import MatchItems from '@/components/Match/MatchItems'
 
 export default {
@@ -168,16 +169,14 @@ export default {
       type: Array,
       required: true
     },
+    allyTeam: {
+      type: Boolean,
+      required: true
+    },
     data: {
       type: Object,
       required: true
     },
-  },
-
-  data() {
-    return {
-      allyTeam: this.data.players.some(p => p.name.toLowerCase().replace(/ /g, '') === this.$route.params.name.toLowerCase().replace(/ /g, ''))
-    }
   },
 
   computed: {
@@ -202,7 +201,8 @@ export default {
     },
     displayBorderbottom(index) {
       return this.allyTeam || index !== this.data.players.length - 1
-    }
+    },
+    compareSummonernames,
   }
 }
 </script>
