@@ -1,21 +1,33 @@
 <template>
   <div :class="allyTeam ? 'text-left' : 'text-right'">
     <div v-if="team.bans">
-      <div
+      <Dropdown
         v-for="ban in team.bans"
         :key="'ban-' + ban.pickTurn"
-        :class="[{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}, allyTeam ? 'ban-blue border-teal-500' : 'ban-red border-red-500']"
-        class="relative ban inline-block border-2 rounded-full"
+        :class="{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}"
+        class="inline-block"
       >
-        <div
-          :style="[ban.champion.id ? {backgroundImage: `url('${ban.champion.icon}')`} : '']"
-          class="ban-img w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
-        ></div>
-        <div
-          :class="[textLightColor, bgColor]"
-          class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs font-bold rounded-full"
-        >{{ ban.pickTurn }}</div>
-      </div>
+        <template v-slot:trigger>
+          <div
+            :class="[allyTeam ? 'ban-blue border-teal-500' : 'ban-red border-red-500']"
+            class="relative ban border-2 rounded-full cursor-pointer"
+          >
+            <div
+              :style="[ban.champion.id ? {backgroundImage: `url('${ban.champion.icon}')`} : '']"
+              class="ban-img w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
+            ></div>
+            <div
+              :class="[textLightColor, bgColor]"
+              class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs font-bold rounded-full"
+            >{{ ban.pickTurn }}</div>
+          </div>
+        </template>
+        <template v-slot:default>
+          <div class="px-2 text-white text-center text-xs leading-tight select-none">
+            <div>{{ ban.champion.name }}</div>
+          </div>
+        </template>
+      </Dropdown>
     </div>
     <div
       :class="allyTeam ? 'text-left' : 'text-right flex-row-reverse'"
@@ -61,7 +73,13 @@
 </template>
 
 <script>
+import Dropdown from '@/components/Dropdown'
+
 export default {
+  components: {
+    Dropdown,
+  },
+
   props: {
     team: {
       type: Object,
