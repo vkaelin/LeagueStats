@@ -2,6 +2,7 @@
   <div>
     <!-- trigger -->
     <div
+      ref="trigger"
       @mouseenter="showDropdown"
       @mousemove="mousemove"
       @mouseleave="hideDropdown"
@@ -16,22 +17,15 @@
       v-show="isOpen"
       ref="content"
       class="fixed z-40 bg-blue-1000 py-2 rounded-md shadow"
-      :style="{ width, ...position }"
+      :style="{ ...position }"
     >
       <slot></slot>
     </div>
   </div>
 </template>
-
+ 
 <script>
 export default {
-  props: {
-    width: {
-      type: String,
-      default: 'auto'
-    }
-  },
-
   data() {
     return {
       isOpen: false,
@@ -39,15 +33,18 @@ export default {
       offset: 12,
       top: 0,
       directionBottom: true,
+      directionRight: true,
       directionChecked: false,
+      width: 0
     }
   },
 
   computed: {
     position() {
       const valuetoRemove = this.directionBottom ? 0 : this.height()
+      const leftValue = this.directionRight ? this.left + this.offset : this.left - this.width - this.offset / 2
       return {
-        left: `${this.left + this.offset}px`,
+        left: `${leftValue}px`,
         top: `${this.top + this.offset - valuetoRemove}px`,
       }
     }
@@ -63,9 +60,13 @@ export default {
   methods: {
     checkDropdownVisibility() {
       this.directionChecked = true
-      const rect = this.$refs.content.getBoundingClientRect()
+      const contentRect = this.$refs.content.getBoundingClientRect()
+      const triggerRect = this.$refs.trigger.getBoundingClientRect()
+      this.width = contentRect.width
       const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight)
-      this.directionBottom = (rect.bottom + this.offset) < viewHeight
+      const viewWidth = Math.max(document.documentElement.clientWidth, window.innerWidth)
+      this.directionBottom = (contentRect.bottom + this.offset) < viewHeight
+      this.directionRight = (this.left + this.width + triggerRect.width + this.offset) < viewWidth
     },
     handleScroll() {
       this.isOpen = false
@@ -76,6 +77,7 @@ export default {
     hideDropdown() {
       this.isOpen = false
       this.directionBottom = true
+      this.directionRight = true
       this.directionChecked = false
     },
     async mousemove(event) {
