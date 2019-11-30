@@ -4,12 +4,11 @@
       v-model="selected"
       id="toggle-on"
       class="toggle toggle-left hidden"
-      name="toggle"
-      value="true"
+      :value="true"
       type="radio"
     />
     <label
-      :class="{'selected-label': selected === 'true'}"
+      :class="{'selected-label': selected}"
       for="toggle-on"
       class="inline-block py-1 rounded-l-full border-t-2 border-r border-b-2 border-l-2 border-teal-500 cursor-pointer"
     >%</label>
@@ -17,17 +16,16 @@
       v-model="selected"
       id="toggle-off"
       class="toggle toggle-right hidden"
-      name="toggle"
-      value="false"
+      :value="false"
       type="radio"
     />
     <label
-      :class="{'selected-label': selected === 'false'}"
+      :class="{'selected-label': !selected}"
       for="toggle-off"
       class="inline-block py-1 rounded-r-full border-t-2 border-r-2 border-b-2 border-l border-teal-500 cursor-pointer"
     >Total</label>
     <div
-      :class="selected === 'true' ? 'left-checked' : 'right-checked'"
+      :class="selected ? 'left-checked' : 'right-checked'"
       class="selector absolute w-1/2 inset-0 bg-teal-500"
     ></div>
   </div>

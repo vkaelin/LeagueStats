@@ -1,7 +1,7 @@
 export const namespaced = true
 
 export const state = {
-  percent: 'true'
+  percent: false
 }
 
 export const mutations = {
@@ -12,8 +12,8 @@ export const mutations = {
 
 export const actions = {
   async updatePercent({ commit }, percent) {
-    if (!percent) {
-      percent = localStorage.getItem('settings-percent') || 'true'
+    if (typeof (percent) !== 'boolean') {
+      percent = localStorage.getItem('settings-percent') === 'true'
     } else {
       localStorage.setItem('settings-percent', percent)
     }

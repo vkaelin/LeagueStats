@@ -181,7 +181,7 @@ export default {
 
   computed: {
     statsFormat() {
-      return this.percentSettings === 'true' ? 'percentStats' : 'stats'
+      return this.percentSettings ? 'percentStats' : 'stats'
     },
     ...mapState({
       percentSettings: state => state.settings.percent
