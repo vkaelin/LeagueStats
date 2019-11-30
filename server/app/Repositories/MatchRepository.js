@@ -18,7 +18,8 @@ class MatchRepository {
       {
         $match: {
           summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } }
+          result: { $not: { $eq: 'Remake' } },
+          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
         }
       },
       {
@@ -55,7 +56,8 @@ class MatchRepository {
       {
         $match: {
           summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } }
+          result: { $not: { $eq: 'Remake' } },
+          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
         }
       },
       {
@@ -86,7 +88,8 @@ class MatchRepository {
       {
         $match: {
           summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } }
+          result: { $not: { $eq: 'Remake' } },
+          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
         }
       },
       {
@@ -117,7 +120,8 @@ class MatchRepository {
       {
         $match: {
           summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } }
+          result: { $not: { $eq: 'Remake' } },
+          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
         }
       },
       {
@@ -156,7 +160,8 @@ class MatchRepository {
         $match: {
           summoner_puuid: puuid,
           role: { $not: { $eq: 'NONE' } },
-          result: { $not: { $eq: 'Remake' } }
+          result: { $not: { $eq: 'Remake' } },
+          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
         }
       },
       {
@@ -196,7 +201,8 @@ class MatchRepository {
       {
         $match: {
           summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } }
+          result: { $not: { $eq: 'Remake' } },
+          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
         }
       },
       { $unwind: "$allyTeam" },
