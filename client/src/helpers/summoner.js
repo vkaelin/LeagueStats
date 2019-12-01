@@ -5,24 +5,6 @@ import summonersJSON from '@/data/summoner.json'
 const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
 
 /**
- * Return all the infos about a detailed match
- * @param  detailedMatch : all data about the match from the Riot API
- */
-export function createDetailedMatchData(detailedMatch) {
-  detailedMatch.blueTeam.players = detailedMatch.blueTeam.players.map(p => getPlayerData(p))
-  detailedMatch.redTeam.players = detailedMatch.redTeam.players.map(p => getPlayerData(p))
-
-  function getPlayerData(p) {
-    // Summoner Spells
-    p.firstSum = getSummonerLink(p.firstSum)
-    p.secondSum = getSummonerLink(p.secondSum)
-    return p
-  }
-
-  return detailedMatch
-}
-
-/**
  * Return all the infos about a list of matches built with the Riot API data
  * @param {Object} RiotData : all data from the Riot API
  */

@@ -17,11 +17,13 @@ class MatchTransformer {
     const champions = await Jax.CDragon.champions()
     const perks = await Jax.CDragon.perks()
     const perkstyles = await Jax.CDragon.perkstyles()
+    const summonerSpells = await Jax.CDragon.summonerSpells()
 
     this.champions = champions
     this.items = items
     this.perks = perks
     this.perkstyles = perkstyles.styles
+    this.summonerSpells = summonerSpells
     this.sortTeamByRole = Helpers.sortTeamByRole
   }
 
@@ -164,6 +166,21 @@ class MatchTransformer {
       return 'SUPPORT'
     }
     return timeline.lane
+  }
+
+  /**
+   * Get Summoner Spell Data from CDragon
+   * @param id of the summonerSpell
+   */
+  getSummonerSpell(id) {
+    if (id === 0) return null
+    const spell = this.summonerSpells.find(s => s.id === id)
+    const spellName = spell.iconPath.split('/assets/')[1].toLowerCase()
+    return {
+      name: spell.name,
+      description: spell.description,
+      icon: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${spellName}`
+    }
   }
 }
 

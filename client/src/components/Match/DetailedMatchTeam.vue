@@ -66,11 +66,11 @@
               </div>
               <div class="ml-1 flex flex-col justify-around">
                 <div
-                  :style="{backgroundImage: `url(${player.firstSum})`}"
+                  :style="{backgroundImage: `url(${player.firstSum.icon})`}"
                   class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
                 ></div>
                 <div
-                  :style="{backgroundImage: `url(${player.secondSum})`}"
+                  :style="{backgroundImage: `url(${player.secondSum.icon})`}"
                   class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
                 ></div>
               </div>

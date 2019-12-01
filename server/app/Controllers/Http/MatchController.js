@@ -5,9 +5,27 @@ const DetailedMatch = use('App/Models/DetailedMatch')
 const DetailedMatchTransformer = use('App/Transformers/DetailedMatchTransformer')
 const MatchService = use('App/Services/MatchService')
 const StatsService = use('App/Services/StatsService')
+const SummonerService = use('App/Services/SummonerService')
 const Summoner = use('App/Models/Summoner')
 
 class MatchController {
+  /**
+   * Get the soloQ rank of all the players of the team
+   * @param summoner all the data of the summoner
+   * @param region of the match
+   */
+  async _getPlayerRank(summoner, region) {
+    const account = await SummonerService.getAccount(summoner.name, region)
+    if (account) {
+      const ranked = await SummonerService.getRanked(account)
+      summoner.rank = ranked.soloQ ? (({ tier, shortName }) => ({ tier, shortName }))(ranked.soloQ) : null
+    } else {
+      summoner.rank = null
+    }
+
+    return summoner
+  }
+
   /**
    *  POST - Return data from matches searched by gameIds
    */
@@ -50,11 +68,38 @@ class MatchController {
       await DetailedMatch.create(matchDetails)
     }
 
-
     console.timeEnd('MatchDetails')
 
     return response.json({
       matchDetails
+    })
+  }
+
+  /**
+   * POST - Return ranks of players for a specific game
+   */
+  async showRanks({ request, response }) {
+    console.time('Ranks')
+    const gameId = request.input('gameId')
+    const region = request.input('region')
+
+    let matchDetails = await DetailedMatch.where({ gameId, region }).first()
+    if (!matchDetails) {
+      return response.json(null)
+    }
+
+    const requestsBlue = matchDetails.blueTeam.players.map(p => this._getPlayerRank(p, region))
+    matchDetails.blueTeam.players = await Promise.all(requestsBlue)
+
+    const requestsRed = matchDetails.redTeam.players.map(p => this._getPlayerRank(p, region))
+    matchDetails.redTeam.players = await Promise.all(requestsRed)
+
+    matchDetails.save()
+    console.timeEnd('Ranks')
+
+    return response.json({
+      blueTeam: matchDetails.blueTeam.players,
+      redTeam: matchDetails.redTeam.players,
     })
   }
 }

@@ -16,6 +16,10 @@ class CDragonEndpoint {
   perkstyles() {
     return new CDragonRequest('perkstyles.json').execute()
   }
+
+  summonerSpells() {
+    return new CDragonRequest('summoner-spells.json').execute()
+  }
 }
 
 module.exports = CDragonEndpoint
