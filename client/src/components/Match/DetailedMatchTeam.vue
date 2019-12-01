@@ -98,12 +98,15 @@
                 <div class="text-xs text-teal-500">{{ player.champion.name }}</div>
               </div>
             </div>
-            <div class="flex items-center">
-              <div v-show="false" class="ml-1">
-                <svg class="w-6 h-6">
-                  <use xlink:href="#rank-silver" />
+            <div class="ml-1 flex items-center">
+              <div v-if="player.rank">
+                <svg class="w-5 h-5">
+                  <use :xlink:href="`#rank-${player.rank.tier.toLowerCase()}`" />
                 </svg>
-                <div class="-mt-1 text-blue-200 text-xs">S2</div>
+                <div class="text-blue-300 text-xs">{{ player.rank.shortName }}</div>
+              </div>
+              <div v-else class="w-5 h-5">
+                <div class="-mt-1 text-blue-300 text-2xl">-</div>
               </div>
               <MatchItems :items="player.items" :one-row="true" />
             </div>

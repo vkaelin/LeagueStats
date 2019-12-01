@@ -2,7 +2,6 @@ import { timeDifference } from '@/helpers/functions.js'
 import { maps, gameModes } from '@/data/data.js'
 import summonersJSON from '@/data/summoner.json'
 
-const uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
 const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
 
 /**
@@ -87,9 +86,7 @@ export function createSummonerData(RiotData) {
 function getLeagueData(leagueData, leagueName) {
   if (!leagueData) return null
 
-  leagueData.fullRank = uniqueLeagues.includes(leagueData.tier) ? leagueData.tier : `${leagueData.tier} ${leagueData.rank}`
   leagueData.rankImgLink = getRankImg(leagueData)
-  leagueData.winrate = +(leagueData.wins * 100 / (leagueData.wins + leagueData.losses)).toFixed(1) + '%'
   leagueData.name = leagueName
   return leagueData
 }

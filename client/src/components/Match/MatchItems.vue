@@ -1,5 +1,5 @@
 <template>
-  <div :class="oneRow ? 'ml-1 items-center' : 'items-2-rows flex-wrap'" class="flex">
+  <div :class="oneRow ? 'ml-2 items-center' : 'items-2-rows flex-wrap'" class="flex">
     <Dropdown v-for="(item, index) in items" :key="index">
       <template v-slot:trigger>
         <div

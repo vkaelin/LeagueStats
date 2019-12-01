@@ -25,7 +25,7 @@ class SummonerController {
     Jax.regionName = region
 
     try {
-      const account = await Jax.Summoner.summonerName(summoner)
+      const account = await SummonerService.getAccount(summoner, region)
       // Check if the summoner is found
       if (!account) return response.json(null)
       account.region = region

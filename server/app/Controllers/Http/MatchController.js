@@ -33,19 +33,28 @@ class MatchController {
    * POST - Return details data for one specific match
    */
   async show({ request, response }) {
+    console.time('MatchDetails')
     console.log('Match details request')
     const gameId = request.input('gameId')
     const region = request.input('region')
     console.log(gameId, region)
 
-    let matchFromRiot = await Jax.Match.get(gameId)
+    let matchDetails = {}
+    const alreadySaved = await DetailedMatch.where({ gameId, region }).first()
+    if (alreadySaved) {
+      console.log('MATCH DETAILS ALREADY SAVED')
+      matchDetails = alreadySaved
+    } else {
+      matchDetails = await Jax.Match.get(gameId)
+      matchDetails = await DetailedMatchTransformer.transform(matchDetails)
+      await DetailedMatch.create(matchDetails)
+    }
 
-    matchFromRiot = await DetailedMatchTransformer.transform(matchFromRiot)
 
-    // DetailedMatch.save(matchFromRiot)
+    console.timeEnd('MatchDetails')
 
     return response.json({
-      matchDetails: matchFromRiot
+      matchDetails
     })
   }
 }

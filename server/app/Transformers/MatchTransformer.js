@@ -44,6 +44,7 @@ class MatchTransformer {
       map: match.mapId,
       gamemode: match.queueId,
       date: match.gameCreation,
+      region: match.platformId.toLowerCase(),
       time: match.gameDuration
     }
   }

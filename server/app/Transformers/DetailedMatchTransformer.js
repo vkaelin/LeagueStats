@@ -1,6 +1,7 @@
 'use strict'
 
 const MatchTransformer = use('App/Transformers/MatchTransformer')
+const SummonerService = use('App/Services/SummonerService')
 
 /**
  * DetailedMatchTransformer class
@@ -19,8 +20,8 @@ class DetailedMatchTransformer extends MatchTransformer {
     const globalInfos = super.getGameInfos(match)
 
     // Teams
-    const firstTeam = this.getTeamData(match, match.teams[0])
-    const secondTeam = this.getTeamData(match, match.teams[1])
+    const firstTeam = await this.getTeamData(match, match.teams[0])
+    const secondTeam = await this.getTeamData(match, match.teams[1])
 
     return {
       gameId: match.gameId,
@@ -36,7 +37,7 @@ class DetailedMatchTransformer extends MatchTransformer {
    * @param match raw match data from Riot API
    * @param team raw team data from Riot API
    */
-  getTeamData(match, team) {
+  async getTeamData(match, team) {
     let win = team.win
     if (match.gameDuration < 300) {
       win = 'Remake'
@@ -72,9 +73,12 @@ class DetailedMatchTransformer extends MatchTransformer {
     }
 
     // Players
-    const players = teamPlayers
+    let players = teamPlayers
       .map(p => super.getPlayerData(match, p, true, teamStats))
       .sort(this.sortTeamByRole)
+
+    const requests = players.map(p => this.getPlayerRank(p, match.platformId))
+    players = await Promise.all(requests)
 
     return {
       bans,
@@ -88,6 +92,23 @@ class DetailedMatchTransformer extends MatchTransformer {
       teamStats,
       towers: team.towerKills,
     }
+  }
+
+  /**
+   * Get the soloQ rank of all the players of the team
+   * @param summoner all the data of the summoner
+   * @param region of the match
+   */
+  async getPlayerRank(summoner, region) {
+    const account = await SummonerService.getAccount(summoner.name, region)
+    if (account) {
+      const ranked = await SummonerService.getRanked(account)
+      summoner.rank = ranked.soloQ ? (({ tier, shortName }) => ({ tier, shortName }))(ranked.soloQ) : null
+    } else {
+      summoner.rank = null
+    }
+
+    return summoner
   }
 }
 
