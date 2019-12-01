@@ -3,8 +3,8 @@
 const Jax = use('Jax')
 const DetailedMatch = use('App/Models/DetailedMatch')
 const DetailedMatchTransformer = use('App/Transformers/DetailedMatchTransformer')
-const MatchHelper = use('App/Helpers/MatchHelper')
-const StatsHelper = use('App/Helpers/StatsHelper')
+const MatchService = use('App/Services/MatchService')
+const StatsService = use('App/Services/StatsService')
 const Summoner = use('App/Models/Summoner')
 
 class MatchController {
@@ -17,11 +17,11 @@ class MatchController {
     const gameIds = request.input('gameIds')
 
     const summonerDB = await Summoner.where({ puuid: account.puuid }).first()
-    const matches = await MatchHelper.getMatches(account, gameIds, summonerDB)
+    const matches = await MatchService.getMatches(account, gameIds, summonerDB)
 
     await summonerDB.save()
 
-    const stats = await StatsHelper.getSummonerStats(account)
+    const stats = await StatsService.getSummonerStats(account)
 
     return response.json({
       matches,

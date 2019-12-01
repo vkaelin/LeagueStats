@@ -1,8 +1,8 @@
 'use strict'
 
 const Jax = use('Jax')
-const MatchHelper = use('App/Helpers/MatchHelper')
-const StatsHelper = use('App/Helpers/StatsHelper')
+const MatchService = use('App/Services/MatchService')
+const StatsService = use('App/Services/StatsService')
 const Summoner = use('App/Models/Summoner')
 
 class SummonerController {
@@ -49,20 +49,20 @@ class SummonerController {
       }
 
       // MATCH LIST
-      await MatchHelper.updateMatchList(account, summonerDB)
+      await MatchService.updateMatchList(account, summonerDB)
       const matchList = summonerDB.matchList
       finalJSON.allMatches = matchList
 
       // MATCHES BASIC
       const gameIds = matchList.slice(0, 10).map(({ gameId }) => gameId)
-      finalJSON.matchesDetails = await MatchHelper.getMatches(account, gameIds, summonerDB)
+      finalJSON.matchesDetails = await MatchService.getMatches(account, gameIds, summonerDB)
 
       // PATCH VERSION
       finalJSON.version = Jax.DDragon.Version
 
       // STATS
       console.time('STATS')
-      finalJSON.stats = await StatsHelper.getSummonerStats(account)
+      finalJSON.stats = await StatsService.getSummonerStats(account)
       console.timeEnd('STATS')
 
       // SAVE IN DB

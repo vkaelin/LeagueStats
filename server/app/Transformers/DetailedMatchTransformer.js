@@ -74,7 +74,7 @@ class DetailedMatchTransformer extends MatchTransformer {
     // Players
     const players = teamPlayers
       .map(p => super.getPlayerData(match, p, true, teamStats))
-      .sort(super.sortTeamByRole)
+      .sort(this.sortTeamByRole)
 
     return {
       bans,

@@ -62,8 +62,8 @@ class BasicMatchTransformer extends MatchTransformer {
         enemyTeam.push(playerInfos)
       }
     }
-    allyTeam.sort(super.sortTeamByRole)
-    enemyTeam.sort(super.sortTeamByRole)
+    allyTeam.sort(this.sortTeamByRole)
+    enemyTeam.sort(this.sortTeamByRole)
 
     return {
       summoner_puuid: account.puuid,

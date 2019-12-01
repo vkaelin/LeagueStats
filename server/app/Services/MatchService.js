@@ -4,13 +4,13 @@ const Logger = use('Logger')
 const Jax = use('Jax')
 const BasicMatchTransformer = use('App/Transformers/BasicMatchTransformer')
 
-class MatchHelper {
+class MatchService {
   /**
    * Add 100 matches at a time to MatchList until the stopFetching condition is true
    * @param account of the summoner
    * @param stopFetching condition to stop fetching the MatchList
    */
-  async fetchMatchListUntil(account, stopFetching) {
+  async _fetchMatchListUntil(account, stopFetching) {
     let matchList = []
     let alreadyIn = false
     let index = 0
@@ -48,7 +48,7 @@ class MatchHelper {
     // Summoner has already been searched : we already have a MatchList and we need to update it
     if (summonerDB.matchList) {
       // Get MatchList
-      const matchList = await this.fetchMatchListUntil(account, (newMatchList) => {
+      const matchList = await this._fetchMatchListUntil(account, (newMatchList) => {
         return summonerDB.matchList.some(m => m.gameId === newMatchList[newMatchList.length - 1].gameId)
       })
       // Update Summoner's MatchList
@@ -64,7 +64,7 @@ class MatchHelper {
     else {
       const today = Date.now()
       // Get MatchList
-      const matchList = await this.fetchMatchListUntil(account, (newMatchList) => {
+      const matchList = await this._fetchMatchListUntil(account, (newMatchList) => {
         return (newMatchList.length !== 100 || today - newMatchList[newMatchList.length - 1].timestamp > 10368000000)
       })
       // Create Summoner's MatchList in Database
@@ -103,7 +103,6 @@ class MatchHelper {
     if (matchesFromApi.length !== 0) {
       const ctx = {
         account,
-        MatchHelper: this
       }
       // Transform raw matches data
       await BasicMatchTransformer.transform(matchesFromApi, ctx)
@@ -126,4 +125,4 @@ class MatchHelper {
   }
 }
 
-module.exports = new MatchHelper()
+module.exports = new MatchService()

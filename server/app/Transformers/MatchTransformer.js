@@ -1,6 +1,7 @@
 'use strict'
 
 const Jax = use('Jax')
+const Helpers = use('App/helpers')
 
 /**
  * MatchTransformer class
@@ -16,13 +17,12 @@ class MatchTransformer {
     const champions = await Jax.CDragon.champions()
     const perks = await Jax.CDragon.perks()
     const perkstyles = await Jax.CDragon.perkstyles()
-    const version = Jax.DDragon.Version
 
     this.champions = champions
     this.items = items
     this.perks = perks
     this.perkstyles = perkstyles.styles
-    this.version = version
+    this.sortTeamByRole = Helpers.sortTeamByRole
   }
 
   /**
@@ -163,16 +163,6 @@ class MatchTransformer {
       return 'SUPPORT'
     }
     return timeline.lane
-  }
-
-  /**
-  * Sort array of Roles according to a specific order
-  * @param a first role
-  * @param b second role
-  */
-  sortTeamByRole(a, b) {
-    const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
-    return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
   }
 }
 

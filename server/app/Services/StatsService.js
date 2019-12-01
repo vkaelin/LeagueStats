@@ -1,9 +1,9 @@
 'use strict'
 
-const MatchHelper = use('App/Helpers/MatchHelper')
+const Helpers = use('App/helpers')
 const MatchRepository = make('App/Repositories/MatchRepository')
 
-class StatsHelper {
+class StatsService {
   constructor() {
     this.matchRepository = MatchRepository
   }
@@ -31,22 +31,12 @@ class StatsHelper {
     return {
       global: globalStats[0],
       league: gamemodeStats,
-      role: roleStats.sort(this.sortTeamByRole),
+      role: roleStats.sort(Helpers.sortTeamByRole),
       class: championClassStats,
       mates,
       champion: championStats,
     }
   }
-
-  /**
-  * Sort array of Roles according to a specific order
-  * @param a first role
-  * @param b second role
-  */
-  sortTeamByRole(a, b) {
-    const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
-    return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
-  }
 }
 
-module.exports = new StatsHelper()
+module.exports = new StatsService()
