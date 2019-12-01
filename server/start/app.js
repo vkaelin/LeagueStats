@@ -17,7 +17,7 @@ const providers = [
   '@adonisjs/bodyparser/providers/BodyParserProvider',
   '@adonisjs/cors/providers/CorsProvider',
   'lucid-mongo/providers/LucidMongoProvider',
-  'adonis-bumblebee/providers/BumblebeeProvider',
+  '@adonisjs/redis/providers/RedisProvider',
 
   join(__dirname, '../providers/Jax/JaxProvider')
 ]
@@ -33,7 +33,6 @@ const providers = [
 */
 const aceProviders = [
   'lucid-mongo/providers/MigrationsProvider',
-  'adonis-bumblebee/providers/CommandsProvider'
 ]
 
 /*

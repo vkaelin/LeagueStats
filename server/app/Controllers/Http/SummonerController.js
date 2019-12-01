@@ -2,6 +2,7 @@
 
 const Jax = use('Jax')
 const MatchService = use('App/Services/MatchService')
+const SummonerService = use('App/Services/SummonerService')
 const StatsService = use('App/Services/StatsService')
 const Summoner = use('App/Models/Summoner')
 
@@ -41,12 +42,7 @@ class SummonerController {
       finalJSON.playing = !!currentGame
 
       // RANKED STATS
-      const ranked = await Jax.League.summonerID(account.id)
-      finalJSON.ranked = {
-        soloQ: ranked.find(e => e.queueType === 'RANKED_SOLO_5x5') || null,
-        flex5v5: ranked.find(e => e.queueType === 'RANKED_FLEX_SR') || null,
-        flex3v3: ranked.find(e => e.queueType === 'RANKED_FLEX_TT') || null
-      }
+      finalJSON.ranked = await SummonerService.getRanked(account)
 
       // MATCH LIST
       await MatchService.updateMatchList(account, summonerDB)
