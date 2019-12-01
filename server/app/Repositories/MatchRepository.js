@@ -10,22 +10,28 @@ class MatchRepository {
   }
 
   /**
-   * Get Summoner's statistics for the 5 most played champions
-   * @param puuid of the summoner
+   * Build the aggregate mongo query
+   * @param {Number} puuid 
+   * @param {Object} matchParams 
+   * @param {Array} intermediateSteps 
+   * @param {*} groupId 
+   * @param {Object} groupParams 
+   * @param {Array} finalSteps 
    */
-  championStats(puuid) {
+  _aggregate(puuid, matchParams, intermediateSteps, groupId, groupParams, finalSteps) {
     return this.Match.query().aggregate([
       {
         $match: {
           summoner_puuid: puuid,
           result: { $not: { $eq: 'Remake' } },
-          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
+          gamemode: { $nin: [800, 810, 820, 830, 840, 850] },
+          ...matchParams
         }
       },
+      ...intermediateSteps,
       {
         $group: {
-          _id: "$champion.id",
-          champion: { $first: "$champion" },
+          _id: groupId,
           count: { $sum: 1 },
           wins: {
             $sum: {
@@ -37,14 +43,29 @@ class MatchRepository {
               $cond: [{ $eq: ["$result", "Fail"] }, 1, 0]
             }
           },
-          kills: { $sum: "$stats.kills" },
-          deaths: { $sum: "$stats.deaths" },
-          assists: { $sum: "$stats.assists" },
-        }
+          ...groupParams
+        },
       },
+      ...finalSteps
+    ])
+  }
+
+  /**
+   * Get Summoner's statistics for the 5 most played champions
+   * @param puuid of the summoner
+   */
+  championStats(puuid) {
+    const groupParams = {
+      champion: { $first: "$champion" },
+      kills: { $sum: "$stats.kills" },
+      deaths: { $sum: "$stats.deaths" },
+      assists: { $sum: "$stats.assists" },
+    }
+    const finalSteps = [
       { $sort: { 'count': -1 } },
       { $limit: 5 },
-    ])
+    ]
+    return this._aggregate(puuid, {}, [], '$champion.id', groupParams, finalSteps)
   }
 
   /**
@@ -52,31 +73,8 @@ class MatchRepository {
    * @param puuid of the summoner
    */
   championClassStats(puuid) {
-    return this.Match.query().aggregate([
-      {
-        $match: {
-          summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } },
-          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
-        }
-      },
-      {
-        $group: {
-          _id: { "$arrayElemAt": ["$champion.roles", 0] },
-          count: { $sum: 1 },
-          wins: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Win"] }, 1, 0]
-            }
-          },
-          losses: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Fail"] }, 1, 0]
-            }
-          }
-        }
-      }
-    ])
+    const groupId = { "$arrayElemAt": ["$champion.roles", 0] }
+    return this._aggregate(puuid, {}, [], groupId, {}, [])
   }
 
   /**
@@ -84,31 +82,7 @@ class MatchRepository {
    * @param puuid of the summoner
    */
   gamemodeStats(puuid) {
-    return this.Match.query().aggregate([
-      {
-        $match: {
-          summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } },
-          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
-        }
-      },
-      {
-        $group: {
-          _id: "$gamemode",
-          count: { $sum: 1 },
-          wins: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Win"] }, 1, 0]
-            }
-          },
-          losses: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Fail"] }, 1, 0]
-            }
-          }
-        }
-      }
-    ])
+    return this._aggregate(puuid, {}, [], '$gamemode', {}, [])
   }
 
   /**
@@ -116,38 +90,16 @@ class MatchRepository {
    * @param puuid of the summoner
    */
   globalStats(puuid) {
-    return this.Match.query().aggregate([
-      {
-        $match: {
-          summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } },
-          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
-        }
-      },
-      {
-        $group: {
-          _id: null,
-          count: { $sum: 1 },
-          time: { $sum: "$time" },
-          wins: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Win"] }, 1, 0]
-            }
-          },
-          losses: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Fail"] }, 1, 0]
-            }
-          },
-          kills: { $sum: "$stats.kills" },
-          deaths: { $sum: "$stats.deaths" },
-          assists: { $sum: "$stats.assists" },
-          minions: { $sum: "$stats.minions" },
-          vision: { $sum: "$stats.vision" },
-          kp: { $avg: "$stats.kp" },
-        }
-      }
-    ])
+    const groupParams = {
+      time: { $sum: "$time" },
+      kills: { $sum: "$stats.kills" },
+      deaths: { $sum: "$stats.deaths" },
+      assists: { $sum: "$stats.assists" },
+      minions: { $sum: "$stats.minions" },
+      vision: { $sum: "$stats.vision" },
+      kp: { $avg: "$stats.kp" },
+    }
+    return this._aggregate(puuid, {}, [], null, groupParams, [])
   }
 
   /**
@@ -155,31 +107,10 @@ class MatchRepository {
    * @param puuid of the summoner
    */
   roleStats(puuid) {
-    return this.Match.query().aggregate([
-      {
-        $match: {
-          summoner_puuid: puuid,
-          role: { $not: { $eq: 'NONE' } },
-          result: { $not: { $eq: 'Remake' } },
-          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
-        }
-      },
-      {
-        $group: {
-          _id: "$role",
-          count: { $sum: 1 },
-          wins: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Win"] }, 1, 0]
-            }
-          },
-          losses: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Fail"] }, 1, 0]
-            }
-          }
-        },
-      },
+    const matchParams = {
+      role: { $not: { $eq: 'NONE' } }
+    }
+    const finalSteps = [
       {
         $project: {
           role: "$_id",
@@ -188,7 +119,8 @@ class MatchRepository {
           losses: "$losses",
         }
       }
-    ])
+    ]
+    return this._aggregate(puuid, matchParams, [], '$role', {}, finalSteps)
   }
 
   /**
@@ -197,31 +129,10 @@ class MatchRepository {
    * @param summonerName of the summoner
    */
   mates(puuid, summonerName) {
-    return this.Match.query().aggregate([
-      {
-        $match: {
-          summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } },
-          gamemode: { $nin: [800, 810, 820, 830, 840, 850] }
-        }
-      },
+    const intermediateSteps = [
       { $unwind: "$allyTeam" },
-      {
-        $group: {
-          _id: "$allyTeam.name",
-          count: { $sum: 1 },
-          wins: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Win"] }, 1, 0]
-            }
-          },
-          losses: {
-            $sum: {
-              $cond: [{ $eq: ["$result", "Fail"] }, 1, 0]
-            }
-          }
-        },
-      },
+    ]
+    const finalSteps = [
       {
         $match: {
           _id: { $not: { $eq: summonerName } },
@@ -230,7 +141,8 @@ class MatchRepository {
       },
       { $sort: { 'count': -1 } },
       { $limit: 15 },
-    ])
+    ]
+    return this._aggregate(puuid, {}, intermediateSteps, '$allyTeam.name', {}, finalSteps)
   }
 }
 
