@@ -24,7 +24,7 @@
         </template>
         <template v-slot:default>
           <div class="px-2 text-white text-center text-xs leading-tight select-none">
-            <div>{{ ban.champion.name }}</div>
+            <div>{{ ban.champion.id ? ban.champion.name : 'No ban' }}</div>
           </div>
         </template>
       </Dropdown>
