@@ -66,11 +66,11 @@
               </div>
               <div class="ml-1 flex flex-col justify-around">
                 <div
-                  :style="{backgroundImage: `url(${player.firstSum.icon})`}"
+                  :style="{backgroundImage: `url(${player.firstSum ? player.firstSum.icon : null})`}"
                   class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
                 ></div>
                 <div
-                  :style="{backgroundImage: `url(${player.secondSum.icon})`}"
+                  :style="{backgroundImage: `url(${player.secondSum ? player.secondSum.icon : null})`}"
                   class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
                 ></div>
               </div>
@@ -89,21 +89,24 @@
                   v-if="player.firstSum"
                   :to="{ name: 'summoner', params: { region: $route.params.region, name: player.name }}"
                   :class="{'font-semibold text-yellow-400': compareSummonernames($route.params.name, player.name)}"
-                  class="w-24 text-sm text-white text-left overflow-hidden text-overflow whitespace-no-wrap hover:text-blue-200"
+                  class="w-22 text-xs text-white text-left overflow-hidden text-overflow whitespace-no-wrap hover:text-blue-200"
                 >{{ player.name }}</router-link>
                 <div
                   v-else
-                  class="w-24 text-sm text-white text-left overflow-hidden text-overflow whitespace-no-wrap"
+                  class="w-22 text-xs text-white text-left overflow-hidden text-overflow whitespace-no-wrap"
                 >{{ player.name }}</div>
-                <div class="text-xs text-teal-500">{{ player.champion.name }}</div>
+                <div class="text-xxs text-teal-500">{{ player.champion.name }}</div>
               </div>
             </div>
-            <div class="ml-1 flex items-center">
+            <div class="flex items-center">
               <div v-if="player.rank">
-                <svg class="w-5 h-5">
+                <svg class="ml-auto w-5 h-5">
                   <use :xlink:href="`#rank-${player.rank.tier.toLowerCase()}`" />
                 </svg>
-                <div class="text-blue-300 text-xs">{{ player.rank.shortName }}</div>
+                <div class="text-blue-300 text-xxs">{{ player.rank.shortName }}</div>
+              </div>
+              <div v-else-if="player.rank === undefined">
+                <DotsLoader width="30px" dot-width="10px" />
               </div>
               <div v-else class="w-5 h-5">
                 <div class="-mt-1 text-blue-300 text-2xl">-</div>
@@ -160,10 +163,12 @@
 <script>
 import { mapState } from 'vuex'
 import { compareSummonernames } from '@/helpers/functions.js'
+import DotsLoader from '@/components/DotsLoader'
 import MatchItems from '@/components/Match/MatchItems'
 
 export default {
   components: {
+    DotsLoader,
     MatchItems,
   },
 
