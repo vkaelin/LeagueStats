@@ -6,8 +6,9 @@ class LeagueEndpoint {
     this.limiter = limiter
   }
 
-  summonerID(summonerID) {
+  summonerID(summonerID, region) {
     return new JaxRequest(
+      region,
       this.config,
       `league/v4/entries/by-summoner/${summonerID}`,
       this.limiter

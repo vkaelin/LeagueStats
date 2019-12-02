@@ -8,8 +8,9 @@ class MatchEndpoint {
     this.get = this.get.bind(this)
   }
 
-  get(matchID) {
+  get(matchID, region) {
     return new JaxRequest(
+      region,
       this.config,
       `match/v4/matches/${matchID}`,
       this.limiter

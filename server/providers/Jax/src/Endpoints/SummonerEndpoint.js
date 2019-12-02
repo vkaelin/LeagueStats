@@ -6,8 +6,9 @@ class SummonerEndpoint {
     this.limiter = limiter
   }
 
-  summonerName(summonerName) {
+  summonerName(summonerName, region) {
     return new JaxRequest(
+      region,
       this.config,
       `summoner/v4/summoners/by-name/${encodeURI(summonerName)}`,
       this.limiter

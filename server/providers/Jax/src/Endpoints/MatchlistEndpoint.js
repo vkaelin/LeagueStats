@@ -6,8 +6,9 @@ class MatchlistEndpoint {
     this.limiter = limiter
   }
 
-  accountID(accountID, beginIndex = 0) {
+  accountID(accountID, region, beginIndex = 0) {
     return new JaxRequest(
+      region,
       this.config,
       `match/v4/matchlists/by-account/${accountID}?beginIndex=${beginIndex}`,
       this.limiter

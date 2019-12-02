@@ -17,7 +17,7 @@ class MatchController {
   async _getPlayerRank(summoner, region) {
     const account = await SummonerService.getAccount(summoner.name, region)
     if (account) {
-      const ranked = await SummonerService.getRanked(account)
+      const ranked = await SummonerService.getRanked(account, region)
       summoner.rank = ranked.soloQ ? (({ tier, shortName }) => ({ tier, shortName }))(ranked.soloQ) : null
     } else {
       summoner.rank = null
@@ -63,7 +63,7 @@ class MatchController {
       console.log('MATCH DETAILS ALREADY SAVED')
       matchDetails = alreadySaved
     } else {
-      matchDetails = await Jax.Match.get(gameId)
+      matchDetails = await Jax.Match.get(gameId, region)
       matchDetails = await DetailedMatchTransformer.transform(matchDetails)
       await DetailedMatch.create(matchDetails)
     }

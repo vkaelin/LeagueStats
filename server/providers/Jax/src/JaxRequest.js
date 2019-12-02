@@ -1,7 +1,8 @@
 const { promisify } = require('util')
 
 class JaxRequest {
-  constructor(config, endpoint, limiter) {
+  constructor(region, config, endpoint, limiter) {
+    this.region = region
     this.config = config
     this.endpoint = endpoint
     this.limiter = limiter
@@ -13,7 +14,7 @@ class JaxRequest {
   async execute() {
     try {
       const resp = await this.limiter.executing({
-        url: `https://${this.config.region}.api.riotgames.com/lol/${this.endpoint}`,
+        url: `https://${this.region}.api.riotgames.com/lol/${this.endpoint}`,
         token: this.config.key,
         resolveWithFullResponse: false
       })

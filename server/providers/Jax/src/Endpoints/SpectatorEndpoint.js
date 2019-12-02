@@ -6,8 +6,9 @@ class SpectatorEndpoint {
     this.limiter = limiter
   }
 
-  summonerID(summonerID) {
+  summonerID(summonerID, region) {
     return new JaxRequest(
+      region,
       this.config,
       `spectator/v4/active-games/by-summoner/${summonerID}`,
       this.limiter
