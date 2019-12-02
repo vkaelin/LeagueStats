@@ -65,14 +65,50 @@
                 </div>
               </div>
               <div class="ml-1 flex flex-col justify-around">
-                <div
-                  :style="{backgroundImage: `url(${player.firstSum ? player.firstSum.icon : null})`}"
-                  class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
-                ></div>
-                <div
-                  :style="{backgroundImage: `url(${player.secondSum ? player.secondSum.icon : null})`}"
-                  class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
-                ></div>
+                <Dropdown>
+                  <template v-slot:trigger>
+                    <div
+                      :style="{backgroundImage: `url(${player.firstSum ? player.firstSum.icon : null})`}"
+                      :class="{'cursor-pointer': player.firstSum}"
+                      class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
+                    ></div>
+                  </template>
+                  <template v-if="player.firstSum" v-slot:default>
+                    <div class="flex max-w-sm p-2 text-white text-left text-xs select-none">
+                      <div
+                        :style="{backgroundImage: `url('${player.firstSum.icon}')`}"
+                        class="ml-1 w-12 h-12 flex-shrink-0 rounded-md bg-blue-1000 bg-center bg-cover"
+                      ></div>
+                      <div class="ml-2 leading-tight">
+                        <div class="text-base leading-none">{{ player.firstSum.name }}</div>
+                        <div class="mt-1 text-blue-200 font-light">{{ player.firstSum.description }}</div>
+                      </div>
+                    </div>
+                  </template>
+                </Dropdown>
+                <Dropdown>
+                  <template v-slot:trigger>
+                    <div
+                      :style="{backgroundImage: `url(${player.secondSum ? player.secondSum.icon : null})`}"
+                      :class="{'cursor-pointer': player.secondSum}"
+                      class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
+                    ></div>
+                  </template>
+                  <template v-if="player.secondSum" v-slot:default>
+                    <div class="flex max-w-sm p-2 text-white text-left text-xs select-none">
+                      <div
+                        :style="{backgroundImage: `url('${player.secondSum.icon}')`}"
+                        class="ml-1 w-12 h-12 flex-shrink-0 rounded-md bg-blue-1000 bg-center bg-cover"
+                      ></div>
+                      <div class="ml-2 leading-tight">
+                        <div class="text-base leading-none">{{ player.secondSum.name }}</div>
+                        <div
+                          class="mt-1 text-blue-200 font-light"
+                        >{{ player.secondSum.description }}</div>
+                      </div>
+                    </div>
+                  </template>
+                </Dropdown>
               </div>
               <div class="ml-2px flex flex-col justify-around">
                 <div
@@ -164,11 +200,13 @@
 import { mapState } from 'vuex'
 import { compareSummonernames } from '@/helpers/functions.js'
 import DotsLoader from '@/components/DotsLoader'
+import Dropdown from '@/components/Dropdown'
 import MatchItems from '@/components/Match/MatchItems'
 
 export default {
   components: {
     DotsLoader,
+    Dropdown,
     MatchItems,
   },
 
