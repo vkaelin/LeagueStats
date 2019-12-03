@@ -26,6 +26,7 @@ Route.get('/', async () => {
 })
 
 Route.post('/api', 'SummonerController.api')
+Route.post('/champions', 'SummonerController.champions')
 Route.post('/ddragon', 'DDragonController.index')
 Route.post('/match', 'MatchController.index')
 Route.post('/match-details', 'MatchController.show')

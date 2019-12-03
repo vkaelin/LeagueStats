@@ -72,6 +72,14 @@ class SummonerController {
     console.timeEnd('all')
     return response.json(finalJSON)
   }
+
+  async champions({ request, response }) {
+    const puuid = request.input('puuid')
+    console.log('champions request', puuid)
+    const championStats = await StatsService.getChampionStats(puuid)
+
+    return response.json(championStats)
+  }
 }
 
 module.exports = SummonerController

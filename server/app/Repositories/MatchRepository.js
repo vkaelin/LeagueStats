@@ -51,10 +51,11 @@ class MatchRepository {
   }
 
   /**
-   * Get Summoner's statistics for the 5 most played champions
+   * Get Summoner's statistics for the N most played champions
    * @param puuid of the summoner
+   * @param limit number of champions to fetch
    */
-  championStats(puuid) {
+  championStats(puuid, limit = 5) {
     const groupParams = {
       champion: { $first: "$champion" },
       kills: { $sum: "$stats.kills" },
@@ -63,7 +64,7 @@ class MatchRepository {
     }
     const finalSteps = [
       { $sort: { 'count': -1 } },
-      { $limit: 5 },
+      { $limit: limit }
     ]
     return this._aggregate(puuid, {}, [], '$champion.id', groupParams, finalSteps)
   }
@@ -75,6 +76,30 @@ class MatchRepository {
   championClassStats(puuid) {
     const groupId = { "$arrayElemAt": ["$champion.roles", 0] }
     return this._aggregate(puuid, {}, [], groupId, {}, [])
+  }
+
+  /**
+   * Get Summoner's complete statistics for the all played champs
+   * @param puuid of the summoner
+   */
+  championCompleteStats(puuid) {
+    const groupParams = {
+      time: { $sum: "$time" },
+      champion: { $first: "$champion" },
+      kills: { $sum: "$stats.kills" },
+      deaths: { $sum: "$stats.deaths" },
+      assists: { $sum: "$stats.assists" },
+      minions: { $sum: "$stats.minions" },
+      vision: { $sum: "$stats.vision" },
+      gold: { $sum: "$stats.gold" },
+      dmgChamp: { $sum: "$stats.dmgChamp" },
+      dmgTaken: { $sum: "$stats.dmgTaken" },
+      kp: { $avg: "$stats.kp" },
+    }
+    const finalSteps = [
+      { $sort: { 'count': -1 } }
+    ]
+    return this._aggregate(puuid, {}, [], '$champion.id', groupParams, finalSteps)
   }
 
   /**
