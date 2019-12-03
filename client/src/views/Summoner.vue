@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-3 flex">
+  <div class="mt-3 flex text-center">
     <div class="mt-4 w-3/12">
       <SummonerChampions />
       <SummonerStats />
