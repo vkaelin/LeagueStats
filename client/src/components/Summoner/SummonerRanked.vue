@@ -18,6 +18,14 @@
           class="ml-2 text-teal-500 text-3xl uppercase font-extrabold"
         >{{ selectedLeague.fullRank }}</div>
         <div class="ml-4 text-2xl font-extrabold">{{ selectedLeague.leaguePoints }} LP</div>
+        <div v-if="selectedLeague.miniSeries" class="ml-2 flex items-center p-2 bg-blue-800 rounded ">
+          <div
+            v-for="(result, index) in bo"
+            :key="index + result"
+            :class="[{'ml-1': index !== 0}, boGame(result)]"
+            class="w-3 h-3 rounded-full"
+          ></div>
+        </div>
       </div>
       <div class="flex mt-2 items-center">
         <div class="relative inline-block text-white">
@@ -85,6 +93,9 @@ export default {
   },
 
   computed: {
+    bo() {
+      return this.selectedLeague.miniSeries.progress.split('')
+    },
     colorBorder() {
       if (!this.selectedLeague.tier || this.selectedLeague.leaguePoints === 0) {
         return '#2c5282'
@@ -121,6 +132,16 @@ export default {
       this.$refs.leagueBorder.style.backgroundImage = `${linearGradient}, linear-gradient(90deg, #2c5282 50%, transparent 50%)`
 
       this.triggerAnimation()
+    },
+    boGame(result) {
+      switch (result) {
+        case 'W':
+          return 'bg-green-400'
+        case 'L':
+          return 'bg-red-400'
+        default:
+          return 'bg-blue-200'
+      }
     },
     triggerAnimation() {
       setTimeout(() => {
