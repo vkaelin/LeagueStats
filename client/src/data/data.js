@@ -60,5 +60,9 @@ export const gameModes = {
   850: {
     type: 'Bot',
     name: 'Co-op vs. AI (Intermediate)',
+  },
+  920: {
+    type: 'Normal',
+    name: 'PORO KING',
   }
 }
