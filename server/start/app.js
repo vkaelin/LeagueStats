@@ -19,7 +19,8 @@ const providers = [
   'lucid-mongo/providers/LucidMongoProvider',
   '@adonisjs/redis/providers/RedisProvider',
 
-  join(__dirname, '../providers/Jax/JaxProvider')
+  join(__dirname, '../providers/Jax/JaxProvider'),
+  join(__dirname, '../providers/Queue/provider')
 ]
 
 /*
