@@ -19,10 +19,12 @@ class BasicMatchTransformer extends MatchTransformer {
     if (Array.isArray(matches)) {
       matches.forEach((match, index) => {
         matches[index] = this.transformOneMatch(match, account)
-      });
+      })
     } else {
       matches = this.transformOneMatch(matches, account)
     }
+
+    return matches
   }
 
   /**
