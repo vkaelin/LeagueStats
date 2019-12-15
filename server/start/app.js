@@ -20,7 +20,7 @@ const providers = [
   '@adonisjs/redis/providers/RedisProvider',
 
   join(__dirname, '../providers/Jax/JaxProvider'),
-  join(__dirname, '../providers/Queue/provider')
+  join(__dirname, '../providers/Queue/Provider')
 ]
 
 /*
