@@ -81,11 +81,11 @@
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/Gold.svg" alt="Gold" />
-              <div class="ml-1 gold text-sm font-bold">{{ data.stats.gold }}</div>
+              <div class="ml-1 gold text-sm font-bold">{{ data.stats.gold|kilo }}</div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/Damage.svg" alt="Damage" />
-              <div class="ml-1 damage text-sm font-bold">{{ data.stats.dmgChamp }}</div>
+              <div class="ml-1 damage text-sm font-bold">{{ data.stats.dmgChamp|kilo }}</div>
             </div>
             <div class="flex items-center">
               <img src="@/assets/img/icons/KillParticipation.svg" alt="KillParticipation" />

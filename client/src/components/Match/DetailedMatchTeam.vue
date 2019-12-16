@@ -174,19 +174,19 @@
         <td
           class="p-2 text-white text-sm"
           :style="bgColor(player, '146, 100, 79', 'gold')"
-        >{{ player[statsFormat].gold }}</td>
+        >{{ roundStats(player[statsFormat].gold) }}</td>
         <td
           :style="bgColor(player, '156, 71, 109', 'dmgChamp')"
           class="p-2 text-white text-sm"
-        >{{ player[statsFormat].dmgChamp }}</td>
+        >{{ roundStats(player[statsFormat].dmgChamp) }}</td>
         <td
           :style="bgColor(player, '156, 71, 109', 'dmgObj')"
           class="p-2 text-white text-sm text-red"
-        >{{ player[statsFormat].dmgObj }}</td>
+        >{{ roundStats(player[statsFormat].dmgObj) }}</td>
         <td
           :style="bgColor(player, '146, 145, 106', 'dmgTaken')"
           class="p-2 text-white text-sm"
-        >{{ player[statsFormat].dmgTaken }}</td>
+        >{{ roundStats(player[statsFormat].dmgTaken) }}</td>
         <td
           :style="bgColor(player, '71, 132, 116', 'kp')"
           class="p-2 text-white text-sm"
@@ -247,6 +247,9 @@ export default {
     },
     displayBorderbottom(index) {
       return this.allyTeam || index !== this.data.players.length - 1
+    },
+    roundStats(value) {
+      return this.percentSettings ? value : this.$options.filters.kilo(value)
     },
     compareSummonernames,
   }
