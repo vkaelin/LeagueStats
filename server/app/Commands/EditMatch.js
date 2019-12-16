@@ -9,7 +9,10 @@ const Queue = use('Bee/Queue')
 
 class EditMatch extends Command {
   static get signature() {
-    return 'edit:match'
+    return `
+      edit:match
+      { concurrent?=10 : Number of concurrent jobs }
+    `
   }
 
   static get description() {
@@ -19,8 +22,8 @@ class EditMatch extends Command {
   /**
    * Create edit-matches Queue
    */
-  async createQueue() {
-    Queue.get('edit-matches').process(2, async (job) => {
+  createQueue(concurrent) {
+    Queue.get('edit-matches').process(concurrent, async (job) => {
       // Get stats from Riot API
       const matchRiot = await Jax.Match.get(job.data.gameId, job.data.region)
       const account = {
@@ -48,7 +51,7 @@ class EditMatch extends Command {
   async handle(args, options) {
     console.time('EditMatches')
 
-    this.createQueue()
+    this.createQueue(args.concurrent)
 
     // All matches from the db
     const matches = await Match.all()

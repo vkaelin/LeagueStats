@@ -7,8 +7,9 @@ const Match = use('App/Models/Match')
 class DeleteMatch extends Command {
   static get signature() {
     return `
-    delete:match
-    { field : Delete row if entered field is null }
+      delete:match
+      { field : Field to check }
+      { value?=null : Value of the field, if true: delete match }
     `
   }
 
@@ -21,7 +22,7 @@ class DeleteMatch extends Command {
     const nbMatchesBefore = await Match.count()
     const matches = await Match.all()
     for (const match of matches.toJSON()) {
-      await Match.where('_id', match._id).where(args.field, null).delete()
+      await Match.where('_id', match._id).where(args.field, args.value).delete()
     }
     const nbMatchesAfter = await Match.count()
     Database.close()
