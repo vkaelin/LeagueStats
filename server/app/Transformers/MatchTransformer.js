@@ -72,10 +72,10 @@ class MatchTransformer {
       assists: player.stats.assists,
       minions: player.stats.totalMinionsKilled + player.stats.neutralMinionsKilled,
       vision: player.stats.visionScore,
-      gold: +(player.stats.goldEarned / 1000).toFixed(1) + 'k',
-      dmgChamp: +(player.stats.totalDamageDealtToChampions / 1000).toFixed(1) + 'k',
-      dmgObj: +(player.stats.damageDealtToObjectives / 1000).toFixed(1) + 'k',
-      dmgTaken: +(player.stats.totalDamageTaken / 1000).toFixed(1) + 'k',
+      gold: player.stats.goldEarned,
+      dmgChamp: player.stats.totalDamageDealtToChampions,
+      dmgObj: player.stats.damageDealtToObjectives,
+      dmgTaken: player.stats.totalDamageTaken,
     }
 
     if (stats.kills + stats.assists !== 0 && stats.deaths === 0) {
