@@ -15,14 +15,8 @@
           class="border-2 border-transparent cursor-pointer flex items-center px-2 py-1 rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
         >
           <span class="selected font-bold select-none">{{ selectedRegion }}</span>
-          <svg
-            class="ml-1 -mr-1 w-4 h-4 fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 320 512"
-          >
-            <path
-              d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
-            />
+          <svg class="ml-1 -mr-1 w-4 h-4">
+            <use xlink:href="#caret-down" />
           </svg>
         </div>
       </div>

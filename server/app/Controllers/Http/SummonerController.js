@@ -75,9 +75,9 @@ class SummonerController {
 
   async champions({ request, response }) {
     const puuid = request.input('puuid')
-    console.log('champions request', puuid)
+    console.time('championsRequest')
     const championStats = await StatsService.getChampionStats(puuid)
-
+    console.timeEnd('championsRequest')
     return response.json(championStats)
   }
 }

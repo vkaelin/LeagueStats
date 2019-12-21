@@ -85,15 +85,16 @@ class MatchRepository {
   championCompleteStats(puuid) {
     const groupParams = {
       time: { $sum: "$time" },
+      gameLength: { $avg: "$time" },
+      date: { $last: "$date" },
       champion: { $first: "$champion" },
       kills: { $sum: "$stats.kills" },
       deaths: { $sum: "$stats.deaths" },
       assists: { $sum: "$stats.assists" },
-      minions: { $sum: "$stats.minions" },
-      vision: { $sum: "$stats.vision" },
-      gold: { $sum: "$stats.gold" },
-      dmgChamp: { $sum: "$stats.dmgChamp" },
-      dmgTaken: { $sum: "$stats.dmgTaken" },
+      minions: { $avg: "$stats.minions" },
+      gold: { $avg: "$stats.gold" },
+      dmgChamp: { $avg: "$stats.dmgChamp" },
+      dmgTaken: { $avg: "$stats.dmgTaken" },
       kp: { $avg: "$stats.kp" },
     }
     const finalSteps = [

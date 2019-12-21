@@ -6,6 +6,7 @@ export const namespaced = true
 export const state = {
   infos: {
     account: {},
+    champions: [],
     matchIndex: 0,
     matchList: [],
     matches: [],
@@ -14,11 +15,16 @@ export const state = {
     stats: {},
     playing: false
   },
+  championsLoaded: false,
   matchesLoading: false,
   status: '',
 }
 
 export const mutations = {
+  CHAMPIONS_FOUND(state, { champions }) {
+    state.infos.champions = champions
+    state.championsLoaded = true
+  },
   MATCHES_LOADING(state) {
     state.matchesLoading = true
   },
@@ -30,6 +36,8 @@ export const mutations = {
     state.infos.matchIndex += newMatches.length
 
     state.infos.stats = stats
+
+    state.championsLoaded = false
   },
   SUMMONER_REQUEST(state) {
     state.status = 'loading'
@@ -43,6 +51,7 @@ export const mutations = {
     state.infos.playing = infos.playing
     state.infos.stats = infos.stats
     state.status = 'found'
+    state.championsLoaded = false
   },
   SUMMONER_NOT_FOUND(state) {
     state.status = 'error'
@@ -50,6 +59,13 @@ export const mutations = {
 }
 
 export const actions = {
+  async championStats({ commit }) {
+    const resp = await axios(({ url: 'champions', data: { puuid: state.infos.account.puuid }, method: 'POST' })).catch(() => { })
+    console.log('CHAMPIONS STATS')
+    console.log(resp.data)
+
+    commit('CHAMPIONS_FOUND', { champions: resp.data })
+  },
   async moreMatches({ commit }) {
     commit('MATCHES_LOADING')
 
