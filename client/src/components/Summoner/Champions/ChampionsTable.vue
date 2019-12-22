@@ -52,10 +52,16 @@
           :style="bgColor(champion, '55, 118, 179', 'count')"
           class="px-2 py-3 text-white text-sm"
         >{{ champion.count }}</td>
-        <td
-          :style="bgColor(champion, '55, 118, 179', 'kda')"
-          class="px-2 py-3 text-white text-sm"
-        >{{ champion.kda|round }}</td>
+        <td :style="bgColor(champion, '55, 118, 179', 'kda')" class="px-2 py-3 text-white text-sm">
+          <div>{{ champion.kda|round }}</div>
+          <div class="mt-1 text-xxs text-blue-200">
+            {{ champion.kills/champion.count|round(1) }}
+            /
+            {{ champion.deaths/champion.count|round(1) }}
+            /
+            {{ champion.assists/champion.count|round(1) }}
+          </div>
+        </td>
         <td
           :style="bgColor(champion, '71, 132, 116', 'kp')"
           class="px-2 py-3 text-white text-sm"
