@@ -19,12 +19,12 @@
     </thead>
     <tbody class="bg-blue-760">
       <tr
-        v-for="(champion, index) in championsFull"
+        v-for="(champion, index) in championsToDisplay"
         :key="champion._id"
-        :class="{'rounded-b-lg': index === championsFull.length - 1}"
+        :class="{'rounded-b-lg': index === championsToDisplay.length - 1}"
       >
         <td
-          :class="{'rounded-bl-lg': index === championsFull.length - 1}"
+          :class="{'rounded-bl-lg': index === championsToDisplay.length - 1}"
           class="relative px-2 py-3 bg-blue-800 border-t-table border-t-table-70 text-white text-sm"
         >{{ champion.index + 1 }}</td>
         <td class="relative px-2 py-3 bg-blue-800 border-t-table text-white text-sm">
@@ -103,6 +103,10 @@ export default {
     champions: {
       type: Array,
       required: true
+    },
+    search: {
+      type: String,
+      default: ''
     }
   },
 
@@ -163,6 +167,7 @@ export default {
         }
       ],
       championsFull: [],
+      championsToDisplay: [],
       sortProps: 'index',
       order: -1
     }
@@ -174,6 +179,14 @@ export default {
     }
   },
 
+  watch: {
+    search() {
+      this.championsToDisplay = this.championsFull.filter(c => {
+        return c.champion.name.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
+  },
+
   mounted() {
     this.championsFull = this.champions.map((champ, index) => {
       return {
@@ -182,15 +195,18 @@ export default {
         playrate: champ.count * 100 / this.totalGames,
         kda: (champ.kills + champ.assists) / champ.deaths,
         index,
-        lastPlayed: timeDifference(champ.date)
+        lastPlayed: timeDifference(champ.date),
+        show: true
       }
     })
+
+    this.championsToDisplay = this.championsFull
   },
 
   methods: {
     bgColor(champion, rgb, stats) {
       const value = parseFloat(champion[stats])
-      const biggestValue = Math.max(...this.championsFull.map(c => parseFloat(c[stats])), 0)
+      const biggestValue = Math.max(...this.championsToDisplay.map(c => parseFloat(c[stats])), 0)
       const opacity = (value / biggestValue).toFixed(2)
 
       return {
@@ -205,7 +221,7 @@ export default {
         this.order = -1
       }
 
-      this.championsFull.sort((a, b) => {
+      this.championsToDisplay.sort((a, b) => {
         const aProp = props.split('.').reduce((p, c) => p && p[c] || null, a)
         const bProp = props.split('.').reduce((p, c) => p && p[c] || null, b)
         let order = aProp > bProp ? this.order : this.order * -1

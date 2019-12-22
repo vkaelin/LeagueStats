@@ -1,10 +1,12 @@
 <template>
   <div>
     <div class="mt-3 min-h-screen">
+      <ChampionsSearch @search-champions="updateSearch" class="mt-4" />
       <ChampionsTable
         v-if="champions.length && championsLoaded"
         :champions="champions"
-        class="mt-8"
+        :search="searchChampions"
+        class="mt-6"
       />
     </div>
   </div>
@@ -12,11 +14,19 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import ChampionsSearch from '@/components/Summoner/Champions/ChampionsSearch.vue'
 import ChampionsTable from '@/components/Summoner/Champions/ChampionsTable.vue'
 
 export default {
   components: {
+    ChampionsSearch,
     ChampionsTable,
+  },
+
+  data() {
+    return {
+      searchChampions: ''
+    }
   },
 
   computed: {
@@ -34,6 +44,9 @@ export default {
   },
 
   methods: {
+    updateSearch(search) {
+      this.searchChampions = search
+    },
     ...mapActions('summoner', ['championStats']),
   }
 }
