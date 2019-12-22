@@ -1,5 +1,5 @@
 <template>
-  <Ripple color="rgba(44, 82, 130, 0.7)" class="relative inline-block rounded-lg bg-blue">
+  <Ripple color="rgba(43, 108, 176, 0.7)" class="relative inline-block rounded-lg">
     <input
       v-model="championName"
       @input="search"
@@ -38,5 +38,6 @@ export default {
 <style scoped>
 .input-color::placeholder {
   color: #fff;
+  font-weight: 300;
 }
 </style>

@@ -44,6 +44,12 @@ export default {
     const height = this.$refs.container.offsetHeight
     this.rippleWidth = width > height ? width : height
     this.halfRippleWidth = this.rippleWidth / 2
+
+    window.addEventListener('mouseup', this.purgeRipples)
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('mouseup', this.purgeRipples)
   },
 
   methods: {
