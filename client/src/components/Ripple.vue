@@ -1,10 +1,5 @@
 <template>
-  <div
-    ref="container"
-    @mousedown="addRipple"
-    class="relative overflow-hidden cursor-pointer"
-  >
-
+  <div ref="container" @mousedown="addRipple" class="relative overflow-hidden cursor-pointer">
     <transition-group
       class="absolute top-0 left-0 w-full h-full pointer-events-none"
       name="grow"
@@ -49,12 +44,6 @@ export default {
     const height = this.$refs.container.offsetHeight
     this.rippleWidth = width > height ? width : height
     this.halfRippleWidth = this.rippleWidth / 2
-
-    window.addEventListener('mouseup', this.purgeRipples)
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('mouseup', this.purgeRipples)
   },
 
   methods: {
@@ -68,6 +57,11 @@ export default {
         top: `${e.clientY - top - this.halfRippleWidth}px`,
         id: rippleId
       })
+
+      // Remove ripple
+      setTimeout(() => {
+        this.ripples = this.ripples.filter(r => r.id !== rippleId)
+      }, 400)
     },
     purgeRipples() {
       this.ripples = []
