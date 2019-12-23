@@ -81,8 +81,12 @@ class MatchRepository {
   /**
    * Get Summoner's complete statistics for the all played champs
    * @param puuid of the summoner
+   * @param queue of the matches to fetch, if null get all matches
    */
-  championCompleteStats(puuid) {
+  championCompleteStats(puuid, queue) {
+    const matchParams = queue ? {
+      gamemode: { $eq: Number(queue) },
+    } : {}
     const groupParams = {
       time: { $sum: "$time" },
       gameLength: { $avg: "$time" },
@@ -100,7 +104,7 @@ class MatchRepository {
     const finalSteps = [
       { $sort: { 'count': -1 } }
     ]
-    return this._aggregate(puuid, {}, [], '$champion.id', groupParams, finalSteps)
+    return this._aggregate(puuid, matchParams, [], '$champion.id', groupParams, finalSteps)
   }
 
   /**

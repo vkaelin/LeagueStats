@@ -180,6 +180,9 @@ export default {
   },
 
   watch: {
+    champions() {
+      this.updateChampionsList()
+    },
     search() {
       this.championsToDisplay = this.championsFull.filter(c => {
         return c.champion.name.toLowerCase().includes(this.search.toLowerCase())
@@ -188,19 +191,7 @@ export default {
   },
 
   mounted() {
-    this.championsFull = this.champions.map((champ, index) => {
-      return {
-        ...champ,
-        winrate: champ.wins * 100 / champ.count,
-        playrate: champ.count * 100 / this.totalGames,
-        kda: (champ.kills + champ.assists) / champ.deaths,
-        index,
-        lastPlayed: timeDifference(champ.date),
-        show: true
-      }
-    })
-
-    this.championsToDisplay = this.championsFull
+    this.updateChampionsList()
   },
 
   methods: {
@@ -240,6 +231,21 @@ export default {
         'sorted-asc': this.sortProps === props && this.order === 1,
         'sorted-desc': this.sortProps === props && this.order === -1,
       }
+    },
+    updateChampionsList() {
+      this.championsFull = this.champions.map((champ, index) => {
+        return {
+          ...champ,
+          winrate: champ.wins * 100 / champ.count,
+          playrate: champ.count * 100 / this.totalGames,
+          kda: (champ.kills + champ.assists) / champ.deaths,
+          index,
+          lastPlayed: timeDifference(champ.date),
+          show: true
+        }
+      })
+
+      this.championsToDisplay = this.championsFull
     }
   }
 

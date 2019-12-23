@@ -8,11 +8,6 @@ class StatsService {
     this.matchRepository = MatchRepository
   }
 
-  async getChampionStats(puuid) {
-    const championStats = await this.matchRepository.championCompleteStats(puuid)
-    return championStats
-  }
-
   async getSummonerStats(account) {
     const globalStats = await this.matchRepository.globalStats(account.puuid)
     const gamemodeStats = await this.matchRepository.gamemodeStats(account.puuid)

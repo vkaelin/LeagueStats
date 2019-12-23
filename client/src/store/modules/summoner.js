@@ -59,9 +59,12 @@ export const mutations = {
 }
 
 export const actions = {
-  async championStats({ commit }) {
-    const resp = await axios(({ url: 'champions', data: { puuid: state.infos.account.puuid }, method: 'POST' })).catch(() => { })
+  async championStats({ commit }, queue = null) {
+    if (Number(queue) === -1)
+      queue = null
+    const resp = await axios(({ url: 'champions', data: { puuid: state.infos.account.puuid, queue: queue }, method: 'POST' })).catch(() => { })
     console.log('CHAMPIONS STATS')
+    console.log('queue: ', queue)
     console.log(resp.data)
 
     commit('CHAMPIONS_FOUND', { champions: resp.data })

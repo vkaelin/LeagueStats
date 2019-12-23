@@ -1,6 +1,7 @@
 'use strict'
 
 const Jax = use('Jax')
+const MatchRepository = make('App/Repositories/MatchRepository')
 const MatchService = use('App/Services/MatchService')
 const SummonerService = use('App/Services/SummonerService')
 const StatsService = use('App/Services/StatsService')
@@ -75,8 +76,9 @@ class SummonerController {
 
   async champions({ request, response }) {
     const puuid = request.input('puuid')
+    const queue = request.input('queue')
     console.time('championsRequest')
-    const championStats = await StatsService.getChampionStats(puuid)
+    const championStats = await MatchRepository.championCompleteStats(puuid, queue)
     console.timeEnd('championsRequest')
     return response.json(championStats)
   }
