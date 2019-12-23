@@ -1,12 +1,17 @@
 <template>
   <div>
     <div class="mt-3">
-      <template v-if="champions.length && championsLoaded">
+      <template v-if="championsLoaded">
         <div class="mt-4 flex items-center">
           <ChampionsSearch @search-champions="updateSearch" />
           <FilterQueue @filter-queue="filterByQueue" :choices="queues" class="ml-4" />
         </div>
-        <ChampionsTable :champions="champions" :search="searchChampions" class="mt-6" />
+        <ChampionsTable
+          v-if="champions.length"
+          :champions="champions"
+          :search="searchChampions"
+          class="mt-6"
+        />
       </template>
     </div>
   </div>
