@@ -87,7 +87,7 @@
           class="px-2 py-3 text-white text-sm"
         >{{ champion.gameLength|secToTime }}</td>
         <td
-          :class="{'rounded-br-lg': index === championsFull.length - 1}"
+          :class="{'rounded-br-lg': index === championsToDisplay.length - 1}"
           class="px-2 py-3 text-white text-sm"
         >{{ champion.lastPlayed }}</td>
       </tr>
@@ -167,13 +167,17 @@ export default {
         }
       ],
       championsFull: [],
-      championsToDisplay: [],
       sortProps: 'index',
       order: -1
     }
   },
 
   computed: {
+    championsToDisplay() {
+      return this.championsFull.filter(c => {
+        return c.champion.name.toLowerCase().includes(this.search.toLowerCase())
+      })
+    },
     totalGames() {
       return this.champions.reduce((agg, champ) => agg + champ.count, 0)
     }
@@ -182,15 +186,10 @@ export default {
   watch: {
     champions() {
       this.updateChampionsList()
-    },
-    search() {
-      this.championsToDisplay = this.championsFull.filter(c => {
-        return c.champion.name.toLowerCase().includes(this.search.toLowerCase())
-      })
     }
   },
 
-  mounted() {
+  created() {
     this.updateChampionsList()
   },
 
@@ -244,8 +243,6 @@ export default {
           show: true
         }
       })
-
-      this.championsToDisplay = this.championsFull
     }
   }
 
