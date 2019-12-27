@@ -248,7 +248,7 @@ export default {
       return rest
     },
     ...mapState({
-      stats: state => state.summoner.infos.stats
+      stats: state => state.summoner.overview.stats
     }),
   },
 

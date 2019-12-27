@@ -54,9 +54,9 @@ export default {
       return { '-1': { type: 'Normal', name: 'ALL QUEUES' }, ...queues }
     },
     ...mapState({
-      champions: state => state.summoner.infos.champions,
-      championsLoaded: state => state.summoner.championsLoaded,
-      matchList: state => state.summoner.infos.matchList
+      champions: state => state.summoner.champions.list,
+      championsLoaded: state => state.summoner.champions.championsLoaded,
+      matchList: state => state.summoner.basic.matchList
     })
   },
 
@@ -69,6 +69,8 @@ export default {
 
   methods: {
     filterByQueue(queue) {
+      queue = Number(queue)
+      queue = queue === -1 ? null : queue
       this.championStats(queue)
     },
     updateSearch(search) {

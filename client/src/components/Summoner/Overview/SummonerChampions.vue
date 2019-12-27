@@ -105,7 +105,7 @@ export default {
       return this.stats.champion.reduce((a, b) => a.count > b.count ? a : b).count
     },
     ...mapState({
-      stats: state => state.summoner.infos.stats
+      stats: state => state.summoner.overview.stats
     }),
   },
 

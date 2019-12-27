@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-3 flex text-center">
+  <div v-if="overviewLoaded" class="mt-3 flex text-center">
     <div class="mt-4 w-3/12">
       <SummonerChampions />
       <SummonerStats />
@@ -8,9 +8,9 @@
     <div class="w-9/12">
       <ul>
         <Match
-          v-for="(match, index) in summonerInfos.matches"
+          v-for="(match, index) in overview.matches"
           :key="index"
-          :data="summonerInfos.matches[index]"
+          :data="overview.matches[index]"
         />
       </ul>
       <LoadingButton
@@ -43,13 +43,17 @@ export default {
 
   computed: {
     ...mapState({
-      summonerInfos: state => state.summoner.infos
+      overview: state => state.summoner.overview
     }),
-    ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch'])
+    ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'overviewLoaded'])
+  },
+
+  created() {
+    this.overviewRequest()
   },
 
   methods: {
-    ...mapActions('summoner', ['moreMatches']),
+    ...mapActions('summoner', ['moreMatches', 'overviewRequest']),
   }
 }
 </script>

@@ -1,96 +1,76 @@
 import { axios } from '@/plugins/axios'
-import { createMatchData, createSummonerData } from '@/helpers/summoner'
+import { createMatchData, createBasicSummonerData } from '@/helpers/summoner'
 
 export const namespaced = true
 
 export const state = {
-  infos: {
+  basic: {
     account: {},
-    champions: [],
-    matchIndex: 0,
     matchList: [],
-    matches: [],
-    mates: [],
     ranked: {},
-    stats: {},
-    playing: false
+    playing: false,
+    status: '',
   },
-  championsLoaded: false,
-  matchesLoading: false,
-  status: '',
+  overview: {
+    matchIndex: 0,
+    matches: [],
+    stats: {},
+    loaded: false,
+    matchesLoading: false,
+  },
+  champions: {
+    list: [],
+    championsLoaded: false
+  },
 }
 
 export const mutations = {
+  BASIC_REQUEST(state) {
+    state.basic.status = 'loading'
+  },
   CHAMPIONS_FOUND(state, { champions }) {
-    state.infos.champions = champions
-    state.championsLoaded = true
+    state.champions.list = champions
+    state.champions.championsLoaded = true
   },
   MATCHES_LOADING(state) {
-    state.matchesLoading = true
+    state.overview.matchesLoading = true
   },
   MATCHES_FOUND(state, { newMatches, stats }) {
-    state.matchesLoading = false
-
-    state.infos.matches = [...state.infos.matches, ...newMatches]
-
-    state.infos.matchIndex += newMatches.length
-
-    state.infos.stats = stats
-
-    state.championsLoaded = false
+    state.overview.matchesLoading = false
+    state.overview.matches = [...state.infos.matches, ...newMatches]
+    state.overview.matchIndex += newMatches.length
+    state.overview.stats = stats
+    state.champions.championsLoaded = false
   },
-  SUMMONER_REQUEST(state) {
-    state.status = 'loading'
+  OVERVIEW_FOUND(state, infos) {
+    state.overview.matches = infos.matches
+    state.overview.matchIndex = infos.matches.length
+    state.overview.stats = infos.stats
+    state.overview.loaded = true
   },
   SUMMONER_FOUND(state, infos) {
-    state.infos.account = infos.account
-    state.infos.matchList = infos.matchList
-    state.infos.matches = infos.matches
-    state.infos.ranked = infos.ranked
-    state.infos.matchIndex = infos.matches.length
-    state.infos.playing = infos.playing
-    state.infos.stats = infos.stats
-    state.status = 'found'
-    state.championsLoaded = false
+    state.basic.account = infos.account
+    state.basic.matchList = infos.matchList
+    state.basic.ranked = infos.ranked
+    state.basic.playing = infos.playing
+    state.basic.status = 'found'
+    state.champions.championsLoaded = false
   },
   SUMMONER_NOT_FOUND(state) {
-    state.status = 'error'
-  }
+    state.basic.status = 'error'
+  },
 }
 
 export const actions = {
-  async championStats({ commit }, queue = null) {
-    if (Number(queue) === -1)
-      queue = null
-    const resp = await axios(({ url: 'champions', data: { puuid: state.infos.account.puuid, queue: queue }, method: 'POST' })).catch(() => { })
-    console.log('CHAMPIONS STATS')
-    console.log('queue: ', queue)
-    console.log(resp.data)
-
-    commit('CHAMPIONS_FOUND', { champions: resp.data })
-  },
-  async moreMatches({ commit }) {
-    commit('MATCHES_LOADING')
-
-    const account = state.infos.account
-    const gameIds = state.infos.matchList.slice(state.infos.matchIndex, state.infos.matchIndex + 10).map(({ gameId }) => gameId)
-
-    const resp = await axios(({ url: 'match', data: { account, gameIds }, method: 'POST' })).catch(() => { })
-    console.log('--- MATCHES INFOS ---')
-    console.log(resp.data)
-    const newMatches = createMatchData(resp.data.matches)
-    commit('MATCHES_FOUND', { newMatches, stats: resp.data.stats })
-  },
-  async summonerRequest({ commit, dispatch, rootState }, { summoner, region }) {
+  async basicRequest({ commit, dispatch, rootState }, { summoner, region }) {
     region = rootState.regionsList[region]
-    commit('SUMMONER_REQUEST')
+    commit('BASIC_REQUEST')
     try {
-      const resp = await axios(({ url: 'api', data: { summoner, region }, method: 'POST' }))
+      const resp = await axios(({ url: 'summoner-basic', data: { summoner, region }, method: 'POST' }))
       if (resp.data) {
         console.log('--- SUMMONER INFOS ---')
         console.log(resp.data)
-        dispatch('ddragon/getVersion', resp.data.version, { root: true })
-        const infos = createSummonerData(resp.data)
+        const infos = createBasicSummonerData(resp.data)
         commit('SUMMONER_FOUND', infos)
       } else {
         commit('SUMMONER_NOT_FOUND')
@@ -105,14 +85,42 @@ export const actions = {
       commit('SUMMONER_NOT_FOUND')
       console.log(error)
     }
+  },
+  async championStats({ commit }, queue = null) {
+    const resp = await axios(({ url: 'summoner-champions', data: { puuid: state.basic.account.puuid, queue: queue }, method: 'POST' })).catch(() => { })
+    console.log('CHAMPIONS STATS')
+    console.log('queue: ', queue)
+    console.log(resp.data)
+
+    commit('CHAMPIONS_FOUND', { champions: resp.data })
+  },
+  async moreMatches({ commit }) {
+    commit('MATCHES_LOADING')
+
+    const account = state.basic.account
+    const gameIds = state.basic.matchList.slice(state.overview.matchIndex, state.overview.matchIndex + 10).map(({ gameId }) => gameId)
+
+    const resp = await axios(({ url: 'match', data: { account, gameIds }, method: 'POST' })).catch(() => { })
+    console.log('--- MATCHES INFOS ---')
+    console.log(resp.data)
+    const newMatches = createMatchData(resp.data.matches)
+    commit('MATCHES_FOUND', { newMatches, stats: resp.data.stats })
+  },
+  async overviewRequest({ commit }) {
+    const resp = await axios(({ url: 'summoner-overview', data: { account: state.basic.account }, method: 'POST' })).catch(() => { })
+    console.log('OVERVIEW')
+    console.log(resp.data)
+    resp.data.matches = createMatchData(resp.data.matchesDetails)
+    commit('OVERVIEW_FOUND', resp.data)
   }
 }
 
 export const getters = {
-  matchesLoading: state => state.matchesLoading,
-  moreMatchesToFetch: state => state.infos.matchIndex < state.infos.matchList.length,
-  playing: state => state.infos.playing,
-  summonerFound: state => state.status === 'found',
-  summonerNotFound: state => state.status === 'error',
-  summonerLoading: state => state.status === 'loading',
+  matchesLoading: state => state.overview.matchesLoading,
+  moreMatchesToFetch: state => state.overview.matchIndex < state.basic.matchList.length,
+  overviewLoaded: state => state.overview.loaded,
+  playing: state => state.basic.playing,
+  summonerFound: state => state.basic.status === 'found',
+  summonerNotFound: state => state.basic.status === 'error',
+  summonerLoading: state => state.basic.status === 'loading',
 }

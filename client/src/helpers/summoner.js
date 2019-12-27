@@ -15,7 +15,7 @@ export function createMatchData(matches) {
 
     const date = new Date(match.date)
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
-    const timeOptions = { hour12: false, hour: '2-digit', minute:'2-digit' }
+    const timeOptions = { hour12: false, hour: '2-digit', minute: '2-digit' }
     match.fullDate = { date: date.toLocaleString('fr', dateOptions), time: date.toLocaleString('fr', timeOptions) }
     match.date = timeDifference(match.date)
 
@@ -28,10 +28,10 @@ export function createMatchData(matches) {
 }
 
 /**
- * Return all the infos about a summoner built with the Riot API data
+ * Return the basic infos about a summoner built with the Riot API data
  * @param {Object} RiotData : all data from the Riot API
  */
-export function createSummonerData(RiotData) {
+export function createBasicSummonerData(RiotData) {
   // Ranked Stats
   RiotData.ranked.soloQ = getLeagueData(RiotData.ranked.soloQ, 'Solo/Duo')
   if (!RiotData.ranked.soloQ) delete RiotData.ranked.soloQ
@@ -57,11 +57,9 @@ export function createSummonerData(RiotData) {
 
   return {
     account: RiotData.account,
-    ranked: RiotData.ranked,
     matchList: RiotData.allMatches,
-    matches: createMatchData(RiotData.matchesDetails),
+    ranked: RiotData.ranked,
     playing: RiotData.playing,
-    stats: RiotData.stats,
   }
 }
 
@@ -82,7 +80,7 @@ export function getRankImg(leagueData) {
 }
 
 function getSummonerLink(id) {
-  if(id === 0) return null
+  if (id === 0) return null
   const spellName = summonersJSON.find(s => s.id === id).iconPath.split('/assets/')[1].toLowerCase()
   return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${spellName}`
 }
