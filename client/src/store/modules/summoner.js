@@ -27,6 +27,7 @@ export const state = {
 export const mutations = {
   BASIC_REQUEST(state) {
     state.basic.status = 'loading'
+    state.champions.championsLoaded = false
   },
   CHAMPIONS_FOUND(state, { champions }) {
     state.champions.list = champions
@@ -54,7 +55,6 @@ export const mutations = {
     state.basic.ranked = infos.ranked
     state.basic.playing = infos.playing
     state.basic.status = 'found'
-    state.champions.championsLoaded = false
   },
   SUMMONER_NOT_FOUND(state) {
     state.basic.status = 'error'
@@ -108,6 +108,12 @@ export const actions = {
   },
   async overviewRequest({ commit }) {
     const resp = await axios(({ url: 'summoner-overview', data: { account: state.basic.account }, method: 'POST' })).catch(() => { })
+    // setTimeout(() => {
+    //   console.log('OVERVIEW')
+    //   console.log(resp.data)
+    //   resp.data.matches = createMatchData(resp.data.matchesDetails)
+    //   commit('OVERVIEW_FOUND', resp.data)
+    // }, 2000)
     console.log('OVERVIEW')
     console.log(resp.data)
     resp.data.matches = createMatchData(resp.data.matchesDetails)

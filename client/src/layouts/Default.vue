@@ -19,7 +19,7 @@
       </header>
 
       <template v-if="summonerFound">
-        <div class="text-white pb-12">
+        <div class="text-white">
           <div class="flex justify-between items-center">
             <div>
               <div class="flex items-center">
@@ -70,18 +70,19 @@
             class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
             exact
           >champions</router-link>
-          <transition
+          <!-- <transition
             enter-active-class="transition-all transition-fast ease-out-quad"
             enter-class="opacity-0 scale-90"
             enter-to-class="opacity-100 scale-100"
-          >
-            <slot></slot>
-          </transition>
+          > -->
+          <slot></slot>
+          <!-- </transition> -->
         </div>
       </template>
 
       <template v-else-if="summonerLoading">
         <SummonerLoader />
+        <slot></slot>
       </template>
 
       <template v-else-if="summonerNotFound">
