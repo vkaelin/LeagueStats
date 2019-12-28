@@ -135,7 +135,7 @@ export default {
 
   methods: {
     fetchData() {
-      if (this.summonerFound) {
+      if (!this.overviewLoaded && this.summonerFound) {
         console.log('FETCHING OVERVIEW')
         this.overviewRequest()
       }

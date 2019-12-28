@@ -136,6 +136,7 @@ export default {
   watch: {
     uri() {
       console.log('route changed')
+      // console.log(this.$router.currentRoute)
       this.updateCurrentRegion(this.region)
       this.apiCall()
     }

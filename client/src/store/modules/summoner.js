@@ -28,6 +28,7 @@ export const mutations = {
   BASIC_REQUEST(state) {
     state.basic.status = 'loading'
     state.champions.championsLoaded = false
+    state.overview.loaded = false
   },
   CHAMPIONS_FOUND(state, { champions }) {
     state.champions.list = champions
