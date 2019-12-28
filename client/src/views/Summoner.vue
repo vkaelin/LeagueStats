@@ -1,5 +1,5 @@
 <template>
-  <div v-if="overviewLoaded" class="mt-3 flex text-center">
+  <div v-if="overviewLoaded" key="overview" class="mt-3 flex text-center">
     <div class="mt-4 w-3/12">
       <SummonerChampions />
       <SummonerStats />
@@ -21,7 +21,7 @@
       >More matches</LoadingButton>
     </div>
   </div>
-  <div v-else class="" style="margin-top: 1.75rem">
+  <div v-else style="margin-top: 1.75rem">
     <div class="mt-4 text-center">
       <div
         v-for="index in 10"
@@ -123,13 +123,24 @@ export default {
     ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'overviewLoaded', 'summonerFound'])
   },
 
+  watch: {
+    summonerFound() {
+      this.fetchData()
+    }
+  },
+
   created() {
-    if(this.summonerFound)
-      this.overviewRequest()
+    this.fetchData()
   },
 
   methods: {
+    fetchData() {
+      if (this.summonerFound) {
+        console.log('FETCHING OVERVIEW')
+        this.overviewRequest()
+      }
+    },
     ...mapActions('summoner', ['moreMatches', 'overviewRequest']),
-  }
+  },
 }
 </script>

@@ -7,7 +7,7 @@
       transition-name="fade"
     ></LazyBackground>
 
-    <div class="relative page-wrapper mx-auto z-10 flex-grow">
+    <div class="relative page-wrapper mx-auto z-10 flex-grow text-white">
       <header class="text-teal-100">
         <div class="flex justify-between items-center">
           <router-link to="/">
@@ -18,8 +18,11 @@
         </div>
       </header>
 
-      <template v-if="summonerFound">
-        <div class="text-white">
+      <template v-if="summonerLoading || summonerFound">
+        <template v-if="summonerLoading">
+          <SummonerLoader />
+        </template>
+        <template v-else-if="summonerFound">
           <div class="flex justify-between items-center">
             <div>
               <div class="flex items-center">
@@ -70,19 +73,15 @@
             class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
             exact
           >champions</router-link>
-          <!-- <transition
-            enter-active-class="transition-all transition-fast ease-out-quad"
-            enter-class="opacity-0 scale-90"
-            enter-to-class="opacity-100 scale-100"
-          > -->
+        </template>
+        <!-- View -->
+        <transition
+          enter-active-class="transition-all transition-fast ease-out-quad"
+          enter-class="opacity-0 scale-90"
+          enter-to-class="opacity-100 scale-100"
+        >
           <slot></slot>
-          <!-- </transition> -->
-        </div>
-      </template>
-
-      <template v-else-if="summonerLoading">
-        <SummonerLoader />
-        <slot></slot>
+        </transition>
       </template>
 
       <template v-else-if="summonerNotFound">

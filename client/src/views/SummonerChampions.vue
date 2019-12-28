@@ -1,5 +1,5 @@
 <template>
-  <div v-if="championsLoaded" class="mt-3">
+  <div v-if="championsLoaded" key="champions" class="mt-3">
     <div class="mt-4 flex items-center">
       <ChampionsSearch @search-champions="updateSearch" />
       <FilterQueue @filter-queue="filterByQueue" :choices="queues" class="ml-4" />
@@ -60,15 +60,23 @@ export default {
     })
   },
 
-  created() {
-    console.log('HELLO')
-    if (!this.championsLoaded && this.summonerFound) {
-      console.log('FETCH CHAMPIONS')
-      this.championStats()
+  watch: {
+    summonerFound() {
+      this.fetchData()
     }
   },
 
+  created() {
+    this.fetchData()
+  },
+
   methods: {
+    fetchData() {
+      if (!this.championsLoaded && this.summonerFound) {
+        console.log('FETCHING CHAMPIONS')
+        this.championStats()
+      }
+    },
     filterByQueue(queue) {
       queue = Number(queue)
       queue = queue === -1 ? null : queue
