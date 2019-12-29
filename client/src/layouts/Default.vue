@@ -75,11 +75,7 @@
           >champions</router-link>
         </template>
         <!-- View -->
-        <transition
-          enter-active-class="transition-all transition-fast ease-out-quad"
-          enter-class="opacity-0 scale-90"
-          enter-to-class="opacity-100 scale-100"
-        >
+        <transition :name="tabTransition">
           <slot></slot>
         </transition>
       </template>
@@ -126,6 +122,9 @@ export default {
     },
     uri() {
       return `${this.summoner}|${this.region}`
+    },
+    tabTransition() {
+      return this.summonerFound ? 'tab' : 'none'
     },
     ...mapState({
       basic: state => state.summoner.basic
