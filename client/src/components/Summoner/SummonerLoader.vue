@@ -1,25 +1,23 @@
 <template>
   <div class="text-white">
     <div class="flex justify-between">
-      <div style="width: 517px; height: 244px;">
+      <div style="width: 520px; height: 239px;">
         <content-loader
-          :height="272"
-          :width="517"
+          :height="239"
+          :width="520"
           :speed="2"
           primary-color="#17314f"
           secondary-color="#2b6cb0"
         >
-          <rect x="2" y="23" rx="3" ry="3" width="164" height="31" />
-          <circle cx="49" cy="121" r="48" />
-          <rect x="119" y="75" rx="3" ry="3" width="123" height="31" />
-          <rect x="119" y="116" rx="3" ry="3" width="164" height="31" />
-          <rect x="136" y="179" rx="3" ry="3" width="80" height="80" />
-          <rect x="222" y="209" rx="3" ry="3" width="59" height="22" />
-          <rect x="330" y="183" rx="3" ry="3" width="75" height="19" />
-          <rect x="458" y="185" rx="3" ry="3" width="75" height="19" />
-          <rect x="330" y="212" rx="3" ry="3" width="75" height="10" />
-          <rect x="340" y="232" rx="3" ry="3" width="65" height="10" />
-          <rect x="468" y="218" rx="3" ry="3" width="65" height="10" />
+          <rect x="0" y="45" rx="3" ry="3" width="126.28" height="31" />
+          <circle cx="49" cy="145" r="48" />
+          <rect x="365" y="108" rx="3" ry="3" width="62" height="31" />
+          <rect x="162" y="108" rx="3" ry="3" width="195" height="31" />
+          <rect x="109" y="154" rx="6" ry="6" width="126" height="38" />
+          <rect x="243" y="154" rx="6" ry="6" width="277" height="38" />
+          <rect x="0" y="217" rx="3" ry="3" width="67" height="22" />
+          <rect x="78" y="217" rx="3" ry="3" width="80" height="22" />
+          <circle cx="133" cy="122" r="24" />
         </content-loader>
       </div>
 
