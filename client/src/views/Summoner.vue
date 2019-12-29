@@ -154,6 +154,60 @@
           <rect x="110" y="805" rx="3" ry="3" width="80" height="12" />
         </content-loader>
       </div>
+
+      <div class="mt-4 bg-blue-800 rounded-lg" style="width: 300px; height: 384px;">
+        <content-loader
+          :height="384"
+          :width="300"
+          :speed="2"
+          primary-color="#17314f"
+          secondary-color="#2b6cb0"
+        >
+          <rect x="112" y="17" rx="3" ry="3" width="75" height="24" />
+          <rect x="14" y="70" rx="3" ry="3" width="80" height="16" />
+          <rect x="150" y="70" rx="3" ry="3" width="40" height="16" />
+          <rect x="217" y="70" rx="3" ry="3" width="59" height="16" />
+          <rect x="14" y="100" rx="3" ry="3" width="85" height="12" />
+          <rect x="145" y="100" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="100" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="121" rx="3" ry="3" width="65" height="12" />
+          <rect x="145" y="121" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="121" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="142" rx="3" ry="3" width="85" height="12" />
+          <rect x="145" y="142" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="142" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="163" rx="3" ry="3" width="115" height="12" />
+          <rect x="145" y="163" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="163" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="184" rx="3" ry="3" width="85" height="12" />
+          <rect x="145" y="184" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="184" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="205" rx="3" ry="3" width="85" height="12" />
+          <rect x="145" y="205" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="205" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="226" rx="3" ry="3" width="65" height="12" />
+          <rect x="145" y="226" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="226" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="247" rx="3" ry="3" width="115" height="12" />
+          <rect x="145" y="247" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="247" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="268" rx="3" ry="3" width="115" height="12" />
+          <rect x="145" y="268" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="268" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="289" rx="3" ry="3" width="85" height="12" />
+          <rect x="145" y="289" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="289" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="310" rx="3" ry="3" width="65" height="12" />
+          <rect x="145" y="310" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="310" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="331" rx="3" ry="3" width="115" height="12" />
+          <rect x="145" y="331" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="331" rx="3" ry="3" width="65" height="12" />
+          <rect x="14" y="352" rx="3" ry="3" width="85" height="12" />
+          <rect x="145" y="352" rx="3" ry="3" width="45" height="12" />
+          <rect x="218" y="352" rx="3" ry="3" width="65" height="12" />
+        </content-loader>
+      </div>
     </div>
     <div class="w-9/12">
       <div
