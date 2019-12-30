@@ -1,5 +1,5 @@
 <template>
-  <table class="w-full table-auto bg-blue-800 rounded-lg text-center leading-none">
+  <table class="w-full table-fixed bg-blue-800 rounded-lg text-center leading-none">
     <thead>
       <tr class="heading rounded-t-lg text-sm select-none">
         <th
@@ -12,7 +12,10 @@
           :key="`champHeading-${index}`"
           @click="sortBy(heading.props)"
           v-html="heading.name"
-          :class="[{'rounded-tr-lg': index === headings.length - 1}, sortedClasses(heading.props)]"
+          :class="[
+            {'rounded-tr-lg': index === headings.length - 1, 'w-name': heading.name === 'name'}, 
+            sortedClasses(heading.props)
+          ]"
           class="relative px-2 py-4 font-normal cursor-pointer hover:bg-blue-700"
         ></th>
       </tr>
@@ -31,7 +34,7 @@
           <div class="flex items-center">
             <div
               :style="{backgroundImage: `url('${champion.champion.icon}')`}"
-              class="w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
+              class="w-6 h-6 flex-shrink-0 bg-cover bg-center bg-blue-1000 rounded-full"
             ></div>
             <div class="ml-2">{{ champion.champion.name }}</div>
           </div>
@@ -292,5 +295,9 @@ export default {
 
 .sorted:hover::after {
   background-color: #2b6cb0;
+}
+
+.w-name {
+  width: 135px;
 }
 </style>
