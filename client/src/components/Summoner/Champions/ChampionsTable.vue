@@ -20,7 +20,7 @@
         ></th>
       </tr>
     </thead>
-    <tbody class="bg-blue-760">
+    <tbody v-if="champions.length" class="bg-blue-760">
       <tr
         v-for="(champion, index) in championsToDisplay"
         :key="champion._id"
@@ -95,13 +95,48 @@
         >{{ champion.lastPlayed }}</td>
       </tr>
     </tbody>
+    <tbody v-else>
+      <tr v-for="index in 11" :key="index">
+        <td colspan="14">
+          <content-loader
+            :height="50"
+            :width="1200"
+            :speed="2"
+            primary-color="#17314f"
+            secondary-color="#2b6cb0"
+          >
+            <rect x="31" y="16" rx="3" ry="3" width="20" height="20" />
+            <circle cx="101" cy="26" r="12" />
+            <rect x="119" y="16" rx="3" ry="3" width="50" height="20" />
+            <rect x="234.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="316.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="398.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="480.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="565" y="14" rx="3" ry="3" width="40" height="10" />
+            <rect x="558" y="30" rx="3" ry="3" width="55" height="10" />
+            <rect x="644.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="726.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="808.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="890.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="972.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="1052" y="16" rx="3" ry="3" width="50" height="20" />
+            <rect x="1129" y="16" rx="3" ry="3" width="60" height="20" />
+          </content-loader>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </template>
 
 <script>
+import { ContentLoader } from 'vue-content-loader'
 import { timeDifference } from '@/helpers/functions.js'
 
 export default {
+  components: {
+    ContentLoader,
+  },
+
   props: {
     champions: {
       type: Array,
