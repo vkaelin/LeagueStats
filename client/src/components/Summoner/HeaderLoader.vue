@@ -21,7 +21,7 @@
         </content-loader>
       </div>
 
-      <div class="bg-blue-800 rounded-lg" style="width: 347px; height: 215px;">
+      <div class="bg-blue-850 rounded-lg" style="width: 347px; height: 215px;">
         <content-loader
           :height="215"
           :width="347"

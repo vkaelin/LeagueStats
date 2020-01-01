@@ -20,7 +20,7 @@
 
       <template v-if="summonerLoading || summonerFound">
         <template v-if="summonerLoading">
-          <SummonerLoader />
+          <HeaderLoader />
         </template>
         <template v-else-if="summonerFound">
           <div class="flex justify-between items-center">
@@ -100,7 +100,7 @@ import LazyBackground from '@/components/LazyBackgroundImage.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import RecentActivity from '@/components/Summoner/RecentActivity.vue'
 import SearchForm from '@/components/SearchForm.vue'
-import SummonerLoader from '@/components/Summoner/SummonerLoader.vue'
+import HeaderLoader from '@/components/Summoner/HeaderLoader.vue'
 import SummonerRanked from '@/components/Summoner/SummonerRanked.vue'
 
 export default {
@@ -109,7 +109,7 @@ export default {
     MainFooter,
     RecentActivity,
     SearchForm,
-    SummonerLoader,
+    HeaderLoader,
     SummonerRanked,
   },
 
