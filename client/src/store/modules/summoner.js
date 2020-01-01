@@ -69,7 +69,7 @@ export const actions = {
     try {
       const resp = await axios(({ url: 'summoner-basic', data: { summoner, region }, method: 'POST' }))
       if (resp.data) {
-        console.log('--- SUMMONER INFOS ---')
+        console.log('---SUMMONER INFOS---')
         console.log(resp.data)
         const infos = createBasicSummonerData(resp.data)
         commit('SUMMONER_FOUND', infos)
@@ -87,10 +87,9 @@ export const actions = {
       console.log(error)
     }
   },
-  async championStats({ commit }, queue = null) {
+  async championsRequest({ commit }, queue = null) {
     const resp = await axios(({ url: 'summoner-champions', data: { puuid: state.basic.account.puuid, queue: queue }, method: 'POST' })).catch(() => { })
-    console.log('CHAMPIONS STATS')
-    console.log('queue: ', queue)
+    console.log('---CHAMPIONS---')
     console.log(resp.data)
 
     commit('CHAMPIONS_FOUND', { champions: resp.data })
@@ -102,20 +101,14 @@ export const actions = {
     const gameIds = state.basic.matchList.slice(state.overview.matchIndex, state.overview.matchIndex + 10).map(({ gameId }) => gameId)
 
     const resp = await axios(({ url: 'match', data: { account, gameIds }, method: 'POST' })).catch(() => { })
-    console.log('--- MATCHES INFOS ---')
+    console.log('---MATCHES INFOS---')
     console.log(resp.data)
     const newMatches = createMatchData(resp.data.matches)
     commit('MATCHES_FOUND', { newMatches, stats: resp.data.stats })
   },
   async overviewRequest({ commit }) {
     const resp = await axios(({ url: 'summoner-overview', data: { account: state.basic.account }, method: 'POST' })).catch(() => { })
-    // setTimeout(() => {
-    //   console.log('OVERVIEW')
-    //   console.log(resp.data)
-    //   resp.data.matches = createMatchData(resp.data.matchesDetails)
-    //   commit('OVERVIEW_FOUND', resp.data)
-    // }, 2000)
-    console.log('OVERVIEW')
+    console.log('---OVERVIEW---')
     console.log(resp.data)
     resp.data.matches = createMatchData(resp.data.matchesDetails)
     commit('OVERVIEW_FOUND', resp.data)

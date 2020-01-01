@@ -65,19 +65,18 @@ export default {
   methods: {
     fetchData() {
       if (!this.championsLoaded && this.summonerFound) {
-        console.log('FETCHING CHAMPIONS')
-        this.championStats()
+        this.championsRequest()
       }
     },
     filterByQueue(queue) {
       queue = Number(queue)
       queue = queue === -1 ? null : queue
-      this.championStats(queue)
+      this.championsRequest(queue)
     },
     updateSearch(search) {
       this.searchChampions = search
     },
-    ...mapActions('summoner', ['championStats']),
+    ...mapActions('summoner', ['championsRequest']),
   }
 }
 </script>

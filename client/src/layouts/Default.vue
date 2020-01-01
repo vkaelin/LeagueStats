@@ -124,18 +124,17 @@ export default {
       return `${this.summoner}|${this.region}`
     },
     tabTransition() {
-      return this.summonerFound ? 'tab' : 'none'
+      return this.summonerFound && this.overviewLoaded ? 'tab' : 'none'
     },
     ...mapState({
       basic: state => state.summoner.basic
     }),
-    ...mapGetters('summoner', ['playing', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
+    ...mapGetters('summoner', ['playing', 'overviewLoaded', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
   },
 
   watch: {
     uri() {
       console.log('route changed')
-      // console.log(this.$router.currentRoute)
       this.updateCurrentRegion(this.region)
       this.apiCall()
     }

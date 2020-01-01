@@ -5,7 +5,7 @@
       <SummonerStats />
       <SummonerMates />
     </div>
-    <div class="w-9/12">
+    <div v-if="overview.matches.length" class="w-9/12">
       <ul>
         <Match
           v-for="(match, index) in overview.matches"
@@ -318,7 +318,6 @@ export default {
   methods: {
     fetchData() {
       if (!this.overviewLoaded && this.summonerFound) {
-        console.log('FETCHING OVERVIEW')
         this.overviewRequest()
       }
     },

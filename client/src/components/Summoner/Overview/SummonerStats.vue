@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4 bg-blue-800 rounded-lg">
+  <div v-if="stats.global" class="mt-4 bg-blue-800 rounded-lg">
     <div class="relative heading flex justify-center py-4 rounded-t-lg text-blue-200">
       <svg class="w-6 h-6">
         <use xlink:href="#graph" />

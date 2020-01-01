@@ -68,7 +68,6 @@ class SummonerController {
   async overview({ request, response }) {
     console.time('overview')
     const account = request.input('account')
-    console.log(account)
     const finalJSON = {}
 
     // Summoner in DB
