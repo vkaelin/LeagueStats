@@ -15,7 +15,12 @@ class MatchService {
     let alreadyIn = false
     let index = 0
     do {
-      let newMatchList = (await Jax.Matchlist.accountID(account.accountId, account.region, index)).matches
+      let newMatchList = await Jax.Matchlist.accountID(account.accountId, account.region, index)
+      // Error while fetching Riot API
+      if (!newMatchList) {
+        return matchList
+      }
+      newMatchList = newMatchList.matches
       matchList = [...matchList, ...newMatchList]
       alreadyIn = newMatchList.length === 0 || stopFetching(newMatchList)
       // If the match is made in another region : we stop fetching
