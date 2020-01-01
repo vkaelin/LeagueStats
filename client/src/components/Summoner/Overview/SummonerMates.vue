@@ -82,7 +82,7 @@ export default {
       return this.mates.length > 0
     },
     ...mapState({
-      mates: state => state.summoner.infos.stats.mates
+      mates: state => state.summoner.overview.stats.mates
     }),
   },
 

@@ -7,7 +7,7 @@
       transition-name="fade"
     ></LazyBackground>
 
-    <div class="relative page-wrapper mx-auto z-10 flex-grow">
+    <div class="relative page-wrapper mx-auto z-10 flex-grow text-white">
       <header class="text-teal-100">
         <div class="flex justify-between items-center">
           <router-link to="/">
@@ -18,14 +18,17 @@
         </div>
       </header>
 
-      <template v-if="summonerFound">
-        <div class="text-white pb-12">
+      <template v-if="summonerLoading || summonerFound">
+        <template v-if="summonerLoading">
+          <SummonerLoader />
+        </template>
+        <template v-else-if="summonerFound">
           <div class="flex justify-between items-center">
             <div>
               <div class="flex items-center">
                 <h1 class="text-4xl font-extrabold uppercase">
-                  <span class="text-5xl">{{ summonerInfos.account.name[0] }}</span>
-                  <span>{{ summonerInfos.account.name.substring(1) }}</span>
+                  <span class="text-5xl">{{ basic.account.name[0] }}</span>
+                  <span>{{ basic.account.name.substring(1) }}</span>
                 </h1>
                 <div
                   v-if="playing"
@@ -40,23 +43,23 @@
                   <div
                     :class="{'border-2': !playing}"
                     class="relative z-10 w-24 h-24 rounded-full bg-blue-1000 bg-center bg-cover border-teal-400"
-                    :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${summonerInfos.account.profileIconId}.jpg')`}"
+                    :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${basic.account.profileIconId}.jpg')`}"
                   >
                     <div
                       class="absolute left-0 bottom-0 w-8 h-8 flex items-center justify-center bg-blue-900 rounded-full text-xs text-teal-500 font-extrabold border-2 border-teal-400"
-                    >{{ summonerInfos.account.summonerLevel }}</div>
+                    >{{ basic.account.summonerLevel }}</div>
                   </div>
                 </div>
 
                 <SummonerRanked
-                  v-if="Object.entries(summonerInfos.ranked).length !== 0"
-                  :ranked="summonerInfos.ranked"
+                  v-if="Object.entries(basic.ranked).length !== 0"
+                  :ranked="basic.ranked"
                 />
               </div>
             </div>
 
             <div>
-              <RecentActivity :matches="summonerInfos.matchList" />
+              <RecentActivity :matches="basic.matchList" />
             </div>
           </div>
           <!-- NAVIGATION -->
@@ -70,18 +73,11 @@
             class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
             exact
           >champions</router-link>
-          <transition
-            enter-active-class="transition-all transition-fast ease-out-quad"
-            enter-class="opacity-0 scale-90"
-            enter-to-class="opacity-100 scale-100"
-          >
-            <slot></slot>
-          </transition>
-        </div>
-      </template>
-
-      <template v-else-if="summonerLoading">
-        <SummonerLoader />
+        </template>
+        <!-- View -->
+        <transition :name="tabTransition">
+          <slot></slot>
+        </transition>
       </template>
 
       <template v-else-if="summonerNotFound">
@@ -127,10 +123,13 @@ export default {
     uri() {
       return `${this.summoner}|${this.region}`
     },
+    tabTransition() {
+      return this.summonerFound && this.overviewLoaded ? 'tab' : 'none'
+    },
     ...mapState({
-      summonerInfos: state => state.summoner.infos
+      basic: state => state.summoner.basic
     }),
-    ...mapGetters('summoner', ['playing', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
+    ...mapGetters('summoner', ['playing', 'overviewLoaded', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
   },
 
   watch: {
@@ -148,13 +147,13 @@ export default {
 
   methods: {
     apiCall() {
-      this.summonerRequest({ summoner: this.summoner, region: this.region })
+      this.basicRequest({ summoner: this.summoner, region: this.region })
     },
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
     ...mapActions(['updateCurrentRegion']),
-    ...mapActions('summoner', ['summonerRequest']),
+    ...mapActions('summoner', ['basicRequest']),
   }
 }
 </script>

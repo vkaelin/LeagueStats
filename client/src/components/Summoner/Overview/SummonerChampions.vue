@@ -19,7 +19,7 @@
             <div class="px-2 text-white text-center text-sm select-none">
               <div>Stats based on</div>
               <div>
-                <span class="text-teal-400 font-bold">{{ stats.global.count }}</span> matches
+                <span class="text-teal-400 font-bold">{{ stats.global ? stats.global.count : 0 }}</span> matches
               </div>
               <div class="mt-2 leading-tight text-xs text-blue-100 font-normal italic">
                 Load more matches
@@ -105,7 +105,7 @@ export default {
       return this.stats.champion.reduce((a, b) => a.count > b.count ? a : b).count
     },
     ...mapState({
-      stats: state => state.summoner.infos.stats
+      stats: state => state.summoner.overview.stats
     }),
   },
 

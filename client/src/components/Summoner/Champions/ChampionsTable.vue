@@ -1,5 +1,5 @@
 <template>
-  <table class="w-full table-auto bg-blue-800 rounded-lg text-center leading-none">
+  <table class="w-full table-fixed bg-blue-800 rounded-lg text-center leading-none">
     <thead>
       <tr class="heading rounded-t-lg text-sm select-none">
         <th
@@ -12,12 +12,15 @@
           :key="`champHeading-${index}`"
           @click="sortBy(heading.props)"
           v-html="heading.name"
-          :class="[{'rounded-tr-lg': index === headings.length - 1}, sortedClasses(heading.props)]"
+          :class="[
+            {'rounded-tr-lg': index === headings.length - 1, 'w-name': heading.name === 'name'}, 
+            sortedClasses(heading.props)
+          ]"
           class="relative px-2 py-4 font-normal cursor-pointer hover:bg-blue-700"
         ></th>
       </tr>
     </thead>
-    <tbody class="bg-blue-760">
+    <tbody v-if="champions.length" class="bg-blue-760">
       <tr
         v-for="(champion, index) in championsToDisplay"
         :key="champion._id"
@@ -31,7 +34,7 @@
           <div class="flex items-center">
             <div
               :style="{backgroundImage: `url('${champion.champion.icon}')`}"
-              class="w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
+              class="w-6 h-6 flex-shrink-0 bg-cover bg-center bg-blue-1000 rounded-full"
             ></div>
             <div class="ml-2">{{ champion.champion.name }}</div>
           </div>
@@ -92,13 +95,48 @@
         >{{ champion.lastPlayed }}</td>
       </tr>
     </tbody>
+    <tbody v-else>
+      <tr v-for="index in 11" :key="index">
+        <td colspan="14">
+          <content-loader
+            :height="50"
+            :width="1200"
+            :speed="2"
+            primary-color="#17314f"
+            secondary-color="#2b6cb0"
+          >
+            <rect x="31" y="16" rx="3" ry="3" width="20" height="20" />
+            <circle cx="101" cy="26" r="12" />
+            <rect x="119" y="16" rx="3" ry="3" width="50" height="20" />
+            <rect x="234.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="316.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="398.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="480.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="565" y="14" rx="3" ry="3" width="40" height="10" />
+            <rect x="558" y="30" rx="3" ry="3" width="55" height="10" />
+            <rect x="644.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="726.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="808.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="890.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="972.5" y="16" rx="3" ry="3" width="45" height="20" />
+            <rect x="1052" y="16" rx="3" ry="3" width="50" height="20" />
+            <rect x="1129" y="16" rx="3" ry="3" width="60" height="20" />
+          </content-loader>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </template>
 
 <script>
+import { ContentLoader } from 'vue-content-loader'
 import { timeDifference } from '@/helpers/functions.js'
 
 export default {
+  components: {
+    ContentLoader,
+  },
+
   props: {
     champions: {
       type: Array,
@@ -292,5 +330,9 @@ export default {
 
 .sorted:hover::after {
   background-color: #2b6cb0;
+}
+
+.w-name {
+  width: 135px;
 }
 </style>

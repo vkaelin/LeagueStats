@@ -1,24 +1,15 @@
 <template>
-  <div>
-    <div class="mt-3">
-      <template v-if="championsLoaded">
-        <div class="mt-4 flex items-center">
-          <ChampionsSearch @search-champions="updateSearch" />
-          <FilterQueue @filter-queue="filterByQueue" :choices="queues" class="ml-4" />
-        </div>
-        <ChampionsTable
-          v-if="champions.length"
-          :champions="champions"
-          :search="searchChampions"
-          class="mt-6"
-        />
-      </template>
+  <div key="champions" class="mt-3">
+    <div class="mt-4 flex items-center">
+      <ChampionsSearch @search-champions="updateSearch" />
+      <FilterQueue @filter-queue="filterByQueue" :choices="queues" class="ml-4" />
     </div>
+    <ChampionsTable :champions="champions" :search="searchChampions" class="mt-6" />
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import { gameModes } from '@/data/data.js'
 import ChampionsSearch from '@/components/Summoner/Champions/ChampionsSearch.vue'
 import ChampionsTable from '@/components/Summoner/Champions/ChampionsTable.vue'
@@ -53,28 +44,39 @@ export default {
         }, {})
       return { '-1': { type: 'Normal', name: 'ALL QUEUES' }, ...queues }
     },
+    ...mapGetters('summoner', ['summonerFound']),
     ...mapState({
-      champions: state => state.summoner.infos.champions,
-      championsLoaded: state => state.summoner.championsLoaded,
-      matchList: state => state.summoner.infos.matchList
+      champions: state => state.summoner.champions.list,
+      championsLoaded: state => state.summoner.champions.championsLoaded,
+      matchList: state => state.summoner.basic.matchList
     })
   },
 
-  created() {
-    if (!this.championsLoaded) {
-      console.log('FETCH CHAMPIONS')
-      this.championStats()
+  watch: {
+    summonerFound() {
+      this.fetchData()
     }
   },
 
+  created() {
+    this.fetchData()
+  },
+
   methods: {
+    fetchData() {
+      if (!this.championsLoaded && this.summonerFound) {
+        this.championsRequest()
+      }
+    },
     filterByQueue(queue) {
-      this.championStats(queue)
+      queue = Number(queue)
+      queue = queue === -1 ? null : queue
+      this.championsRequest(queue)
     },
     updateSearch(search) {
       this.searchChampions = search
     },
-    ...mapActions('summoner', ['championStats']),
+    ...mapActions('summoner', ['championsRequest']),
   }
 }
 </script>

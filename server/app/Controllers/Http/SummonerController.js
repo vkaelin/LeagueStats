@@ -9,9 +9,9 @@ const Summoner = use('App/Models/Summoner')
 
 class SummonerController {
   /**
-   *  POST Endpoint : get summoner data
+   * POST: get basic summoner data
    */
-  async api({ request, response }) {
+  async basic({ request, response }) {
     console.time('all')
     const summoner = request.input('summoner')
     const region = request.input('region')
@@ -38,29 +38,17 @@ class SummonerController {
         { puuid: account.puuid }
       )
 
+      // MATCH LIST
+      await MatchService.updateMatchList(account, summonerDB)
+      const matchList = summonerDB.matchList
+      finalJSON.allMatches = matchList
+
       // CURRENT GAME
       const currentGame = await Jax.Spectator.summonerID(account.id, region)
       finalJSON.playing = !!currentGame
 
       // RANKED STATS
       finalJSON.ranked = await SummonerService.getRanked(account, region)
-
-      // MATCH LIST
-      await MatchService.updateMatchList(account, summonerDB)
-      const matchList = summonerDB.matchList
-      finalJSON.allMatches = matchList
-
-      // MATCHES BASIC
-      const gameIds = matchList.slice(0, 10).map(({ gameId }) => gameId)
-      finalJSON.matchesDetails = await MatchService.getMatches(account, gameIds, summonerDB)
-
-      // PATCH VERSION
-      finalJSON.version = Jax.DDragon.Version
-
-      // STATS
-      console.time('STATS')
-      finalJSON.stats = await StatsService.getSummonerStats(account)
-      console.timeEnd('STATS')
 
       // SAVE IN DB
       await summonerDB.save()
@@ -74,6 +62,39 @@ class SummonerController {
     return response.json(finalJSON)
   }
 
+  /**
+   * POST: get overview view summoner data
+   */
+  async overview({ request, response }) {
+    console.time('overview')
+    const account = request.input('account')
+    const finalJSON = {}
+
+    // Summoner in DB
+    const summonerDB = await Summoner.findOrCreate(
+      { puuid: account.puuid },
+      { puuid: account.puuid }
+    )
+
+    // MATCHES BASIC
+    const gameIds = summonerDB.matchList.slice(0, 10).map(({ gameId }) => gameId)
+    finalJSON.matchesDetails = await MatchService.getMatches(account, gameIds, summonerDB)
+
+    // STATS
+    console.time('STATS')
+    finalJSON.stats = await StatsService.getSummonerStats(account)
+    console.timeEnd('STATS')
+
+    // SAVE IN DB
+    await summonerDB.save()
+
+    console.timeEnd('overview')
+    return response.json(finalJSON)
+  }
+
+  /**
+   * POST: get champions view summoner data
+   */
   async champions({ request, response }) {
     const puuid = request.input('puuid')
     const queue = request.input('queue')
