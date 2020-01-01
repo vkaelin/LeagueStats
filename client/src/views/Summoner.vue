@@ -23,7 +23,7 @@
   </div>
   <div v-else class="mt-3 flex text-center">
     <div class="mt-4 w-3/12">
-      <div class="bg-blue-800 rounded-lg" style="width: 300px; height: 339px;">
+      <div class="bg-blue-850 rounded-lg" style="width: 300px; height: 339px;">
         <content-loader
           :height="339"
           :width="300"
@@ -63,7 +63,7 @@
           <rect x="246" y="308" rx="3" ry="3" width="42" height="16" />
         </content-loader>
       </div>
-      <div class="mt-4 bg-blue-800 rounded-lg" style="width: 300px; height: 828px;">
+      <div class="mt-4 bg-blue-850 rounded-lg" style="width: 300px; height: 828px;">
         <content-loader
           :height="828"
           :width="300"
@@ -155,7 +155,7 @@
         </content-loader>
       </div>
 
-      <div class="mt-4 bg-blue-800 rounded-lg" style="width: 300px; height: 384px;">
+      <div class="mt-4 bg-blue-850 rounded-lg" style="width: 300px; height: 384px;">
         <content-loader
           :height="384"
           :width="300"
@@ -213,7 +213,7 @@
       <div
         v-for="index in 10"
         :key="index"
-        class="mt-4 ml-4 bg-blue-800 rounded-lg"
+        class="mt-4 ml-4 bg-blue-850 rounded-lg"
         style="width: 884px; height: 144px;"
       >
         <content-loader
