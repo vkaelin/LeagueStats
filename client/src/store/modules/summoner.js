@@ -39,7 +39,7 @@ export const mutations = {
   },
   MATCHES_FOUND(state, { newMatches, stats }) {
     state.overview.matchesLoading = false
-    state.overview.matches = [...state.infos.matches, ...newMatches]
+    state.overview.matches = [...state.overview.matches, ...newMatches]
     state.overview.matchIndex += newMatches.length
     state.overview.stats = stats
     state.champions.championsLoaded = false
