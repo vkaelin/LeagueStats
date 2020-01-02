@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { axios } from './plugins/axios'
 
 import Home from '@/views/Home.vue'
 import Summoner from '@/views/Summoner.vue'
@@ -7,7 +8,7 @@ import SummonerChampions from '@/views/SummonerChampions.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -31,3 +32,20 @@ export default new Router({
     },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.params.name !== from.params.name && from.name !== null) {
+    // Cancel old requests
+    const axiosCancel = axios.defaults.axiosSource.cancel
+    axiosCancel('Summoner changed')
+
+    // Update cancel token
+    const CancelToken = axios.CancelToken
+    const axiosSource = CancelToken.source()
+    axios.defaults.axiosSource = axiosSource
+    axios.defaults.cancelToken = axiosSource.token
+  }
+  next()
+})
+
+export default router

@@ -140,7 +140,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.updateCurrentRegion(this.region)
     this.apiCall()
   },

@@ -69,7 +69,7 @@ export const actions = {
     try {
       const resp = await axios(({ url: 'summoner-basic', data: { summoner, region }, method: 'POST' }))
       if (resp.data) {
-        console.log('---SUMMONER INFOS---')
+        console.log(`---SUMMONER INFOS ${resp.data.account.name}---`)
         console.log(resp.data)
         const infos = createBasicSummonerData(resp.data)
         commit('SUMMONER_FOUND', infos)
@@ -83,7 +83,9 @@ export const actions = {
         console.log('Summoner not found - store')
       }
     } catch (error) {
-      commit('SUMMONER_NOT_FOUND')
+      if(error.message !== 'Summoner changed') {
+        commit('SUMMONER_NOT_FOUND')
+      }
       console.log(error)
     }
   },
