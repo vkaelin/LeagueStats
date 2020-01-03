@@ -41,11 +41,12 @@ class SummonerController {
       // MATCH LIST
       await MatchService.updateMatchList(account, summonerDB)
       const matchList = summonerDB.matchList
-      finalJSON.allMatches = matchList
+      finalJSON.matchList = matchList
 
       // CURRENT GAME
       const currentGame = await Jax.Spectator.summonerID(account.id, region)
       finalJSON.playing = !!currentGame
+      finalJSON.current = currentGame
 
       // RANKED STATS
       finalJSON.ranked = await SummonerService.getRanked(account, region)

@@ -55,12 +55,7 @@ export function createBasicSummonerData(RiotData) {
     }
   }
 
-  return {
-    account: RiotData.account,
-    matchList: RiotData.allMatches,
-    ranked: RiotData.ranked,
-    playing: RiotData.playing,
-  }
+  return RiotData
 }
 
 function getLeagueData(leagueData, leagueName) {

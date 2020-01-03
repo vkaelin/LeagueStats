@@ -18,10 +18,12 @@ Vue.filter('kilo', (value) => {
   return `${+(value / 1000).toFixed(1)}k`
 })
 
-Vue.filter('secToTime', (sec) => {
+Vue.filter('secToTime', (sec, dotNotation = false) => {
   const min = Math.floor(sec / 60)
-  const newSec = Math.floor(sec - min * 60)
-  return min + 'm' + (newSec < 10 ? '0' + newSec : newSec) + 's'
+  let newSec = Math.floor(sec - min * 60)
+  newSec = newSec < 10 ? '0' + newSec : newSec
+
+  return dotNotation ? `${min}:${newSec}` : `${min}m${newSec}s`
 })
 
 Vue.filter('percent', (value) => {

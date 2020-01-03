@@ -5,20 +5,25 @@
       <SummonerStats />
       <SummonerMates />
     </div>
-    <div v-if="overview.matches.length" class="w-9/12">
-      <ul>
-        <Match
-          v-for="(match, index) in overview.matches"
-          :key="index"
-          :data="overview.matches[index]"
-        />
-      </ul>
-      <LoadingButton
-        v-if="moreMatchesToFetch"
-        @clicked="moreMatches"
-        :loading="matchesLoading"
-        btn-class="mt-4 block mx-auto bg-blue-800 px-4 py-2 rounded-md font-semibold hover:bg-blue-1000 shadow-lg"
-      >More matches</LoadingButton>
+    <div class="w-9/12">
+      <div v-if="basic.current">
+        <LiveMatch />
+      </div>
+      <div v-if="overview.matches.length">
+        <ul>
+          <Match
+            v-for="(match, index) in overview.matches"
+            :key="index"
+            :data="overview.matches[index]"
+          />
+        </ul>
+        <LoadingButton
+          v-if="moreMatchesToFetch"
+          @clicked="moreMatches"
+          :loading="matchesLoading"
+          btn-class="mt-4 block mx-auto bg-blue-800 px-4 py-2 rounded-md font-semibold hover:bg-blue-1000 shadow-lg"
+        >More matches</LoadingButton>
+      </div>
     </div>
   </div>
   <div v-else>
@@ -29,6 +34,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
+import LiveMatch from '@/components/Match/LiveMatch.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
 import Match from '@/components/Match/Match.vue'
 import OverviewLoader from '@/components/Summoner/Overview/OverviewLoader.vue'
@@ -38,6 +44,7 @@ import SummonerStats from '@/components/Summoner/Overview/SummonerStats.vue'
 
 export default {
   components: {
+    LiveMatch,
     LoadingButton,
     Match,
     OverviewLoader,
@@ -48,6 +55,7 @@ export default {
 
   computed: {
     ...mapState({
+      basic: state => state.summoner.basic,
       overview: state => state.summoner.overview
     }),
     ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'overviewLoaded', 'summonerFound'])

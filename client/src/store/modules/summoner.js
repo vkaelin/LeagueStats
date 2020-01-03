@@ -6,6 +6,7 @@ export const namespaced = true
 export const state = {
   basic: {
     account: {},
+    current: {},
     matchList: [],
     ranked: {},
     playing: false,
@@ -52,6 +53,7 @@ export const mutations = {
   },
   SUMMONER_FOUND(state, infos) {
     state.basic.account = infos.account
+    state.basic.current = infos.current
     state.basic.matchList = infos.matchList
     state.basic.ranked = infos.ranked
     state.basic.playing = infos.playing
