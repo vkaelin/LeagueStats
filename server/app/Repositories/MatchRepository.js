@@ -90,7 +90,7 @@ class MatchRepository {
     const groupParams = {
       time: { $sum: "$time" },
       gameLength: { $avg: "$time" },
-      date: { $last: "$date" },
+      date: { $max: "$date" },
       champion: { $first: "$champion" },
       kills: { $sum: "$stats.kills" },
       deaths: { $sum: "$stats.deaths" },
