@@ -31,6 +31,9 @@ export const mutations = {
     state.champions.championsLoaded = false
     state.overview.loaded = false
   },
+  CHAMPIONS_NOT_FOUND(state) {
+    state.champions.championsLoaded = false
+  },
   CHAMPIONS_FOUND(state, { champions }) {
     state.champions.list = champions
     state.champions.championsLoaded = true
@@ -90,6 +93,9 @@ export const actions = {
       }
       console.log(error)
     }
+  },
+  championsNotLoaded({ commit }) {
+    commit('CHAMPIONS_NOT_FOUND')
   },
   async championsRequest({ commit }, queue = null) {
     const resp = await axios(({ url: 'summoner-champions', data: { puuid: state.basic.account.puuid, queue: queue }, method: 'POST' })).catch(() => { })

@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     choices: {
@@ -36,10 +38,17 @@ export default {
     this.queue = -1
   },
 
+  destroyed() {
+    // Reload all champions stats for next user visit of the champions tab
+    if (this.queue !== -1)
+      this.championsNotLoaded()
+  },
+
   methods: {
     filterQueue() {
       this.$emit('filter-queue', this.queue)
-    }
+    },
+    ...mapActions('summoner', ['championsNotLoaded']),
   }
 }
 </script>
