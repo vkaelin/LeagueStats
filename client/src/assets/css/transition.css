@@ -54,10 +54,6 @@
     opacity: 0;
 }
 
-/* enter-active-class="transition-all transition-fast ease-out-quad"
-enter-class="opacity-0 scale-90"
-enter-to-class="opacity-100 scale-100" */
-
 .tab-enter-active {
   transition: all;
   transition-duration: 150ms;
@@ -66,12 +62,10 @@ enter-to-class="opacity-100 scale-100" */
 
 .tab-enter {
   opacity: 0;
-  transform: scale(.9);
 }
 
 .tab-enter-to {
   opacity: 1;
-  transform: scale(1);
 }
 
 /* purgecss end ignore */
