@@ -26,7 +26,7 @@ class StatsService {
     }
     const championStats = await this.matchRepository.championStats(account.puuid, 5)
     const championClassStats = await this.matchRepository.championClassStats(account.puuid)
-    const mates = await this.matchRepository.mates(account.puuid, account.name)
+    const mates = await this.matchRepository.mates(account.puuid)
 
     return {
       global: globalStats[0],

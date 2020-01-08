@@ -156,23 +156,32 @@ class MatchRepository {
   /**
    * Get Summoner's mates list
    * @param puuid of the summoner
-   * @param summonerName of the summoner
    */
-  mates(puuid, summonerName) {
+  mates(puuid) {
     const intermediateSteps = [
       { $unwind: "$allyTeam" },
     ]
+    const groupParams = {
+      account_id: { $first: "$account_id" },
+      name: { $first: "$allyTeam.name" },
+      mateId: { $first: "$allyTeam.account_id" },
+    }
     const finalSteps = [
       {
-        $match: {
-          _id: { $not: { $eq: summonerName } },
-          'count': { $gte: 2 }
+        "$addFields": {
+          "idEq": { "$eq": ["$mateId", "$account_id"] }
         }
+      },
+      {
+        $match: {
+          'idEq': false,
+          'count': { $gte: 2 }
+        },
       },
       { $sort: { 'count': -1 } },
       { $limit: 15 },
     ]
-    return this._aggregate(puuid, {}, intermediateSteps, '$allyTeam.name', {}, finalSteps)
+    return this._aggregate(puuid, {}, intermediateSteps, '$allyTeam.account_id', groupParams, finalSteps)
   }
 }
 

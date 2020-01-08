@@ -23,9 +23,9 @@
             class="flex justify-between items-center"
           >
             <router-link
-              :to="{ name: 'summoner', params: { region: $route.params.region, name: mate._id }}"
+              :to="{ name: 'summoner', params: { region: $route.params.region, name: mate.name }}"
               class="w-2/4 hover:text-teal-200"
-            >{{ mate._id }}</router-link>
+            >{{ mate.name }}</router-link>
             <div class="w-1/4">{{ mate.wins }} / {{ mate.losses }}</div>
             <div class="w-1/4">
               <Dropdown>

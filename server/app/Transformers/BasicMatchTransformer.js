@@ -34,8 +34,8 @@ class BasicMatchTransformer extends MatchTransformer {
     // Global data about the match
     const globalInfos = super.getGameInfos(match)
 
-    const participantId = match.participantIdentities.find((p) => p.player.currentAccountId === account.accountId).participantId
-    const player = match.participants[participantId - 1]
+    const identity = match.participantIdentities.find((p) => p.player.currentAccountId === account.accountId)
+    const player = match.participants[identity.participantId - 1]
 
     let win = match.teams.find((t) => t.teamId === player.teamId).win
 
@@ -53,6 +53,7 @@ class BasicMatchTransformer extends MatchTransformer {
     for (let summoner of match.participantIdentities) {
       const allData = match.participants[summoner.participantId - 1]
       const playerInfos = {
+        account_id: summoner.player.currentAccountId,
         name: summoner.player.summonerName,
         role: super.getRoleName(allData.timeline),
         champion: super.getChampion(allData.championId)
@@ -68,6 +69,7 @@ class BasicMatchTransformer extends MatchTransformer {
     enemyTeam.sort(this.sortTeamByRole)
 
     return {
+      account_id: identity.player.currentAccountId,
       summoner_puuid: account.puuid,
       gameId: match.gameId,
       result: win,
