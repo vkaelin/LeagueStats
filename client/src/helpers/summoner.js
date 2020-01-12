@@ -58,6 +58,24 @@ export function createBasicSummonerData(RiotData) {
   return RiotData
 }
 
+/**
+ * Return the formatted records of a summoner
+ * @param {Object} records : raw records from the database stats
+ */
+export function createRecordsData(records) {
+  const min = Math.floor(records.maxTime.time / 60)
+  let newSec = Math.floor(records.maxTime.time - min * 60)
+  newSec = newSec < 10 ? '0' + newSec : newSec
+  records.maxTime.time = `${min}:${newSec}`
+  records.maxGold.gold = records.maxGold.gold.toLocaleString()
+  records.maxDmgTaken.dmgTaken = records.maxDmgTaken.dmgTaken.toLocaleString()
+  records.maxDmgChamp.dmgChamp = records.maxDmgChamp.dmgChamp.toLocaleString()
+  records.maxDmgObj.dmgObj = records.maxDmgObj.dmgObj.toLocaleString()
+  records.maxKp.kp = `${records.maxKp.kp}%`
+
+  return records
+}
+
 function getLeagueData(leagueData, leagueName) {
   if (!leagueData) return null
 
