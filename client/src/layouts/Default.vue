@@ -73,6 +73,11 @@
             class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
             exact
           >champions</router-link>
+          <router-link
+            :to="{ name: 'summonerRecords', params: { region: $route.params.region, name: $route.params.name }}"
+            class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
+            exact
+          >records</router-link>
         </template>
         <!-- View -->
         <transition :name="tabTransition">

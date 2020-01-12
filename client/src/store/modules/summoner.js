@@ -1,5 +1,5 @@
 import { axios } from '@/plugins/axios'
-import { createMatchData, createBasicSummonerData } from '@/helpers/summoner'
+import { createMatchData, createBasicSummonerData, createRecordsData } from '@/helpers/summoner'
 
 export const namespaced = true
 
@@ -23,12 +23,17 @@ export const state = {
     list: [],
     championsLoaded: false
   },
+  records: {
+    list: [],
+    recordsLoaded: false
+  },
 }
 
 export const mutations = {
   BASIC_REQUEST(state) {
     state.basic.status = 'loading'
     state.champions.championsLoaded = false
+    state.records.recordsLoaded = false
     state.overview.loaded = false
   },
   CHAMPIONS_NOT_FOUND(state) {
@@ -47,12 +52,17 @@ export const mutations = {
     state.overview.matchIndex += newMatches.length
     state.overview.stats = stats
     state.champions.championsLoaded = false
+    state.records.recordsLoaded = false
   },
   OVERVIEW_FOUND(state, infos) {
     state.overview.matches = infos.matches
     state.overview.matchIndex = infos.matches.length
     state.overview.stats = infos.stats
     state.overview.loaded = true
+  },
+  RECORDS_FOUND(state, { records }) {
+    state.records.list = records
+    state.records.recordsLoaded = true
   },
   SUMMONER_FOUND(state, infos) {
     state.basic.account = infos.account
@@ -88,7 +98,7 @@ export const actions = {
         console.log('Summoner not found - store')
       }
     } catch (error) {
-      if(error.message !== 'Summoner changed') {
+      if (error.message !== 'Summoner changed') {
         commit('SUMMONER_NOT_FOUND')
       }
       console.log(error)
@@ -122,6 +132,14 @@ export const actions = {
     console.log(resp.data)
     resp.data.matches = createMatchData(resp.data.matchesDetails)
     commit('OVERVIEW_FOUND', resp.data)
+  },
+  async recordsRequest({ commit }) {
+    const resp = await axios(({ url: 'summoner-records', data: { puuid: state.basic.account.puuid }, method: 'POST' })).catch(() => { })
+    console.log('---RECORDS---')
+    console.log(resp.data)
+    const records = resp.data ? createRecordsData(resp.data) : {}
+
+    commit('RECORDS_FOUND', { records })
   }
 }
 

@@ -5,6 +5,7 @@ import { axios } from './plugins/axios'
 import Home from '@/views/Home.vue'
 import Summoner from '@/views/Summoner.vue'
 import SummonerChampions from '@/views/SummonerChampions.vue'
+import SummonerRecords from '@/views/SummonerRecords.vue'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ const router = new Router({
       path: '/summoner/:region/:name/champions',
       name: 'summonerChampions',
       component: SummonerChampions
+    },
+    {
+      path: '/summoner/:region/:name/records',
+      name: 'summonerRecords',
+      component: SummonerRecords
     },
   ]
 })

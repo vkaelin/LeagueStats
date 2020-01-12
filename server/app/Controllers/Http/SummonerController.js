@@ -104,6 +104,17 @@ class SummonerController {
     console.timeEnd('championsRequest')
     return response.json(championStats)
   }
+
+  /**
+   * POST: get records view summoner data
+   */
+  async records({ request, response }) {
+    const puuid = request.input('puuid')
+    console.time('recordsRequest')
+    const records = await MatchRepository.records(puuid)
+    console.timeEnd('recordsRequest')
+    return response.json(records[0])
+  }
 }
 
 module.exports = SummonerController

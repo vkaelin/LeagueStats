@@ -35,12 +35,12 @@ class MatchRepository {
           count: { $sum: 1 },
           wins: {
             $sum: {
-              $cond: [{ $eq: ["$result", "Win"] }, 1, 0]
+              $cond: [{ $eq: ['$result', 'Win'] }, 1, 0]
             }
           },
           losses: {
             $sum: {
-              $cond: [{ $eq: ["$result", "Fail"] }, 1, 0]
+              $cond: [{ $eq: ['$result', 'Fail'] }, 1, 0]
             }
           },
           ...groupParams
@@ -57,10 +57,10 @@ class MatchRepository {
    */
   championStats(puuid, limit = 5) {
     const groupParams = {
-      champion: { $first: "$champion" },
-      kills: { $sum: "$stats.kills" },
-      deaths: { $sum: "$stats.deaths" },
-      assists: { $sum: "$stats.assists" },
+      champion: { $first: '$champion' },
+      kills: { $sum: '$stats.kills' },
+      deaths: { $sum: '$stats.deaths' },
+      assists: { $sum: '$stats.assists' },
     }
     const finalSteps = [
       { $sort: { 'count': -1 } },
@@ -74,7 +74,7 @@ class MatchRepository {
    * @param puuid of the summoner
    */
   championClassStats(puuid) {
-    const groupId = { "$arrayElemAt": ["$champion.roles", 0] }
+    const groupId = { '$arrayElemAt': ['$champion.roles', 0] }
     return this._aggregate(puuid, {}, [], groupId, {}, [])
   }
 
@@ -88,18 +88,18 @@ class MatchRepository {
       gamemode: { $eq: Number(queue) },
     } : {}
     const groupParams = {
-      time: { $sum: "$time" },
-      gameLength: { $avg: "$time" },
-      date: { $max: "$date" },
-      champion: { $first: "$champion" },
-      kills: { $sum: "$stats.kills" },
-      deaths: { $sum: "$stats.deaths" },
-      assists: { $sum: "$stats.assists" },
-      minions: { $avg: "$stats.minions" },
-      gold: { $avg: "$stats.gold" },
-      dmgChamp: { $avg: "$stats.dmgChamp" },
-      dmgTaken: { $avg: "$stats.dmgTaken" },
-      kp: { $avg: "$stats.kp" },
+      time: { $sum: '$time' },
+      gameLength: { $avg: '$time' },
+      date: { $max: '$date' },
+      champion: { $first: '$champion' },
+      kills: { $sum: '$stats.kills' },
+      deaths: { $sum: '$stats.deaths' },
+      assists: { $sum: '$stats.assists' },
+      minions: { $avg: '$stats.minions' },
+      gold: { $avg: '$stats.gold' },
+      dmgChamp: { $avg: '$stats.dmgChamp' },
+      dmgTaken: { $avg: '$stats.dmgTaken' },
+      kp: { $avg: '$stats.kp' },
     }
     const finalSteps = [
       { $sort: { 'count': -1 } }
@@ -121,15 +121,86 @@ class MatchRepository {
    */
   globalStats(puuid) {
     const groupParams = {
-      time: { $sum: "$time" },
-      kills: { $sum: "$stats.kills" },
-      deaths: { $sum: "$stats.deaths" },
-      assists: { $sum: "$stats.assists" },
-      minions: { $sum: "$stats.minions" },
-      vision: { $sum: "$stats.vision" },
-      kp: { $avg: "$stats.kp" },
+      time: { $sum: '$time' },
+      kills: { $sum: '$stats.kills' },
+      deaths: { $sum: '$stats.deaths' },
+      assists: { $sum: '$stats.assists' },
+      minions: { $sum: '$stats.minions' },
+      vision: { $sum: '$stats.vision' },
+      kp: { $avg: '$stats.kp' },
     }
     return this._aggregate(puuid, {}, [], null, groupParams, [])
+  }
+
+  /**
+  * Get Summoner's all records
+  * @param puuid of the summoner
+  */
+  records(puuid) {
+    return this.Match.query().aggregate([
+      {
+        $match: {
+          summoner_puuid: puuid,
+          result: { $not: { $eq: 'Remake' } },
+          'stats.kda': { $not: { $eq: '∞' } },
+          gamemode: { $nin: [800, 810, 820, 830, 840, 850] },
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          maxKills: { $max: '$stats.kills' },
+          maxDeaths: { $max: '$stats.deaths' },
+          maxAssists: { $max: '$stats.assists' },
+          maxGold: { $max: '$stats.gold' },
+          maxTime: { $max: '$time' },
+          maxMinions: { $max: '$stats.minions' },
+          maxKda: { $max: '$stats.kda' },
+          maxDmgTaken: { $max: '$stats.dmgTaken' },
+          maxDmgChamp: { $max: '$stats.dmgChamp' },
+          maxDmgObj: { $max: '$stats.dmgObj' },
+          maxKp: { $max: '$stats.kp' },
+          maxVision: { $max: '$stats.vision' },
+          docs: {
+            '$push': {
+              'champion': '$champion',
+              'gameId': '$gameId',
+              'kills': '$stats.kills',
+              'deaths': '$stats.deaths',
+              'assists': '$stats.assists',
+              'gold': '$stats.gold',
+              'time': '$time',
+              'minions': '$stats.minions',
+              'kda': '$stats.kda',
+              'dmgTaken': '$stats.dmgTaken',
+              'dmgChamp': '$stats.dmgChamp',
+              'dmgObj': '$stats.dmgObj',
+              'kp': '$stats.kp',
+              'vision': '$stats.vision',
+              'result': '$result',
+              'date': '$date',
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          maxKills: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.kills', '$maxKills'] } } }, 0] },
+          maxDeaths: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.deaths', '$maxDeaths'] } } }, 0] },
+          maxAssists: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.assists', '$maxAssists'] } } }, 0] },
+          maxGold: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.gold', '$maxGold'] } } }, 0] },
+          maxTime: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.time', '$maxTime'] } } }, 0] },
+          maxMinions: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.minions', '$maxMinions'] } } }, 0] },
+          maxKda: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.kda', '$maxKda'] } } }, 0] },
+          maxDmgTaken: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.dmgTaken', '$maxDmgTaken'] } } }, 0] },
+          maxDmgChamp: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.dmgChamp', '$maxDmgChamp'] } } }, 0] },
+          maxDmgObj: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.dmgObj', '$maxDmgObj'] } } }, 0] },
+          maxKp: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.kp', '$maxKp'] } } }, 0] },
+          maxVision: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.vision', '$maxVision'] } } }, 0] },
+        }
+      }
+    ])
   }
 
   /**
@@ -143,10 +214,10 @@ class MatchRepository {
     const finalSteps = [
       {
         $project: {
-          role: "$_id",
-          count: "$count",
-          wins: "$wins",
-          losses: "$losses",
+          role: '$_id',
+          count: '$count',
+          wins: '$wins',
+          losses: '$losses',
         }
       }
     ]
@@ -159,17 +230,17 @@ class MatchRepository {
    */
   mates(puuid) {
     const intermediateSteps = [
-      { $unwind: "$allyTeam" },
+      { $unwind: '$allyTeam' },
     ]
     const groupParams = {
-      account_id: { $first: "$account_id" },
-      name: { $first: "$allyTeam.name" },
-      mateId: { $first: "$allyTeam.account_id" },
+      account_id: { $first: '$account_id' },
+      name: { $first: '$allyTeam.name' },
+      mateId: { $first: '$allyTeam.account_id' },
     }
     const finalSteps = [
       {
-        "$addFields": {
-          "idEq": { "$eq": ["$mateId", "$account_id"] }
+        '$addFields': {
+          'idEq': { '$eq': ['$mateId', '$account_id'] }
         }
       },
       {
