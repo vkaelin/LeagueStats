@@ -27,6 +27,10 @@ export const state = {
     list: [],
     recordsLoaded: false
   },
+  live: {
+    match: {},
+    liveLoaded: false
+  },
 }
 
 export const mutations = {
@@ -42,6 +46,10 @@ export const mutations = {
   CHAMPIONS_FOUND(state, { champions }) {
     state.champions.list = champions
     state.champions.championsLoaded = true
+  },
+  LIVE_FOUND(state, { live }) {
+    state.live.match = live
+    state.live.liveLoaded = true
   },
   MATCHES_LOADING(state) {
     state.overview.matchesLoading = true
@@ -113,6 +121,13 @@ export const actions = {
     console.log(resp.data)
 
     commit('CHAMPIONS_FOUND', { champions: resp.data })
+  },
+  async liveMatchRequest({ commit, rootState }) {
+    const resp = await axios(({ url: 'summoner-live', data: { account: state.basic.account, region: rootState.currentRegion }, method: 'POST' })).catch(() => { })
+    console.log('---LIVE---')
+    console.log(resp.data)
+
+    commit('LIVE_FOUND', { live: resp.data })
   },
   async moreMatches({ commit }) {
     commit('MATCHES_LOADING')

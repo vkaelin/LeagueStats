@@ -1,6 +1,7 @@
 'use strict'
 
 const Jax = use('Jax')
+const LiveMatchTransformer = use('App/Transformers/LiveMatchTransformer')
 const MatchRepository = make('App/Repositories/MatchRepository')
 const MatchService = use('App/Services/MatchService')
 const SummonerService = use('App/Services/SummonerService')
@@ -114,6 +115,27 @@ class SummonerController {
     const records = await MatchRepository.records(puuid)
     console.timeEnd('recordsRequest')
     return response.json(records[0])
+  }
+
+  /**
+   * POST - Return live match details
+   */
+  async liveMatchDetails({ request, response }) {
+    console.time('liveMatchDetails')
+    const account = request.input('account')
+    const region = request.input('region')
+
+    // CURRENT GAME
+    let currentGame = await Jax.Spectator.summonerID(account.id, region)
+
+    if (!currentGame) {
+      response.json(null)
+    }
+
+    currentGame = await LiveMatchTransformer.transform(currentGame, { region })
+    console.timeEnd('liveMatchDetails')
+
+    return response.json(currentGame)
   }
 }
 

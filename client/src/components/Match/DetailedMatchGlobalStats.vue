@@ -104,32 +104,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.ban::after {
-  content: "";
-  position: absolute;
-  left: 0px;
-  top: 50%;
-  width: calc(100% + 1px);
-  height: 2px;
-  transform: rotate(-45deg);
-}
-
-.ban-blue::after {
-  background: #38b2ac;
-}
-
-.ban-red::after {
-  background: #f56565;
-}
-
-.ban-img {
-  filter: grayscale(100%);
-}
-
-.ban-order {
-  left: -7px;
-  top: -5px;
-}
-</style>

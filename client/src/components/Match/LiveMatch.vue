@@ -51,46 +51,10 @@
 </template>
 
 <script>
-import { compareSummonernames } from '@/helpers/functions.js'
-import { gameModes } from '@/data/data.js'
-import { mapState } from 'vuex'
+import { liveGame } from '@/mixins/liveGame'
 
 export default {
-  data() {
-    return {
-      gameLength: 0
-    }
-  },
-
-  computed: {
-    allyTeam() {
-      return this.current.participants.filter(p => p.teamId === this.teamColor)
-    },
-    enemyTeam() {
-      return this.current.participants.filter(p => p.teamId !== this.teamColor)
-    },
-    gamemode() {
-      return gameModes[this.current.gameQueueConfigId]
-    },
-    teamColor() {
-      return this.current.participants.find(p => compareSummonernames(p.summonerName, this.$route.params.name)).teamId
-    },
-    ...mapState({
-      current: state => state.summoner.basic.current,
-    })
-  },
-
-  created() {
-    this.gameLength = this.current.gameLength
-
-    setInterval(() => {
-      this.gameLength++
-    }, 1000)
-  },
-
-  methods: {
-    compareSummonernames
-  }
+  mixins: [liveGame],
 }
 </script>
 

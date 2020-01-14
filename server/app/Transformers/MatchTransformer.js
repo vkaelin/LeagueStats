@@ -111,13 +111,7 @@ class MatchTransformer {
     let primaryRune = null
     let secondaryRune = null
     if (player.stats.perkPrimaryStyle) {
-      const firstRune = this.perks.find(p => p.id === player.stats.perk0)
-      const firstRuneUrl = firstRune.iconPath.split('/assets/')[1].toLowerCase()
-      primaryRune = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${firstRuneUrl}`
-
-      const secondRuneStyle = this.perkstyles.find(p => p.id === player.stats.perkSubStyle)
-      const secondRuneStyleUrl = secondRuneStyle.iconPath.split('/assets/')[1].toLowerCase()
-      secondaryRune = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${secondRuneStyleUrl}`
+      ({ primaryRune, secondaryRune } = this.getPerksImages(player.stats.perk0, player.stats.perkSubStyle))
     }
 
     const items = []
@@ -155,6 +149,23 @@ class MatchTransformer {
       stats,
       percentStats,
     }
+  }
+
+  /**
+   * Return the icons of the primary rune and secondary category
+   * @param perk0 primary perks id
+   * @param perkSubStyle secondary perks category
+   */
+  getPerksImages(perk0, perkSubStyle) {
+    const firstRune = this.perks.find(p => p.id === perk0)
+    const firstRuneUrl = firstRune.iconPath.split('/assets/')[1].toLowerCase()
+    const primaryRune = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${firstRuneUrl}`
+
+    const secondRuneStyle = this.perkstyles.find(p => p.id === perkSubStyle)
+    const secondRuneStyleUrl = secondRuneStyle.iconPath.split('/assets/')[1].toLowerCase()
+    const secondaryRune = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${secondRuneStyleUrl}`
+
+    return { primaryRune, secondaryRune }
   }
 
   /**

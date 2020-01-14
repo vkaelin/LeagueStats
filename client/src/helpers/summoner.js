@@ -92,7 +92,7 @@ export function getRankImg(leagueData) {
   return `https://res.cloudinary.com/kln/image/upload/v1571671133/ranks/${leagueData.tier}_${leaguesNumbers[leagueData.rank]}.png`
 }
 
-function getSummonerLink(id) {
+export function getSummonerLink(id) {
   if (id === 0) return null
   const spellName = summonersJSON.find(s => s.id === id).iconPath.split('/assets/')[1].toLowerCase()
   return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${spellName}`
