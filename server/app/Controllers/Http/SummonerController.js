@@ -129,7 +129,7 @@ class SummonerController {
     let currentGame = await Jax.Spectator.summonerID(account.id, region)
 
     if (!currentGame) {
-      response.json(null)
+      return response.json(null)
     }
 
     currentGame = await LiveMatchTransformer.transform(currentGame, { region })

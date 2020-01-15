@@ -1,14 +1,16 @@
 <template>
   <div key="live-game">
     <div v-if="playing || summonerLoading">
-      <div v-if="playing" class="flex items-center justify-end text-blue-200 text-base">
+      <div v-if="liveLoaded" class="flex items-center justify-end text-blue-200 text-base">
         <div>{{ gamemode.type }} {{ gamemode.name }}</div>
         <div class="mx-2">-</div>
         <div>{{ gameLength|secToTime(true) }}</div>
+        <button
+          @click="liveMatchRequest"
+          class="ml-4 bg-blue-800 px-3 py-1 text-blue-100 rounded-md shadow-md hover:bg-blue-760"
+        >Reload</button>
       </div>
-      <div v-else class="flex items-center justify-end text-blue-200 text-base">
-        <div>Loading</div>
-      </div>
+      <div v-else class="h-8"></div>
 
       <LiveTeam :team="allyTeam" :ally="true" />
       <LiveTeam :team="enemyTeam" :ally="false" class="mt-4" />
@@ -55,7 +57,7 @@ export default {
   watch: {
     summonerFound() {
       this.fetchData()
-      this.gameLength = this.current ? this.current.gameLength : 0
+      this.gameLength = this.current ? this.gameStartTime : 0
     }
   },
 
@@ -64,9 +66,10 @@ export default {
   },
 
   methods: {
-    fetchData() {
+    async fetchData() {
       if (this.playing && !this.liveLoaded && this.summonerFound) {
-        this.liveMatchRequest()
+        await this.liveMatchRequest()
+        this.gameLength = this.gameStartTime
       }
     },
     ...mapActions('summoner', ['liveMatchRequest']),

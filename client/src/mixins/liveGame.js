@@ -19,6 +19,9 @@ export const liveGame = {
     gamemode() {
       return gameModes[this.current.gameQueueConfigId]
     },
+    gameStartTime() {
+      return (new Date() - new Date(this.current.gameStartTime)) / 1000
+    },
     teamColor() {
       return this.current.participants.find(p => p.summonerId === this.account.id).teamId
     },
@@ -29,7 +32,7 @@ export const liveGame = {
   },
 
   created() {
-    this.gameLength = this.current ? this.current.gameLength : 0
+    this.gameLength = this.current ? this.gameStartTime : 0
 
     setInterval(() => {
       this.gameLength++
