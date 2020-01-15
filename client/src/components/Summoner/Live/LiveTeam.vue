@@ -40,7 +40,7 @@
               </div>
               <div
                 :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${player.championId}.png')`}"
-                :class="[ally ? 'border-teal-400' : 'border-red-400']"
+                :class="borderChampion(player.summonerId)"
                 class="ml-2 w-12 h-12 bg-cover bg-center bg-blue-1000 border-2 rounded-full"
               ></div>
               <div class="ml-2 flex flex-col">
@@ -57,7 +57,8 @@
                 <router-link
                   v-if="!player.bot"
                   :to="{ name: 'summoner', params: { region: $route.params.region, name: player.summonerName }}"
-                  class="font-semibold hover:text-blue-200"
+                  :class="[player.summonerId === account.id ? 'text-yellow-500' : 'hover:text-blue-200']"
+                  class="font-semibold"
                 >{{ player.summonerName }}</router-link>
                 <div class="text-xs">Level {{ player.level }}</div>
               </div>
@@ -193,6 +194,7 @@ export default {
 
   computed: {
     ...mapState({
+      account: state => state.summoner.basic.account,
       live: state => state.summoner.live.match,
       liveLoaded: state => state.summoner.live.liveLoaded,
     })
@@ -206,6 +208,13 @@ export default {
         index += 5
       }
       return this.live.bannedChampions.find(b => b.pickTurn === index)
+    },
+    borderChampion(id) {
+      if (id === this.account.id) {
+        return 'border-yellow-500'
+      }
+
+      return this.ally ? 'border-teal-400' : 'border-red-400'
     },
     getSummonerLink,
   }
