@@ -110,7 +110,7 @@
               </div>
             </div>
           </td>
-          <td class="py-1 text-right">
+          <td class="py-1 text-right rounded-r-lg">
             <div class="px-2 inline-block">
               <div
                 v-if="live.bannedChampions.length"
