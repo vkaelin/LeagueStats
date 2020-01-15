@@ -39,6 +39,7 @@ export const mutations = {
     state.champions.championsLoaded = false
     state.records.recordsLoaded = false
     state.overview.loaded = false
+    state.live.liveLoaded = false
   },
   CHAMPIONS_NOT_FOUND(state) {
     state.champions.championsLoaded = false
