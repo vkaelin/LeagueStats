@@ -6,10 +6,8 @@ export const namespaced = true
 export const state = {
   basic: {
     account: {},
-    current: {},
     matchList: [],
     ranked: {},
-    playing: false,
     status: '',
   },
   overview: {
@@ -29,7 +27,8 @@ export const state = {
   },
   live: {
     match: {},
-    liveLoaded: false
+    liveLoaded: false,
+    playing: false,
   },
 }
 
@@ -78,11 +77,11 @@ export const mutations = {
   },
   SUMMONER_FOUND(state, infos) {
     state.basic.account = infos.account
-    state.basic.current = infos.current
     state.basic.matchList = infos.matchList
     state.basic.ranked = infos.ranked
-    state.basic.playing = infos.playing
     state.basic.status = 'found'
+    state.live.match = infos.current
+    state.live.playing = infos.playing
   },
   SUMMONER_NOT_FOUND(state) {
     state.basic.status = 'error'
@@ -169,7 +168,7 @@ export const getters = {
   matchesLoading: state => state.overview.matchesLoading,
   moreMatchesToFetch: state => state.overview.matchIndex < state.basic.matchList.length,
   overviewLoaded: state => state.overview.loaded,
-  playing: state => state.basic.playing,
+  playing: state => state.live.playing,
   summonerFound: state => state.basic.status === 'found',
   summonerNotFound: state => state.basic.status === 'error',
   summonerLoading: state => state.basic.status === 'loading',

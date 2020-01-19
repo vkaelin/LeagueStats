@@ -4,7 +4,7 @@
       <div v-if="liveLoaded" class="flex items-center justify-end text-blue-200 text-base">
         <div>{{ gamemode.type }} {{ gamemode.name }}</div>
         <div class="mx-2">-</div>
-        <div>{{ gameLength|secToTime(true) }}</div>
+        <div>{{ displayStartTime }}</div>
         <button
           @click="liveMatchRequest"
           class="ml-4 bg-blue-800 px-3 py-1 text-blue-100 rounded-md shadow-md hover:bg-blue-760"
@@ -39,25 +39,18 @@ export default {
   mixins: [liveGame],
 
   computed: {
-    allyTeam() {
-      return this.live.participants ? this.live.participants.filter(p => p.teamId === this.teamColor) : []
-    },
-    enemyTeam() {
-      return this.live.participants ? this.live.participants.filter(p => p.teamId !== this.teamColor) : []
-    },
     ...mapGetters('summoner', ['summonerLoading', 'summonerFound']),
     ...mapState({
-      current: state => state.summoner.basic.current,
       live: state => state.summoner.live.match,
       liveLoaded: state => state.summoner.live.liveLoaded,
-      playing: state => state.summoner.basic.playing,
+      playing: state => state.summoner.live.playing,
     })
   },
 
   watch: {
     summonerFound() {
       this.fetchData()
-      this.gameLength = this.current ? this.gameStartTime : 0
+      this.gameLength = this.live ? this.gameStartTime : 0
     }
   },
 

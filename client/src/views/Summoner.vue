@@ -6,7 +6,7 @@
       <SummonerMates />
     </div>
     <div class="w-9/12">
-      <div v-if="basic.current">
+      <div v-if="current">
         <LiveMatch />
       </div>
       <div v-if="overview.matches.length">
@@ -55,7 +55,7 @@ export default {
 
   computed: {
     ...mapState({
-      basic: state => state.summoner.basic,
+      current: state => state.summoner.live.match,
       overview: state => state.summoner.overview
     }),
     ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'overviewLoaded', 'summonerFound'])

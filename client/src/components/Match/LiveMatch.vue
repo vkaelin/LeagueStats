@@ -7,7 +7,7 @@
           <span>V</span>
           <span class="ml-4 -mt-3">S</span>
         </div>
-        <div class="pb-2 text-blue-200">{{ gameLength|secToTime(true) }}</div>
+        <div class="pb-2 text-blue-200">{{ displayStartTime }}</div>
       </div>
       <ul class="w-1/2 text-left">
         <li

@@ -11,10 +11,16 @@ export const liveGame = {
 
   computed: {
     allyTeam() {
-      return this.current.participants.filter(p => p.teamId === this.teamColor)
+      return this.current && this.current.participants ? this.current.participants.filter(p => p.teamId === this.teamColor) : []
+    },
+    displayStartTime() {
+      if (this.current.gameStartTime === 0) {
+        return 'Not started yet'
+      }
+      return this.$options.filters.secToTime(this.gameLength, true)
     },
     enemyTeam() {
-      return this.current.participants.filter(p => p.teamId !== this.teamColor)
+      return this.current && this.current.participants ? this.current.participants.filter(p => p.teamId !== this.teamColor) : []
     },
     gamemode() {
       return gameModes[this.current.gameQueueConfigId]
@@ -27,7 +33,7 @@ export const liveGame = {
     },
     ...mapState({
       account: state => state.summoner.basic.account,
-      current: state => state.summoner.basic.current,
+      current: state => state.summoner.live.match,
     })
   },
 
