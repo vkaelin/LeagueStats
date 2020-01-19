@@ -34,7 +34,7 @@
                   class="w-6 h-6 bg-cover bg-center"
                 ></div>
                 <div
-                  :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7202_sorcery.png')`}"
+                  :style="{backgroundImage: `url('${player.runes.secondaryRune}')`}"
                   class="mt-1 w-3 h-3 bg-cover bg-center"
                 ></div>
               </div>
