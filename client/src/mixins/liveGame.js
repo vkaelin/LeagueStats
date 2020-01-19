@@ -1,4 +1,3 @@
-import { compareSummonernames } from '@/helpers/functions.js'
 import { gameModes } from '@/data/data.js'
 import { mapState } from 'vuex'
 
@@ -26,7 +25,7 @@ export const liveGame = {
       return gameModes[this.current.gameQueueConfigId]
     },
     gameStartTime() {
-      return (new Date() - new Date(this.current.gameStartTime)) / 1000
+      return this.current.gameStartTime
     },
     teamColor() {
       return this.current.participants.find(p => p.summonerId === this.account.id).teamId
@@ -38,14 +37,26 @@ export const liveGame = {
   },
 
   created() {
-    this.gameLength = this.current ? this.gameStartTime : 0
+    this.updateGameLength()
 
     setInterval(() => {
       this.gameLength++
     }, 1000)
   },
 
+  watch: {
+    gameStartTime() {
+      this.updateGameLength()
+    }
+  },
+
   methods: {
-    compareSummonernames,
+    updateGameLength() {
+      if (this.gameStartTime === 0) {
+        return this.gameLength = 0
+      }
+
+      this.gameLength = (new Date() - new Date(this.gameStartTime)) / 1000
+    },
   }
 }

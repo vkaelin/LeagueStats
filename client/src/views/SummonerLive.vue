@@ -50,7 +50,6 @@ export default {
   watch: {
     summonerFound() {
       this.fetchData()
-      this.gameLength = this.live ? this.gameStartTime : 0
     }
   },
 
@@ -59,10 +58,9 @@ export default {
   },
 
   methods: {
-    async fetchData() {
+    fetchData() {
       if (this.playing && !this.liveLoaded && this.summonerFound) {
-        await this.liveMatchRequest()
-        this.gameLength = this.gameStartTime
+        this.liveMatchRequest()
       }
     },
     ...mapActions('summoner', ['liveMatchRequest']),

@@ -23,7 +23,7 @@
           <router-link
             v-if="!ally.bot"
             :to="{ name: 'summoner', params: { region: $route.params.region, name: ally.summonerName }}"
-            :class="[compareSummonernames($route.params.name, ally.summonerName) ? 'text-white' : 'text-blue-200']"
+            :class="[ally.summonerId === account.id ? 'text-white' : 'text-blue-200']"
             class="relative ml-2 hover:text-white"
           >{{ ally.summonerName }}</router-link>
         </li>
