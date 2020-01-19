@@ -19,7 +19,11 @@
       <div class="mt-16 flex justify-center">
         <div class="bg-gradient px-4 py-3 rounded-lg text-center text-lg text-blue-100 font-bold">
           <div>This summoner is not in game.</div>
-          <div>🕊</div>
+          <div class="mt-2">🕊</div>
+          <button
+            @click="liveMatchRequest"
+            class="my-4 bg-blue-800 px-3 py-1 text-sm text-blue-100 rounded-md shadow-md hover:bg-blue-760"
+          >Reload</button>
         </div>
       </div>
     </div>

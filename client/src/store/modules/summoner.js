@@ -86,6 +86,11 @@ export const mutations = {
   SUMMONER_NOT_FOUND(state) {
     state.basic.status = 'error'
   },
+  SUMMONER_NOT_PLAYING(state) {
+    state.live.match = {}
+    state.live.playing = false
+    state.live.liveLoaded = false
+  }
 }
 
 export const actions = {
@@ -133,6 +138,8 @@ export const actions = {
 
     if (resp.data) {
       commit('LIVE_FOUND', { live: resp.data })
+    } else {
+      commit('SUMMONER_NOT_PLAYING')
     }
   },
   async moreMatches({ commit }) {

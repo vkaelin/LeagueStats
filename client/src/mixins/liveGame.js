@@ -25,7 +25,7 @@ export const liveGame = {
       return gameModes[this.current.gameQueueConfigId]
     },
     gameStartTime() {
-      return this.current.gameStartTime
+      return this.current ? this.current.gameStartTime : 0
     },
     teamColor() {
       return this.current.participants.find(p => p.summonerId === this.account.id).teamId
