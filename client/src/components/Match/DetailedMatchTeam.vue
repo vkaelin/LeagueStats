@@ -124,7 +124,7 @@
                 <router-link
                   v-if="player.firstSum"
                   :to="{ name: 'summoner', params: { region: $route.params.region, name: player.name }}"
-                  :class="{'font-semibold text-yellow-400': compareSummonernames($route.params.name, player.name)}"
+                  :class="{'font-semibold text-yellow-400': account.id === player.summonerId}"
                   class="w-22 text-xs text-white text-left overflow-hidden text-overflow whitespace-no-wrap hover:text-blue-200"
                 >{{ player.name }}</router-link>
                 <div
@@ -198,7 +198,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { compareSummonernames } from '@/helpers/functions.js'
 import DotsLoader from '@/components/DotsLoader'
 import Dropdown from '@/components/Dropdown'
 import MatchItems from '@/components/Match/MatchItems'
@@ -230,6 +229,7 @@ export default {
       return this.percentSettings ? 'percentStats' : 'stats'
     },
     ...mapState({
+      account: state => state.summoner.basic.account,
       percentSettings: state => state.settings.percent
     }),
   },
@@ -251,7 +251,6 @@ export default {
     roundStats(value) {
       return this.percentSettings ? value : this.$options.filters.kilo(value)
     },
-    compareSummonernames,
   }
 }
 </script>

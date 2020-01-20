@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { compareSummonernames } from '@/helpers/functions.js'
+import { mapState } from 'vuex'
 import DetailedMatchGlobalStats from '@/components/Match/DetailedMatchGlobalStats.vue'
 import DetailedMatchTeam from '@/components/Match/DetailedMatchTeam.vue'
 import SwitchToggle from '@/components/SwitchToggle.vue'
@@ -50,11 +50,14 @@ export default {
 
   computed: {
     allyTeam() {
-      return this.data.blueTeam.players.some(p => compareSummonernames(p.name, this.$route.params.name)) ? this.data.blueTeam : this.data.redTeam
+      return this.data.blueTeam.players.some(p => p.summonerId === this.account.id) ? this.data.blueTeam : this.data.redTeam
     },
     enemyTeam() {
-      return this.data.blueTeam.players.some(p => compareSummonernames(p.name, this.$route.params.name)) ? this.data.redTeam : this.data.blueTeam
-    }
+      return this.data.blueTeam.players.some(p => p.summonerId === this.account.id) ? this.data.redTeam : this.data.blueTeam
+    },
+    ...mapState({
+      account: state => state.summoner.basic.account
+    }),
   }
 }
 </script>

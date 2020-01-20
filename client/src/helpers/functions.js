@@ -25,12 +25,3 @@ export function timeDifference(previous) {
     return day + '.' + month + '.' + oldDate.getFullYear().toString().substr(-2)
   }
 }
-
-/**
- *  Check if 2 summoner names are the same
- * @param a : first summoner name
- * @param b : second summoner name
- */
-export function compareSummonernames(a, b) {
-  return a.toLowerCase().replace(/ /g, '') === b.toLowerCase().replace(/ /g, '')
-}

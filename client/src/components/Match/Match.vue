@@ -102,7 +102,7 @@
               class="ml-4 flex items-center leading-none"
             >
               <div
-                :class="isSummonerProfile(ally.name)"
+                :class="isSummonerProfile(ally.account_id)"
                 class="w-16 text-right overflow-hidden text-overflow whitespace-no-wrap text-xs text-blue-200 font-medium"
               >{{ ally.name }}</div>
               <div
@@ -151,7 +151,6 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { compareSummonernames } from '@/helpers/functions.js'
 import Dropdown from '@/components/Dropdown'
 import DetailedMatch from '@/components/Match/DetailedMatch'
 import MatchItems from '@/components/Match/MatchItems'
@@ -180,6 +179,7 @@ export default {
 
   computed: {
     ...mapState({
+      account: state => state.summoner.basic.account,
       roles: state => state.roles
     }),
     ...mapGetters('detailedMatch', ['getMatchDetails']),
@@ -193,9 +193,9 @@ export default {
         this.matchDetails(this.data.gameId)
       }
     },
-    isSummonerProfile(allyName) {
+    isSummonerProfile(account_id) {
       return {
-        'font-bold': compareSummonernames(this.$route.params.name, allyName)
+        'font-bold': this.account.accountId === account_id
       }
     },
     ...mapActions('detailedMatch', ['matchDetails']),
