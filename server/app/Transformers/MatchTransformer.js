@@ -138,6 +138,8 @@ class MatchTransformer {
 
     return {
       name,
+      accountId: identity.player.currentAccountId,
+      summonerId: identity.player.summonerId,
       champion,
       role,
       primaryRune,

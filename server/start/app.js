@@ -60,6 +60,7 @@ const aliases = {}
 */
 const commands = [
   'App/Commands/DeleteMatch',
+  'App/Commands/EditDetailedMatch',
   'App/Commands/EditMatch',
 ]
 
