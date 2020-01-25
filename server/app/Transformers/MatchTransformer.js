@@ -25,6 +25,12 @@ class MatchTransformer {
     this.perkstyles = perkstyles.styles
     this.summonerSpells = summonerSpells
     this.sortTeamByRole = Helpers.sortTeamByRole
+
+    // League of Legends seasons timestamps
+    this.seasons = {
+      0: 9,
+      1578628800000: 10
+    }
   }
 
   /**
@@ -42,11 +48,19 @@ class MatchTransformer {
    *  Get global data about the match
    */
   getGameInfos(match) {
+    // Get season number
+    const arrSeasons = Object.keys(this.seasons)
+    arrSeasons.push(match.gameCreation)
+    arrSeasons.sort()
+    const indexSeason = arrSeasons.indexOf(match.gameCreation) - 1
+    const season = this.seasons[arrSeasons[indexSeason]]
+
     return {
       map: match.mapId,
       gamemode: match.queueId,
       date: match.gameCreation,
       region: match.platformId.toLowerCase(),
+      season,
       time: match.gameDuration
     }
   }
@@ -80,8 +94,10 @@ class MatchTransformer {
 
     if (stats.kills + stats.assists !== 0 && stats.deaths === 0) {
       stats.kda = '∞'
+      stats.realKda = stats.kills + stats.assists
     } else {
       stats.kda = +(stats.deaths === 0 ? 0 : ((stats.kills + stats.assists) / stats.deaths)).toFixed(2)
+      stats.realKda = stats.kda
     }
 
     // Percent stats / Per minute stats : only for detailed match

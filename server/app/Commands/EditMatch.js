@@ -56,6 +56,7 @@ class EditMatch extends Command {
     // All matches from the db
     const matches = await Match.all()
     const matchesArray = matches.toJSON()
+    console.log(`${matchesArray.length} matches to edit.`)
 
     // Create jobs
     const jobs = []

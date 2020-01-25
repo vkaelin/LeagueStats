@@ -142,7 +142,6 @@ class MatchRepository {
         $match: {
           summoner_puuid: puuid,
           result: { $not: { $eq: 'Remake' } },
-          'stats.kda': { $not: { $eq: '∞' } },
           gamemode: { $nin: [800, 810, 820, 830, 840, 850] },
         }
       },
@@ -155,7 +154,7 @@ class MatchRepository {
           maxGold: { $max: '$stats.gold' },
           maxTime: { $max: '$time' },
           maxMinions: { $max: '$stats.minions' },
-          maxKda: { $max: '$stats.kda' },
+          maxKda: { $max: '$stats.realKda' },
           maxDmgTaken: { $max: '$stats.dmgTaken' },
           maxDmgChamp: { $max: '$stats.dmgChamp' },
           maxDmgObj: { $max: '$stats.dmgObj' },
@@ -171,7 +170,7 @@ class MatchRepository {
               'gold': '$stats.gold',
               'time': '$time',
               'minions': '$stats.minions',
-              'kda': '$stats.kda',
+              'kda': '$stats.realKda',
               'dmgTaken': '$stats.dmgTaken',
               'dmgChamp': '$stats.dmgChamp',
               'dmgObj': '$stats.dmgObj',
