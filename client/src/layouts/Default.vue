@@ -65,21 +65,25 @@
           <!-- NAVIGATION -->
           <router-link
             :to="{ name: 'summoner', params: { region: $route.params.region, name: $route.params.name }}"
+            :class="isRouteActive('summoner')"
             class="pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
             exact
           >overview</router-link>
           <router-link
             :to="{ name: 'summonerChampions', params: { region: $route.params.region, name: $route.params.name }}"
+            :class="isRouteActive('summonerChampions')"
             class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
             exact
           >champions</router-link>
           <router-link
             :to="{ name: 'summonerRecords', params: { region: $route.params.region, name: $route.params.name }}"
+            :class="isRouteActive('summonerRecords')"
             class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
             exact
           >records</router-link>
           <router-link
             :to="{ name: 'summonerLive', params: { region: $route.params.region, name: $route.params.name }}"
+            :class="isRouteActive('summonerLive')"
             class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
             exact
           >live game</router-link>
@@ -158,6 +162,11 @@ export default {
   methods: {
     apiCall() {
       this.basicRequest({ summoner: this.summoner, region: this.region })
+    },
+    isRouteActive(currentRoute) {
+      return {
+        'router-link-active': this.$route.name === currentRoute
+      }
     },
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
