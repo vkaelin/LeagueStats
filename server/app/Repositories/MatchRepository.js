@@ -10,6 +10,18 @@ class MatchRepository {
   }
 
   /**
+   * Basic matchParams used in a lot of requests
+   * @param puuid of the summoner
+   */
+  _matchParams(puuid) {
+    return {
+      summoner_puuid: puuid,
+      result: { $not: { $eq: 'Remake' } },
+      gamemode: { $nin: [800, 810, 820, 830, 840, 850] },
+    }
+  }
+
+  /**
    * Build the aggregate mongo query
    * @param {Number} puuid 
    * @param {Object} matchParams 
@@ -22,9 +34,7 @@ class MatchRepository {
     return this.Match.query().aggregate([
       {
         $match: {
-          summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } },
-          gamemode: { $nin: [800, 810, 820, 830, 840, 850] },
+          ...this._matchParams(puuid),
           ...matchParams
         }
       },
@@ -140,9 +150,7 @@ class MatchRepository {
     return this.Match.query().aggregate([
       {
         $match: {
-          summoner_puuid: puuid,
-          result: { $not: { $eq: 'Remake' } },
-          gamemode: { $nin: [800, 810, 820, 830, 840, 850] },
+          ...this._matchParams(puuid),
         }
       },
       {
@@ -221,6 +229,22 @@ class MatchRepository {
       }
     ]
     return this._aggregate(puuid, matchParams, [], '$role', {}, finalSteps)
+  }
+  /**
+   * Get Summoner's played seasons
+   * @param puuid of the summoner
+   */
+  seasons(puuid) {
+    return this.Match.query().aggregate([
+      {
+        $match: {
+          ...this._matchParams(puuid),
+        }
+      },
+      {
+        $group: { _id: '$season' }
+      },
+    ])
   }
 
   /**

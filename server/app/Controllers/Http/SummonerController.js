@@ -9,6 +9,10 @@ const StatsService = use('App/Services/StatsService')
 const Summoner = use('App/Models/Summoner')
 
 class SummonerController {
+  async _getSeasons(puuid) {
+    let seasons = await MatchRepository.seasons(puuid)
+    return seasons.length ? seasons.map(s => s._id) : [10]
+  }
   /**
    * POST: get basic summoner data
    */
@@ -44,6 +48,9 @@ class SummonerController {
       const matchList = summonerDB.matchList
       finalJSON.matchList = matchList
 
+      // All seasons the summoner has played
+      finalJSON.seasons = await this._getSeasons(account.puuid)
+
       // CURRENT GAME
       const currentGame = await Jax.Spectator.summonerID(account.id, region)
       finalJSON.playing = !!currentGame
@@ -70,6 +77,7 @@ class SummonerController {
   async overview({ request, response }) {
     console.time('overview')
     const account = request.input('account')
+    const season = request.input('season')
     const finalJSON = {}
 
     // Summoner in DB
