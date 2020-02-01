@@ -1,6 +1,6 @@
 <template>
   <div key="champions" class="mt-3">
-    <div class="mt-4 flex items-center">
+    <div class="flex items-center">
       <ChampionsSearch @search-champions="updateSearch" />
       <FilterQueue @filter-queue="filterByQueue" :choices="queues" class="ml-4" />
     </div>
@@ -24,6 +24,7 @@ export default {
 
   data() {
     return {
+      queue: null,
       searchChampions: ''
     }
   },
@@ -53,6 +54,9 @@ export default {
   },
 
   watch: {
+    championsLoaded() {
+      this.fetchData()
+    },
     summonerFound() {
       this.fetchData()
     }
@@ -65,13 +69,13 @@ export default {
   methods: {
     fetchData() {
       if (!this.championsLoaded && this.summonerFound) {
-        this.championsRequest()
+        this.championsRequest(this.queue)
       }
     },
     filterByQueue(queue) {
       queue = Number(queue)
-      queue = queue === -1 ? null : queue
-      this.championsRequest(queue)
+      this.queue = queue === -1 ? null : queue
+      this.championsRequest(this.queue)
     },
     updateSearch(search) {
       this.searchChampions = search

@@ -9,6 +9,10 @@ const StatsService = use('App/Services/StatsService')
 const Summoner = use('App/Models/Summoner')
 
 class SummonerController {
+  async _getSeasons(puuid) {
+    let seasons = await MatchRepository.seasons(puuid)
+    return seasons.length ? seasons.map(s => s._id) : [10]
+  }
   /**
    * POST: get basic summoner data
    */
@@ -44,6 +48,9 @@ class SummonerController {
       const matchList = summonerDB.matchList
       finalJSON.matchList = matchList
 
+      // All seasons the summoner has played
+      finalJSON.seasons = await this._getSeasons(account.puuid)
+
       // CURRENT GAME
       const currentGame = await Jax.Spectator.summonerID(account.id, region)
       finalJSON.playing = !!currentGame
@@ -70,6 +77,7 @@ class SummonerController {
   async overview({ request, response }) {
     console.time('overview')
     const account = request.input('account')
+    const season = request.input('season')
     const finalJSON = {}
 
     // Summoner in DB
@@ -79,12 +87,17 @@ class SummonerController {
     )
 
     // MATCHES BASIC
-    const gameIds = summonerDB.matchList.slice(0, 10).map(({ gameId }) => gameId)
+    const gameIds = summonerDB.matchList.slice(0)
+      .filter(m => {
+        return season ? m.seasonMatch === season : true
+      })
+      .slice(0, 10)
+      .map(({ gameId }) => gameId)
     finalJSON.matchesDetails = await MatchService.getMatches(account, gameIds, summonerDB)
 
     // STATS
     console.time('STATS')
-    finalJSON.stats = await StatsService.getSummonerStats(account)
+    finalJSON.stats = await StatsService.getSummonerStats(account, season)
     console.timeEnd('STATS')
 
     // SAVE IN DB
@@ -100,8 +113,9 @@ class SummonerController {
   async champions({ request, response }) {
     const puuid = request.input('puuid')
     const queue = request.input('queue')
+    const season = request.input('season')
     console.time('championsRequest')
-    const championStats = await MatchRepository.championCompleteStats(puuid, queue)
+    const championStats = await MatchRepository.championCompleteStats(puuid, queue, season)
     console.timeEnd('championsRequest')
     return response.json(championStats)
   }
@@ -111,8 +125,9 @@ class SummonerController {
    */
   async records({ request, response }) {
     const puuid = request.input('puuid')
+    const season = request.input('season')
     console.time('recordsRequest')
-    const records = await MatchRepository.records(puuid)
+    const records = await MatchRepository.records(puuid, season)
     console.timeEnd('recordsRequest')
     return response.json(records[0])
   }

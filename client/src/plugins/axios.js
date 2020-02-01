@@ -1,4 +1,6 @@
 import axiosHttp from 'axios'
+import router from '../router'
+import store from '../store'
 
 export const axios = axiosHttp
 
@@ -11,8 +13,16 @@ const axiosSource = CancelToken.source()
 axios.defaults.axiosSource = axiosSource
 axios.defaults.cancelToken = axiosSource.token
 
+// Add season number to data if the route need it
+axios.interceptors.request.use(function (config) {
+  if (config.url !== 'summoner-basic' && router.currentRoute.meta.season) {
+    config.data.season = store.state.summoner.basic.currentSeason
+  }
+  return config
+})
+
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.prototype.$axios = axiosHttp
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div v-if="overviewLoaded" key="overview" class="mt-3 flex text-center">
-    <div class="mt-4 w-3/12">
+    <div class="w-3/12">
       <SummonerChampions />
       <SummonerStats />
       <SummonerMates />
@@ -15,6 +15,7 @@
             v-for="(match, index) in overview.matches"
             :key="index"
             :data="overview.matches[index]"
+            :index-match="index"
           />
         </ul>
         <LoadingButton
@@ -62,6 +63,9 @@ export default {
   },
 
   watch: {
+    overviewLoaded() {
+      this.fetchData()
+    },
     summonerFound() {
       this.fetchData()
     }
