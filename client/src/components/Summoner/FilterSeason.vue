@@ -42,7 +42,6 @@ export default {
 
   methods: {
     filterSeason() {
-      console.log('filter season', this.season)
       this.updateSeason(this.season)
     },
     ...mapActions('summoner', ['updateSeason'])
