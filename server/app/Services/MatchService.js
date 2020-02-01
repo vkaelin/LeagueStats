@@ -3,6 +3,7 @@
 const Logger = use('Logger')
 const Jax = use('Jax')
 const BasicMatchTransformer = use('App/Transformers/BasicMatchTransformer')
+const { getSeasonNumber } = use('App/helpers')
 
 class MatchService {
   /**
@@ -18,6 +19,10 @@ class MatchService {
       let newMatchList = await Jax.Matchlist.accountID(account.accountId, account.region, index)
       // Error while fetching Riot API
       if (!newMatchList) {
+        matchList = matchList.map(m => {
+          m.seasonMatch = getSeasonNumber(m.timestamp)
+          return m
+        })
         return matchList
       }
       newMatchList = newMatchList.matches
@@ -38,6 +43,10 @@ class MatchService {
         const notATutorialGame = !tutorialModes.includes(m.queue)
 
         return sameRegion && notATutorialGame
+      })
+      .map(m => {
+        m.seasonMatch = getSeasonNumber(m.timestamp)
+        return m
       })
 
     return matchList

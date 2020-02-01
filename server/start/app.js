@@ -62,6 +62,7 @@ const commands = [
   'App/Commands/DeleteMatch',
   'App/Commands/EditDetailedMatch',
   'App/Commands/EditMatch',
+  'App/Commands/EditMatchList',
 ]
 
 module.exports = { providers, aceProviders, aliases, commands }
