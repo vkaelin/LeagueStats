@@ -87,12 +87,17 @@ class SummonerController {
     )
 
     // MATCHES BASIC
-    const gameIds = summonerDB.matchList.slice(0, 10).map(({ gameId }) => gameId)
+    const gameIds = summonerDB.matchList.slice(0)
+      .filter(m => {
+        return season ? m.seasonMatch === season : true
+      })
+      .slice(0, 10)
+      .map(({ gameId }) => gameId)
     finalJSON.matchesDetails = await MatchService.getMatches(account, gameIds, summonerDB)
 
     // STATS
     console.time('STATS')
-    finalJSON.stats = await StatsService.getSummonerStats(account)
+    finalJSON.stats = await StatsService.getSummonerStats(account, season)
     console.timeEnd('STATS')
 
     // SAVE IN DB
@@ -108,8 +113,9 @@ class SummonerController {
   async champions({ request, response }) {
     const puuid = request.input('puuid')
     const queue = request.input('queue')
+    const season = request.input('season')
     console.time('championsRequest')
-    const championStats = await MatchRepository.championCompleteStats(puuid, queue)
+    const championStats = await MatchRepository.championCompleteStats(puuid, queue, season)
     console.timeEnd('championsRequest')
     return response.json(championStats)
   }
@@ -119,8 +125,9 @@ class SummonerController {
    */
   async records({ request, response }) {
     const puuid = request.input('puuid')
+    const season = request.input('season')
     console.time('recordsRequest')
-    const records = await MatchRepository.records(puuid)
+    const records = await MatchRepository.records(puuid, season)
     console.timeEnd('recordsRequest')
     return response.json(records[0])
   }

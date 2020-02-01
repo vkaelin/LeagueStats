@@ -6,6 +6,7 @@
       dir="rtl"
       class="block appearance-none bg-transparent w-full px-4 pr-8 rounded-md cursor-pointer focus:outline-none group-hover:text-white"
     >
+      <option :value="null" class="bg-blue-800">All seasons</option>
       <option v-for="(s, index) in seasons" :key="index" :value="s" class="bg-blue-800">Season {{ s }}</option>
     </select>
     <div
@@ -19,7 +20,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   data() {
@@ -42,7 +43,9 @@ export default {
   methods: {
     filterSeason() {
       console.log('filter season', this.season)
-    }
+      this.updateSeason(this.season)
+    },
+    ...mapActions('summoner', ['updateSeason'])
   }
 }
 </script>

@@ -63,6 +63,9 @@ export default {
   },
 
   watch: {
+    overviewLoaded() {
+      this.fetchData()
+    },
     summonerFound() {
       this.fetchData()
     }

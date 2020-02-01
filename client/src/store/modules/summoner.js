@@ -6,7 +6,7 @@ export const namespaced = true
 export const state = {
   basic: {
     account: {},
-    currentSeason: 10,
+    currentSeason: null,
     matchList: [],
     ranked: {},
     seasons: [],
@@ -37,6 +37,7 @@ export const state = {
 export const mutations = {
   BASIC_REQUEST(state) {
     state.basic.status = 'loading'
+    state.basic.currentSeason = null
     state.champions.championsLoaded = false
     state.records.recordsLoaded = false
     state.overview.loaded = false
@@ -93,7 +94,14 @@ export const mutations = {
     state.live.match = {}
     state.live.playing = false
     state.live.liveLoaded = false
-  }
+  },
+  UPDATE_SEASON(state, { season }) {
+    state.basic.currentSeason = season
+
+    state.overview.loaded = false
+    state.champions.championsLoaded = false
+    state.records.recordsLoaded = false
+  },
 }
 
 export const actions = {
@@ -171,6 +179,9 @@ export const actions = {
     const records = resp.data ? createRecordsData(resp.data) : {}
 
     commit('RECORDS_FOUND', { records })
+  },
+  updateSeason({ commit }, season) {
+    commit('UPDATE_SEASON', { season })
   }
 }
 

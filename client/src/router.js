@@ -25,17 +25,26 @@ const router = new Router({
     {
       path: '/summoner/:region/:name',
       name: 'summoner',
-      component: Summoner
+      component: Summoner,
+      meta: {
+        season: true
+      }
     },
     {
       path: '/summoner/:region/:name/champions',
       name: 'summonerChampions',
-      component: SummonerChampions
+      component: SummonerChampions,
+      meta: {
+        season: true
+      }
     },
     {
       path: '/summoner/:region/:name/records',
       name: 'summonerRecords',
-      component: SummonerRecords
+      component: SummonerRecords,
+      meta: {
+        season: true
+      }
     },
     {
       path: '/summoner/:region/:name/live',

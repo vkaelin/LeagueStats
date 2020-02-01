@@ -18,6 +18,7 @@ class MatchRepository {
       summoner_puuid: puuid,
       result: { $not: { $eq: 'Remake' } },
       gamemode: { $nin: [800, 810, 820, 830, 840, 850] },
+      season: this.season ? this.season : { $exists: true }
     }
   }
 
@@ -92,11 +93,15 @@ class MatchRepository {
    * Get Summoner's complete statistics for the all played champs
    * @param puuid of the summoner
    * @param queue of the matches to fetch, if null get all matches
+   * @param season of the matches to fetch, if null get all seasons
    */
-  championCompleteStats(puuid, queue) {
-    const matchParams = queue ? {
-      gamemode: { $eq: Number(queue) },
-    } : {}
+  championCompleteStats(puuid, queue, season) {
+    const matchParams = {}
+    if (queue) {
+      matchParams.gamemode = { $eq: Number(queue) }
+    }
+    this.season = season
+
     const groupParams = {
       time: { $sum: '$time' },
       gameLength: { $avg: '$time' },
@@ -145,8 +150,11 @@ class MatchRepository {
   /**
   * Get Summoner's all records
   * @param puuid of the summoner
+  * @param season of the matches to fetch, if null get all seasons
   */
-  records(puuid) {
+  records(puuid, season) {
+    this.season = season
+
     return this.Match.query().aggregate([
       {
         $match: {
@@ -235,6 +243,8 @@ class MatchRepository {
    * @param puuid of the summoner
    */
   seasons(puuid) {
+    this.season = null
+
     return this.Match.query().aggregate([
       {
         $match: {

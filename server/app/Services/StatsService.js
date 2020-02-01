@@ -8,7 +8,8 @@ class StatsService {
     this.matchRepository = MatchRepository
   }
 
-  async getSummonerStats(account) {
+  async getSummonerStats(account, season) {
+    this.matchRepository.season = season
     const globalStats = await this.matchRepository.globalStats(account.puuid)
     const gamemodeStats = await this.matchRepository.gamemodeStats(account.puuid)
     const roleStats = await this.matchRepository.roleStats(account.puuid)
