@@ -1,7 +1,7 @@
 <template>
-  <div key="records" class="mt-3">
+  <div key="records" class="">
     <template v-if="!recordsLoaded || (recordsLoaded && records.maxKda)">
-      <div class="mt-4">
+      <div class="">
         <div class="mx-4 text-blue-200 text-2xl border-b-2 border-blue-800 blue-900">basics</div>
         <div class="-mx-2 flex flex-wrap">
           <template v-if="recordsLoaded">

@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white">
+  <div class="text-white pb-2">
     <div class="flex justify-between">
       <div style="width: 520px; height: 239px;">
         <content-loader

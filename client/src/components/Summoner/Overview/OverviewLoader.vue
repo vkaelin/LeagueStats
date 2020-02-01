@@ -1,6 +1,6 @@
 <template>
   <div class="mt-3 flex text-center">
-    <div class="mt-4 w-3/12">
+    <div class="w-3/12">
       <div class="bg-blue-850 rounded-lg" style="width: 300px; height: 339px;">
         <content-loader
           :height="339"
@@ -191,7 +191,8 @@
       <div
         v-for="index in 10"
         :key="index"
-        class="mt-4 ml-4 bg-blue-850 rounded-lg"
+        :class="{'mt-4': index !== 1}"
+        class="ml-4 bg-blue-850 rounded-lg"
         style="width: 884px; height: 144px;"
       >
         <content-loader

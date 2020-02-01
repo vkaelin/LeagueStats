@@ -3,8 +3,8 @@
     <Ripple
       @click.native="displayDetails"
       color="rgba(43, 108, 176, 0.7)"
-      :class="[data.result, showDetails ? 'rounded-t-lg' : 'rounded-lg']"
-      class="match relative mt-4 bg-blue-800 text-white text-base cursor-pointer hover:shadow-xl"
+      :class="[data.result, showDetails ? 'rounded-t-lg' : 'rounded-lg', {'mt-4': indexMatch !== 0 }]"
+      class="match relative bg-blue-800 text-white text-base cursor-pointer hover:shadow-xl"
     >
       <div class="relative flex flex-wrap px-5 py-3">
         <div class="first w-4/12 text-left">
@@ -169,6 +169,10 @@ export default {
       type: Object,
       required: true
     },
+    indexMatch: {
+      type: Number,
+      default: -1,
+    }
   },
 
   data() {

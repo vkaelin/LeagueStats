@@ -6,8 +6,10 @@ export const namespaced = true
 export const state = {
   basic: {
     account: {},
+    currentSeason: 10,
     matchList: [],
     ranked: {},
+    seasons: [],
     status: '',
   },
   overview: {
@@ -79,6 +81,7 @@ export const mutations = {
     state.basic.account = infos.account
     state.basic.matchList = infos.matchList
     state.basic.ranked = infos.ranked
+    state.basic.seasons = infos.seasons
     state.basic.status = 'found'
     state.live.match = infos.current
     state.live.playing = infos.playing

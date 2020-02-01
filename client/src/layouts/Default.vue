@@ -62,33 +62,41 @@
               <RecentActivity :matches="basic.matchList" />
             </div>
           </div>
-          <!-- NAVIGATION -->
-          <router-link
-            :to="{ name: 'summoner', params: { region: $route.params.region, name: $route.params.name }}"
-            :class="isRouteActive('summoner')"
-            class="pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
-            exact
-          >overview</router-link>
-          <router-link
-            :to="{ name: 'summonerChampions', params: { region: $route.params.region, name: $route.params.name }}"
-            :class="isRouteActive('summonerChampions')"
-            class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
-            exact
-          >champions</router-link>
-          <router-link
-            :to="{ name: 'summonerRecords', params: { region: $route.params.region, name: $route.params.name }}"
-            :class="isRouteActive('summonerRecords')"
-            class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
-            exact
-          >records</router-link>
-          <router-link
-            :to="{ name: 'summonerLive', params: { region: $route.params.region, name: $route.params.name }}"
-            :class="isRouteActive('summonerLive')"
-            class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
-            exact
-          >live game</router-link>
+          <div class="flex items-center justify-between">
+            <!-- NAVIGATION -->
+            <div class="pb-2">
+              <router-link
+                :to="{ name: 'summoner', params: { region: $route.params.region, name: $route.params.name }}"
+                :class="isRouteActive('summoner')"
+                class="pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
+                exact
+              >overview</router-link>
+              <router-link
+                :to="{ name: 'summonerChampions', params: { region: $route.params.region, name: $route.params.name }}"
+                :class="isRouteActive('summonerChampions')"
+                class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
+                exact
+              >champions</router-link>
+              <router-link
+                :to="{ name: 'summonerRecords', params: { region: $route.params.region, name: $route.params.name }}"
+                :class="isRouteActive('summonerRecords')"
+                class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
+                exact
+              >records</router-link>
+              <router-link
+                :to="{ name: 'summonerLive', params: { region: $route.params.region, name: $route.params.name }}"
+                :class="isRouteActive('summonerLive')"
+                class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
+                exact
+              >live game</router-link>
+            </div>
+
+            <!-- Select Season -->
+            <FilterSeason />
+          </div>
         </template>
         <!-- View -->
+        
         <transition :name="tabTransition">
           <slot></slot>
         </transition>
@@ -110,6 +118,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
+import FilterSeason from '@/components/Summoner/FilterSeason.vue'
 import LazyBackground from '@/components/LazyBackgroundImage.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import RecentActivity from '@/components/Summoner/RecentActivity.vue'
@@ -119,6 +128,7 @@ import SummonerRanked from '@/components/Summoner/SummonerRanked.vue'
 
 export default {
   components: {
+    FilterSeason,
     LazyBackground,
     MainFooter,
     RecentActivity,
