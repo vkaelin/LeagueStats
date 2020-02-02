@@ -1,7 +1,7 @@
 <template>
   <div key="live-game">
     <div v-if="playing || summonerLoading">
-      <div v-if="liveLoaded" class="flex items-center justify-end text-blue-200 text-base">
+      <div v-if="liveLoaded" class="-mt-4 flex items-center justify-end text-blue-200 text-base">
         <div>{{ gamemode.type }} {{ gamemode.name }}</div>
         <div class="mx-2">-</div>
         <div>{{ displayStartTime }}</div>

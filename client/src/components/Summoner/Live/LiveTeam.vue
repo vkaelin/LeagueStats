@@ -19,12 +19,8 @@
         <tr
           v-for="(player, index) in team"
           :key="player.summonerId"
-          :style="{
-            backgroundImage:
-              `linear-gradient(90deg, rgba(42, 67, 101, 0.3) 0%, rgba(42, 67, 101, 0.8) 40%, rgba(42, 67, 101, 1) 100%),
-                  url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${player.championId}/${player.championId}000.jpg')`
-          }"
-          class="bg-cover bg-center"
+          :style="getCSSVars(player.championId)"
+          class="relative live-team-row"
         >
           <td class="py-1 pl-2 rounded-l-lg">
             <div class="flex items-center">
@@ -138,7 +134,7 @@
         </tr>
       </tbody>
       <tbody v-else>
-        <tr v-for="index in 5" :key="index" class="bg-blu">
+        <tr v-for="index in 5" :key="index">
           <td colspan="4" class="bg-blue-760 rounded-lg">
             <content-loader
               :height="54"
@@ -216,6 +212,12 @@ export default {
 
       return this.ally ? 'border-teal-400' : 'border-red-400'
     },
+    getCSSVars(championId) {
+      return {
+        '--bg-img': `linear-gradient(90deg, rgba(42, 67, 101, 0.3) 0%, rgba(42, 67, 101, 0.8) 40%, rgba(42, 67, 101, 1) 100%),
+            url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${championId}/${championId}000.jpg')`,
+      }
+    },
     getSummonerLink,
   }
 }
@@ -231,5 +233,24 @@ export default {
 
 .w-bans {
   width: 5rem;
+}
+
+.live-team-row td {
+  position: relative;
+  z-index: 20;
+}
+
+.live-team-row td:first-child:before {
+  content: "";
+  position: absolute;
+  z-index: -10;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 1160px;
+  background-image: var(--bg-img);
+  background-position: center;
+  background-size: cover;
+  border-radius: 0.5rem;
 }
 </style>
