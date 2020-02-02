@@ -54,7 +54,8 @@ export const mutations = {
     state.live.match = live
     state.live.liveLoaded = true
   },
-  LIVE_NOT_FOUND(state) {
+  LIVE_LOADING(state) {
+    state.live.playing = true
     state.live.liveLoaded = false
   },
   MATCHES_LOADING(state) {
@@ -142,7 +143,7 @@ export const actions = {
     commit('CHAMPIONS_FOUND', { champions: resp.data })
   },
   async liveMatchRequest({ commit, rootState }) {
-    commit('LIVE_NOT_FOUND')
+    commit('LIVE_LOADING')
     const resp = await axios(({ url: 'summoner-live', data: { account: state.basic.account, region: rootState.currentRegion }, method: 'POST' })).catch(() => { })
     console.log('---LIVE---')
     console.log(resp.data)
