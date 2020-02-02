@@ -1,8 +1,14 @@
 <template>
-  <table :class="{'rounded-b-lg overflow-hidden': !allyTeam}" class="w-full table-fixed">
-    <thead class="leading-none">
-      <tr :class="`heading-${data.result}`" class="heading-detailed text-blue-200 font-semibold">
-        <th class="w-players py-5 border-r border-blue-700">
+  <table
+    :class="[{'rounded-b-lg overflow-hidden': !allyTeam}, data.result]"
+    class="w-full table-fixed"
+  >
+    <thead class="heading-detailed leading-none">
+      <tr
+        :style="getHeadingColor(data.result)"
+        class="relative heading-row text-blue-200 font-semibold"
+      >
+        <th class="w-players py-5">
           <div class="flex justify-between">
             <span
               :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
@@ -41,7 +47,7 @@
         <th class="w-gold-dmg-kp px-2 py-5 text-sm">kp</th>
       </tr>
     </thead>
-    <tbody :class="[{'border-b border-blue-700': allyTeam}, data.result]" class="leading-none">
+    <tbody :class="{'border-b border-blue-700': allyTeam}" class="leading-none">
       <tr v-for="(player, index) in data.players" :key="player.name + index">
         <td class="py-2 border-r border-blue-700">
           <div class="px-1 flex justify-between">
@@ -248,6 +254,16 @@ export default {
     displayBorderbottom(index) {
       return this.allyTeam || index !== this.data.players.length - 1
     },
+    getHeadingColor(result) {
+      switch (result) {
+        case 'Win':
+          return { '--bg-img': 'linear-gradient(90deg, rgba(1, 97, 28, 0.3) 0%, rgba(44, 82, 130, 0) 45% )' }
+        case 'Fail':
+          return { '--bg-img': 'linear-gradient(90deg, rgba(140, 0, 0, 0.3) 0%, rgba(44, 82, 130, 0) 45% )' }
+        default:
+          return { '--bg-img': 'linear-gradient(90deg, rgba(233, 169, 75, 0.3) 0%, rgba(44, 82, 130, 0) 45% )' }
+      }
+    },
     roundStats(value) {
       return this.percentSettings ? value : this.$options.filters.kilo(value)
     },
@@ -256,35 +272,35 @@ export default {
 </script>
 
 <style scoped>
+.heading-row th {
+  position: relative;
+  z-index: 20;
+}
+
+.heading-row th:first-child:before {
+  content: "";
+  position: absolute;
+  z-index: -10;
+  top: 0;
+  left: 0;
+  height: 67px;
+  width: 884px;
+  background-image: var(--bg-img),
+    linear-gradient(#2a4365 0%, #2b4c77 55%, #235a93 100%);
+}
+
+.heading-row th:first-child:after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 0;
+  width: 1px;
+  background-color: #2b6cb0;
+  height: 67px;
+}
+
 .heading-detailed {
-  box-shadow: #2b6cb0 0px -1px inset;
-}
-
-.heading-Win {
-  background-image: linear-gradient(
-      90deg,
-      rgba(1, 97, 28, 0.3) 0%,
-      rgba(44, 82, 130, 0) 45%
-    ),
-    linear-gradient(#2a4365 0%, #2b4c77 55%, #235a93 100%);
-}
-
-.heading-Fail {
-  background-image: linear-gradient(
-      90deg,
-      rgba(140, 0, 0, 0.3) 0%,
-      rgba(44, 82, 130, 0) 45%
-    ),
-    linear-gradient(#2a4365 0%, #2b4c77 55%, #235a93 100%);
-}
-
-.heading-Remake {
-  background-image: linear-gradient(
-      90deg,
-      rgba(233, 169, 75, 0.3) 0%,
-      rgba(44, 82, 130, 0) 45%
-    ),
-    linear-gradient(#2a4365 0%, #2b4c77 55%, #235a93 100%);
+  box-shadow: inset 0 -1px #2b6cb0;
 }
 
 .level-position {
