@@ -6,7 +6,7 @@
       <SummonerMates />
     </div>
     <div class="w-9/12">
-      <div v-if="current">
+      <div v-if="current" class="mb-4">
         <LiveMatch />
       </div>
       <div v-if="overview.matches.length">

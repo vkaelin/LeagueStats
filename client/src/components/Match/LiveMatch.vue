@@ -1,5 +1,5 @@
 <template>
-  <div class="ml-4 mt-4 bg-blue-800 rounded-lg overflow-hidden text-sm">
+  <div class="ml-4 bg-blue-800 rounded-lg overflow-hidden text-sm">
     <div class="relative w-full flex justify-between">
       <div class="absolute horizontal-center h-full flex flex-col items-center justify-between">
         <div class="text-blue-200 text-base leading-loose">{{ gamemode.name }}</div>
