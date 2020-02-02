@@ -92,11 +92,13 @@
             </div>
 
             <!-- Select Season -->
-            <FilterSeason />
+            <template v-if="$route.meta.season">
+              <FilterSeason />
+            </template>
           </div>
         </template>
         <!-- View -->
-        
+
         <transition :name="tabTransition">
           <slot></slot>
         </transition>
