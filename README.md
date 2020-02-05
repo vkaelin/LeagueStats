@@ -5,7 +5,7 @@
 
 The goal of [leaguestats.gg](https://leaguestats.gg) is to provide global complete data for all League of Legends summoners.
 
-![Screenshot](https://res.cloudinary.com/kln/image/upload/v1575754595/leaguestats-preview.png)
+![Screenshot](https://res.cloudinary.com/kln/image/upload/v1580935119/leaguestats-preview.png)
 
 ## Installation
 
