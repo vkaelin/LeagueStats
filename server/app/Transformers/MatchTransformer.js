@@ -180,8 +180,9 @@ class MatchTransformer {
     const primaryRune = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${firstRuneUrl}`
 
     const secondRuneStyle = this.perkstyles.find(p => p.id === perkSubStyle)
-    const secondRuneStyleUrl = secondRuneStyle.iconPath.split('/assets/')[1].toLowerCase()
-    const secondaryRune = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${secondRuneStyleUrl}`
+
+    const secondRuneStyleUrl = secondRuneStyle ? secondRuneStyle.iconPath.split('/assets/')[1].toLowerCase() : null
+    const secondaryRune = secondRuneStyleUrl ? `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${secondRuneStyleUrl}` : ''
 
     return { primaryRune, secondaryRune }
   }
