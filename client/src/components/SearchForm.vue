@@ -14,7 +14,7 @@
           :class="{'border-teal-200': dropdown}"
           class="border-2 border-transparent cursor-pointer flex items-center px-2 py-1 rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
         >
-          <span class="selected font-bold select-none">{{ selectedRegion }}</span>
+          <span class="selected font-bold uppercase select-none">{{ selectedRegion }}</span>
           <svg class="ml-1 -mr-1 w-4 h-4">
             <use xlink:href="#caret-down" />
           </svg>
@@ -36,12 +36,12 @@
           <div
             v-for="(region, index) in regions"
             :key="region"
-            @click="selectedRegion = region"
+            @click="updateSettings({name: 'region', value: region.toLowerCase()})"
             :class="classRegions(index)"
             class="relative pr-2 pl-5 py-1 text-xs text-right bg-blue-1000 hover:bg-blue-800"
           >
             <svg
-              v-if="region === selectedRegion"
+              v-if="region.toLowerCase() === selectedRegion"
               class="absolute vertical-center offsetIcon w-3 h-3 fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 512 512"
@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+
 export default {
   props: {
     size: {
@@ -92,7 +94,6 @@ export default {
         'TR',
         'RU'
       ],
-      selectedRegion: 'EUW'
     }
   },
   computed: {
@@ -120,7 +121,10 @@ export default {
         'offsetDropDown': this.size === 'small',
         'offsetDropDownXl': this.size === 'xl'
       }
-    }
+    },
+    ...mapState({
+      selectedRegion: state => state.settings.region
+    }),
   },
   methods: {
     classRegions(index) {
@@ -131,9 +135,10 @@ export default {
     formSubmit() {
       const search = this.summoner.split(' ').join('')
       if (search.length) {
-        this.$emit('formSubmit', search, this.selectedRegion.toLowerCase())
+        this.$emit('formSubmit', search, this.selectedRegion)
       }
-    }
+    },
+    ...mapActions('settings', ['updateSettings']),
   }
 }
 </script>

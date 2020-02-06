@@ -31,10 +31,11 @@ export default {
 
   created() {
     this.updatePercent()
+    this.updateSettings({name: 'region'})
   },
 
   methods: {
-    ...mapActions('settings', ['updatePercent']),
+    ...mapActions('settings', ['updatePercent', 'updateSettings']),
   }
 }
 </script>

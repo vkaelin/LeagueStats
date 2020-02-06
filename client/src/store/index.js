@@ -19,7 +19,6 @@ export default new Vuex.Store({
     summoner
   },
   state: {
-    currentRegion: 'euw1',
     regionsList: {
       'br': 'br1',
       'eune': 'eun1',
@@ -34,16 +33,6 @@ export default new Vuex.Store({
       'ru': 'ru'
     },
     roles: ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
-  },
-  mutations: {
-    UPDATE_REGION(state, newRegion) {
-      state.currentRegion = state.regionsList[newRegion]
-    }
-  },
-  actions: {
-    updateCurrentRegion({ commit }, newRegion) {
-      commit('UPDATE_REGION', newRegion)
-    }
   },
   strict: debug
 })

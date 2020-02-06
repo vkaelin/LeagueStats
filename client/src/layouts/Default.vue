@@ -161,13 +161,12 @@ export default {
   watch: {
     uri() {
       console.log('route changed')
-      this.updateCurrentRegion(this.region)
+      this.updateSettings({ name: 'region', value: this.region.toLowerCase() })
       this.apiCall()
     }
   },
 
   created() {
-    this.updateCurrentRegion(this.region)
     this.apiCall()
   },
 
@@ -183,7 +182,7 @@ export default {
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
-    ...mapActions(['updateCurrentRegion']),
+    ...mapActions('settings', ['updateSettings']),
     ...mapActions('summoner', ['basicRequest']),
   }
 }
