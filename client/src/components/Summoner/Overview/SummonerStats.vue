@@ -120,7 +120,7 @@
             :class="{'bg-blue-760': index % 2 !== 0}"
             class="flex justify-between items-center px-4 py-1 leading-tight"
           >
-            <div class="w-2/4 text-left">{{ `${league.type} ${league.name.toLowerCase()}` }}</div>
+            <div class="w-2/4 text-left">{{ league.name.toLowerCase() }}</div>
             <div
               :class="calculateWinrate(league.wins, league.count).color"
               class="w-1/4"
@@ -152,7 +152,7 @@
             :class="{'bg-blue-760': index % 2 !== 0}"
             class="flex justify-between items-center px-4 py-1 leading-tight"
           >
-            <div class="w-2/4 text-left">{{ `${league.type} ${league.name.toLowerCase()}` }}</div>
+            <div class="w-2/4 text-left">{{ league.name.toLowerCase() }}</div>
             <div
               :class="calculateWinrate(league.wins, league.count).color"
               class="w-1/4"
