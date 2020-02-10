@@ -3,15 +3,18 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/caa8be10-e095-4934-81ef-b662fb73483f/deploy-status)](https://app.netlify.com/sites/leaguestats-gg/deploys)
 
 
-The goal of [leaguestats.gg](https://leaguestats.gg) is to provide global complete data for all League of Legends summoners.
+The goal of [leaguestats.gg](https://leaguestats.gg) is to provide global complete data for all League of Legends summoners.  
+Here is an [example](https://leaguestats.gg/summoner/euw/Alderiate) of stats for some summoner.
 
 ![Screenshot](https://res.cloudinary.com/kln/image/upload/v1580935119/leaguestats-preview.png)
 
 ## Installation
 
 Development environment requirements :
+- [Node.js](https://nodejs.org/en/download/)
 - [MongoDB](https://www.mongodb.com/download-center/community)
 - [Redis](https://redis.io/download)
+- [Adonis CLI](https://github.com/adonisjs/adonis-cli)
 
 Setting up your development environment on your local machine :
 ```bash
