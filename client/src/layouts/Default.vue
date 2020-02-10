@@ -37,6 +37,12 @@
                   <div class="playing-dot bg-teal-flashy w-2 h-2 rounded-full"></div>
                   <span class="ml-2 text-teal-flashy font-semibold text-sm">In Game</span>
                 </div>
+                <div v-if="false" class="ml-4 mt-2 inline-flex items-center px-2 py-1 border border-teal-500 rounded leading-tight" style="background: rgba(40, 94, 97, 0.35);">
+                  <svg class="w-4 h-4 text-teal-600">
+                    <use xlink:href="#star" />
+                  </svg>
+                  <div class="ml-1 text-xs text-teal-200 font-bold">Favorite</div>
+                </div>
               </div>
               <div class="flex">
                 <div :class="{'playing': playing}" class="relative w-24 h-24">

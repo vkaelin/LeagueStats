@@ -3,11 +3,24 @@
     <div v-if="dropdown" @click="dropdown = false" class="fixed z-20 inset-0"></div>
     <div class="relative w-full">
       <input
+        ref="input"
         v-model="summoner"
+        @focus="selected = true"
         type="text"
         :class="[inputClasses]"
         class="w-full rounded-lg outline-none pl-6 pr-32 font-bold focus:bg-blue-1000"
       />
+      <transition
+        enter-active-class="transition-all transition-fastest ease-out-quad"
+        leave-active-class="transition-all transition-faster ease-in-quad"
+        enter-class="opacity-0 scale-90"
+        enter-to-class="opacity-100 scale-100"
+        leave-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-90"
+      >
+        <SearchFormDropdown v-if="selected" @click-dropdown="clickDropdown = true" />
+      </transition>
+
       <div class="absolute right-0 z-30 vertical-center flex items-center h-full mr-12">
         <div
           @click="dropdown = !dropdown"
@@ -55,6 +68,7 @@
         </div>
       </transition>
       <button
+        ref="submit"
         :class="[btnClasses]"
         class="absolute right-0 z-30 h-full hover:text-teal-200"
         type="submit"
@@ -69,14 +83,20 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import SearchFormDropdown from '@/components/SearchFormDropdown.vue'
 
 export default {
+  components: {
+    SearchFormDropdown,
+  },
+
   props: {
     size: {
       type: String,
       default: 'xl'
     }
   },
+
   data() {
     return {
       summoner: '',
@@ -94,8 +114,11 @@ export default {
         'TR',
         'RU'
       ],
+      clickDropdown: false,
+      selected: false,
     }
   },
+
   computed: {
     btnClasses() {
       return {
@@ -105,7 +128,7 @@ export default {
     },
     formClasses() {
       return {
-        'max-w-md': this.size === 'small',
+        'max-w-lg': this.size === 'small',
       }
     },
     inputClasses() {
@@ -126,6 +149,17 @@ export default {
       selectedRegion: state => state.settings.region
     }),
   },
+
+  mounted() {
+    window.addEventListener('mousedown', this.globalClick)
+    window.addEventListener('blur', this.windowBlur)
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('mousedown', this.globalClick)
+    window.removeEventListener('blur', this.windowBlur)
+  },
+
   methods: {
     classRegions(index) {
       return {
@@ -137,6 +171,16 @@ export default {
       if (search.length) {
         this.$emit('formSubmit', search, this.selectedRegion)
       }
+    },
+    globalClick(e) {
+      if (e.target === this.$refs.input || e.target === this.$refs.submit) return
+      if (!this.clickDropdown) {
+        this.selected = false
+      }
+      this.clickDropdown = false
+    },
+    windowBlur() {
+      this.selected = false
     },
     ...mapActions('settings', ['updateSettings']),
   }

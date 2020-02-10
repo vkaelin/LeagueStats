@@ -107,15 +107,22 @@ export const mutations = {
 
 export const actions = {
   async basicRequest({ commit, dispatch, rootState }, { summoner, region }) {
-    region = rootState.regionsList[region]
+    const regionId = rootState.regionsList[region]
     commit('BASIC_REQUEST')
     try {
-      const resp = await axios(({ url: 'summoner-basic', data: { summoner, region }, method: 'POST' }))
+      const resp = await axios(({ url: 'summoner-basic', data: { summoner, region: regionId }, method: 'POST' }))
       if (resp.data) {
         console.log(`---SUMMONER INFOS ${resp.data.account.name}---`)
         console.log(resp.data)
         const infos = createBasicSummonerData(resp.data)
         commit('SUMMONER_FOUND', infos)
+
+        // Add summoner to recent searches
+        dispatch('settings/addRecentSearch', {
+          name: infos.account.name,
+          icon: infos.account.profileIconId,
+          region,
+        }, { root: true })
       } else {
         commit('SUMMONER_NOT_FOUND')
 
