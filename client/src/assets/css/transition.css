@@ -45,19 +45,17 @@
 
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-    transition: all 0.4s;
+  transition: all 0.4s;
 }
 
 .slide-fade-enter,
 .slide-fade-leave-to {
-    transform: translateX(400px);
-    opacity: 0;
+  transform: translateX(400px);
+  opacity: 0;
 }
 
 .tab-enter-active {
-  transition: all;
-  transition-duration: 150ms;
-  transition-timing-function: cubic-bezier(.25, .46, .45, .94);
+  @apply transition-all transition-fast ease-out-quad;
 }
 
 .tab-enter {
@@ -66,6 +64,24 @@
 
 .tab-enter-to {
   opacity: 1;
+}
+
+.scale-fade-enter-active {
+  @apply transition-all transition-fastest ease-out-quad;
+}
+
+.scale-fade-leave-active {
+  @apply transition-all transition-fastest ease-in-quad;
+}
+
+.scale-fade-enter,
+.scale-fade-leave-to {
+  @apply opacity-0 scale-90;
+}
+
+.scale-fade-enter-to,
+.scale-fade-leave {
+  @apply opacity-100 scale-100;
 }
 
 /* purgecss end ignore */

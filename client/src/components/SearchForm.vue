@@ -10,14 +10,7 @@
         :class="[inputClasses]"
         class="w-full rounded-lg outline-none pl-6 pr-32 font-bold focus:bg-blue-1000"
       />
-      <transition
-        enter-active-class="transition-all transition-fastest ease-out-quad"
-        leave-active-class="transition-all transition-faster ease-in-quad"
-        enter-class="opacity-0 scale-90"
-        enter-to-class="opacity-100 scale-100"
-        leave-class="opacity-100 scale-100"
-        leave-to-class="opacity-0 scale-90"
-      >
+      <transition name="scale-fade">
         <SearchFormDropdown v-if="selected" @click-dropdown="clickDropdown = true" />
       </transition>
 
@@ -33,14 +26,7 @@
           </svg>
         </div>
       </div>
-      <transition
-        enter-active-class="transition-all transition-fastest ease-out-quad"
-        leave-active-class="transition-all transition-faster ease-in-quad"
-        enter-class="opacity-0 scale-90"
-        enter-to-class="opacity-100 scale-100"
-        leave-class="opacity-100 scale-100"
-        leave-to-class="opacity-0 scale-90"
-      >
+      <transition name="scale-fade">
         <div
           v-show="dropdown"
           :class="[dropdownClasses]"
