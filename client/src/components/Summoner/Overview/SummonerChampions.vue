@@ -9,7 +9,7 @@
         <use xlink:href="#layers" />
       </svg>
       <div class="absolute right-0 top-0 mt-3 mr-2">
-        <Dropdown>
+        <Tooltip>
           <template v-slot:trigger>
             <svg class="w-4 h-4 cursor-pointer">
               <use xlink:href="#info" />
@@ -27,7 +27,7 @@
               </div>
             </div>
           </template>
-        </Dropdown>
+        </Tooltip>
       </div>
     </div>
     <div v-if="stats.champion.length">
@@ -87,11 +87,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import Dropdown from '@/components/Dropdown.vue'
+import Tooltip from '@/components/Common/Tooltip.vue'
 
 export default {
   components: {
-    Dropdown,
+    Tooltip,
   },
 
   computed: {

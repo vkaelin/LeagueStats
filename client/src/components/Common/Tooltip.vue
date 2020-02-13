@@ -3,16 +3,16 @@
     <!-- trigger -->
     <div
       ref="trigger"
-      @mouseenter="showDropdown"
+      @mouseenter="showTooltip"
       @mousemove="mousemove"
-      @mouseleave="hideDropdown"
+      @mouseleave="hideTooltip"
       :aria-expanded="isOpen"
       aria-haspopup="true"
     >
       <slot name="trigger"></slot>
     </div>
 
-    <!-- dropdown content -->
+    <!-- tooltip content -->
     <div
       v-show="isOpen"
       ref="content"
@@ -58,7 +58,7 @@ export default {
   },
 
   methods: {
-    checkDropdownVisibility() {
+    checkTooltipVisibility() {
       this.directionChecked = true
       const contentRect = this.$refs.content.getBoundingClientRect()
       const triggerRect = this.$refs.trigger.getBoundingClientRect()
@@ -74,7 +74,7 @@ export default {
     height() {
       return this.$refs.content ? this.$refs.content.clientHeight : 0
     },
-    hideDropdown() {
+    hideTooltip() {
       this.isOpen = false
       this.directionBottom = true
       this.directionRight = true
@@ -86,10 +86,10 @@ export default {
 
       if (!this.directionChecked) {
         await this.$nextTick()
-        this.checkDropdownVisibility()
+        this.checkTooltipVisibility()
       }
     },
-    showDropdown(event) {
+    showTooltip(event) {
       this.left = event.clientX
       this.top = event.clientY
       this.isOpen = true

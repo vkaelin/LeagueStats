@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Ripple from '@/components/Ripple.vue'
+import Ripple from '@/components/Common/Ripple.vue'
 
 export default {
   components: {

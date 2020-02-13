@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import PopupNotification from '@/components/PopupNotification.vue'
+import PopupNotification from '@/components/Global/PopupNotification.vue'
 import { mapState } from 'vuex' 
 
 export default {

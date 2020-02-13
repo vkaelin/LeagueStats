@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import LazyBackground from '@/components/LazyBackgroundImage.vue'
-import SearchForm from '@/components/SearchForm.vue'
+import LazyBackground from '@/components/Common/LazyBackgroundImage.vue'
+import SearchForm from '@/components/Form/SearchForm.vue'
 
 export default {
   components: {

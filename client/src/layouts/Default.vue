@@ -127,10 +127,10 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import FilterSeason from '@/components/Summoner/FilterSeason.vue'
-import LazyBackground from '@/components/LazyBackgroundImage.vue'
-import MainFooter from '@/components/MainFooter.vue'
+import LazyBackground from '@/components/Common/LazyBackgroundImage.vue'
+import MainFooter from '@/components/Layout/MainFooter.vue'
 import RecentActivity from '@/components/Summoner/RecentActivity.vue'
-import SearchForm from '@/components/SearchForm.vue'
+import SearchForm from '@/components/Form/SearchForm.vue'
 import HeaderLoader from '@/components/Summoner/HeaderLoader.vue'
 import SummonerRanked from '@/components/Summoner/SummonerRanked.vue'
 

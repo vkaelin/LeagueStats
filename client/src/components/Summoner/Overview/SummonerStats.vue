@@ -9,7 +9,7 @@
         <use xlink:href="#graph" />
       </svg>
       <div class="absolute right-0 top-0 mt-3 mr-2">
-        <Dropdown>
+        <Tooltip>
           <template v-slot:trigger>
             <svg class="w-4 h-4 cursor-pointer">
               <use xlink:href="#info" />
@@ -27,7 +27,7 @@
               </div>
             </div>
           </template>
-        </Dropdown>
+        </Tooltip>
       </div>
     </div>
     <div class="mt-2 flex items-center py-2">
@@ -36,7 +36,7 @@
         :key="index"
         class="flex flex-col items-center w-1/5"
       >
-        <Dropdown>
+        <Tooltip>
           <template v-slot:trigger>
             <div class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full cursor-pointer">
               <div
@@ -69,7 +69,7 @@
               >{{ calculateWinrate(role.wins, role.count).winrate|round }}%</div>
             </div>
           </template>
-        </Dropdown>
+        </Tooltip>
         <div
           :style="{backgroundImage: `url(${require('@/assets/img/roles/' + role.role + '.png')})`}"
           class="mt-1 w-4 h-4 bg-center bg-cover"
@@ -226,12 +226,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import Dropdown from '@/components/Dropdown.vue'
+import Tooltip from '@/components/Common/Tooltip.vue'
 import { gameModes } from '@/data/data.js'
 
 export default {
   components: {
-    Dropdown,
+    Tooltip,
   },
 
   computed: {

@@ -12,8 +12,8 @@
 import { mapActions } from 'vuex'
 import Default from '@/layouts/Default.vue'
 import Home from '@/layouts/Home.vue'
-import NotificationsContainer from '@/components/NotificationsContainer.vue'
-import SVGContainer from '@/components/SVGContainer.vue'
+import NotificationsContainer from '@/components/Global/NotificationsContainer.vue'
+import SVGContainer from '@/components/Global/SVGContainer.vue'
 
 export default {
   components: {

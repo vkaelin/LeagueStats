@@ -32,6 +32,7 @@
 
 <script>
 import { timeDifference } from '@/helpers/functions.js'
+
 export default {
   props: {
     color: {

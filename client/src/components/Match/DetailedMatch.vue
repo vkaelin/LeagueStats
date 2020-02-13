@@ -29,7 +29,7 @@
 import { mapState } from 'vuex'
 import DetailedMatchGlobalStats from '@/components/Match/DetailedMatchGlobalStats.vue'
 import DetailedMatchTeam from '@/components/Match/DetailedMatchTeam.vue'
-import SwitchToggle from '@/components/SwitchToggle.vue'
+import SwitchToggle from '@/components/Form/SwitchToggle.vue'
 
 export default {
   components: {

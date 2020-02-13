@@ -44,7 +44,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import SearchFormDropdownPlayer from '@/components/SearchFormDropdownPlayer.vue'
+import SearchFormDropdownPlayer from '@/components/Form/SearchFormDropdownPlayer.vue'
 
 export default {
   components: {

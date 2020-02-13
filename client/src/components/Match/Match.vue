@@ -127,7 +127,7 @@
           <div class="ml-auto flex flex-col items-center justify-center">
             <img class="w-5 h-5" src="@/assets/img/icons/Stopwatch.svg" alt="Stopwatch" />
             <div class="text-lg text-teal-400 font-medium">{{ data.time|secToTime }}</div>
-            <Dropdown>
+            <Tooltip>
               <template v-slot:trigger>
                 <div class="text-xs text-white font-medium">{{ data.date }}</div>
               </template>
@@ -140,7 +140,7 @@
                   <div>{{ data.fullDate.time }}</div>
                 </div>
               </template>
-            </Dropdown>
+            </Tooltip>
           </div>
         </div>
       </div>
@@ -151,15 +151,15 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import Dropdown from '@/components/Dropdown'
-import DetailedMatch from '@/components/Match/DetailedMatch'
-import MatchItems from '@/components/Match/MatchItems'
-import Ripple from '@/components/Ripple.vue'
+import Tooltip from '@/components/Common/Tooltip.vue'
+import DetailedMatch from '@/components/Match/DetailedMatch.vue'
+import MatchItems from '@/components/Match/MatchItems.vue'
+import Ripple from '@/components/Common/Ripple.vue'
 
 export default {
   components: {
     DetailedMatch,
-    Dropdown,
+    Tooltip,
     MatchItems,
     Ripple,
   },

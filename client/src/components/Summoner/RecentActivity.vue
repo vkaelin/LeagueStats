@@ -31,7 +31,7 @@
             class="ml-1 flex flex-col flex-wrap"
             style="width: calc(20px * 15); height: calc(20px * 7)"
           >
-            <Dropdown v-for="(day, index) in gridDays.slice(indexFirstMonday)" :key="day.timestamp">
+            <Tooltip v-for="(day, index) in gridDays.slice(indexFirstMonday)" :key="day.timestamp">
               <template v-slot:trigger>
                 <div
                   :class="[getCaseMargin(index), getCaseColor(day.matches)]"
@@ -46,7 +46,7 @@
                   </div>
                 </div>
               </template>
-            </Dropdown>
+            </Tooltip>
           </div>
         </div>
       </div>
@@ -55,11 +55,11 @@
 </template>
 
 <script>
-import Dropdown from '@/components/Dropdown.vue'
+import Tooltip from '@/components/Common/Tooltip.vue'
 
 export default {
   components: {
-    Dropdown,
+    Tooltip,
   },
 
   props: {

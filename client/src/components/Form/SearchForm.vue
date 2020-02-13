@@ -69,7 +69,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import SearchFormDropdown from '@/components/SearchFormDropdown.vue'
+import SearchFormDropdown from '@/components/Form/SearchFormDropdown.vue'
 
 export default {
   components: {

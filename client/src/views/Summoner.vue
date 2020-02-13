@@ -6,7 +6,7 @@
       <SummonerMates />
     </div>
     <div class="w-9/12">
-      <div v-if="current" class="mb-4">
+      <div v-if="current && current.participants" class="mb-4">
         <LiveMatch />
       </div>
       <div v-if="overview.matches.length">
@@ -36,7 +36,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import LiveMatch from '@/components/Match/LiveMatch.vue'
-import LoadingButton from '@/components/LoadingButton.vue'
+import LoadingButton from '@/components/Form/LoadingButton.vue'
 import Match from '@/components/Match/Match.vue'
 import OverviewLoader from '@/components/Summoner/Overview/OverviewLoader.vue'
 import SummonerChampions from '@/components/Summoner/Overview/SummonerChampions.vue'

@@ -1,6 +1,6 @@
 <template>
   <div :class="oneRow ? 'ml-2 items-center' : 'items-2-rows flex-wrap'" class="flex">
-    <Dropdown v-for="(item, index) in items" :key="index">
+    <Tooltip v-for="(item, index) in items" :key="index">
       <template v-slot:trigger>
         <div
           :style="{backgroundImage: item ? `url('${item.image}')` : null}"
@@ -24,16 +24,16 @@
           </div>
         </div>
       </template>
-    </Dropdown>
+    </Tooltip>
   </div>
 </template>
 
 <script>
-import Dropdown from '@/components/Dropdown.vue'
+import Tooltip from '@/components/Common/Tooltip.vue'
 
 export default {
   components: {
-    Dropdown
+    Tooltip
   },
 
   props: {

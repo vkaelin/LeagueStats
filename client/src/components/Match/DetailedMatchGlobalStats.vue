@@ -1,7 +1,7 @@
 <template>
   <div :class="allyTeam ? 'text-left' : 'text-right'">
     <div v-if="team.bans">
-      <Dropdown
+      <Tooltip
         v-for="ban in team.bans"
         :key="'ban-' + ban.pickTurn"
         :class="{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}"
@@ -27,7 +27,7 @@
             <div>{{ ban.champion.id ? ban.champion.name : 'No ban' }}</div>
           </div>
         </template>
-      </Dropdown>
+      </Tooltip>
     </div>
     <div
       :class="allyTeam ? 'text-left' : 'text-right flex-row-reverse'"
@@ -73,11 +73,11 @@
 </template>
 
 <script>
-import Dropdown from '@/components/Dropdown'
+import Tooltip from '@/components/Common/Tooltip.vue'
 
 export default {
   components: {
-    Dropdown,
+    Tooltip,
   },
 
   props: {

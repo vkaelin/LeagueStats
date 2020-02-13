@@ -28,7 +28,7 @@
             >{{ mate.name }}</router-link>
             <div class="w-1/4">{{ mate.wins }} / {{ mate.losses }}</div>
             <div class="w-1/4">
-              <Dropdown>
+              <Tooltip>
                 <template v-slot:trigger>
                   <div class="bg-blue-900 rounded-full h-2 cursor-pointer">
                     <div
@@ -49,7 +49,7 @@
                     </div>
                   </div>
                 </template>
-              </Dropdown>
+              </Tooltip>
             </div>
           </li>
         </ul>
@@ -64,11 +64,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import Dropdown from '@/components/Dropdown.vue'
+import Tooltip from '@/components/Common/Tooltip.vue'
 
 export default {
   components: {
-    Dropdown,
+    Tooltip,
   },
 
   data() {

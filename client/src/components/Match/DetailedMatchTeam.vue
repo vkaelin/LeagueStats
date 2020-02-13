@@ -71,7 +71,7 @@
                 </div>
               </div>
               <div class="ml-1 flex flex-col justify-around">
-                <Dropdown>
+                <Tooltip>
                   <template v-slot:trigger>
                     <div
                       :style="{backgroundImage: `url(${player.firstSum ? player.firstSum.icon : null})`}"
@@ -91,8 +91,8 @@
                       </div>
                     </div>
                   </template>
-                </Dropdown>
-                <Dropdown>
+                </Tooltip>
+                <Tooltip>
                   <template v-slot:trigger>
                     <div
                       :style="{backgroundImage: `url(${player.secondSum ? player.secondSum.icon : null})`}"
@@ -114,7 +114,7 @@
                       </div>
                     </div>
                   </template>
-                </Dropdown>
+                </Tooltip>
               </div>
               <div class="ml-2px flex flex-col justify-around">
                 <div
@@ -204,14 +204,14 @@
 
 <script>
 import { mapState } from 'vuex'
-import DotsLoader from '@/components/DotsLoader'
-import Dropdown from '@/components/Dropdown'
-import MatchItems from '@/components/Match/MatchItems'
+import DotsLoader from '@/components/Common/DotsLoader.vue'
+import Tooltip from '@/components/Common/Tooltip.vue'
+import MatchItems from '@/components/Match/MatchItems.vue'
 
 export default {
   components: {
     DotsLoader,
-    Dropdown,
+    Tooltip,
     MatchItems,
   },
 
