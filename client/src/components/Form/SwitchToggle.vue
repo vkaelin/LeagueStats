@@ -11,7 +11,7 @@
       :class="{'selected-label': selected}"
       for="toggle-on"
       class="inline-block py-1 rounded-l-full border-t-2 border-r border-b-2 border-l-2 border-teal-500 cursor-pointer"
-    >%</label>
+    >{{ leftLabel }}</label>
     <input
       v-model="selected"
       id="toggle-off"
@@ -23,7 +23,7 @@
       :class="{'selected-label': !selected}"
       for="toggle-off"
       class="inline-block py-1 rounded-r-full border-t-2 border-r-2 border-b-2 border-l border-teal-500 cursor-pointer"
-    >Total</label>
+    >{{ rightLabel }}</label>
     <div
       :class="selected ? 'left-checked' : 'right-checked'"
       class="selector absolute w-1/2 inset-0 bg-teal-500"
@@ -32,26 +32,31 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
-
 export default {
+  props: {
+    leftLabel: {
+      type: String,
+      required: true,
+    },
+    rightLabel: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: Boolean,
+      required: true,
+    }
+  },
   computed: {
     selected: {
       get() {
-        return this.percentSettings
+        return this.value
       },
       set(value) {
-        this.updatePercent(value)
+        this.$emit('updateValue', value)
       }
     },
-    ...mapState({
-      percentSettings: state => state.settings.percent
-    }),
   },
-
-  methods: {
-    ...mapActions('settings', ['updatePercent']),
-  }
 }
 </script>
 

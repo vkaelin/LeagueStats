@@ -9,7 +9,13 @@
 
       <div class="px-3 py-2 flex justify-between items-start">
         <DetailedMatchGlobalStats :team="allyTeam" :ally-team="true" />
-        <SwitchToggle class="mt-2"></SwitchToggle>
+        <SwitchToggle
+          @updateValue="updatePercent"
+          left-label="%"
+          right-label="Total"
+          :value="percentSettings"
+          class="mt-2"
+        ></SwitchToggle>
         <DetailedMatchGlobalStats :team="enemyTeam" :ally-team="false" />
       </div>
 
@@ -26,7 +32,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import DetailedMatchGlobalStats from '@/components/Match/DetailedMatchGlobalStats.vue'
 import DetailedMatchTeam from '@/components/Match/DetailedMatchTeam.vue'
 import SwitchToggle from '@/components/Form/SwitchToggle.vue'
@@ -56,8 +62,13 @@ export default {
       return this.data.blueTeam.players.some(p => p.summonerId === this.account.id) ? this.data.redTeam : this.data.blueTeam
     },
     ...mapState({
-      account: state => state.summoner.basic.account
+      account: state => state.summoner.basic.account,
+      percentSettings: state => state.settings.percent
     }),
+  },
+
+  methods: {
+    ...mapActions('settings', ['updatePercent']),
   }
 }
 </script>
