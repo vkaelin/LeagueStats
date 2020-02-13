@@ -32,7 +32,7 @@ export default {
   created() {
     this.updatePercent()
     this.updateSettings({name: 'region'})
-    this.updateSettings({name: 'recent_searches', isJson: true})
+    this.updateSettings({name: 'recentSearches', isJson: true})
     this.updateSettings({name: 'favorites', isJson: true})
   },
 

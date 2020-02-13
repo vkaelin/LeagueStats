@@ -34,28 +34,19 @@ export const mutations = {
   REMOVE_SEARCH(state, summonerName) {
     state.recentSearches = state.recentSearches.filter(s => s.name !== summonerName)
   },
-  UPDATE_FAVORITES(state, favorites) {
-    state.favorites = favorites
-  },
-  UPDATE_PERCENT(state, percent) {
-    state.percent = percent
-  },
-  UPDATE_RECENT_SEARCHES(state, recentSearches) {
-    state.recentSearches = recentSearches
-  },
-  UPDATE_REGION(state, region) {
-    state.region = region
-  },
+  UPDATE_SETTING(state, { name, value }) {
+    state[name] = value
+  }
 }
 
 export const actions = {
   addRecentSearch({ commit, dispatch, state }, summoner) {
     commit('ADD_SEARCH', summoner)
-    dispatch('updateSettings', { name: 'recent_searches', value: state.recentSearches, isJson: true })
+    dispatch('updateSettings', { name: 'recentSearches', value: state.recentSearches, isJson: true })
   },
   removeRecentSearch({ commit, dispatch }, summoner) {
     commit('REMOVE_SEARCH', summoner.name)
-    dispatch('updateSettings', { name: 'recent_searches', value: state.recentSearches, isJson: true })
+    dispatch('updateSettings', { name: 'recentSearches', value: state.recentSearches, isJson: true })
   },
   updateFavorite({ commit, dispatch, state }, summoner) {
     const alreadyFav = state.favorites.find(s => s.name === summoner.name)
@@ -80,7 +71,7 @@ export const actions = {
     } else {
       localStorage.setItem('settings-percent', percent)
     }
-    commit('UPDATE_PERCENT', percent)
+    commit('UPDATE_SETTING', { name: 'percent', value: percent })
   },
   updateSettings({ commit }, { name, value, isJson = false }) {
     if (!value) {
@@ -90,6 +81,6 @@ export const actions = {
     } else {
       localStorage.setItem(name, isJson ? JSON.stringify(value) : value)
     }
-    commit(`UPDATE_${name.toUpperCase()}`, value)
+    commit('UPDATE_SETTING', { name, value })
   }
 }
