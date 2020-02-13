@@ -1,6 +1,6 @@
 import { timeDifference } from '@/helpers/functions.js'
 import { maps, gameModes } from '@/data/data.js'
-import summonersJSON from '@/data/summoner.json'
+import summonerSpells from '@/data/summonerSpells.json'
 
 const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
 
@@ -94,6 +94,6 @@ export function getRankImg(leagueData) {
 
 export function getSummonerLink(id) {
   if (id === 0) return null
-  const spellName = summonersJSON.find(s => s.id === id).iconPath.split('/assets/')[1].toLowerCase()
+  const spellName = summonerSpells.find(s => s.id === id).iconPath.split('/assets/')[1].toLowerCase()
   return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${spellName}`
 }
