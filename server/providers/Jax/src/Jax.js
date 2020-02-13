@@ -5,11 +5,6 @@ const MatchlistEndpoint = require('./Endpoints/MatchlistEndpoint')
 const SpectatorEndpoint = require('./Endpoints/SpectatorEndpoint')
 const SummonerEndpoint = require('./Endpoints/SummonerEndpoint')
 
-const DDragonVersionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonVersionEndpoint')
-const DDragonChampionEndpoint = require('./Endpoints/DDragonEndpoints/DDragonChampionEndpoint')
-const DDragonRuneEndpoint = require('./Endpoints/DDragonEndpoints/DDragonRuneEndpoint')
-const DDragonItemEndpoint = require('./Endpoints/DDragonEndpoints/DDragonItemEndpoint')
-
 const CDragonEndpoint = require('./Endpoints/CDragonEndpoint')
 
 class Jax {
@@ -27,25 +22,12 @@ class Jax {
     this.Spectator = new SpectatorEndpoint(this.config, this.limiter)
     this.Summoner = new SummonerEndpoint(this.config, this.limiter)
 
-    this.initDDragon()
-
     this.CDragon = new CDragonEndpoint()
-  }
-
-  async initDDragon() {
-    this.version = (await new DDragonVersionEndpoint().list())[0]
-
-    this.DDragon = {
-      Champion: new DDragonChampionEndpoint(this.version),
-      Item: new DDragonItemEndpoint(this.version),
-      Rune: new DDragonRuneEndpoint(this.version),
-      Version: this.version
-    }
   }
 
   set regionName(regionName) {
     this.config.region = regionName
-    const blacklistedProperties = ['key', 'limiter', 'config', 'version', 'DDragon']
+    const blacklistedProperties = ['key', 'limiter', 'config', 'version', 'CDragon']
 
     for (const key of Object.getOwnPropertyNames(this)) {
       if(blacklistedProperties.includes(key)) continue

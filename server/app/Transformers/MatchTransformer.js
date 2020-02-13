@@ -10,7 +10,7 @@ const Helpers = use('App/helpers')
  */
 class MatchTransformer {
   /**
-   * Get global Context with DDragon Data
+   * Get global Context with CDragon Data
    */
   async getContext() {
     const items = await Jax.CDragon.items()
