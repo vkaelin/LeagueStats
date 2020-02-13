@@ -33,14 +33,14 @@ export const actions = {
     const region = rootState.regionsList[rootState.settings.region]
     console.log('MATCH DETAILS STORE', gameId, region)
 
-    const resp = await axios(({ url: 'match-details', data: { gameId, region }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({ url: 'match/details', data: { gameId, region }, method: 'POST' })).catch(() => { })
     console.log('--- DETAILS INFOS ---')
     console.log(resp.data)
     commit('MATCH_FOUND', resp.data.matchDetails)
 
     // If the ranks of the players are not yet known
     if (resp.data.matchDetails.blueTeam.players[0].rank === undefined) {
-      const ranks = await axios(({ url: 'match-details-ranks', data: { gameId, region }, method: 'POST' })).catch(() => { })
+      const ranks = await axios(({ url: 'match/details/ranks', data: { gameId, region }, method: 'POST' })).catch(() => { })
       console.log('--- RANK OF MATCH DETAILS ---')
       console.log(ranks.data)
       commit('MATCH_RANKS_FOUND', { gameId, ...ranks.data })

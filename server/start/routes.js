@@ -25,11 +25,11 @@ Route.get('/', async () => {
   }
 })
 
-Route.post('/summoner-basic', 'SummonerController.basic')
-Route.post('/summoner-overview', 'SummonerController.overview')
-Route.post('/summoner-champions', 'SummonerController.champions')
-Route.post('/summoner-records', 'SummonerController.records')
-Route.post('/summoner-live', 'SummonerController.liveMatchDetails')
+Route.post('/summoner/basic', 'SummonerController.basic')
+Route.post('/summoner/overview', 'SummonerController.overview')
+Route.post('/summoner/champions', 'SummonerController.champions')
+Route.post('/summoner/records', 'SummonerController.records')
+Route.post('/summoner/live', 'SummonerController.liveMatchDetails')
 Route.post('/match', 'MatchController.index')
-Route.post('/match-details', 'MatchController.show')
-Route.post('/match-details-ranks', 'MatchController.showRanks')
+Route.post('/match/details', 'MatchController.show')
+Route.post('/match/details/ranks', 'MatchController.showRanks')

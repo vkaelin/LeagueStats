@@ -110,7 +110,7 @@ export const actions = {
     const regionId = rootState.regionsList[region]
     commit('BASIC_REQUEST')
     try {
-      const resp = await axios(({ url: 'summoner-basic', data: { summoner, region: regionId }, method: 'POST' }))
+      const resp = await axios(({ url: 'summoner/basic', data: { summoner, region: regionId }, method: 'POST' }))
       if (resp.data) {
         console.log(`---SUMMONER INFOS ${resp.data.account.name}---`)
         console.log(resp.data)
@@ -143,7 +143,7 @@ export const actions = {
     commit('CHAMPIONS_NOT_FOUND')
   },
   async championsRequest({ commit }, queue = null) {
-    const resp = await axios(({ url: 'summoner-champions', data: { puuid: state.basic.account.puuid, queue: queue }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({ url: 'summoner/champions', data: { puuid: state.basic.account.puuid, queue: queue }, method: 'POST' })).catch(() => { })
     console.log('---CHAMPIONS---')
     console.log(resp.data)
 
@@ -153,7 +153,7 @@ export const actions = {
     commit('LIVE_LOADING')
     const region = rootState.regionsList[rootState.settings.region]
 
-    const resp = await axios(({ url: 'summoner-live', data: { account: state.basic.account, region }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({ url: 'summoner/live', data: { account: state.basic.account, region }, method: 'POST' })).catch(() => { })
     console.log('---LIVE---')
     console.log(resp.data)
 
@@ -176,14 +176,14 @@ export const actions = {
     commit('MATCHES_FOUND', { newMatches, stats: resp.data.stats })
   },
   async overviewRequest({ commit }) {
-    const resp = await axios(({ url: 'summoner-overview', data: { account: state.basic.account }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({ url: 'summoner/overview', data: { account: state.basic.account }, method: 'POST' })).catch(() => { })
     console.log('---OVERVIEW---')
     console.log(resp.data)
     resp.data.matches = createMatchData(resp.data.matchesDetails)
     commit('OVERVIEW_FOUND', resp.data)
   },
   async recordsRequest({ commit }) {
-    const resp = await axios(({ url: 'summoner-records', data: { puuid: state.basic.account.puuid }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({ url: 'summoner/records', data: { puuid: state.basic.account.puuid }, method: 'POST' })).catch(() => { })
     console.log('---RECORDS---')
     console.log(resp.data)
     const records = resp.data ? createRecordsData(resp.data) : {}

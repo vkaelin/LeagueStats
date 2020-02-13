@@ -15,7 +15,7 @@ axios.defaults.cancelToken = axiosSource.token
 
 // Add season number to data if the route need it
 axios.interceptors.request.use(function (config) {
-  if (config.url !== 'summoner-basic' && router.currentRoute.meta.season) {
+  if (config.url !== 'summoner/basic' && router.currentRoute.meta.season) {
     config.data.season = store.state.summoner.basic.currentSeason
   }
   return config
