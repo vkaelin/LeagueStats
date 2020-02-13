@@ -10,7 +10,7 @@
           class="ml-4 bg-blue-800 px-3 py-1 text-blue-100 rounded-md shadow-md hover:bg-blue-760"
         >Reload</button>
       </div>
-      <div v-else class="h-8"></div>
+      <div v-else class="h-4"></div>
 
       <LiveTeam :team="allyTeam" :ally="true" />
       <LiveTeam :team="enemyTeam" :ally="false" class="mt-4" />
