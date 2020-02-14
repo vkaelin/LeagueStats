@@ -107,8 +107,8 @@
             </template>
           </div>
         </template>
-        <!-- View -->
 
+        <!-- View -->
         <transition :name="tabTransition">
           <slot></slot>
         </transition>
@@ -150,15 +150,6 @@ export default {
   },
 
   computed: {
-    summoner() {
-      return this.$route.params.name
-    },
-    region() {
-      return this.$route.params.region
-    },
-    uri() {
-      return `${this.summoner}|${this.region}`
-    },
     tabTransition() {
       return this.summonerFound && this.overviewLoaded ? 'tab' : 'none'
     },
@@ -169,21 +160,19 @@ export default {
   },
 
   watch: {
-    uri() {
-      console.log('route changed')
-      this.updateSettings({ name: 'region', value: this.region.toLowerCase() })
+    $route() {
       this.apiCall()
     }
   },
 
   created() {
-    this.updateSettings({ name: 'region', value: this.region.toLowerCase() })
     this.apiCall()
   },
 
   methods: {
     apiCall() {
-      this.basicRequest({ summoner: this.summoner, region: this.region })
+      this.updateSettings({ name: 'region', value: this.$route.params.region.toLowerCase() })
+      this.basicRequest({ summoner: this.$route.params.name, region: this.$route.params.region })
     },
     isRouteActive(currentRoute) {
       return {
