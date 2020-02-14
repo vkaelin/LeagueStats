@@ -160,7 +160,9 @@ export default {
   },
 
   watch: {
-    $route() {
+    $route(to, from) {
+      if (from.params.region === to.params.region && from.params.name === to.params.name)
+        return
       this.apiCall()
     }
   },
