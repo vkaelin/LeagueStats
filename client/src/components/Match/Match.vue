@@ -73,22 +73,30 @@
 
           <div class="relative z-30 ml-4 leading-none">
             <div class="flex items-center">
-              <img src="@/assets/img/icons/Creep.svg" alt="Minions" />
+              <svg style="width: 15px; height: 15px;">
+                <use xlink:href="#creeps" />
+              </svg>
               <div class="ml-1 text-teal-300 text-sm font-bold">
                 {{ data.stats.minions }}
                 <span class="font-normal">cs</span>
               </div>
             </div>
             <div class="flex items-center">
-              <img src="@/assets/img/icons/Gold.svg" alt="Gold" />
+              <svg style="width: 15px; height: 15px;">
+                <use xlink:href="#gold" />
+              </svg>
               <div class="ml-1 gold text-sm font-bold">{{ data.stats.gold|kilo }}</div>
             </div>
             <div class="flex items-center">
-              <img src="@/assets/img/icons/Damage.svg" alt="Damage" />
+              <svg style="width: 15px; height: 15px;">
+                <use xlink:href="#damage" />
+              </svg>
               <div class="ml-1 damage text-sm font-bold">{{ data.stats.dmgChamp|kilo }}</div>
             </div>
             <div class="flex items-center">
-              <img src="@/assets/img/icons/KillParticipation.svg" alt="KillParticipation" />
+              <svg style="width: 15px; height: 15px;">
+                <use xlink:href="#kill-participation" />
+              </svg>
               <div class="ml-1 kp text-sm font-bold">{{ data.stats.kp|percent }}</div>
             </div>
           </div>
@@ -125,7 +133,9 @@
             </div>
           </div>
           <div class="ml-auto flex flex-col items-center justify-center">
-            <img class="w-5 h-5" src="@/assets/img/icons/Stopwatch.svg" alt="Stopwatch" />
+            <svg class="w-5 h-5 text-blue-200">
+              <use xlink:href="#stopwatch" />
+            </svg>
             <div class="text-lg text-teal-400 font-medium">{{ data.time|secToTime }}</div>
             <Tooltip>
               <template v-slot:trigger>
