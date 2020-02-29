@@ -126,8 +126,8 @@
                   class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs font-bold rounded-full"
                 >{{ banChamp(index, player.teamId).pickTurn }}</div>
               </div>
-              <div v-else class="w-5 h-5">
-                <div class="-mt-1 text-blue-300 text-2xl">-</div>
+              <div v-else class="w-5 h-5 text-left">
+                <div class="text-blue-300 text-2xl">-</div>
               </div>
             </div>
           </td>
@@ -185,10 +185,26 @@ export default {
     ally: {
       type: Boolean,
       default: true,
+    },
+    gamemode: {
+      type: String,
+      default: '',
+    }
+  },
+
+  data() {
+    return {
+      customGameBanOrder: {
+        100: [1, 3, 5, 2, 4],
+        200: [2, 4, 6, 1, 3]
+      }
     }
   },
 
   computed: {
+    isCustom() {
+      return this.gamemode === 'Custom Game'
+    },
     ...mapState({
       account: state => state.summoner.basic.account,
       live: state => state.summoner.live.match,
@@ -198,12 +214,12 @@ export default {
 
   methods: {
     banChamp(index, teamId) {
-      index++
-
-      if (teamId === 200) {
+      if (teamId === 200 && !this.isCustom) {
         index += 5
       }
-      return this.live.bannedChampions.find(b => b.pickTurn === index)
+
+      const toFind = this.isCustom ? this.customGameBanOrder[teamId][index] : index + 1
+      return this.live.bannedChampions.find(b => b.pickTurn === toFind && b.teamId === teamId)
     },
     borderChampion(id) {
       if (id === this.account.id) {

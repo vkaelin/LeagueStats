@@ -12,8 +12,8 @@
       </div>
       <div v-else class="h-4"></div>
 
-      <LiveTeam :team="allyTeam" :ally="true" />
-      <LiveTeam :team="enemyTeam" :ally="false" class="mt-4" />
+      <LiveTeam :team="allyTeam" :ally="true" :gamemode="gamemode.name" />
+      <LiveTeam :team="enemyTeam" :ally="false" :gamemode="gamemode.name" class="mt-4" />
     </div>
     <div v-else>
       <div class="mt-16 flex justify-center">

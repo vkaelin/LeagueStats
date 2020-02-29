@@ -22,7 +22,11 @@ export const liveGame = {
       return this.current && this.current.participants ? this.current.participants.filter(p => p.teamId !== this.teamColor) : []
     },
     gamemode() {
-      return gameModes[this.current.gameQueueConfigId]
+      if (this.current.participants) {
+        return this.current.gameType === 'CUSTOM_GAME' ? { type: '', name: 'Custom Game' } : gameModes[this.current.gameQueueConfigId]
+      } else {
+        return { type: '', name: '' }
+      }
     },
     gameStartTime() {
       return this.current ? this.current.gameStartTime : 0
