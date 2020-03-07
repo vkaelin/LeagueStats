@@ -75,35 +75,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.grow-enter-active,
-.grow-enter-to-active {
-  transition: all 1500ms ease-out;
-}
-
-.grow-leave-active,
-.grow-leave-to-active {
-  transition: all 700ms ease-out;
-}
-
-.grow-enter {
-  transform: scale(0);
-  opacity: 1;
-}
-
-.grow-enter-to {
-  transform: scale(4);
-  opacity: 1;
-}
-
-.grow-leave {
-  transform: scale(4);
-  opacity: 1;
-}
-
-.grow-leave-to {
-  transform: scale(4);
-  opacity: 0;
-}
-</style>

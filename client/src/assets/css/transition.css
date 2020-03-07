@@ -35,6 +35,7 @@
   transform: scale(1);
 }
 
+/* Fade transition */
 .fade-enter-active, .fade-leave-active {
   transition: opacity 2s;
 }
@@ -43,6 +44,7 @@
   opacity: 0;
 }
 
+/* Slide fade transition (match details) */
 .slide-fade-enter-active,
 .slide-fade-leave-active {
   transition: all 0.4s;
@@ -54,6 +56,7 @@
   opacity: 0;
 }
 
+/* Tab transition */
 .tab-enter-active {
   @apply transition-all transition-fast ease-out-quad;
 }
@@ -66,6 +69,7 @@
   opacity: 1;
 }
 
+/* Scale-fade transition */
 .scale-fade-enter-active {
   @apply transition-all transition-fastest ease-out-quad;
 }
@@ -82,6 +86,37 @@
 .scale-fade-enter-to,
 .scale-fade-leave {
   @apply opacity-100 scale-100;
+}
+
+/* Grow transition (ripples) */
+.grow-enter-active,
+.grow-enter-to-active {
+  transition: all 1500ms ease-out;
+}
+
+.grow-leave-active,
+.grow-leave-to-active {
+  transition: all 700ms ease-out;
+}
+
+.grow-enter {
+  transform: scale(0);
+  opacity: 1;
+}
+
+.grow-enter-to {
+  transform: scale(4);
+  opacity: 1;
+}
+
+.grow-leave {
+  transform: scale(4);
+  opacity: 1;
+}
+
+.grow-leave-to {
+  transform: scale(4);
+  opacity: 0;
 }
 
 /* purgecss end ignore */
