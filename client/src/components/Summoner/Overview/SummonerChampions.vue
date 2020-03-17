@@ -111,6 +111,9 @@ export default {
 
   methods: {
     kda(kills, deaths, assists) {
+      if (kills === 0 && deaths === 0 && assists === 0) {
+        return 0
+      }
       return this.$options.filters.round((kills + assists) / deaths)
     },
     widthBar(value, total) {

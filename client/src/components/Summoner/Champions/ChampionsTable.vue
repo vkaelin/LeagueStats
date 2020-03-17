@@ -271,11 +271,12 @@ export default {
     },
     updateChampionsList() {
       this.championsFull = this.champions.map((champ, index) => {
+        let kda = champ.kills === 0 && champ.assists === 0 && champ.deaths === 0 ? 0 : (champ.kills + champ.assists) / champ.deaths
         return {
           ...champ,
           winrate: champ.wins * 100 / champ.count,
           playrate: champ.count * 100 / this.totalGames,
-          kda: (champ.kills + champ.assists) / champ.deaths,
+          kda,
           index,
           lastPlayed: timeDifference(champ.date),
           show: true
