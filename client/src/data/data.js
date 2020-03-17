@@ -19,7 +19,7 @@ export const gameModes = {
   },
   430: {
     type: 'Normal',
-    name: 'BLIND 5v5',
+    name: 'BLIND 5vs5',
   },
   440: {
     type: 'Ranked',
@@ -39,15 +39,15 @@ export const gameModes = {
   },
   800: {
     type: 'Bot',
-    name: '3v3 Co-op vs. AI (Intermediate)',
+    name: '3vs3 Co-op vs. AI (Intermediate)',
   },
   810: {
     type: 'Bot',
-    name: '3v3 Co-op vs. AI (Intro)',
+    name: '3vs3 Co-op vs. AI (Intro)',
   },
   820: {
     type: 'Bot',
-    name: '3v3 Co-op vs. AI (Beginner)',
+    name: '3vs3 Co-op vs. AI (Beginner)',
   },
   830: {
     type: 'Bot',
