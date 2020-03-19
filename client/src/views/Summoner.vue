@@ -1,11 +1,11 @@
 <template>
-  <div v-if="overviewLoaded" key="overview" class="mt-3 flex text-center">
-    <div class="w-3/12">
+  <div v-if="overviewLoaded" key="overview" class="mt-3 relative flex items-start text-center">
+    <div ref="sidebar" :class="{'fixed fixed-sidebar': fixedSidebar}" class="sidebar">
       <SummonerChampions />
       <SummonerStats />
       <SummonerMates />
     </div>
-    <div class="w-9/12">
+    <div :class="{'pushed-container': fixedSidebar}" class="w-9/12">
       <div v-if="current && current.participants" class="mb-4">
         <LiveMatch />
       </div>
@@ -54,6 +54,16 @@ export default {
     SummonerStats,
   },
 
+  data() {
+    return {
+      fixedSidebar: false,
+      sidebarRectangle: {
+        y: 354,
+        height: null,
+      },
+    }
+  },
+
   computed: {
     ...mapState({
       current: state => state.summoner.live.match,
@@ -64,7 +74,7 @@ export default {
 
   watch: {
     overviewLoaded() {
-      this.fetchData()
+      this.getSidebarHeight()
     },
     summonerFound() {
       this.fetchData()
@@ -73,6 +83,15 @@ export default {
 
   created() {
     this.fetchData()
+    window.addEventListener('scroll', this.handleScroll)
+  },
+
+  mounted() {
+    this.getSidebarHeight()
+  },
+
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
 
   methods: {
@@ -81,7 +100,30 @@ export default {
         this.overviewRequest()
       }
     },
+    getSidebarHeight() {
+      this.$nextTick(() => {
+        this.sidebarRectangle.height = this.$refs.sidebar ? this.$refs.sidebar.getBoundingClientRect().height : null
+      })
+    },
+    handleScroll() {
+      if (!this.sidebarRectangle.height) return
+      this.fixedSidebar = window.innerHeight + document.documentElement.scrollTop > this.sidebarRectangle.y + this.sidebarRectangle.height + 112
+    },
     ...mapActions('summoner', ['moreMatches', 'overviewRequest']),
   },
 }
 </script>
+
+<style scoped>
+.sidebar {
+  width: 300px;
+}
+
+.fixed-sidebar {
+  bottom: 112px;
+}
+
+.pushed-container {
+  margin-left: 300px;
+}
+</style>
