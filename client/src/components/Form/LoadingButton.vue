@@ -3,7 +3,7 @@
     @click="btnClicked"
     :class="[btnClass, {'loading': loading}, {'pr-12': loading}]"
     :disabled="loading"
-    class="relative"
+    class="relative select-none"
     type="button"
   >
     <slot>Send</slot>
