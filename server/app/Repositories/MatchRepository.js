@@ -74,7 +74,7 @@ class MatchRepository {
       assists: { $sum: '$stats.assists' },
     }
     const finalSteps = [
-      { $sort: { 'count': -1 } },
+      { $sort: { 'count': -1, 'champion.name': 1 } },
       { $limit: limit }
     ]
     return this._aggregate(puuid, {}, [], '$champion.id', groupParams, finalSteps)
@@ -117,7 +117,7 @@ class MatchRepository {
       kp: { $avg: '$stats.kp' },
     }
     const finalSteps = [
-      { $sort: { 'count': -1 } }
+      { $sort: { 'count': -1, 'champion.name': 1 } }
     ]
     return this._aggregate(puuid, matchParams, [], '$champion.id', groupParams, finalSteps)
   }
@@ -263,6 +263,7 @@ class MatchRepository {
    */
   mates(puuid) {
     const intermediateSteps = [
+      { $sort: { 'gameId': -1 } },
       { $unwind: '$allyTeam' },
     ]
     const groupParams = {
@@ -282,7 +283,7 @@ class MatchRepository {
           'count': { $gte: 2 }
         },
       },
-      { $sort: { 'count': -1 } },
+      { $sort: { 'count': -1, 'name': 1 } },
       { $limit: 15 },
     ]
     return this._aggregate(puuid, {}, intermediateSteps, '$allyTeam.account_id', groupParams, finalSteps)
