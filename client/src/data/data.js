@@ -64,5 +64,9 @@ export const gameModes = {
   920: {
     type: 'Normal',
     name: 'PORO KING',
+  },
+  1020: {
+    type: 'Normal',
+    name: 'One for All'
   }
 }
