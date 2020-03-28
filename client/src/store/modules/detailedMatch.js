@@ -41,6 +41,7 @@ export const actions = {
     // If the ranks of the players are not yet known
     if (resp.data.matchDetails.blueTeam.players[0].rank === undefined) {
       const ranks = await axios(({ url: 'match/details/ranks', data: { gameId, region }, method: 'POST' })).catch(() => { })
+      if (!ranks) return
       console.log('--- RANK OF MATCH DETAILS ---')
       console.log(ranks.data)
       commit('MATCH_RANKS_FOUND', { gameId, ...ranks.data })

@@ -78,6 +78,8 @@ export default {
     },
     summonerFound() {
       this.fetchData()
+      // Set default value when the summoner changes
+      this.fixedSidebar = false
     }
   },
 
