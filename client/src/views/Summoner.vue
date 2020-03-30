@@ -74,18 +74,18 @@ export default {
 
   watch: {
     overviewLoaded() {
+      this.fetchData()
+
       this.getSidebarHeight()
     },
     summonerFound() {
       this.fetchData()
-      // Set default value when the summoner changes
-      this.fixedSidebar = false
     }
   },
 
   created() {
     this.fetchData()
-    window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener('scroll', this.isSidebarFixed)
   },
 
   mounted() {
@@ -93,7 +93,7 @@ export default {
   },
 
   destroyed() {
-    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('scroll', this.isSidebarFixed)
   },
 
   methods: {
@@ -105,9 +105,10 @@ export default {
     getSidebarHeight() {
       this.$nextTick(() => {
         this.sidebarRectangle.height = this.$refs.sidebar ? this.$refs.sidebar.getBoundingClientRect().height : null
+        this.isSidebarFixed()
       })
     },
-    handleScroll() {
+    isSidebarFixed() {
       if (!this.sidebarRectangle.height) return
       this.fixedSidebar = window.innerHeight + document.documentElement.scrollTop > this.sidebarRectangle.y + this.sidebarRectangle.height + 112
     },
