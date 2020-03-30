@@ -19,6 +19,13 @@
         <img class="absolute logo" src="@/assets/img/Logo.svg" alt="logo" />
         <SearchForm @formSubmit="redirect" />
       </div>
+
+      <p
+        class="pb-4 absolute horizontal-center bottom-0 text-center text-xxs text-blue-300 leading-tight"
+      >
+        LeagueStats.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties.
+        <br />Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+      </p>
     </div>
   </div>
 </template>
@@ -34,7 +41,7 @@ export default {
   },
 
   methods: {
-    redirect (summoner, region) {
+    redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
   }
