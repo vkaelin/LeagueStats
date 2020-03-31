@@ -97,14 +97,20 @@
           <div class="w-1/4">{{ stat / stats.global.count|round }}</div>
         </li>
         <li class="flex justify-between items-center px-4 py-1 bg-blue-760 leading-tight">
-          <div class="w-1/4 text-left whitespace-no-wrap">kill participation</div>
-          <div class="w-1/4">{{ stats.global.kp|percent }}</div>
+          <div class="w-1/4 text-left whitespace-no-wrap">time</div>
+          <div class="w-1/4">{{ (stats.global.time / 3600).toFixed(1) + 'h' }}</div>
+          <div class="w-1/4"></div>
+          <div class="w-1/4">{{ (stats.global.time / stats.global.count)|secToTime(true) }}</div>
         </li>
         <li class="flex justify-between items-center px-4 py-1 leading-tight">
           <div class="w-1/4 text-left whitespace-no-wrap">kda</div>
           <div
             class="w-1/4"
           >{{ (stats.global.kills + stats.global.assists) / stats.global.deaths|round }}</div>
+        </li>
+        <li class="flex justify-between items-center px-4 py-1 bg-blue-760 leading-tight">
+          <div class="w-1/4 text-left whitespace-no-wrap">kill participation</div>
+          <div class="w-1/4">{{ stats.global.kp|percent }}</div>
         </li>
       </ul>
       <template v-if="leagueStatsByType('Ranked').length">
