@@ -110,7 +110,7 @@ export default {
     },
     isSidebarFixed() {
       if (!this.sidebarRectangle.height) return
-      this.fixedSidebar = window.innerHeight + document.documentElement.scrollTop > this.sidebarRectangle.y + this.sidebarRectangle.height + 112
+      this.fixedSidebar = window.innerHeight + document.documentElement.scrollTop > this.sidebarRectangle.y + this.sidebarRectangle.height + 121
     },
     ...mapActions('summoner', ['moreMatches', 'overviewRequest']),
   },
@@ -123,7 +123,7 @@ export default {
 }
 
 .fixed-sidebar {
-  bottom: 112px;
+  bottom: 121px;
 }
 
 .pushed-container {
