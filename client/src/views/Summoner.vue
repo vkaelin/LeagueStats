@@ -58,7 +58,7 @@ export default {
     return {
       fixedSidebar: false,
       sidebarRectangle: {
-        y: 354,
+        y: 323,
         height: null,
       },
     }

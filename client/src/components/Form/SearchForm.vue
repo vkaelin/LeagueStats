@@ -2,23 +2,36 @@
   <form @submit.prevent="formSubmit" :class="formClasses" class="flex text-teal-100 text-lg w-full">
     <div v-if="dropdown" @click="dropdown = false" class="fixed z-20 inset-0"></div>
     <div class="relative w-full">
+      <button
+        ref="submit"
+        :class="[btnClasses]"
+        class="absolute z-30 h-full hover:text-teal-200"
+        type="submit"
+      >
+        <svg class="absolute vertical-center horizontal-center w-4 h-4">
+          <use xlink:href="#search" />
+        </svg>
+      </button>
       <input
         ref="input"
         v-model="summoner"
         @focus="selected = true"
         type="text"
         :class="[inputClasses]"
-        class="w-full rounded-lg outline-none pl-6 pr-32 font-bold focus:bg-blue-1000"
+        class="summoner-input w-full outline-none font-bold"
       />
       <transition name="scale-fade">
         <SearchFormDropdown v-if="selected" @click-dropdown="clickDropdown = true" />
       </transition>
 
-      <div class="absolute right-0 z-30 vertical-center flex items-center h-full mr-12">
+      <div
+        :class="{'mr-12': size === 'xl'}"
+        class="absolute right-0 z-30 vertical-center flex items-center h-full"
+      >
         <div
           @click="dropdown = !dropdown"
-          :class="{'border-teal-200': dropdown}"
-          class="border-2 border-transparent cursor-pointer flex items-center px-2 py-1 rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
+          :class="[selectRegionClasses]"
+          class="border-2 border-transparent cursor-pointer flex items-center rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
         >
           <span class="selected font-bold uppercase select-none">{{ selectedRegion }}</span>
           <svg class="ml-1 -mr-1 w-4 h-4">
@@ -30,7 +43,7 @@
         <div
           v-show="dropdown"
           :class="[dropdownClasses]"
-          class="absolute right-0 z-30 text-white rounded-b shadow cursor-pointer"
+          class="absolute right-0 z-30 text-white shadow cursor-pointer"
         >
           <div
             v-for="(region, index) in regions"
@@ -53,16 +66,6 @@
           </div>
         </div>
       </transition>
-      <button
-        ref="submit"
-        :class="[btnClasses]"
-        class="absolute right-0 z-30 h-full hover:text-teal-200"
-        type="submit"
-      >
-        <svg class="absolute vertical-center horizontal-center w-4 h-4">
-          <use xlink:href="#search" />
-        </svg>
-      </button>
     </div>
   </form>
 </template>
@@ -108,8 +111,8 @@ export default {
   computed: {
     btnClasses() {
       return {
-        'w-8 mr-3': this.size === 'small',
-        'w-12': this.size === 'xl'
+        'left-0 w-8': this.size === 'small',
+        'right-0 w-12': this.size === 'xl'
       }
     },
     formClasses() {
@@ -119,21 +122,35 @@ export default {
     },
     inputClasses() {
       return {
-        'py-2 px-1': this.size === 'small',
-        'py-4 px-2': this.size === 'xl',
-        'input-color': !this.dropdown,
-        'bg-blue-1000': this.dropdown
+        'py-2 pl-12 pr-20 bg-transparent text-base border-b-2 border-blue-300 focus:border-white': this.size === 'small',
+        'py-4 pl-6 pr-32 focus:bg-blue-1000 rounded-lg': this.size === 'xl',
+        'input-color': !this.dropdown && this.size === 'xl',
+        'bg-blue-1000': this.dropdown && this.size === 'xl',
       }
     },
     dropdownClasses() {
       return {
-        'offsetDropDown': this.size === 'small',
-        'offsetDropDownXl': this.size === 'xl'
+        '-mt-1 rounded': this.size === 'small',
+        'offsetDropDownXl rounded-b': this.size === 'xl'
+      }
+    },
+    selectRegionClasses() {
+      return {
+        'px-2 text-base rounded-md': this.size === 'small',
+        'px-2 py-1': this.size === 'xl',
+        'bg-blue-1000': this.dropdown && this.size === 'small',
+        'border-teal-200': this.dropdown && this.size === 'xl',
       }
     },
     ...mapState({
       selectedRegion: state => state.settings.region
     }),
+  },
+
+  created() {
+    if (!this.summoner.length) {
+      this.summoner = this.$route.params.name
+    }
   },
 
   mounted() {
@@ -149,6 +166,7 @@ export default {
   methods: {
     classRegions(index) {
       return {
+        'rounded-t': index === 0,
         'rounded-b': index === this.regions.length - 1
       }
     },
@@ -174,11 +192,6 @@ export default {
 </script>
 
 <style scoped>
-.offsetDropDown {
-  top: 43px;
-  right: 48px;
-}
-
 .offsetDropDownXl {
   top: 58px;
   right: 50px;

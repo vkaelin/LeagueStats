@@ -1,7 +1,7 @@
 <template>
   <div
     @mousedown="clickDropdown"
-    class="mt-1 absolute z-30 w-full px-3 py-2 bg-blue-900 rounded-lg shadow"
+    class="mt-2 absolute z-30 w-full px-3 py-2 bg-blue-900 rounded-lg shadow"
   >
     <div v-if="favorites.length">
       <div class="text-base text-blue-100">favorites:</div>
