@@ -7,6 +7,11 @@
       class="match relative bg-blue-800 text-white text-base cursor-pointer hover:shadow-xl"
     >
       <div class="relative flex flex-wrap px-5 py-3">
+        <div
+          v-if="data.newMatch"
+          class="new-match absolute right-0 top-0 px-2 text-xxs rounded-full"
+          style="margin: 0.35rem 0.35rem 0 0; background-color: rgba(99,179,237, .2);"
+        >New</div>
         <div class="first w-4/12 text-left">
           <div>
             <div

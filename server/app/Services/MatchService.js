@@ -102,10 +102,8 @@ class MatchService {
     for (let i = 0; i < gameIds.length; ++i) {
       const matchSaved = await summonerDB.matches().where({ gameId: gameIds[i] }).first()
       if (matchSaved) {
-        console.log('match in mongodb')
         matchesDetails.push(matchSaved)
       } else {
-        console.log('match to get from api')
         matchesToGetFromRiot.push(gameIds[i])
       }
     }
@@ -122,13 +120,13 @@ class MatchService {
       await BasicMatchTransformer.transform(matchesFromApi, ctx)
       Logger.transport('file').info(matchesFromApi)
 
-      matchesDetails = [...matchesDetails, ...matchesFromApi]
-
       /* Save all matches from Riot Api in db */
       for (const match of matchesFromApi) {
         await summonerDB.matches().create(match)
-        console.log('match saved')
+        match.newMatch = true
       }
+      console.log('matches saved in db')
+      matchesDetails = [...matchesDetails, ...matchesFromApi]
     }
 
     /* Sort matches */
