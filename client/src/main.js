@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueAxios from './plugins/axios'
+import VueGtag from 'vue-gtag'
 
 import '@/assets/css/main.css'
 
@@ -9,6 +10,9 @@ import store from './store'
 
 Vue.config.productionTip = false
 Vue.use(VueAxios)
+Vue.use(VueGtag, {
+  config: { id: 'UA-113251543-3' }
+}, router)
 
 Vue.filter('capitalize', (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
