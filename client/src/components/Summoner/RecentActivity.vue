@@ -102,7 +102,7 @@ export default {
       for (let i = 1; i <= nbDaysInGrid; i++) {
         const day = new Date()
         day.setDate(day.getDate() - nbDaysInGrid + i)
-        const formattedDay = day.toLocaleString('fr', this.options)
+        const formattedDay = day.toLocaleString(undefined, this.options)
 
         this.gridDays.push({
           date: formattedDay,
@@ -119,7 +119,7 @@ export default {
       for (const key in this.matches) {
         const match = this.matches[key]
         const matchTime = new Date(match.timestamp)
-        const formattedTime = matchTime.toLocaleString('fr', this.options)
+        const formattedTime = matchTime.toLocaleString(undefined, this.options)
 
         const dayOfTheMatch = this.gridDays.filter(
           e => e.date === formattedTime

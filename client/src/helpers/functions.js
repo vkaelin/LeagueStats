@@ -19,9 +19,7 @@ export function timeDifference(previous) {
   } else if (elapsed < msPerWeek) {
     return Math.round(elapsed / msPerDay) + ' days ago'
   } else {
-    const oldDate = new Date(previous)
-    const day = oldDate.getDate() < 10 ? '0' + oldDate.getDate() : oldDate.getDate()
-    const month = oldDate.getMonth() < 9 ? '0' + (oldDate.getMonth() + 1) : (oldDate.getMonth() + 1)
-    return day + '.' + month + '.' + oldDate.getFullYear().toString().substr(-2)
+    const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
+    return new Date(previous).toLocaleString(undefined, dateOptions).replace(/\//g, '.')
   }
 }

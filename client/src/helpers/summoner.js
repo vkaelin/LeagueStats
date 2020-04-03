@@ -16,7 +16,7 @@ export function createMatchData(matches) {
     const date = new Date(match.date)
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
     const timeOptions = { hour12: false, hour: '2-digit', minute: '2-digit' }
-    match.fullDate = { date: date.toLocaleString('fr', dateOptions), time: date.toLocaleString('fr', timeOptions) }
+    match.fullDate = { date: date.toLocaleString(undefined, dateOptions), time: date.toLocaleString(undefined, timeOptions) }
     match.date = timeDifference(match.date)
 
     match.map = maps[match.map]
