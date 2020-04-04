@@ -10,8 +10,13 @@ class StatsService {
 
   async getSummonerStats(account, season) {
     this.matchRepository.season = season
+    console.time('GLOBAL')
     const globalStats = await this.matchRepository.globalStats(account.puuid)
+    console.timeEnd('GLOBAL')
+    console.time('GAMEMODE')
     const gamemodeStats = await this.matchRepository.gamemodeStats(account.puuid)
+    console.timeEnd('GAMEMODE')
+    console.time('ROLE')
     const roleStats = await this.matchRepository.roleStats(account.puuid)
     // Check if all roles are in the array
     const roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
@@ -25,9 +30,16 @@ class StatsService {
         })
       }
     }
+    console.timeEnd('ROLE')
+    console.time('CHAMPION')
     const championStats = await this.matchRepository.championStats(account.puuid, 5)
+    console.timeEnd('CHAMPION')
+    console.time('CHAMPION-CLASS')
     const championClassStats = await this.matchRepository.championClassStats(account.puuid)
+    console.timeEnd('CHAMPION-CLASS')
+    console.time('MATES')
     const mates = await this.matchRepository.mates(account.puuid)
+    console.timeEnd('MATES')
 
     return {
       global: globalStats[0],
