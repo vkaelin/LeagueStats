@@ -55,12 +55,12 @@ Do not hesitate to contribute to the project by adapting or adding features ! Bu
 
 ## License
 
-NonCommercial-ShareAlike 1.0 Generic (CC NC-SA 1.0)  
-https://creativecommons.org/licenses/nc-sa/1.0/
+NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)  
+https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ### You are free to:
 
-Share — copy and redistribute the material in any medium or format  
+Share — copy and redistribute the material in any medium or format
 
 Adapt — remix, transform, and build upon the material
 
