@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="formSubmit" :class="formClasses" class="flex text-teal-100 text-lg w-full">
-    <div v-if="dropdown" @click="dropdown = false" class="fixed z-20 inset-0"></div>
     <div class="relative w-full">
       <button
         ref="submit"
@@ -24,48 +23,50 @@
         <SearchFormDropdown v-if="selected" @click-dropdown="clickDropdown = true" />
       </transition>
 
-      <div
-        :class="{'mr-12': size === 'xl'}"
-        class="absolute right-0 z-30 vertical-center flex items-center h-full"
-      >
+      <div ref="region-dropdown">
         <div
-          @click="dropdown = !dropdown"
-          :class="[selectRegionClasses]"
-          class="border-2 border-transparent cursor-pointer flex items-center rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
-        >
-          <span class="selected font-bold uppercase select-none">{{ selectedRegion }}</span>
-          <svg class="ml-1 -mr-1 w-4 h-4">
-            <use xlink:href="#caret-down" />
-          </svg>
-        </div>
-      </div>
-      <transition name="scale-fade">
-        <div
-          v-show="dropdown"
-          :class="[dropdownClasses]"
-          class="absolute right-0 z-30 text-white shadow cursor-pointer"
+          :class="{'mr-12': size === 'xl'}"
+          class="absolute right-0 z-30 vertical-center flex items-center h-full"
         >
           <div
-            v-for="(region, index) in regions"
-            :key="region"
-            @click="updateSettings({name: 'region', value: region.toLowerCase()})"
-            :class="classRegions(index)"
-            class="relative pr-2 pl-5 py-1 text-xs text-right bg-blue-1000 hover:bg-blue-800"
+            @click="dropdown = !dropdown"
+            :class="[selectRegionClasses]"
+            class="border-2 border-transparent cursor-pointer flex items-center rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
           >
-            <svg
-              v-if="region.toLowerCase() === selectedRegion"
-              class="absolute vertical-center offsetIcon w-3 h-3 fill-current"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
-              />
+            <span class="selected font-bold uppercase select-none">{{ selectedRegion }}</span>
+            <svg class="ml-1 -mr-1 w-4 h-4">
+              <use xlink:href="#caret-down" />
             </svg>
-            {{ region }}
           </div>
         </div>
-      </transition>
+        <transition name="scale-fade">
+          <div
+            v-show="dropdown"
+            :class="[dropdownClasses]"
+            class="absolute right-0 z-30 text-white shadow cursor-pointer"
+          >
+            <div
+              v-for="(region, index) in regions"
+              :key="region"
+              @click="updateSettings({name: 'region', value: region.toLowerCase()})"
+              :class="classRegions(index)"
+              class="relative pr-2 pl-5 py-1 text-xs text-right bg-blue-1000 select-none hover:bg-blue-800"
+            >
+              <svg
+                v-if="region.toLowerCase() === selectedRegion"
+                class="absolute vertical-center offsetIcon w-3 h-3 fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+              >
+                <path
+                  d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
+                />
+              </svg>
+              {{ region }}
+            </div>
+          </div>
+        </transition>
+      </div>
     </div>
   </form>
 </template>
@@ -151,16 +152,17 @@ export default {
     if (!this.summoner.length) {
       this.summoner = this.$route.params.name
     }
-  },
-
-  mounted() {
     window.addEventListener('mousedown', this.globalClick)
     window.addEventListener('blur', this.windowBlur)
+    document.addEventListener('click', this.clickOutsideRegionDropdown)
+    document.addEventListener('keydown', this.handleEscape)
   },
 
   beforeDestroy() {
     window.removeEventListener('mousedown', this.globalClick)
     window.removeEventListener('blur', this.windowBlur)
+    document.removeEventListener('click', this.clickOutsideRegionDropdown)
+    document.removeEventListener('keydown', this.handleEscape)
   },
 
   methods: {
@@ -169,6 +171,13 @@ export default {
         'rounded-t': index === 0,
         'rounded-b': index === this.regions.length - 1
       }
+    },
+    clickOutsideRegionDropdown(e) {
+      e.stopPropagation()
+      if (e.target === this.$refs['region-dropdown'] || this.$refs['region-dropdown'].contains(e.target)) {
+        return
+      }
+      this.dropdown = false
     },
     formSubmit() {
       const search = this.summoner.split(' ').join('')
@@ -182,6 +191,12 @@ export default {
         this.selected = false
       }
       this.clickDropdown = false
+    },
+    handleEscape(e) {
+      if (e.key === 'Esc' || e.key === 'Escape') {
+        this.dropdown = false
+        this.selected = false
+      }
     },
     windowBlur() {
       this.selected = false
