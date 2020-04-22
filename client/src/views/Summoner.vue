@@ -1,5 +1,5 @@
 <template>
-  <div v-if="overviewLoaded" key="overview" class="mt-3 relative flex items-start text-center">
+  <div v-if="overviewLoaded" key="overview" class="relative flex items-start mt-3 text-center">
     <div ref="sidebar" :class="{'fixed fixed-sidebar': fixedSidebar}" class="sidebar">
       <SummonerChampions />
       <SummonerStats />
@@ -22,7 +22,7 @@
           v-if="moreMatchesToFetch"
           @clicked="moreMatches"
           :loading="matchesLoading"
-          btn-class="mt-4 block mx-auto bg-blue-800 px-4 py-2 rounded-md font-semibold hover:bg-blue-1000 shadow-lg"
+          btn-class="block px-4 py-2 mx-auto mt-4 font-semibold bg-blue-800 rounded-md shadow-lg hover:bg-blue-1000"
         >More matches</LoadingButton>
       </div>
     </div>
@@ -126,7 +126,7 @@ export default {
       if (this.isMobile) return
 
       if (!this.sidebarRectangle.height) return
-      this.fixedSidebar = window.innerHeight + document.documentElement.scrollTop > this.sidebarRectangle.y + this.sidebarRectangle.height + 121
+      this.fixedSidebar = window.innerHeight + document.documentElement.scrollTop > this.sidebarRectangle.y + this.sidebarRectangle.height + 123
     },
     ...mapActions('summoner', ['moreMatches', 'overviewRequest']),
   },
