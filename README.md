@@ -10,7 +10,7 @@ Here is an [example](https://leaguestats.gg/summoner/euw/Alderiate) of stats for
 ![Screenshot](https://res.cloudinary.com/kln/image/upload/v1580935119/leaguestats-preview.png)
 
 <p>
-  <a href="https://m.do.co/c/4f4a6c382133">
+  <a href="https://www.digitalocean.com/">
     <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/PoweredByDO/DO_Powered_by_Badge_blue.svg" width="201px">
   </a>
 </p>
