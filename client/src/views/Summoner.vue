@@ -108,7 +108,7 @@ export default {
       if (this.isMobile) return
 
       this.$nextTick(() => {
-        this.sidebarRectangle.height = this.$refs.sidebar ? this.$refs.sidebar.getBoundingClientRect().height : null
+        this.sidebarRectangle.height = this.$refs.sidebar ? Math.ceil(this.$refs.sidebar.getBoundingClientRect().height) : null
         this.isSidebarFixed()
       })
     },
@@ -124,8 +124,8 @@ export default {
     },
     isSidebarFixed() {
       if (this.isMobile) return
-
       if (!this.sidebarRectangle.height) return
+
       this.fixedSidebar = window.innerHeight + document.documentElement.scrollTop > this.sidebarRectangle.y + this.sidebarRectangle.height + 123
     },
     ...mapActions('summoner', ['moreMatches', 'overviewRequest']),
