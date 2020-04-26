@@ -1,6 +1,6 @@
 'use strict'
 
-const Jax = use('Jax')
+const Jax = use('App/Services/Jax')
 const LiveMatchTransformer = use('App/Transformers/LiveMatchTransformer')
 const MatchRepository = make('App/Repositories/MatchRepository')
 const MatchService = use('App/Services/MatchService')

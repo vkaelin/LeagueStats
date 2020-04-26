@@ -1,7 +1,6 @@
 'use strict'
 
-const Jax = use('Jax')
-const Redis = use('Redis')
+const Jax = use('App/Services/Jax')
 
 class SummonerService {
   constructor() {
@@ -28,16 +27,7 @@ class SummonerService {
    */
   async getAccount(summonerName, region) {
     const name = summonerName.toLowerCase().replace(/ /g, '')
-    const accountCache = await Redis.get(`${region}-${name}`)
-    if (accountCache) {
-      console.log('ACCOUNT CACHED')
-      return JSON.parse(accountCache)
-    }
-
     const account = await Jax.Summoner.summonerName(name, region)
-    if (account) {
-      await Redis.set(`${region}-${name}`, JSON.stringify(account), 'EX', 36000)
-    }
     return account
   }
 
@@ -47,19 +37,12 @@ class SummonerService {
    * @param region 
    */
   async getRanked(account, region) {
-    const rankedCache = await Redis.get(`ranked-${account.puuid}`)
-    if (rankedCache) {
-      console.log('RANKED CACHED')
-      return JSON.parse(rankedCache)
-    }
-
     const ranked = await Jax.League.summonerID(account.id, region)
     const result = {
       soloQ: this._getleagueData(ranked.find(e => e.queueType === 'RANKED_SOLO_5x5')) || null,
       flex5v5: this._getleagueData(ranked.find(e => e.queueType === 'RANKED_FLEX_SR')) || null,
       flex3v3: this._getleagueData(ranked.find(e => e.queueType === 'RANKED_FLEX_TT')) || null
     }
-    await Redis.set(`ranked-${account.puuid}`, JSON.stringify(result), 'EX', 1500)
     return result
   }
 }

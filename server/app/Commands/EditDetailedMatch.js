@@ -3,7 +3,7 @@
 const { Command } = require('@adonisjs/ace')
 const DetailedMatchTransformer = use('App/Transformers/DetailedMatchTransformer')
 const Database = use('Database')
-const Jax = use('Jax')
+const Jax = use('App/Services/Jax')
 const DetailedMatch = use('App/Models/DetailedMatch')
 const Queue = use('Bee/Queue')
 

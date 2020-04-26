@@ -1,19 +1,20 @@
 const JaxRequest = require('../JaxRequest')
 
-class SummonerEndpoint {
+class SpectatorEndpoint {
   constructor(config, limiter) {
     this.config = config
     this.limiter = limiter
   }
 
-  summonerName(summonerName, region) {
+  summonerID(summonerID, region) {
     return new JaxRequest(
       region,
       this.config,
-      `summoner/v4/summoners/by-name/${encodeURI(summonerName)}`,
-      this.limiter
+      `spectator/v4/active-games/by-summoner/${summonerID}`,
+      this.limiter,
+      0
     ).execute()
   }
 }
 
-module.exports = SummonerEndpoint
+module.exports = SpectatorEndpoint

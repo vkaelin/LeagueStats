@@ -1,19 +1,20 @@
 const JaxRequest = require('../JaxRequest')
 
-class MatchlistEndpoint {
+class SummonerEndpoint {
   constructor(config, limiter) {
     this.config = config
     this.limiter = limiter
   }
 
-  accountID(accountID, region, beginIndex = 0) {
+  summonerName(summonerName, region) {
     return new JaxRequest(
       region,
       this.config,
-      `match/v4/matchlists/by-account/${accountID}?beginIndex=${beginIndex}`,
-      this.limiter
+      `summoner/v4/summoners/by-name/${encodeURI(summonerName)}`,
+      this.limiter,
+      36000
     ).execute()
   }
 }
 
-module.exports = MatchlistEndpoint
+module.exports = SummonerEndpoint

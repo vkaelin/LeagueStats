@@ -1,6 +1,6 @@
 'use strict'
 
-const Jax = use('Jax')
+const Jax = use('App/Services/Jax')
 const Helpers = use('App/helpers')
 
 /**

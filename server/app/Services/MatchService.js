@@ -1,7 +1,7 @@
 'use strict'
 
 const Logger = use('Logger')
-const Jax = use('Jax')
+const Jax = use('App/Services/Jax')
 const BasicMatchTransformer = use('App/Transformers/BasicMatchTransformer')
 const { getSeasonNumber } = use('App/helpers')
 
