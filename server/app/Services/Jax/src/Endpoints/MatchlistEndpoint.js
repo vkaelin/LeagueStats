@@ -12,7 +12,7 @@ class MatchlistEndpoint {
       this.config,
       `match/v4/matchlists/by-account/${accountID}?beginIndex=${beginIndex}`,
       this.limiter,
-      1500
+      0
     ).execute()
   }
 }
