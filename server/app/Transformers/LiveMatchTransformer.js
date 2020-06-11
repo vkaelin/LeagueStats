@@ -31,7 +31,7 @@ class LiveMatchTransformer extends MatchTransformer {
 
     // Perks
     for (const participant of match.participants) {
-      participant.runes = super.getPerksImages(participant.perks.perkIds[0], participant.perks.perkSubStyle)
+      participant.runes = participant.perks ? super.getPerksImages(participant.perks.perkIds[0], participant.perks.perkSubStyle) : {}
     }
 
     const requestsParticipants = match.participants.map(p => this._getPlayerDatq(p, region))
