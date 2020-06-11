@@ -5,6 +5,7 @@
   "description": "Adonisjs boilerplate for API server with pre-configured JWT",
   "main": "index.js",
   "scripts": {
+    "dev": "adonis serve --dev",
     "start": "node server.js",
     "test": "node ace test"
   },
