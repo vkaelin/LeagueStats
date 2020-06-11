@@ -8,7 +8,7 @@
       <div
         v-for="ripple in ripples"
         :key="ripple.id"
-        class="absolute w-full h-full opacity-0 rounded-full pointer-events-none"
+        class="absolute w-full h-full rounded-full opacity-0 pointer-events-none"
         :style="{
           top: ripple.top,
           left: ripple.left,

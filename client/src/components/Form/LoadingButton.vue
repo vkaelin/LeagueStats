@@ -38,7 +38,7 @@ export default {
       default: false
     }
   },
-  
+
   methods: {
     btnClicked() {
       this.$emit('clicked')

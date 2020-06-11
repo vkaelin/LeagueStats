@@ -3,12 +3,12 @@
     :class="[{'rounded-b-lg overflow-hidden': !allyTeam}, data.result]"
     class="w-full table-fixed"
   >
-    <thead class="heading-detailed leading-none">
+    <thead class="leading-none heading-detailed">
       <tr
         :style="getHeadingColor(data.result)"
-        class="relative heading-row text-blue-200 font-semibold"
+        class="relative font-semibold text-blue-200 heading-row"
       >
-        <th class="w-players py-5">
+        <th class="py-5 w-players">
           <div class="flex justify-between">
             <span
               :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
@@ -19,38 +19,38 @@
               :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
               class="flex pr-2"
             >
-              <svg class="w-4 h-4 items-center">
+              <svg class="items-center w-4 h-4">
                 <use xlink:href="#award" />
               </svg>
               <span class="ml-2px">VICTORY</span>
             </div>
           </div>
         </th>
-        <th class="w-kda px-2 py-5 text-sm">K</th>
-        <th class="w-kda px-2 py-5 text-sm">D</th>
-        <th class="w-kda px-2 py-5 text-sm">A</th>
-        <th class="w-minions px-2 py-5 text-sm">{{ statsFormat === 'stats' ? 'cs' : 'cs/m' }}</th>
-        <th class="w-vision px-2 py-5 text-sm">{{ statsFormat === 'stats' ? 'vs' : 'vs/m' }}</th>
-        <th class="w-gold-dmg-kp px-2 py-5 text-sm">gold</th>
-        <th class="w-gold-dmg-kp px-2 py-5 text-sm">
+        <th class="px-2 py-5 text-sm w-kda">K</th>
+        <th class="px-2 py-5 text-sm w-kda">D</th>
+        <th class="px-2 py-5 text-sm w-kda">A</th>
+        <th class="px-2 py-5 text-sm w-minions">{{ statsFormat === 'stats' ? 'cs' : 'cs/m' }}</th>
+        <th class="px-2 py-5 text-sm w-vision">{{ statsFormat === 'stats' ? 'vs' : 'vs/m' }}</th>
+        <th class="px-2 py-5 text-sm w-gold-dmg-kp">gold</th>
+        <th class="px-2 py-5 text-sm w-gold-dmg-kp">
           dmg
           <br />champ
         </th>
-        <th class="w-gold-dmg-kp px-2 py-5 text-sm">
+        <th class="px-2 py-5 text-sm w-gold-dmg-kp">
           dmg
           <br />obj
         </th>
-        <th class="w-gold-dmg-kp px-2 py-5 text-sm">
+        <th class="px-2 py-5 text-sm w-gold-dmg-kp">
           dmg
           <br />taken
         </th>
-        <th class="w-gold-dmg-kp px-2 py-5 text-sm">kp</th>
+        <th class="px-2 py-5 text-sm w-gold-dmg-kp">kp</th>
       </tr>
     </thead>
     <tbody :class="{'border-b border-blue-700': allyTeam}" class="leading-none">
       <tr v-for="(player, index) in data.players" :key="player.name + index">
         <td class="py-2 border-r border-blue-700">
-          <div class="px-1 flex justify-between">
+          <div class="flex justify-between px-1">
             <div class="flex">
               <div class="flex items-center">
                 <div
@@ -61,33 +61,33 @@
               </div>
               <div
                 :style="{backgroundImage: `url('${player.champion.icon}')`}"
-                class="ml-2 relative w-8 h-8 bg-cover bg-center bg-blue-1000 rounded-full"
+                class="relative w-8 h-8 ml-2 bg-center bg-cover rounded-full bg-blue-1000"
               >
                 <div
                   :class="allyTeam ? 'bg-teal-500 text-teal-100' : 'bg-red-500 text-red-100'"
-                  class="absolute level-position bottom-0 flex items-center justify-center w-4 h-4 rounded-full text-xxs"
+                  class="absolute bottom-0 flex items-center justify-center w-4 h-4 rounded-full level-position text-xxs"
                 >
                   <span>{{ player.level }}</span>
                 </div>
               </div>
-              <div class="ml-1 flex flex-col justify-around">
+              <div class="flex flex-col justify-around ml-1">
                 <Tooltip>
                   <template v-slot:trigger>
                     <div
                       :style="{backgroundImage: `url(${player.firstSum ? player.firstSum.icon : null})`}"
                       :class="{'cursor-pointer': player.firstSum}"
-                      class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
+                      class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                     ></div>
                   </template>
                   <template v-if="player.firstSum" v-slot:default>
-                    <div class="flex max-w-sm p-2 text-white text-left text-xs select-none">
+                    <div class="flex max-w-sm p-2 text-xs text-left text-white select-none">
                       <div
                         :style="{backgroundImage: `url('${player.firstSum.icon}')`}"
-                        class="ml-1 w-12 h-12 flex-shrink-0 rounded-md bg-blue-1000 bg-center bg-cover"
+                        class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
                       ></div>
                       <div class="ml-2 leading-tight">
                         <div class="text-base leading-none">{{ player.firstSum.name }}</div>
-                        <div class="mt-1 text-blue-200 font-light">{{ player.firstSum.description }}</div>
+                        <div class="mt-1 font-light text-blue-200">{{ player.firstSum.description }}</div>
                       </div>
                     </div>
                   </template>
@@ -97,52 +97,52 @@
                     <div
                       :style="{backgroundImage: `url(${player.secondSum ? player.secondSum.icon : null})`}"
                       :class="{'cursor-pointer': player.secondSum}"
-                      class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
+                      class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                     ></div>
                   </template>
                   <template v-if="player.secondSum" v-slot:default>
-                    <div class="flex max-w-sm p-2 text-white text-left text-xs select-none">
+                    <div class="flex max-w-sm p-2 text-xs text-left text-white select-none">
                       <div
                         :style="{backgroundImage: `url('${player.secondSum.icon}')`}"
-                        class="ml-1 w-12 h-12 flex-shrink-0 rounded-md bg-blue-1000 bg-center bg-cover"
+                        class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
                       ></div>
                       <div class="ml-2 leading-tight">
                         <div class="text-base leading-none">{{ player.secondSum.name }}</div>
                         <div
-                          class="mt-1 text-blue-200 font-light"
+                          class="mt-1 font-light text-blue-200"
                         >{{ player.secondSum.description }}</div>
                       </div>
                     </div>
                   </template>
                 </Tooltip>
               </div>
-              <div class="ml-2px flex flex-col justify-around">
+              <div class="flex flex-col justify-around ml-2px">
                 <div
                   :style="[player.primaryRune ? {background: `url(${player.primaryRune}) center/cover`} : '']"
-                  class="w-4 h-4 bg-blue-1000 rounded-md"
+                  class="w-4 h-4 rounded-md bg-blue-1000"
                 ></div>
                 <div
                   :style="[player.secondaryRune ? {background: `url(${player.secondaryRune}) center/cover`} : '']"
-                  class="w-4 h-4 bg-blue-1000 rounded-md"
+                  class="w-4 h-4 rounded-md bg-blue-1000"
                 ></div>
               </div>
-              <div class="ml-1 flex flex-col items-start justify-center leading-none">
+              <div class="flex flex-col items-start justify-center ml-1 leading-none">
                 <router-link
                   v-if="player.firstSum"
                   :to="{ name: 'summoner', params: { region: $route.params.region, name: player.name }}"
                   :class="{'font-semibold text-yellow-400': account.id === player.summonerId}"
-                  class="w-22 text-xs text-white text-left overflow-hidden text-overflow whitespace-no-wrap hover:text-blue-200"
+                  class="overflow-hidden text-xs text-left text-white whitespace-no-wrap w-22 text-overflow hover:text-blue-200"
                 >{{ player.name }}</router-link>
                 <div
                   v-else
-                  class="w-22 text-xs text-white text-left overflow-hidden text-overflow whitespace-no-wrap"
+                  class="overflow-hidden text-xs text-left text-white whitespace-no-wrap w-22 text-overflow"
                 >{{ player.name }}</div>
-                <div class="text-xxs text-teal-500">{{ player.champion.name }}</div>
+                <div class="text-teal-500 text-xxs">{{ player.champion.name }}</div>
               </div>
             </div>
             <div class="flex items-center">
               <div v-if="player.rank">
-                <svg class="ml-auto w-5 h-5">
+                <svg class="w-5 h-5 ml-auto">
                   <use :xlink:href="`#rank-${player.rank.tier.toLowerCase()}`" />
                 </svg>
                 <div class="text-blue-300 text-xxs">{{ player.rank.shortName }}</div>
@@ -151,7 +151,7 @@
                 <DotsLoader width="30px" dot-width="10px" />
               </div>
               <div v-else class="w-5 h-5">
-                <div class="-mt-1 text-blue-300 text-2xl">-</div>
+                <div class="-mt-1 text-2xl text-blue-300">-</div>
               </div>
               <MatchItems :items="player.items" :one-row="true" />
             </div>
@@ -159,43 +159,43 @@
         </td>
         <td
           :style="bgColor(player, '71, 132, 116', 'kills')"
-          class="p-2 text-white text-sm"
+          class="p-2 text-sm text-white"
         >{{ player.stats.kills }}</td>
         <td
           :style="bgColor(player, '156, 71, 109', 'deaths')"
-          class="p-2 text-white text-sm"
+          class="p-2 text-sm text-white"
         >{{ player.stats.deaths }}</td>
         <td
           :style="bgColor(player, '146, 100, 79', 'assists')"
-          class="p-2 text-white text-sm"
+          class="p-2 text-sm text-white"
         >{{ player.stats.assists }}</td>
         <td
-          class="p-2 text-white text-sm"
+          class="p-2 text-sm text-white"
           :style="bgColor(player, '140, 101, 182', 'minions')"
         >{{ player[statsFormat].minions }}</td>
         <td
-          class="p-2 text-white text-sm"
+          class="p-2 text-sm text-white"
           :style="bgColor(player, '55, 118, 179', 'vision')"
         >{{ player[statsFormat].vision }}</td>
         <td
-          class="p-2 text-white text-sm"
+          class="p-2 text-sm text-white"
           :style="bgColor(player, '146, 100, 79', 'gold')"
         >{{ roundStats(player[statsFormat].gold) }}</td>
         <td
           :style="bgColor(player, '156, 71, 109', 'dmgChamp')"
-          class="p-2 text-white text-sm"
+          class="p-2 text-sm text-white"
         >{{ roundStats(player[statsFormat].dmgChamp) }}</td>
         <td
           :style="bgColor(player, '156, 71, 109', 'dmgObj')"
-          class="p-2 text-white text-sm text-red"
+          class="p-2 text-sm text-white text-red"
         >{{ roundStats(player[statsFormat].dmgObj) }}</td>
         <td
           :style="bgColor(player, '146, 145, 106', 'dmgTaken')"
-          class="p-2 text-white text-sm"
+          class="p-2 text-sm text-white"
         >{{ roundStats(player[statsFormat].dmgTaken) }}</td>
         <td
           :style="bgColor(player, '71, 132, 116', 'kp')"
-          class="p-2 text-white text-sm"
+          class="p-2 text-sm text-white"
         >{{ player.stats.kp }}</td>
       </tr>
     </tbody>

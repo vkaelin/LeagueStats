@@ -5,22 +5,22 @@
         <div
           :style="{backgroundImage: item ? `url('${item.image}')` : null}"
           :class="[oneRow ? 'ml-2px w-6 h-6' : 'ml-1 w-8 h-8', {'cursor-pointer': item !== null}]"
-          class="rounded-md bg-blue-1000 bg-center bg-cover"
+          class="bg-center bg-cover rounded-md bg-blue-1000"
         ></div>
       </template>
       <template v-if="item !== null" v-slot:default>
-        <div class="flex max-w-md p-2 text-white text-left text-xs select-none">
+        <div class="flex max-w-md p-2 text-xs text-left text-white select-none">
           <div
             :style="{backgroundImage: item ? `url('${item.image}')` : null}"
-            class="ml-1 w-12 h-12 flex-shrink-0 rounded-md bg-blue-1000 bg-center bg-cover"
+            class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
           ></div>
           <div class="ml-2 leading-none">
             <div class="text-base">{{ item.name }}</div>
             <div class="mt-1">
               <span class="text-blue-200">Price:</span>
-              <span class="ml-1 text-sm text-yellow-500 font-semibold">{{ item.price }}</span>
+              <span class="ml-1 text-sm font-semibold text-yellow-500">{{ item.price }}</span>
             </div>
-            <div v-html="item.description" class="mt-1 item-description text-blue-200 font-light"></div>
+            <div v-html="item.description" class="mt-1 font-light text-blue-200 item-description"></div>
           </div>
         </div>
       </template>

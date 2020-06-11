@@ -1,18 +1,18 @@
 <template>
-  <div class="mt-2 bg-blue-800 px-5 py-4 rounded-lg">
+  <div class="px-5 py-4 mt-2 bg-blue-800 rounded-lg">
     <table
-      class="w-full table-fixed text-center leading-none"
+      class="w-full leading-none text-center table-fixed"
       style="border-collapse:separate; border-spacing:0 0.5rem;"
     >
       <thead>
         <tr class="text-left">
           <th
             :class="[ally ? 'text-teal-400 ' : 'text-red-400 ']"
-            class="w-team font-semibold"
+            class="font-semibold w-team"
           >{{ ally ? 'Ally' : 'Enemy' }} Team</th>
-          <th class="w-ranked text-blue-200 text-sm font-normal">SoloQ Stats</th>
-          <th class="w-ranked text-blue-200 text-sm font-normal">Flex Stats</th>
-          <th class="w-bans px-2 text-right text-blue-200 text-sm font-normal">Bans</th>
+          <th class="text-sm font-normal text-blue-200 w-ranked">SoloQ Stats</th>
+          <th class="text-sm font-normal text-blue-200 w-ranked">Flex Stats</th>
+          <th class="px-2 text-sm font-normal text-right text-blue-200 w-bans">Bans</th>
         </tr>
       </thead>
       <tbody v-if="liveLoaded">
@@ -27,29 +27,29 @@
               <div class="flex flex-col items-center">
                 <div
                   :style="{backgroundImage: `url('${player.runes.primaryRune}')`}"
-                  class="w-6 h-6 bg-cover bg-center"
+                  class="w-6 h-6 bg-center bg-cover"
                 ></div>
                 <div
                   :style="{backgroundImage: `url('${player.runes.secondaryRune}')`}"
-                  class="mt-1 w-3 h-3 bg-cover bg-center"
+                  class="w-3 h-3 mt-1 bg-center bg-cover"
                 ></div>
               </div>
               <div
                 :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${player.championId}.png')`}"
                 :class="borderChampion(player.summonerId)"
-                class="ml-2 w-12 h-12 bg-cover bg-center bg-blue-1000 border-2 rounded-full"
+                class="w-12 h-12 ml-2 bg-center bg-cover border-2 rounded-full bg-blue-1000"
               ></div>
-              <div class="ml-2 flex flex-col">
+              <div class="flex flex-col ml-2">
                 <div
                   :style="{backgroundImage: `url(${getSummonerLink(player.spell1Id)})`}"
-                  class="w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
+                  class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                 ></div>
                 <div
                   :style="{backgroundImage: `url(${getSummonerLink(player.spell2Id)})`}"
-                  class="mt-1 w-4 h-4 bg-blue-1000 rounded-md bg-center bg-cover"
+                  class="w-4 h-4 mt-1 bg-center bg-cover rounded-md bg-blue-1000"
                 ></div>
               </div>
-              <div class="ml-3 text-left text-sm leading-tight">
+              <div class="ml-3 text-sm leading-tight text-left">
                 <router-link
                   v-if="!player.bot"
                   :to="{ name: 'summoner', params: { region: $route.params.region, name: player.summonerName }}"
@@ -68,7 +68,7 @@
                     <use :xlink:href="`#rank-${player.rank.soloQ.tier.toLowerCase()}`" />
                   </svg>
                   <div
-                    class="mt-2px text-blue-300 text-xs font-semibold"
+                    class="text-xs font-semibold text-blue-300 mt-2px"
                   >{{ player.rank.soloQ.shortName }}</div>
                 </div>
                 <div class="ml-5 text-center">
@@ -79,7 +79,7 @@
                 </div>
               </div>
               <div v-else class="w-5 h-5">
-                <div class="-mt-1 text-blue-300 text-2xl">-</div>
+                <div class="-mt-1 text-2xl text-blue-300">-</div>
               </div>
             </div>
           </td>
@@ -91,7 +91,7 @@
                     <use :xlink:href="`#rank-${player.rank.flex5v5.tier.toLowerCase()}`" />
                   </svg>
                   <div
-                    class="mt-2px text-blue-300 text-xs font-semibold"
+                    class="text-xs font-semibold text-blue-300 mt-2px"
                   >{{ player.rank.flex5v5.shortName }}</div>
                 </div>
                 <div class="ml-5 text-center">
@@ -102,16 +102,16 @@
                 </div>
               </div>
               <div v-else class="w-5 h-5">
-                <div class="-mt-1 text-blue-300 text-2xl">-</div>
+                <div class="-mt-1 text-2xl text-blue-300">-</div>
               </div>
             </div>
           </td>
           <td class="py-1 text-right rounded-r-lg">
-            <div class="px-2 inline-block">
+            <div class="inline-block px-2">
               <div
                 v-if="live.bannedChampions.length"
                 :class="[ally ? 'ban-blue border-teal-500' : 'ban-red border-red-500']"
-                class="relative ban border-2 rounded-full"
+                class="relative border-2 rounded-full ban"
               >
                 <div
                   :style="[
@@ -119,15 +119,15 @@
                       {backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${banChamp(index, player.teamId).championId}.png')`}
                       : ''
                   ]"
-                  class="ban-img w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
+                  class="w-6 h-6 bg-center bg-cover rounded-full ban-img bg-blue-1000"
                 ></div>
                 <div
                   :class="[ally ? 'text-teal-100 bg-teal-500' : 'text-red-100 bg-red-500']"
-                  class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs font-bold rounded-full"
+                  class="absolute flex items-center justify-center w-4 h-4 text-xs font-bold rounded-full ban-order"
                 >{{ banChamp(index, player.teamId).pickTurn }}</div>
               </div>
               <div v-else class="w-5 h-5 text-left">
-                <div class="text-blue-300 text-2xl">-</div>
+                <div class="text-2xl text-blue-300">-</div>
               </div>
             </div>
           </td>
@@ -135,7 +135,7 @@
       </tbody>
       <tbody v-else>
         <tr v-for="index in 5" :key="index">
-          <td colspan="4" class="bg-blue-760 rounded-lg">
+          <td colspan="4" class="rounded-lg bg-blue-760">
             <content-loader
               :height="54"
               :width="1160"

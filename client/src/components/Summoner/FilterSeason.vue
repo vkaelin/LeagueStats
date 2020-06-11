@@ -1,16 +1,21 @@
 <template>
-  <div class="relative group self-end inline-block text-blue-200 leading-none">
+  <div class="relative self-end inline-block leading-none text-blue-200 group">
     <select
       v-model="season"
       @change="filterSeason"
       dir="rtl"
-      class="block appearance-none bg-transparent w-full px-4 pr-8 rounded-md cursor-pointer focus:outline-none group-hover:text-white"
+      class="block w-full px-4 pr-8 bg-transparent rounded-md appearance-none cursor-pointer focus:outline-none group-hover:text-white"
     >
       <option :value="null" class="bg-blue-800">All seasons</option>
-      <option v-for="(s, index) in seasons" :key="index" :value="s" class="bg-blue-800">Season {{ s }}</option>
+      <option
+        v-for="(s, index) in seasons"
+        :key="index"
+        :value="s"
+        class="bg-blue-800"
+      >Season {{ s }}</option>
     </select>
     <div
-      class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+      class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none"
     >
       <svg class="w-4 h-4 text-blue-200 group-hover:text-white">
         <use xlink:href="#caret-down" />

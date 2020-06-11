@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="formSubmit" :class="formClasses" class="flex text-teal-100 text-lg w-full">
+  <form @submit.prevent="formSubmit" :class="formClasses" class="flex w-full text-lg text-teal-100">
     <div class="relative w-full">
       <button
         ref="submit"
@@ -7,7 +7,7 @@
         class="absolute z-30 h-full hover:text-teal-200"
         type="submit"
       >
-        <svg class="absolute vertical-center horizontal-center w-4 h-4">
+        <svg class="absolute w-4 h-4 vertical-center horizontal-center">
           <use xlink:href="#search" />
         </svg>
       </button>
@@ -15,9 +15,10 @@
         ref="input"
         v-model="summoner"
         @focus="selected = true"
-        type="text"
         :class="[inputClasses]"
-        class="summoner-input w-full outline-none font-bold"
+        class="w-full font-bold outline-none summoner-input"
+        spellcheck="false"
+        type="text"
       />
       <transition name="scale-fade">
         <SearchFormDropdown v-if="selected" @click-dropdown="clickDropdown = true" />
@@ -26,15 +27,15 @@
       <div ref="region-dropdown">
         <div
           :class="{'mr-12': size === 'xl'}"
-          class="absolute right-0 z-30 vertical-center flex items-center h-full"
+          class="absolute right-0 z-30 flex items-center h-full vertical-center"
         >
           <div
             @click="dropdown = !dropdown"
             :class="[selectRegionClasses]"
-            class="border-2 border-transparent cursor-pointer flex items-center rounded transition-all transition-fast ease-in-quad ease-out-quad hover:text-white"
+            class="flex items-center transition-all border-2 border-transparent rounded cursor-pointer transition-fast ease-in-quad ease-out-quad hover:text-white"
           >
-            <span class="selected font-bold uppercase select-none">{{ selectedRegion }}</span>
-            <svg class="ml-1 -mr-1 w-4 h-4">
+            <span class="font-bold uppercase select-none selected">{{ selectedRegion }}</span>
+            <svg class="w-4 h-4 ml-1 -mr-1">
               <use xlink:href="#caret-down" />
             </svg>
           </div>
@@ -50,11 +51,11 @@
               :key="region"
               @click="updateSettings({name: 'region', value: region.toLowerCase()})"
               :class="classRegions(index)"
-              class="relative pr-2 pl-5 py-1 text-xs text-right bg-blue-1000 select-none hover:bg-blue-800"
+              class="relative py-1 pl-5 pr-2 text-xs text-right select-none bg-blue-1000 hover:bg-blue-800"
             >
               <svg
                 v-if="region.toLowerCase() === selectedRegion"
-                class="absolute vertical-center offsetIcon w-3 h-3 fill-current"
+                class="absolute w-3 h-3 fill-current vertical-center offsetIcon"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
               >

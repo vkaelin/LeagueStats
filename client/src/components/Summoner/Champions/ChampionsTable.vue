@@ -1,11 +1,11 @@
 <template>
-  <table class="w-full table-fixed bg-blue-800 rounded-lg text-center leading-none">
+  <table class="w-full leading-none text-center bg-blue-800 rounded-lg table-fixed">
     <thead>
-      <tr class="heading rounded-t-lg text-sm select-none">
+      <tr class="text-sm rounded-t-lg select-none heading">
         <th
           @click="sortBy('index')"
           :class="sortedClasses('index')"
-          class="relative px-2 py-4 rounded-tl-lg font-normal cursor-pointer hover:bg-blue-700"
+          class="relative px-2 py-4 font-normal rounded-tl-lg cursor-pointer hover:bg-blue-700"
         >rank</th>
         <th
           v-for="(heading, index) in headings"
@@ -28,36 +28,36 @@
       >
         <td
           :class="{'rounded-bl-lg': index === championsToDisplay.length - 1}"
-          class="relative px-2 py-3 bg-blue-800 border-t-table border-t-table-70 text-white text-sm"
+          class="relative px-2 py-3 text-sm text-white bg-blue-800 border-t-table border-t-table-70"
         >{{ champion.index + 1 }}</td>
-        <td class="relative px-2 py-3 bg-blue-800 border-t-table text-white text-sm">
+        <td class="relative px-2 py-3 text-sm text-white bg-blue-800 border-t-table">
           <div class="flex items-center">
             <div
               :style="{backgroundImage: `url('${champion.champion.icon}')`}"
-              class="w-6 h-6 flex-shrink-0 bg-cover bg-center bg-blue-1000 rounded-full"
+              class="flex-shrink-0 w-6 h-6 bg-center bg-cover rounded-full bg-blue-1000"
             ></div>
             <div class="ml-2">{{ champion.champion.name }}</div>
           </div>
         </td>
         <td
           :style="bgColor(champion, '71, 132, 116', 'winrate')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.winrate|percent }}</td>
         <td
           :style="bgColor(champion, '55, 118, 179', 'playrate')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.playrate|percent }}</td>
         <td
           :style="bgColor(champion, '71, 132, 116', 'wins')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.wins }}</td>
         <td
           :style="bgColor(champion, '55, 118, 179', 'count')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.count }}</td>
-        <td :style="bgColor(champion, '55, 118, 179', 'kda')" class="px-2 py-3 text-white text-sm">
+        <td :style="bgColor(champion, '55, 118, 179', 'kda')" class="px-2 py-3 text-sm text-white">
           <div>{{ champion.kda|round }}</div>
-          <div class="mt-1 text-xxs text-blue-200">
+          <div class="mt-1 text-blue-200 text-xxs">
             {{ champion.kills/champion.count|round(1) }}
             /
             {{ champion.deaths/champion.count|round(1) }}
@@ -67,31 +67,31 @@
         </td>
         <td
           :style="bgColor(champion, '71, 132, 116', 'kp')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.kp|percent }}</td>
         <td
           :style="bgColor(champion, '140, 101, 182', 'minions')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.minions|round(0) }}</td>
         <td
           :style="bgColor(champion, '146, 100, 79', 'gold')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.gold|kilo }}</td>
         <td
           :style="bgColor(champion, '156, 71, 109', 'dmgChamp')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.dmgChamp|kilo }}</td>
         <td
           :style="bgColor(champion, '146, 145, 106', 'dmgTaken')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.dmgTaken|kilo }}</td>
         <td
           :style="bgColor(champion, '71, 132, 116', 'gameLength')"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.gameLength|secToTime }}</td>
         <td
           :class="{'rounded-br-lg': index === championsToDisplay.length - 1}"
-          class="px-2 py-3 text-white text-sm"
+          class="px-2 py-3 text-sm text-white"
         >{{ champion.lastPlayed }}</td>
       </tr>
     </tbody>

@@ -1,7 +1,7 @@
 <template>
   <div class="mt-4 bg-blue-800 rounded-lg">
     <div class="pb-2">
-      <div class="flex items-center justify-center py-4 heading rounded-t-lg text-blue-200">
+      <div class="flex items-center justify-center py-4 text-blue-200 rounded-t-lg heading">
         <svg class="w-5 h-5" style="transform: rotate(-5deg);">
           <use xlink:href="#people" />
         </svg>
@@ -11,7 +11,7 @@
         </svg>
       </div>
       <div v-if="hasMates" class="px-4 py-2 text-sm text-left">
-        <div class="flex font-bold text-base text-blue-400">
+        <div class="flex text-base font-bold text-blue-400">
           <div class="w-2/4">Summoner</div>
           <div class="w-1/4">W / L</div>
           <div class="w-1/4">Winrate</div>
@@ -20,7 +20,7 @@
           <li
             v-for="mate in mates.slice(0, maxMates)"
             :key="mate._id"
-            class="flex justify-between items-center"
+            class="flex items-center justify-between"
           >
             <router-link
               :to="{ name: 'summoner', params: { region: $route.params.region, name: mate.name }}"
@@ -30,16 +30,16 @@
             <div class="w-1/4">
               <Tooltip>
                 <template v-slot:trigger>
-                  <div class="bg-blue-900 rounded-full h-2 cursor-pointer">
+                  <div class="h-2 bg-blue-900 rounded-full cursor-pointer">
                     <div
                       :class="getWinrateColor(mate.wins, mate.count)"
                       :style="{width: `${winrate(mate.wins, mate.count)}%`}"
-                      class="rounded-full h-full"
+                      class="h-full rounded-full"
                     ></div>
                   </div>
                 </template>
                 <template v-slot:default>
-                  <div class="px-2 text-white text-center text-xs">
+                  <div class="px-2 text-xs text-center text-white">
                     <div>Winrate</div>
                     <div>
                       <span

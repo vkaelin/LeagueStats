@@ -3,11 +3,11 @@
     <input
       v-model="championName"
       @input="search"
-      class="input-color px-2 pl-10 py-2 rounded-lg outline-none focus:bg-blue-1000"
+      class="px-2 py-2 pl-10 rounded-lg outline-none input-color focus:bg-blue-1000"
       type="text"
       placeholder="Search Champions"
     />
-    <svg class="ml-3 absolute left-0 vertical-center w-4 h-4">
+    <svg class="absolute left-0 w-4 h-4 ml-3 vertical-center">
       <use xlink:href="#search" />
     </svg>
   </Ripple>

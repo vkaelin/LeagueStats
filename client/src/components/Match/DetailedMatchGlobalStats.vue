@@ -10,20 +10,20 @@
         <template v-slot:trigger>
           <div
             :class="[allyTeam ? 'ban-blue border-teal-500' : 'ban-red border-red-500']"
-            class="relative ban border-2 rounded-full cursor-pointer"
+            class="relative border-2 rounded-full cursor-pointer ban"
           >
             <div
               :style="[ban.champion.id ? {backgroundImage: `url('${ban.champion.icon}')`} : '']"
-              class="ban-img w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
+              class="w-6 h-6 bg-center bg-cover rounded-full ban-img bg-blue-1000"
             ></div>
             <div
               :class="[textLightColor, bgColor]"
-              class="absolute ban-order w-4 h-4 flex items-center justify-center text-xs font-bold rounded-full"
+              class="absolute flex items-center justify-center w-4 h-4 text-xs font-bold rounded-full ban-order"
             >{{ ban.pickTurn }}</div>
           </div>
         </template>
         <template v-slot:default>
-          <div class="px-2 text-white text-center text-xs leading-tight select-none">
+          <div class="px-2 text-xs leading-tight text-center text-white select-none">
             <div>{{ ban.champion.id ? ban.champion.name : 'No ban' }}</div>
           </div>
         </template>
@@ -31,32 +31,32 @@
     </div>
     <div
       :class="allyTeam ? 'text-left' : 'text-right flex-row-reverse'"
-      class="mt-2 flex leading-tight"
+      class="flex mt-2 leading-tight"
     >
       <div>
         <div
           :class="textColor"
           class="text-base font-semibold"
         >{{ `${team.teamStats.kills}/${team.teamStats.deaths}/${team.teamStats.assists}` }}</div>
-        <div class="text-white text-xs">k / d / a</div>
+        <div class="text-xs text-white">k / d / a</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'">
         <div
           :class="textColor"
           class="text-base font-semibold"
         >{{ +(team.teamStats.gold / 1000).toFixed(1) + 'k' }}</div>
-        <div class="text-white text-xs">gold</div>
+        <div class="text-xs text-white">gold</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'">
         <div
           :class="textColor"
           class="text-base font-semibold"
         >{{ +(team.teamStats.dmgChamp / 1000).toFixed(1) + 'k' }}</div>
-        <div class="text-white text-xs">dmg</div>
+        <div class="text-xs text-white">dmg</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'" class="flex flex-col justify-end">
-        <div class="text-base text-teal-400 font-semibold"></div>
-        <div class="flex text-white text-xs">
+        <div class="text-base font-semibold text-teal-400"></div>
+        <div class="flex text-xs text-white">
           <div :class="allyTeam ? '' : 'mr-2'">
             <span :class="textColor">{{ team.towers }}</span> towers
           </div>

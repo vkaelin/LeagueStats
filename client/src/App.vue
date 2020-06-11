@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="font-sans bg-blue-900 antialiased min-h-screen">
+  <div id="app" class="min-h-screen font-sans antialiased bg-blue-900">
     <SVGContainer />
     <NotificationsContainer />
     <component :is="layout">
@@ -31,9 +31,9 @@ export default {
 
   created() {
     this.updatePercent()
-    this.updateSettings({name: 'region'})
-    this.updateSettings({name: 'recentSearches', isJson: true})
-    this.updateSettings({name: 'favorites', isJson: true})
+    this.updateSettings({ name: 'region' })
+    this.updateSettings({ name: 'recentSearches', isJson: true })
+    this.updateSettings({ name: 'favorites', isJson: true })
   },
 
   methods: {

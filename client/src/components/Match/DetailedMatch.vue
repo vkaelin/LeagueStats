@@ -7,7 +7,7 @@
         :ally-team="true"
       />
 
-      <div class="px-3 py-2 flex justify-between items-start">
+      <div class="flex items-start justify-between px-3 py-2">
         <DetailedMatchGlobalStats :team="allyTeam" :ally-team="true" />
         <SwitchToggle
           @updateValue="updatePercent"
@@ -26,7 +26,7 @@
       />
     </div>
     <div v-else-if="data.status === 'loading' && detailsOpen">
-      <p class="bg-blue-800 py-5 text-blue-100 text-lg font-semibold">Loading...</p>
+      <p class="py-5 text-lg font-semibold text-blue-100 bg-blue-800">Loading...</p>
     </div>
   </transition>
 </template>

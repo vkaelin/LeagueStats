@@ -5,14 +5,14 @@
         'bg-red-500': notification.type === 'error',
         'bg-green-500': notification.type === 'success'
       }"
-      class="mt-2 relative rounded-lg shadow-md p-6 pr-10 text-white"
+      class="relative p-6 pr-10 mt-2 text-white rounded-lg shadow-md"
       style="min-width: 240px"
     >
       <button
         @click="deleteNotification"
-        class="cursor-pointer block absolute top-0 right-0 border border-transparent rounded-full py-1 px-1 my-1 mx-1 focus:outline-none hover:border-white"
+        class="absolute top-0 right-0 block px-1 py-1 mx-1 my-1 border border-transparent rounded-full cursor-pointer focus:outline-none hover:border-white"
       >
-        <svg class="fill-current w-3 h-3" viewBox="0 0 20 20">
+        <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20">
           <path
             d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"
           />

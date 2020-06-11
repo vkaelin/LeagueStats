@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white pb-2">
+  <div class="pb-2 text-white">
     <div class="flex justify-between">
       <div style="width: 520px; height: 239px;">
         <content-loader
@@ -21,7 +21,7 @@
         </content-loader>
       </div>
 
-      <div class="bg-blue-850 rounded-lg" style="width: 347px; height: 215px;">
+      <div class="rounded-lg bg-blue-850" style="width: 347px; height: 215px;">
         <content-loader
           :height="215"
           :width="347"

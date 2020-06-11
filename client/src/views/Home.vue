@@ -1,18 +1,18 @@
 <template>
-  <div class="relative bg-blue-900 overflow-hidden">
+  <div class="relative overflow-hidden bg-blue-900">
     <LazyBackground
       :image-source="require('@/assets/img/bg-homepage-1.jpg')"
       image-class="absolute inset-0 bg-center"
       transition-name="fade"
     ></LazyBackground>
 
-    <div class="h-screen flex flex-col items-center justify-center">
+    <div class="flex flex-col items-center justify-center h-screen">
       <div class="absolute top-0 right-0">
-        <div class="line line-top relative mr-4 mt-4 w-20 h-2"></div>
+        <div class="relative w-20 h-2 mt-4 mr-4 line line-top"></div>
       </div>
 
       <div class="absolute bottom-0 left-0">
-        <div class="line line-bottom relative ml-4 mb-4 w-20 h-2"></div>
+        <div class="relative w-20 h-2 mb-4 ml-4 line line-bottom"></div>
       </div>
 
       <div class="relative flex flex-col items-center w-full max-w-lg">
@@ -21,7 +21,7 @@
       </div>
 
       <p
-        class="pb-4 absolute horizontal-center bottom-0 text-center text-xxs text-blue-300 leading-tight"
+        class="absolute bottom-0 pb-4 leading-tight text-center text-blue-300 horizontal-center text-xxs"
       >
         LeagueStats.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties.
         <br />Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.

@@ -7,7 +7,7 @@
         `${hover ? gradientHover : gradient},
          url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${record.champion.id}/${record.champion.id}000.jpg')`
     }"
-    class="mt-6 mx-2 record-card w-full bg-cover bg-center p-2 rounded-lg leading-none"
+    class="w-full p-2 mx-2 mt-6 leading-none bg-center bg-cover rounded-lg record-card"
   >
     <div class="text-5xl">{{ record[property] }}</div>
     <div>
@@ -23,10 +23,10 @@
       </div>
       <div class="text-gray-500">
         as
-        <span class="text-white font-bold">{{ record.champion.name }}</span>
+        <span class="font-bold text-white">{{ record.champion.name }}</span>
       </div>
     </div>
-    <div class="mt-3 text-gray-200 text-sm opacity-25">match {{ record.gameId }}</div>
+    <div class="mt-3 text-sm text-gray-200 opacity-25">match {{ record.gameId }}</div>
   </div>
 </template>
 

@@ -38,7 +38,7 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       imageState: 'loading',
       asyncImage: new Image()
@@ -46,7 +46,7 @@ export default {
   },
 
   computed: {
-    computedStyle () {
+    computedStyle() {
       if (this.imageState === 'loaded') {
         return `background-image: ${this.moreBackgrounds} url(${this.asyncImage.src}); background-size: ${this.backgroundSize}`
       }
@@ -54,19 +54,19 @@ export default {
     }
   },
 
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.fetchImage()
     })
   },
 
   methods: {
-    fetchImage () {
+    fetchImage() {
       this.asyncImage.onload = this.imageOnLoad
       this.imageState = 'loading'
       this.asyncImage.src = this.imageSource
     },
-    imageOnLoad () {
+    imageOnLoad() {
       this.imageState = 'loaded'
     }
   }

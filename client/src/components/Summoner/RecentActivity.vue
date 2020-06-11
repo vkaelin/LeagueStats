@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="inline-block bg-blue-800 rounded-lg">
-      <div class="relative heading flex justify-center items-center py-2 rounded-t-lg text-blue-200">
+      <div
+        class="relative flex items-center justify-center py-2 text-blue-200 rounded-t-lg heading"
+      >
         <svg class="w-4 h-4">
           <use xlink:href="#time" />
         </svg>
@@ -12,34 +14,34 @@
       </div>
       <div class="p-3 pt-1">
         <div class="flex">
-          <span class="ml-12 text-blue-200 font-semibold text-xs">{{ gridDays[11].month }}</span>
-          <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[42].month }}</span>
-          <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[73].month }}</span>
-          <span class="ml-16 text-blue-200 font-semibold text-xs">{{ gridDays[104].month }}</span>
+          <span class="ml-12 text-xs font-semibold text-blue-200">{{ gridDays[11].month }}</span>
+          <span class="ml-16 text-xs font-semibold text-blue-200">{{ gridDays[42].month }}</span>
+          <span class="ml-16 text-xs font-semibold text-blue-200">{{ gridDays[73].month }}</span>
+          <span class="ml-16 text-xs font-semibold text-blue-200">{{ gridDays[104].month }}</span>
         </div>
-        <div class="mt-1 flex">
+        <div class="flex mt-1">
           <div class="flex flex-col">
-            <span class="text-blue-200 font-semibold text-xs leading-snug">Mo</span>
-            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Tu</span>
-            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">We</span>
-            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Th</span>
-            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Fr</span>
-            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Sa</span>
-            <span class="text-blue-200 font-semibold text-xs leading-snug mt-1">Su</span>
+            <span class="text-xs font-semibold leading-snug text-blue-200">Mo</span>
+            <span class="mt-1 text-xs font-semibold leading-snug text-blue-200">Tu</span>
+            <span class="mt-1 text-xs font-semibold leading-snug text-blue-200">We</span>
+            <span class="mt-1 text-xs font-semibold leading-snug text-blue-200">Th</span>
+            <span class="mt-1 text-xs font-semibold leading-snug text-blue-200">Fr</span>
+            <span class="mt-1 text-xs font-semibold leading-snug text-blue-200">Sa</span>
+            <span class="mt-1 text-xs font-semibold leading-snug text-blue-200">Su</span>
           </div>
           <div
-            class="ml-1 flex flex-col flex-wrap"
+            class="flex flex-col flex-wrap ml-1"
             style="width: calc(20px * 15); height: calc(20px * 7)"
           >
             <Tooltip v-for="(day, index) in gridDays.slice(indexFirstMonday)" :key="day.timestamp">
               <template v-slot:trigger>
                 <div
                   :class="[getCaseMargin(index), getCaseColor(day.matches)]"
-                  class="ml-1 w-4 h-4 cursor-pointer"
+                  class="w-4 h-4 ml-1 cursor-pointer"
                 />
               </template>
               <template v-slot:default>
-                <div class="px-2 text-white text-center text-xs">
+                <div class="px-2 text-xs text-center text-white">
                   <div>{{ day.date }}</div>
                   <div>
                     <span class="font-bold text-teal-400">{{ day.matches }}</span> game(s)

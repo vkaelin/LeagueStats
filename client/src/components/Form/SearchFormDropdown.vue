@@ -1,11 +1,11 @@
 <template>
   <div
     @mousedown="clickDropdown"
-    class="mt-2 absolute z-30 w-full px-3 py-2 bg-blue-900 rounded-lg shadow"
+    class="absolute z-30 w-full px-3 py-2 mt-2 bg-blue-900 rounded-lg shadow"
   >
     <div v-if="favorites.length">
       <div class="text-base text-blue-100">favorites:</div>
-      <div class="-mx-1 flex items-center flex-wrap text-xs leading-none">
+      <div class="flex flex-wrap items-center -mx-1 text-xs leading-none">
         <SearchFormDropdownPlayer
           v-for="player in favorites"
           :key="player.name"
@@ -17,7 +17,7 @@
     </div>
     <div :class="{'mt-2': favorites.length}">
       <div class="text-base text-blue-100">recent searches:</div>
-      <div class="-mx-1 flex items-center flex-wrap text-xs leading-none">
+      <div class="flex flex-wrap items-center -mx-1 text-xs leading-none">
         <template v-if="recentSearches.length">
           <SearchFormDropdownPlayer
             v-for="player in recentSearches"
@@ -27,10 +27,10 @@
           />
         </template>
         <template v-else>
-          <svg class="ml-4 mt-1 w-4 h-4 text-blue-200">
+          <svg class="w-4 h-4 mt-1 ml-4 text-blue-200">
             <use xlink:href="#info" />
           </svg>
-          <div class="ml-1 mt-1 text-sm text-blue-200">Example :</div>
+          <div class="mt-1 ml-1 text-sm text-blue-200">Example :</div>
           <SearchFormDropdownPlayer
             :player="{name: 'Alderiate', icon: 1150, region: 'euw'}"
             :favorite="false"

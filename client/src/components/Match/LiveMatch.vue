@@ -1,9 +1,9 @@
 <template>
-  <div class="ml-4 bg-blue-800 rounded-lg overflow-hidden text-sm">
-    <div class="relative w-full flex justify-between">
-      <div class="absolute horizontal-center h-full flex flex-col items-center justify-between">
-        <div class="text-blue-200 text-base leading-loose">{{ gamemode.name }}</div>
-        <div class="vs flex flex-col text-2xl font-bold leading-none">
+  <div class="ml-4 overflow-hidden text-sm bg-blue-800 rounded-lg">
+    <div class="relative flex justify-between w-full">
+      <div class="absolute flex flex-col items-center justify-between h-full horizontal-center">
+        <div class="text-base leading-loose text-blue-200">{{ gamemode.name }}</div>
+        <div class="flex flex-col text-2xl font-bold leading-none vs">
           <span>V</span>
           <span class="ml-4 -mt-3">S</span>
         </div>
@@ -18,7 +18,7 @@
         >
           <div
             :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${ally.championId}.png')`}"
-            class="w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
+            class="w-6 h-6 bg-center bg-cover rounded-full bg-blue-1000"
           ></div>
           <router-link
             v-if="!ally.bot"
@@ -42,7 +42,7 @@
           >{{ enemy.summonerName }}</router-link>
           <div
             :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${enemy.championId}.png')`}"
-            class="ml-2 w-6 h-6 bg-cover bg-center bg-blue-1000 rounded-full"
+            class="w-6 h-6 ml-2 bg-center bg-cover rounded-full bg-blue-1000"
           ></div>
         </li>
       </ul>

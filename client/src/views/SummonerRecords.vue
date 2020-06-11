@@ -1,8 +1,8 @@
 <template>
   <div key="records">
     <template v-if="!recordsLoaded || (recordsLoaded && records.maxKda)">
-      <div class="mx-4 text-blue-200 text-2xl border-b-2 border-blue-800 blue-900">basics</div>
-      <div class="-mx-2 flex flex-wrap">
+      <div class="mx-4 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">basics</div>
+      <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
             color="text-blue-400"
@@ -52,7 +52,7 @@
             v-for="index in 7"
             :key="index"
             style="width: 288px; height: 146px;"
-            class="mt-6 mx-2"
+            class="mx-2 mt-6"
           >
             <content-loader
               :height="146"
@@ -66,10 +66,8 @@
           </div>
         </template>
       </div>
-      <div
-        class="mt-3 mx-4 text-blue-200 text-2xl border-b-2 border-blue-800 blue-900"
-      >game impact</div>
-      <div class="-mx-2 flex flex-wrap">
+      <div class="mx-4 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">game impact</div>
+      <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
             color="text-yellow-400"
@@ -101,7 +99,7 @@
             v-for="index in 4"
             :key="index"
             style="width: 288px; height: 146px;"
-            class="mt-6 mx-2"
+            class="mx-2 mt-6"
           >
             <content-loader
               :height="146"
@@ -115,8 +113,8 @@
           </div>
         </template>
       </div>
-      <div class="mt-3 mx-4 text-blue-200 text-2xl border-b-2 border-blue-800 blue-900">team work</div>
-      <div class="-mx-2 flex flex-wrap">
+      <div class="mx-4 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">team work</div>
+      <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
             color="text-blue-500"
@@ -130,7 +128,7 @@
             v-for="index in 1"
             :key="index"
             style="width: 288px; height: 146px;"
-            class="mt-6 mx-2"
+            class="mx-2 mt-6"
           >
             <content-loader
               :height="146"
@@ -146,7 +144,7 @@
       </div>
     </template>
     <template v-if="recordsLoaded && !records.maxKda">
-      <div class="mt-4 flex flex-col items-center">
+      <div class="flex flex-col items-center mt-4">
         <div>No records have been found.</div>
         <div>😕</div>
       </div>
