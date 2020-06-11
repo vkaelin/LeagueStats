@@ -1,5 +1,5 @@
 <template>
-  <table class="w-full leading-none text-center bg-blue-800 rounded-lg table-fixed">
+  <table class="w-full overflow-hidden leading-none text-center bg-blue-800 rounded-lg table-fixed">
     <thead>
       <tr class="text-sm rounded-t-lg select-none heading">
         <th
