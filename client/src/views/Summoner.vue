@@ -25,6 +25,14 @@
           btn-class="block px-4 py-2 mx-auto mt-4 font-semibold bg-blue-800 rounded-md shadow-lg hover:bg-blue-1000"
         >More matches</LoadingButton>
       </div>
+      <div v-else>
+        <div class="flex justify-center">
+          <div class="px-4 py-3 text-lg font-bold text-center text-blue-100 rounded-lg bg-gradient">
+            <div>No matches found.</div>
+            <div>😕</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div v-else>
@@ -125,6 +133,7 @@ export default {
     isSidebarFixed() {
       if (this.isMobile) return
       if (!this.sidebarRectangle.height) return
+      if (!this.overview.matches.length) return
 
       this.fixedSidebar = window.innerHeight + document.documentElement.scrollTop > this.sidebarRectangle.y + this.sidebarRectangle.height + 123
     },

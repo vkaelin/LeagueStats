@@ -1,18 +1,18 @@
 <template>
-  <div class="bg-blue-900 overflow-hidden min-h-screen flex flex-col">
+  <div class="flex flex-col min-h-screen overflow-hidden bg-blue-900">
     <LazyBackground
       :image-source="require('@/assets/img/bg-homepage-1.jpg')"
-      image-class="absolute w-full h-200 z-0"
+      image-class="absolute z-0 w-full h-200"
       more-backgrounds="linear-gradient(180deg, rgba(42, 67, 101, 0) 0%, #2A4365 50%),"
       transition-name="fade"
     ></LazyBackground>
 
     <header
       :class="bgHeader ? 'header-scrolled' : 'bg-transparent'"
-      class="fixed z-20 left-0 right-0 px-4 text-teal-100 border-b-2 transition-colors ease-in-out duration-100"
+      class="fixed left-0 right-0 z-20 px-4 text-teal-100 transition-colors duration-100 ease-in-out border-b-2"
       style="border-color: rgba(144, 205, 244, 0.4);"
     >
-      <div class="-mb-2px flex justify-between items-center">
+      <div class="flex items-center justify-between -mb-2px">
         <div class="flex flex-1">
           <router-link to="/">
             <img class="block h-10" src="@/assets/img/Logo.svg" alt="LeagueStats logo" />
@@ -23,7 +23,7 @@
 
         <div class="flex-1">
           <div class="flex items-center justify-end">
-            <a class="discord relative text-sm" href="https://discord.gg/RjBzjfk" target="_blank">
+            <a class="relative text-sm discord" href="https://discord.gg/RjBzjfk" target="_blank">
               <svg
                 class="absolute fill-current"
                 xmlns="http://www.w3.org/2000/svg"
@@ -44,13 +44,13 @@
       </div>
     </header>
 
-    <div class="mt-16 relative page-wrapper mx-auto z-10 flex-grow text-white">
+    <div class="relative z-10 flex-grow mx-auto mt-16 text-white page-wrapper">
       <template v-if="summonerLoading || summonerFound">
         <template v-if="summonerLoading">
           <HeaderLoader />
         </template>
         <template v-else-if="summonerFound">
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <div>
               <div class="flex items-center">
                 <h1 class="text-4xl font-extrabold uppercase">
@@ -59,31 +59,31 @@
                 </h1>
                 <div
                   v-if="playing"
-                  class="ml-4 mt-2 flex items-center px-3 py-1 rounded-full bg-teal-800 border border-teal-400"
+                  class="flex items-center px-3 py-1 mt-2 ml-4 bg-teal-800 border border-teal-400 rounded-full"
                 >
-                  <div class="playing-dot bg-teal-flashy w-2 h-2 rounded-full"></div>
-                  <span class="ml-2 text-teal-flashy font-semibold text-sm">In Game</span>
+                  <div class="w-2 h-2 rounded-full playing-dot bg-teal-flashy"></div>
+                  <span class="ml-2 text-sm font-semibold text-teal-flashy">In Game</span>
                 </div>
                 <div
                   v-if="false"
-                  class="ml-4 mt-2 inline-flex items-center px-2 py-1 border border-teal-500 rounded leading-tight"
+                  class="inline-flex items-center px-2 py-1 mt-2 ml-4 leading-tight border border-teal-500 rounded"
                   style="background: rgba(40, 94, 97, 0.35);"
                 >
                   <svg class="w-4 h-4 text-teal-600">
                     <use xlink:href="#star" />
                   </svg>
-                  <div class="ml-1 text-xs text-teal-200 font-bold">Favorite</div>
+                  <div class="ml-1 text-xs font-bold text-teal-200">Favorite</div>
                 </div>
               </div>
               <div class="flex">
                 <div :class="{'playing': playing}" class="relative w-24 h-24">
                   <div
                     :class="{'border-2': !playing}"
-                    class="relative z-10 w-24 h-24 rounded-full bg-blue-1000 bg-center bg-cover border-teal-400"
+                    class="relative z-10 w-24 h-24 bg-center bg-cover border-teal-400 rounded-full bg-blue-1000"
                     :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${basic.account.profileIconId}.jpg')`}"
                   >
                     <div
-                      class="absolute left-0 bottom-0 w-8 h-8 flex items-center justify-center bg-blue-900 rounded-full text-xs text-teal-500 font-extrabold border-2 border-teal-400"
+                      class="absolute bottom-0 left-0 flex items-center justify-center w-8 h-8 text-xs font-extrabold text-teal-500 bg-blue-900 border-2 border-teal-400 rounded-full"
                     >{{ basic.account.summonerLevel }}</div>
                   </div>
                 </div>
@@ -105,25 +105,25 @@
               <router-link
                 :to="{ name: 'summoner', params: { region: $route.params.region, name: $route.params.name }}"
                 :class="isRouteActive('summoner')"
-                class="pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
+                class="pb-2 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
               >overview</router-link>
               <router-link
                 :to="{ name: 'summonerChampions', params: { region: $route.params.region, name: $route.params.name }}"
                 :class="isRouteActive('summonerChampions')"
-                class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
+                class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
               >champions</router-link>
               <router-link
                 :to="{ name: 'summonerRecords', params: { region: $route.params.region, name: $route.params.name }}"
                 :class="isRouteActive('summonerRecords')"
-                class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
+                class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
               >records</router-link>
               <router-link
                 :to="{ name: 'summonerLive', params: { region: $route.params.region, name: $route.params.name }}"
                 :class="isRouteActive('summonerLive')"
-                class="ml-4 pb-2 border-b-2 border-transparent text-blue-300 cursor-pointer hover:text-blue-100"
+                class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
               >live game</router-link>
             </div>
@@ -142,8 +142,8 @@
       </template>
 
       <template v-else-if="summonerNotFound">
-        <div class="mt-16 flex justify-center">
-          <div class="bg-gradient px-4 py-3 rounded-lg text-center text-lg text-blue-100 font-bold">
+        <div class="flex justify-center mt-16">
+          <div class="px-4 py-3 text-lg font-bold text-center text-blue-100 rounded-lg bg-gradient">
             <div>Player can't be found.</div>
             <div>😕</div>
           </div>
