@@ -85,6 +85,11 @@ export default {
       this.top = event.clientY
 
       if (!this.directionChecked) {
+        // Component has been destroyed
+        if (!this.$refs.content || !this.$refs.trigger) {
+          return
+        }
+
         await this.$nextTick()
         this.checkTooltipVisibility()
       }
