@@ -23,6 +23,13 @@ class LiveMatchTransformer extends MatchTransformer {
     return participant
   }
 
+  _getTeamRoles(team) {
+    const teamJunglers = team.filter(p => p.jungle)
+    const jungle = teamJunglers.length === 1 ? teamJunglers[0].champion : null
+
+    return RoleIdentificationService.getRoles(this.championRoles, team.map(p => p.champion), jungle)
+  }
+
   /**
    * Transform raw data from Riot API
    * @param match data from Riot API, one live match
@@ -37,10 +44,12 @@ class LiveMatchTransformer extends MatchTransformer {
     let redRoles = []
     if (this.championRoles) {
       match.participants.map(p => {
-        p.teamId === 100 ? blueTeam.push(p.championId) : redTeam.push(p.championId)
+        const playerRole = { champion: p.championId, jungle: p.spell1Id === 11 || p.spell2Id === 11 }
+        p.teamId === 100 ? blueTeam.push(playerRole) : redTeam.push(playerRole)
       })
-      blueRoles = RoleIdentificationService.getRoles(this.championRoles, blueTeam)
-      redRoles = RoleIdentificationService.getRoles(this.championRoles, redTeam)
+
+      blueRoles = this._getTeamRoles(blueTeam)
+      redRoles = this._getTeamRoles(redTeam)
     }
 
     for (const participant of match.participants) {

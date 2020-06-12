@@ -142,12 +142,17 @@ class RoleIdentificationService {
    * Get roles for the 5 players of a team
    * @param championPositions 
    * @param composition 
+   * @param jungle
    */
-  getRoles (championPositions, composition) {
+  getRoles (championPositions, composition, jungle = null) {
     const identified = {}
     let positions = {}
     let secondaryPositions = null
     let secondaryMetric = -Infinity
+
+    if(jungle) {
+      identified['JUNGLE'] = jungle
+    }
 
     while (Object.keys(identified).length < composition.length - 1) {
       let { bestPositions, bestMetric: metric, secondBestPositions: sbp } =
