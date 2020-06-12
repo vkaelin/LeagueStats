@@ -16,7 +16,7 @@
         v-model="summoner"
         @focus="selected = true"
         :class="[inputClasses]"
-        class="w-full font-bold outline-none summoner-input"
+        class="w-full font-bold rounded-none outline-none summoner-input"
         spellcheck="false"
         type="text"
       />
