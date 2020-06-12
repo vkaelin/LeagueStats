@@ -37,8 +37,20 @@
               <div
                 :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${player.championId}.png')`}"
                 :class="borderChampion(player.summonerId)"
-                class="w-12 h-12 ml-2 bg-center bg-cover border-2 rounded-full bg-blue-1000"
-              ></div>
+                class="relative w-12 h-12 ml-2 bg-center bg-cover border-2 rounded-full bg-blue-1000"
+              >
+                <div
+                  v-if="player.role && player.role !== 'NONE'"
+                  :class="borderChampion(player.summonerId)"
+                  class="absolute border rounded-full p-2px bg-blue-1000"
+                  style="bottom: -5px; right: -5px;"
+                >
+                  <div
+                    :style="{backgroundImage: `url(${require('@/assets/img/roles/' + player.role + '.png')})`}"
+                    class="w-4 h-4 bg-center bg-cover"
+                  ></div>
+                </div>
+              </div>
               <div class="flex flex-col ml-2">
                 <div
                   :style="{backgroundImage: `url(${getSummonerLink(player.spell1Id)})`}"

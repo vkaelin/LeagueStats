@@ -2,6 +2,7 @@
 
 const Jax = use('App/Services/Jax')
 const Helpers = use('App/helpers')
+const RoleIdentificationService = use('App/Services/RoleIdentificationService')
 
 /**
  * MatchTransformer class
@@ -18,12 +19,14 @@ class MatchTransformer {
     const perks = await Jax.CDragon.perks()
     const perkstyles = await Jax.CDragon.perkstyles()
     const summonerSpells = await Jax.CDragon.summonerSpells()
+    const championRoles = await RoleIdentificationService.pullData().catch(() => {})
 
     this.champions = champions
     this.items = items
     this.perks = perks
     this.perkstyles = perkstyles.styles
     this.summonerSpells = summonerSpells
+    this.championRoles = championRoles
     this.sortTeamByRole = Helpers.sortTeamByRole
 
     // League of Legends seasons timestamps

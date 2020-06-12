@@ -1,4 +1,5 @@
 import { gameModes } from '@/data/data.js'
+import { sortTeamByRole } from '@/helpers/functions.js'
 import { mapState } from 'vuex'
 
 export const liveGame = {
@@ -10,7 +11,10 @@ export const liveGame = {
 
   computed: {
     allyTeam() {
-      return this.current && this.current.participants ? this.current.participants.filter(p => p.teamId === this.teamColor) : []
+      if (!this.current || !this.current.participants) {
+        return []
+      }
+      return this.current.participants.filter(p => p.teamId === this.teamColor).sort(this.sortTeamByRole)
     },
     displayStartTime() {
       if (this.current.gameStartTime === 0) {
@@ -19,7 +23,10 @@ export const liveGame = {
       return this.$options.filters.secToTime(this.gameLength, true)
     },
     enemyTeam() {
-      return this.current && this.current.participants ? this.current.participants.filter(p => p.teamId !== this.teamColor) : []
+      if (!this.current || !this.current.participants) {
+        return []
+      }
+      return this.current.participants.filter(p => p.teamId !== this.teamColor).sort(this.sortTeamByRole)
     },
     gamemode() {
       if (this.current.participants) {
@@ -62,5 +69,6 @@ export const liveGame = {
 
       this.gameLength = (new Date() - new Date(this.gameStartTime)) / 1000
     },
+    sortTeamByRole
   }
 }

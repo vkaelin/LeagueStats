@@ -23,3 +23,11 @@ export function timeDifference(previous) {
     return new Date(previous).toLocaleString(undefined, dateOptions).replace(/\//g, '.')
   }
 }
+
+/**
+ * Sort an array of players by role
+ */
+export function sortTeamByRole (a, b) {
+  const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+  return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
+}
