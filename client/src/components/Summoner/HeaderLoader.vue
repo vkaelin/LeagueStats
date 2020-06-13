@@ -17,6 +17,8 @@
           <rect x="243" y="154" rx="6" ry="6" width="277" height="38" />
           <rect x="0" y="217" rx="3" ry="3" width="67" height="22" />
           <rect x="78" y="217" rx="3" ry="3" width="80" height="22" />
+          <rect x="169" y="217" rx="3" ry="3" width="57" height="22" />
+          <rect x="237" y="217" rx="3" ry="3" width="72" height="22" />
           <circle cx="133" cy="122" r="24" />
         </content-loader>
       </div>
