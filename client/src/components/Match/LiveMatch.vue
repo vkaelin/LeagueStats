@@ -1,6 +1,6 @@
 <template>
-  <div class="ml-4 overflow-hidden text-sm bg-blue-800 rounded-lg">
-    <div class="relative flex justify-between w-full">
+  <div class="flex ml-4 overflow-hidden text-sm rounded-lg">
+    <div class="relative flex justify-between w-full overflow-hidden bg-blue-800 rounded-lg">
       <div class="absolute flex flex-col items-center justify-between h-full horizontal-center">
         <div class="text-base leading-loose text-blue-200">{{ gamemode.name }}</div>
         <div class="flex flex-col text-2xl font-bold leading-none vs">
@@ -47,6 +47,15 @@
         </li>
       </ul>
     </div>
+    <router-link
+      :to="{ name: 'summonerLive', params: { region: $route.params.region, name: $route.params.name }}"
+      class="flex items-center pl-6 pr-4 -ml-2 text-base text-blue-200 cursor-pointer live-game-link bg-gradient-x hover:bg-blue-800 hover:text-blue-100"
+    >
+      <div class="-mt-2px">more</div>
+      <svg class="w-4 h-4 ml-1 transition-transform duration-200 ease-in-out transform">
+        <use xlink:href="#arrow-right" />
+      </svg>
+    </router-link>
   </div>
 </template>
 
@@ -94,5 +103,9 @@ export default {
 .vs {
   text-shadow: 3px 2px 0px rgba(49, 130, 206, 0.8),
     -3px 2px 0px rgba(229, 62, 62, 0.8);
+}
+
+.live-game-link:hover svg {
+  @apply translate-x-1
 }
 </style>
