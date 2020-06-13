@@ -68,11 +68,9 @@ class MatchService {
       // Update Summoner's MatchList
       for (const match of matchList.reverse()) {
         if (!summonerDB.matchList.some(m => m.gameId === match.gameId)) {
-          Logger.transport('file').info(`Match ${match.gameId} has been added to  ${account.name}'s MatchList.`)
           summonerDB.matchList.unshift(match)
         }
       }
-      Logger.transport('file').info(`Summoner ${account.name} has been updated.`)
     }
     // First search of the Summoner 
     else {
@@ -83,7 +81,6 @@ class MatchService {
       })
       // Create Summoner's MatchList in Database
       summonerDB.matchList = matchList
-      Logger.transport('file').info(`Summoner ${account.name} has been created.`)
     }
     console.timeEnd('matchList')
   }
@@ -116,16 +113,22 @@ class MatchService {
       const ctx = {
         account,
       }
+
+      // Try to see why matches are sometimes undefined
+      matchesFromApi.filter(m => {
+        if(m === undefined) {
+          Logger.transport('file').info('Match undefined', matchesToGetFromRiot)
+        }
+      })
+
       // Transform raw matches data
       await BasicMatchTransformer.transform(matchesFromApi, ctx)
-      Logger.transport('file').info(matchesFromApi)
 
       /* Save all matches from Riot Api in db */
       for (const match of matchesFromApi) {
         await summonerDB.matches().create(match)
         match.newMatch = true
       }
-      console.log('matches saved in db')
       matchesDetails = [...matchesDetails, ...matchesFromApi]
     }
 

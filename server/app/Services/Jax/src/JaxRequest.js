@@ -1,4 +1,5 @@
 const { promisify } = require('util')
+const Logger = use('Logger')
 const Redis = use('Redis')
 
 class JaxRequest {
@@ -38,7 +39,14 @@ class JaxRequest {
     } catch ({ statusCode, ...rest }) {
       this.retries--
 
-      if (statusCode !== 503 && statusCode !== 500) return
+      if (statusCode !== 503 && statusCode !== 500) {
+        // Don't log 404 when summoner isn't playing
+        if (!this.endpoint.includes('spectator')) {
+          Logger.transport('file').error(`JaxRequest Error ${statusCode} : `, rest)
+        }
+
+        return
+      }
 
       console.log('====================================')
       console.log(statusCode)
