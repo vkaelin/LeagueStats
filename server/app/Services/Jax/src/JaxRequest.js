@@ -39,7 +39,7 @@ class JaxRequest {
     } catch ({ statusCode, ...rest }) {
       this.retries--
 
-      if (statusCode !== 503 && statusCode !== 500) {
+      if (statusCode !== 500 && statusCode !== 503 && statusCode !== 504) {
         // Don't log 404 when summoner isn't playing
         if (!this.endpoint.includes('spectator')) {
           Logger.transport('file').error(`JaxRequest Error ${statusCode} : `, rest)
