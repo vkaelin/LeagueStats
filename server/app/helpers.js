@@ -1,4 +1,16 @@
 /**
+ * League of Legends queues with defined role for each summoner
+ */
+const queuesWithRole = [
+  0, // Custom
+  400, // Draft
+  420, // Solo/Duo
+  430, // Blind,
+  440, // Flex
+  700, // Clash
+]
+
+/**
 * League of Legends seasons timestamps
 */
 const seasons = {
@@ -7,6 +19,7 @@ const seasons = {
 }
 
 module.exports = {
+  queuesWithRole,
   seasons,
   /**
    * Get season number for a match

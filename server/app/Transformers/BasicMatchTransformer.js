@@ -55,7 +55,7 @@ class BasicMatchTransformer extends MatchTransformer {
       const playerInfos = {
         account_id: summoner.player.currentAccountId,
         name: summoner.player.summonerName,
-        role: super.getRoleName(allData.timeline),
+        role: super.getRoleName(allData.timeline, match.queueId),
         champion: super.getChampion(allData.championId)
       }
 

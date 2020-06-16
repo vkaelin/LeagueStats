@@ -3,6 +3,7 @@
 const MatchTransformer = use('App/Transformers/MatchTransformer')
 const RoleIdentificationService = use('App/Services/RoleIdentificationService')
 const SummonerService = use('App/Services/SummonerService')
+const { queuesWithRole } = use('App/helpers')
 
 /**
  * LiveMatchTransformer class
@@ -42,7 +43,7 @@ class LiveMatchTransformer extends MatchTransformer {
     const redTeam = [] // 200
     let blueRoles = []
     let redRoles = []
-    if (this.championRoles) {
+    if (this.championRoles && queuesWithRole.includes(match.gameQueueConfigId)) {
       match.participants.map(p => {
         const playerRole = { champion: p.championId, jungle: p.spell1Id === 11 || p.spell2Id === 11 }
         p.teamId === 100 ? blueTeam.push(playerRole) : redTeam.push(playerRole)

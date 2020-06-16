@@ -1,8 +1,8 @@
 'use strict'
 
 const Jax = use('App/Services/Jax')
-const Helpers = use('App/helpers')
 const RoleIdentificationService = use('App/Services/RoleIdentificationService')
+const { queuesWithRole, sortTeamByRole } = use('App/helpers')
 
 /**
  * MatchTransformer class
@@ -27,7 +27,7 @@ class MatchTransformer {
     this.perkstyles = perkstyles.styles
     this.summonerSpells = summonerSpells
     this.championRoles = championRoles
-    this.sortTeamByRole = Helpers.sortTeamByRole
+    this.sortTeamByRole = sortTeamByRole
 
     // League of Legends seasons timestamps
     this.seasons = {
@@ -79,7 +79,7 @@ class MatchTransformer {
     const identity = match.participantIdentities.find(p => p.participantId === player.participantId)
     const name = identity.player.summonerName
     const champion = this.getChampion(player.championId)
-    const role = this.getRoleName(player.timeline)
+    const role = this.getRoleName(player.timeline, match.queueId)
     const level = player.stats.champLevel
 
     // Regular stats / Full match stats
@@ -193,11 +193,17 @@ class MatchTransformer {
   /**
   * Return the lane of the summoner according to timeline
   * @param timeline from Riot Api
+  * @param gamemode of the match to check if a role is needed
   */
-  getRoleName(timeline) {
+  getRoleName(timeline, gamemode) {
+    if(!queuesWithRole.includes(gamemode)) {
+      return 'NONE'
+    }
+
     if (timeline.lane === 'BOTTOM' && timeline.role.includes('SUPPORT')) {
       return 'SUPPORT'
     }
+
     return timeline.lane
   }
 
