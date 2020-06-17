@@ -43,7 +43,8 @@ class LiveMatchTransformer extends MatchTransformer {
     const redTeam = [] // 200
     let blueRoles = []
     let redRoles = []
-    if (this.championRoles && queuesWithRole.includes(match.gameQueueConfigId)) {
+    const needsRole = this.championRoles && queuesWithRole.includes(match.gameQueueConfigId)
+    if (needsRole) {
       match.participants.map(p => {
         const playerRole = { champion: p.championId, jungle: p.spell1Id === 11 || p.spell2Id === 11 }
         p.teamId === 100 ? blueTeam.push(playerRole) : redTeam.push(playerRole)
@@ -58,7 +59,7 @@ class LiveMatchTransformer extends MatchTransformer {
       participant.runes = participant.perks ? super.getPerksImages(participant.perks.perkIds[0], participant.perks.perkSubStyle) : {}
 
       // Roles
-      if (this.championRoles) {
+      if (needsRole) {
         const roles = participant.teamId === 100 ? blueRoles : redRoles
         participant.role = Object.entries(roles).find(([, champion]) => participant.championId === champion)[0]
         if (participant.role === 'UTILITY') {
