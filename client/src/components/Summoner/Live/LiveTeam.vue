@@ -206,6 +206,10 @@ export default {
 
   data() {
     return {
+      clashGameBanOrder: {
+        100: [1, 3, 5, 8, 10],
+        200: [2, 4, 6, 7, 9]
+      },
       customGameBanOrder: {
         100: [1, 3, 5, 2, 4],
         200: [2, 4, 6, 1, 3]
@@ -214,6 +218,9 @@ export default {
   },
 
   computed: {
+    isClash() {
+      return this.gamemode === 'CLASH'
+    },
     isCustom() {
       return this.gamemode === 'Custom Game'
     },
@@ -226,11 +233,17 @@ export default {
 
   methods: {
     banChamp(index, teamId) {
-      if (teamId === 200 && !this.isCustom) {
+      if (teamId === 200 && !this.isCustom && !this.isClash) {
         index += 5
       }
 
-      const toFind = this.isCustom ? this.customGameBanOrder[teamId][index] : index + 1
+      let toFind = index + 1
+      if (this.isClash) {
+        toFind = this.clashGameBanOrder[teamId][index]
+      } else if (this.isCustom) {
+        toFind = this.customGameBanOrder[teamId][index]
+      }
+
       return this.live.bannedChampions.find(b => b.pickTurn === toFind && b.teamId === teamId)
     },
     borderChampion(id) {
