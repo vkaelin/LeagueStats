@@ -16,9 +16,10 @@
         v-model="summoner"
         @focus="selected = true"
         :class="[inputClasses]"
-        class="w-full font-bold rounded-none outline-none summoner-input"
+        class="w-full font-bold placeholder-teal-100 placeholder-opacity-75 rounded-none outline-none summoner-input"
         spellcheck="false"
         type="text"
+        placeholder="Search summoner"
       />
       <transition name="scale-fade">
         <SearchFormDropdown v-if="selected" @click-dropdown="clickDropdown = true" />
@@ -208,6 +209,10 @@ export default {
 </script>
 
 <style scoped>
+.summoner-input::placeholder {
+  @apply font-normal;
+}
+
 .offsetDropDownXl {
   top: 58px;
   right: 50px;
