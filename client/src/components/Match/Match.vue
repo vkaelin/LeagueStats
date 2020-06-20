@@ -124,8 +124,8 @@
                 class="w-6 h-6 ml-1 overflow-hidden bg-center bg-cover rounded-full bg-blue-1000"
               ></div>
               <div
-                class="w-4 h-4 mx-3 bg-center bg-cover"
-                :style="{backgroundImage: `url(${require('@/assets/img/roles/' + roles[index] + '.png')})`}"
+                :style="{backgroundImage: data.role !== 'NONE' ? `url(${require('@/assets/img/roles/' + roles[index] + '.png')})` : null}"
+                class="w-4 h-4 mx-2 bg-center bg-cover"
               ></div>
               <div
                 :class="index !== 0 ? '-mt-1' : ''"
