@@ -26,19 +26,23 @@
       />
     </div>
     <div v-else-if="data.status === 'loading' && detailsOpen">
-      <p class="py-5 text-lg font-semibold text-blue-100 bg-blue-800">Loading...</p>
+      <div class="py-5 bg-blue-800 rounded-b-lg">
+        <CubeLoader />
+      </div>
     </div>
   </transition>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import CubeLoader from '@/components/Common/CubeLoader.vue'
 import DetailedMatchGlobalStats from '@/components/Match/DetailedMatchGlobalStats.vue'
 import DetailedMatchTeam from '@/components/Match/DetailedMatchTeam.vue'
 import SwitchToggle from '@/components/Form/SwitchToggle.vue'
 
 export default {
   components: {
+    CubeLoader,
     DetailedMatchGlobalStats,
     DetailedMatchTeam,
     SwitchToggle,

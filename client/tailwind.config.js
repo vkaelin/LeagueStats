@@ -293,6 +293,7 @@ module.exports = {
       full: '100%',
       screen: '100vh',
       '200': '50rem',
+      '1/2': '50%',
     }),
     inset: {
       '0': '0',
