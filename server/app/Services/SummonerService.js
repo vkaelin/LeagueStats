@@ -32,6 +32,25 @@ class SummonerService {
   }
 
   /**
+   * Return the full list of old and actual summoner names
+   * @param account of the summoner
+   * @param summonerDB summoner in the database
+   */
+  getAllSummonerNames(account, summonerDB) {
+    const names = summonerDB.names ? summonerDB.names : []
+
+    if (!names.find(n => n.name === account.name)) {
+      names.push({
+        name: account.name,
+        date: new Date()
+      })
+      summonerDB.names = names
+    }
+
+    return names
+  }
+
+  /**
    * Get ranked data for a specific Summoner
    * @param account
    * @param region 

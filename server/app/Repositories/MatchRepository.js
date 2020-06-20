@@ -238,6 +238,7 @@ class MatchRepository {
     ]
     return this._aggregate(puuid, matchParams, [], '$role', {}, finalSteps)
   }
+  
   /**
    * Get Summoner's played seasons
    * @param puuid of the summoner

@@ -43,10 +43,12 @@ class SummonerController {
         { puuid: account.puuid }
       )
 
+      // Summoner names
+      finalJSON.account.names = SummonerService.getAllSummonerNames(account, summonerDB)
+
       // MATCH LIST
       await MatchService.updateMatchList(account, summonerDB)
-      const matchList = summonerDB.matchList
-      finalJSON.matchList = matchList
+      finalJSON.matchList = summonerDB.matchList
 
       // All seasons the summoner has played
       finalJSON.seasons = await this._getSeasons(account.puuid)

@@ -53,10 +53,29 @@
           <div class="flex items-center justify-between">
             <div>
               <div class="flex items-center">
-                <h1 class="text-4xl font-extrabold uppercase">
-                  <span class="text-5xl">{{ basic.account.name[0] }}</span>
-                  <span>{{ basic.account.name.substring(1) }}</span>
-                </h1>
+                <Tooltip>
+                  <template v-slot:trigger>
+                    <h1 class="text-4xl font-extrabold uppercase">
+                      <span class="text-5xl">{{ basic.account.name[0] }}</span>
+                      <span>{{ basic.account.name.substring(1) }}</span>
+                    </h1>
+                  </template>
+                  <template v-slot:default>
+                    <div
+                      v-if="basic.account.names.length > 1"
+                      class="px-2 text-sm text-center text-white select-none"
+                    >
+                      <div>Old summoner names</div>
+                      <ul class="pl-2 text-left">
+                        <li
+                          v-for="name in basic.account.names"
+                          :key="name.date"
+                          class="text-teal-400"
+                        >{{ name.name }}</li>
+                      </ul>
+                    </div>
+                  </template>
+                </Tooltip>
                 <div
                   v-if="playing"
                   class="flex items-center px-3 py-1 mt-2 ml-4 bg-teal-800 border border-teal-400 rounded-full"
@@ -164,6 +183,7 @@ import RecentActivity from '@/components/Summoner/RecentActivity.vue'
 import SearchForm from '@/components/Form/SearchForm.vue'
 import HeaderLoader from '@/components/Summoner/HeaderLoader.vue'
 import SummonerRanked from '@/components/Summoner/SummonerRanked.vue'
+import Tooltip from '@/components/Common/Tooltip.vue'
 
 export default {
   components: {
@@ -174,6 +194,7 @@ export default {
     SearchForm,
     HeaderLoader,
     SummonerRanked,
+    Tooltip
   },
 
   data() {
