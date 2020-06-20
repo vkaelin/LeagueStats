@@ -15,6 +15,14 @@
   border-radius: 8px
 }
 
+::selection {
+  @apply text-white bg-blue-1000;
+}
+
+::-moz-selection {
+  @apply text-white bg-blue-1000;
+}
+
 .min-w-1200 {
   min-width: 1200px;;
 }
