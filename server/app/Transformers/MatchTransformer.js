@@ -2,7 +2,7 @@
 
 const Jax = use('App/Services/Jax')
 const RoleIdentificationService = use('App/Services/RoleIdentificationService')
-const { queuesWithRole, sortTeamByRole } = use('App/helpers')
+const { getSeasonNumber, queuesWithRole, sortTeamByRole } = use('App/helpers')
 
 /**
  * MatchTransformer class
@@ -28,12 +28,6 @@ class MatchTransformer {
     this.summonerSpells = summonerSpells
     this.championRoles = championRoles
     this.sortTeamByRole = sortTeamByRole
-
-    // League of Legends seasons timestamps
-    this.seasons = {
-      0: 9,
-      1578628800000: 10
-    }
   }
 
   /**
@@ -51,19 +45,12 @@ class MatchTransformer {
    *  Get global data about the match
    */
   getGameInfos(match) {
-    // Get season number
-    const arrSeasons = Object.keys(this.seasons)
-    arrSeasons.push(match.gameCreation)
-    arrSeasons.sort()
-    const indexSeason = arrSeasons.indexOf(match.gameCreation) - 1
-    const season = this.seasons[arrSeasons[indexSeason]]
-
     return {
       map: match.mapId,
       gamemode: match.queueId,
       date: match.gameCreation,
       region: match.platformId.toLowerCase(),
-      season,
+      season: getSeasonNumber(match.gameCreation),
       time: match.gameDuration
     }
   }
