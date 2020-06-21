@@ -23,6 +23,9 @@ class DetailedMatchTransformer extends MatchTransformer {
     const firstTeam = this.getTeamData(match, match.teams[0])
     const secondTeam = this.getTeamData(match, match.teams[1])
 
+    // Roles
+    super.getMatchRoles(match, firstTeam.players, secondTeam.players)
+
     return {
       gameId: match.gameId,
       season: match.seasonId,

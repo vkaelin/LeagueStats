@@ -19,7 +19,7 @@ class MatchTransformer {
     const perks = await Jax.CDragon.perks()
     const perkstyles = await Jax.CDragon.perkstyles()
     const summonerSpells = await Jax.CDragon.summonerSpells()
-    const championRoles = await RoleIdentificationService.pullData().catch(() => {})
+    const championRoles = await RoleIdentificationService.pullData().catch(() => { })
 
     this.champions = champions
     this.items = items
@@ -196,7 +196,7 @@ class MatchTransformer {
   * @param gamemode of the match to check if a role is needed
   */
   getRoleName(timeline, gamemode) {
-    if(!queuesWithRole.includes(gamemode)) {
+    if (!queuesWithRole.includes(gamemode)) {
       return 'NONE'
     }
 
@@ -205,6 +205,66 @@ class MatchTransformer {
     }
 
     return timeline.lane
+  }
+
+  /**
+   * Return the 5 roles of a team based on champions
+   * @param team 5 champions + smite from a team
+   */
+  getTeamRoles(team) {
+    const teamJunglers = team.filter(p => p.jungle)
+    const jungle = teamJunglers.length === 1 ? teamJunglers[0].champion : null
+
+    return RoleIdentificationService.getRoles(this.championRoles, team.map(p => p.champion), jungle)
+  }
+
+  /**
+   * Update roles for a team if Riot's ones are badly identified
+   * @param {Object} team 5 players data of the team
+   * @param {Array} champs 5 champions + smite from the team
+   * @param {Object} playerData data of the searched player, only for basic matches 
+   */
+  updateTeamRoles(team, champs, playerData = null) {
+    const actualRoles = [...new Set(team.map(p => p.role))]
+    if (actualRoles.length === 5) {
+      return
+    }
+
+    champs = this.getTeamRoles(champs)
+    for (const summoner of team) {
+      summoner.role = Object.entries(champs).find(([, champion]) => summoner.champion.id === champion)[0]
+
+      if (playerData && summoner.champion.id === playerData.champion.id) {
+        playerData.role = summoner.role
+      }
+    }
+  }
+
+  /**
+   * 
+   * @param {Object} match from Riot Api
+   * @param {Array} allyTeam 5 players of the first team
+   * @param {Array} enemyTeam 5 players of the second team
+   * @param {Number} allyTeamId team id of the searched player, only for basic matches
+   * @param {Object} playerData data of the searched player, only for basic matches
+   */
+  getMatchRoles(match, allyTeam, enemyTeam, allyTeamId = 100, playerData = null) {
+    if (!this.championRoles || !queuesWithRole.includes(match.queueId)) {
+      return
+    }
+
+    let allyChamps = []
+    let enemyChamps = []
+    match.participants.map(p => {
+      const playerRole = { champion: p.championId, jungle: p.spell1Id === 11 || p.spell2Id === 11 }
+      p.teamId === allyTeamId ? allyChamps.push(playerRole) : enemyChamps.push(playerRole)
+    })
+
+    this.updateTeamRoles(allyTeam, allyChamps, playerData)
+    this.updateTeamRoles(enemyTeam, enemyChamps)
+
+    allyTeam.sort(this.sortTeamByRole)
+    enemyTeam.sort(this.sortTeamByRole)
   }
 
   /**

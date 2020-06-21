@@ -1,7 +1,6 @@
 'use strict'
 
 const MatchTransformer = use('App/Transformers/MatchTransformer')
-const RoleIdentificationService = use('App/Services/RoleIdentificationService')
 const SummonerService = use('App/Services/SummonerService')
 const { queuesWithRole } = use('App/helpers')
 
@@ -24,13 +23,6 @@ class LiveMatchTransformer extends MatchTransformer {
     return participant
   }
 
-  _getTeamRoles(team) {
-    const teamJunglers = team.filter(p => p.jungle)
-    const jungle = teamJunglers.length === 1 ? teamJunglers[0].champion : null
-
-    return RoleIdentificationService.getRoles(this.championRoles, team.map(p => p.champion), jungle)
-  }
-
   /**
    * Transform raw data from Riot API
    * @param match data from Riot API, one live match
@@ -50,8 +42,8 @@ class LiveMatchTransformer extends MatchTransformer {
         p.teamId === 100 ? blueTeam.push(playerRole) : redTeam.push(playerRole)
       })
 
-      blueRoles = this._getTeamRoles(blueTeam)
-      redRoles = this._getTeamRoles(redTeam)
+      blueRoles = super.getTeamRoles(blueTeam)
+      redRoles = super.getTeamRoles(redTeam)
     }
 
     for (const participant of match.participants) {
@@ -62,9 +54,6 @@ class LiveMatchTransformer extends MatchTransformer {
       if (needsRole) {
         const roles = participant.teamId === 100 ? blueRoles : redRoles
         participant.role = Object.entries(roles).find(([, champion]) => participant.championId === champion)[0]
-        if (participant.role === 'UTILITY') {
-          participant.role = 'SUPPORT'
-        }
       }
     }
 

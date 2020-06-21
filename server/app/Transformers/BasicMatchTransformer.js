@@ -1,6 +1,7 @@
 'use strict'
 
 const MatchTransformer = use('App/Transformers/MatchTransformer')
+const { queuesWithRole } = use('App/helpers')
 
 /**
  * BasicMatchTransformer class
@@ -65,8 +66,9 @@ class BasicMatchTransformer extends MatchTransformer {
         enemyTeam.push(playerInfos)
       }
     }
-    allyTeam.sort(this.sortTeamByRole)
-    enemyTeam.sort(this.sortTeamByRole)
+
+    // Roles
+    super.getMatchRoles(match, allyTeam, enemyTeam, player.teamId, playerData)
 
     return {
       account_id: identity.player.currentAccountId,

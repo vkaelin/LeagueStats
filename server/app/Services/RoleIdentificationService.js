@@ -4,7 +4,7 @@ const got = require('got')
 const Redis = use('Redis')
 
 class RoleIdentificationService {
-  _getPermutations (array) {
+  _getPermutations(array) {
     const result = []
 
     for (let i = 0; i < array.length; i++) {
@@ -21,13 +21,13 @@ class RoleIdentificationService {
     return result
   }
 
-  _calculateMetric (championPositions, bestPositions) {
+  _calculateMetric(championPositions, bestPositions) {
     return Object.entries(bestPositions).reduce((agg, [position, champion]) => {
       return agg + (championPositions[champion][position] || 0)
     }, 0) / Object.keys(bestPositions).length
   }
 
-  _getPositions (championPositions, composition, top, jungle, middle, adc, support) {
+  _getPositions(championPositions, composition, top, jungle, middle, adc, support) {
     // Set the initial guess to be the champion in the composition, order doesn't matter
     let bestPositions = {
       'TOP': composition[0],
@@ -104,7 +104,7 @@ class RoleIdentificationService {
   /**
    * Get the CDN data of the champion playrates by role
    */
-  async pullData () {
+  async pullData() {
     const url = 'http://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/championrates.json'
 
     // Check if cached
@@ -144,13 +144,13 @@ class RoleIdentificationService {
    * @param composition 
    * @param jungle
    */
-  getRoles (championPositions, composition, jungle = null) {
+  getRoles(championPositions, composition, jungle = null) {
     const identified = {}
     let positions = {}
     let secondaryPositions = null
     let secondaryMetric = -Infinity
 
-    if(jungle) {
+    if (jungle) {
       identified['JUNGLE'] = jungle
     }
 
@@ -193,7 +193,13 @@ class RoleIdentificationService {
       identified[best[0]] = best[1]
     }
 
-    return positions
+    // Rename UTILITY to SUPPORT
+    const {
+      UTILITY: SUPPORT,
+      ...rest
+    } = positions
+
+    return { ...rest, SUPPORT }
   }
 }
 
