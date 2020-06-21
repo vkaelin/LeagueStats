@@ -134,6 +134,7 @@ export default {
       if (this.isMobile) return
       if (!this.sidebarRectangle.height) return
       if (!this.overview.matches.length) return
+      if (!this.overview.stats.champion.length) return
 
       this.fixedSidebar = window.innerHeight + document.documentElement.scrollTop > this.sidebarRectangle.y + this.sidebarRectangle.height + 123
     },
