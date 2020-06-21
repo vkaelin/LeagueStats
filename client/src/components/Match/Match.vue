@@ -115,16 +115,16 @@
               class="flex items-center ml-4 leading-none"
             >
               <router-link
-                v-if="ally.account_id !== '0'"
+                v-if="ally.account_id !== '0' && account.accountId !== ally.account_id"
                 @click.native="$event.stopImmediatePropagation()"
                 :to="{ name: 'summoner', params: { region: $route.params.region, name: ally.name }}"
                 :class="isSummonerProfile(ally.account_id)"
-                class="w-16 overflow-hidden text-xs font-medium text-right text-blue-200 whitespace-no-wrap hover:text-white text-overflow"
+                class="w-16 overflow-hidden text-xs font-medium text-right whitespace-no-wrap hover:text-white text-overflow"
               >{{ ally.name }}</router-link>
               <div
                 v-else
                 :class="isSummonerProfile(ally.account_id)"
-                class="w-16 overflow-hidden text-xs font-medium text-right text-blue-200 whitespace-no-wrap text-overflow"
+                class="w-16 overflow-hidden text-xs font-medium text-right whitespace-no-wrap text-overflow"
               >{{ ally.name }}</div>
               <div
                 :class="index !== 0 ? '-mt-1': ''"
@@ -229,7 +229,8 @@ export default {
     },
     isSummonerProfile(account_id) {
       return {
-        'font-bold': this.account.accountId === account_id
+        'font-bold text-white': this.account.accountId === account_id,
+        'text-blue-200': this.account.accountId !== account_id
       }
     },
     ...mapActions('detailedMatch', ['matchDetails']),
