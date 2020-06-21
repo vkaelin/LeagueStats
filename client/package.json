@@ -21,6 +21,7 @@
     "@vue/cli-plugin-eslint": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
     "tailwindcss": "^1.4.6",
