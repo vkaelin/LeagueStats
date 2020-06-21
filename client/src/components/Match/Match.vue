@@ -107,14 +107,22 @@
           </div>
         </div>
 
-        <div class="relative z-30 flex items-center w-5/12 py-1 third">
+        <div class="flex items-center w-5/12 py-1 third">
           <div v-if="data.allyTeam.length > 1">
             <div
               v-for="(ally, index) in data.allyTeam"
               :key="'player-' + index"
               class="flex items-center ml-4 leading-none"
             >
+              <router-link
+                v-if="ally.account_id !== '0'"
+                @click.native="$event.stopImmediatePropagation()"
+                :to="{ name: 'summoner', params: { region: $route.params.region, name: ally.name }}"
+                :class="isSummonerProfile(ally.account_id)"
+                class="w-16 overflow-hidden text-xs font-medium text-right text-blue-200 whitespace-no-wrap hover:text-white text-overflow"
+              >{{ ally.name }}</router-link>
               <div
+                v-else
                 :class="isSummonerProfile(ally.account_id)"
                 class="w-16 overflow-hidden text-xs font-medium text-right text-blue-200 whitespace-no-wrap text-overflow"
               >{{ ally.name }}</div>
@@ -132,7 +140,14 @@
                 :style="{backgroundImage: `url('${data.enemyTeam[index].champion.icon}')`}"
                 class="w-6 h-6 bg-center bg-cover rounded-full bg-blue-1000"
               ></div>
+              <router-link
+                v-if="data.enemyTeam[index].account_id !== '0'"
+                @click.native="$event.stopImmediatePropagation()"
+                :to="{ name: 'summoner', params: { region: $route.params.region, name: data.enemyTeam[index].name }}"
+                class="w-16 ml-1 overflow-hidden text-xs font-medium text-left text-blue-200 whitespace-no-wrap hover:text-white text-overflow"
+              >{{ data.enemyTeam[index].name }}</router-link>
               <div
+                v-else
                 class="w-16 ml-1 overflow-hidden text-xs font-medium text-left text-blue-200 whitespace-no-wrap text-overflow"
               >{{ data.enemyTeam[index].name }}</div>
             </div>
