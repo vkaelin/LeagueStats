@@ -143,8 +143,9 @@ class RoleIdentificationService {
    * @param championPositions 
    * @param composition 
    * @param jungle
+   * @param support
    */
-  getRoles(championPositions, composition, jungle = null) {
+  getRoles(championPositions, composition, jungle = null, support = null) {
     const identified = {}
     let positions = {}
     let secondaryPositions = null
@@ -154,10 +155,14 @@ class RoleIdentificationService {
       identified['JUNGLE'] = jungle
     }
 
+    if (support) {
+      identified['UTILITY'] = support
+    }
+
     while (Object.keys(identified).length < composition.length - 1) {
       let { bestPositions, bestMetric: metric, secondBestPositions: sbp } =
         this._getPositions(championPositions, composition,
-          identified.TOP, identified.JUNGLE, identified.MIDDLE, identified.ADC, identified.SUPPORT
+          identified.TOP, identified.JUNGLE, identified.MIDDLE, identified.ADC, identified.UTILITY
         )
 
       positions = bestPositions

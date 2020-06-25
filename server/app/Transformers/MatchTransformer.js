@@ -2,7 +2,7 @@
 
 const Jax = use('App/Services/Jax')
 const RoleIdentificationService = use('App/Services/RoleIdentificationService')
-const { getSeasonNumber, queuesWithRole, sortTeamByRole } = use('App/helpers')
+const { getSeasonNumber, queuesWithRole, sortTeamByRole, supportItems } = use('App/helpers')
 
 /**
  * MatchTransformer class
@@ -198,10 +198,12 @@ class MatchTransformer {
    * @param team 5 champions + smite from a team
    */
   getTeamRoles(team) {
-    const teamJunglers = team.filter(p => p.jungle)
+    const teamJunglers = team.filter(p => p.jungle && !p.support)
     const jungle = teamJunglers.length === 1 ? teamJunglers[0].champion : null
+    const teamSupports = team.filter(p => p.support && !p.jungle)
+    const support = teamSupports.length === 1 ? teamSupports[0].champion : null
 
-    return RoleIdentificationService.getRoles(this.championRoles, team.map(p => p.champion), jungle)
+    return RoleIdentificationService.getRoles(this.championRoles, team.map(p => p.champion), jungle, support)
   }
 
   /**
@@ -211,10 +213,10 @@ class MatchTransformer {
    * @param {Object} playerData data of the searched player, only for basic matches 
    */
   updateTeamRoles(team, champs, playerData = null) {
-    const actualRoles = [...new Set(team.map(p => p.role))]
-    if (actualRoles.length === 5) {
-      return
-    }
+    // const actualRoles = [...new Set(team.map(p => p.role))]
+    // if (actualRoles.length === 5) {
+    //   return
+    // }
 
     champs = this.getTeamRoles(champs)
     for (const summoner of team) {
@@ -242,7 +244,12 @@ class MatchTransformer {
     let allyChamps = []
     let enemyChamps = []
     match.participants.map(p => {
-      const playerRole = { champion: p.championId, jungle: p.spell1Id === 11 || p.spell2Id === 11 }
+      const items = [p.stats.item0, p.stats.item1, p.stats.item2, p.stats.item3, p.stats.item4, p.stats.item5]
+      const playerRole = {
+        champion: p.championId,
+        jungle: p.spell1Id === 11 || p.spell2Id === 11,
+        support: supportItems.some(suppItem => items.includes(suppItem))
+      }
       p.teamId === allyTeamId ? allyChamps.push(playerRole) : enemyChamps.push(playerRole)
     })
 
