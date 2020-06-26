@@ -44,6 +44,12 @@ export default {
     redirect(summoner, region) {
       this.$router.push(`/summoner/${region}/${summoner}`)
     },
+  },
+
+  metaInfo() {
+    return {
+      title: 'LeagueStats.gg',
+    }
   }
 }
 </script>

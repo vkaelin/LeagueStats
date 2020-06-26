@@ -191,6 +191,12 @@ export default {
       }
     },
     ...mapActions('summoner', ['recordsRequest']),
+  },
+
+  metaInfo() {
+    return {
+      title: 'Summoner Records',
+    }
   }
 }
 </script>

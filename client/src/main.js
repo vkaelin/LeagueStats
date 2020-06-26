@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueAxios from './plugins/axios'
 import VueGtag from 'vue-gtag'
+import VueMeta from 'vue-meta'
 
 import '@/assets/css/main.css'
 
@@ -13,6 +14,7 @@ Vue.use(VueAxios)
 Vue.use(VueGtag, {
   config: { id: 'UA-113251543-3' }
 }, router)
+Vue.use(VueMeta)
 
 Vue.filter('capitalize', (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()

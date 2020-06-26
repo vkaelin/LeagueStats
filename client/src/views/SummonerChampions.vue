@@ -81,6 +81,12 @@ export default {
       this.searchChampions = search
     },
     ...mapActions('summoner', ['championsRequest']),
+  },
+
+  metaInfo() {
+    return {
+      title: 'Summoner Champions',
+    }
   }
 }
 </script>

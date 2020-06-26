@@ -140,6 +140,12 @@ export default {
     },
     ...mapActions('summoner', ['moreMatches', 'overviewRequest']),
   },
+
+  metaInfo() {
+    return {
+      title: 'Summoner Overview',
+    }
+  }
 }
 </script>
 

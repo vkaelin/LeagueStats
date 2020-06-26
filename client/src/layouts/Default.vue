@@ -248,6 +248,12 @@ export default {
     },
     ...mapActions('settings', ['updateSettings']),
     ...mapActions('summoner', ['basicRequest']),
+  },
+
+  metaInfo() {
+    return {
+      titleTemplate: this.summonerFound ? `${this.basic.account.name} | LeagueStats.gg %s` : 'LeagueStats.gg %s',
+    }
   }
 }
 </script>

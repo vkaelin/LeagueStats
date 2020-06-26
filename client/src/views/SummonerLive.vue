@@ -68,6 +68,12 @@ export default {
       }
     },
     ...mapActions('summoner', ['liveMatchRequest']),
+  },
+
+  metaInfo() {
+    return {
+      title: 'Summoner Live Game',
+    }
   }
 }
 </script>
