@@ -68,5 +68,9 @@ export const gameModes = {
   1020: {
     type: 'Normal',
     name: 'One for All'
+  },
+  1300: {
+    type: 'Normal',
+    name: 'Nexus Blitz'
   }
 }
