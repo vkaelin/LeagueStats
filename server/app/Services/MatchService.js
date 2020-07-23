@@ -110,19 +110,15 @@ class MatchService {
 
     /* If we have to store some matches in the db */
     if (matchesFromApi.length !== 0) {
-      const ctx = {
-        account,
-      }
-
       // Try to see why matches are sometimes undefined
       matchesFromApi.filter(m => {
-        if(m === undefined) {
-          Logger.transport('file').info('Match undefined', matchesToGetFromRiot)
+        if (m === undefined) {
+          Logger.transport('file').info(`Match undefined, summoner: ${summonerDB.puuid}`, m)
         }
       })
 
       // Transform raw matches data
-      await BasicMatchTransformer.transform(matchesFromApi, ctx)
+      await BasicMatchTransformer.transform(matchesFromApi, { account })
 
       /* Save all matches from Riot Api in db */
       for (const match of matchesFromApi) {
