@@ -146,6 +146,21 @@ class RoleIdentificationService {
    * @param support
    */
   getRoles(championPositions, composition, jungle = null, support = null) {
+    // Set composition champion playrate to 0% if not present in the json data
+    for (const compChamp of composition) {
+      if (championPositions[compChamp]) {
+        continue
+      }
+
+      championPositions[compChamp] = {
+        MIDDLE: 0,
+        UTILITY: 0,
+        TOP: 0,
+        JUNGLE: 0,
+        BOTTOM: 0
+      }
+    }
+
     const identified = {}
     let positions = {}
     let secondaryPositions = null
