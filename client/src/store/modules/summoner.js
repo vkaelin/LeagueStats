@@ -50,6 +50,10 @@ export const mutations = {
     state.champions.list = champions
     state.champions.championsLoaded = true
   },
+  KEEP_LAST_X_MATCHES(state, number) {
+    state.overview.matchIndex = number
+    state.overview.matches = state.overview.matches.slice(0, number)
+  },
   LIVE_FOUND(state, { live }) {
     state.live.match = live
     state.live.liveLoaded = true
@@ -189,6 +193,9 @@ export const actions = {
     const records = resp.data ? createRecordsData(resp.data) : {}
 
     commit('RECORDS_FOUND', { records })
+  },
+  sliceOverviewMatches({ commit }, number) {
+    commit('KEEP_LAST_X_MATCHES', number)
   },
   updateSeason({ commit }, season) {
     commit('UPDATE_SEASON', { season })
