@@ -7,7 +7,7 @@
     <VueStickySidebar
       :top-spacing="48"
       :bottom-spacing="123"
-      class="sidebar"
+      class="z-40 sidebar"
       container-selector=".vue-sticky-container"
     >
       <SummonerChampions />
