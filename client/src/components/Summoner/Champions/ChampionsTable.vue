@@ -40,22 +40,22 @@
           </div>
         </td>
         <td
-          :style="bgColor(champion, '71, 132, 116', 'winrate')"
+          :style="bgColor(champion, 'winrate')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.winrate|percent }}</td>
         <td
-          :style="bgColor(champion, '55, 118, 179', 'playrate')"
+          :style="bgColor(champion, 'playrate')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.playrate|percent }}</td>
         <td
-          :style="bgColor(champion, '71, 132, 116', 'wins')"
+          :style="bgColor(champion, 'wins')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.wins }}</td>
         <td
-          :style="bgColor(champion, '55, 118, 179', 'count')"
+          :style="bgColor(champion, 'count')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.count }}</td>
-        <td :style="bgColor(champion, '55, 118, 179', 'kda')" class="px-2 py-3 text-sm text-white">
+        <td :style="bgColor(champion, 'kda')" class="px-2 py-3 text-sm text-white">
           <div>{{ champion.kda|round }}</div>
           <div class="mt-1 text-blue-200 text-xxs">
             {{ champion.kills/champion.count|round(1) }}
@@ -66,27 +66,27 @@
           </div>
         </td>
         <td
-          :style="bgColor(champion, '71, 132, 116', 'kp')"
+          :style="bgColor(champion, 'kp')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.kp|percent }}</td>
         <td
-          :style="bgColor(champion, '140, 101, 182', 'minions')"
+          :style="bgColor(champion, 'minions')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.minions|round(0) }}</td>
         <td
-          :style="bgColor(champion, '146, 100, 79', 'gold')"
+          :style="bgColor(champion, 'gold')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.gold|kilo }}</td>
         <td
-          :style="bgColor(champion, '156, 71, 109', 'dmgChamp')"
+          :style="bgColor(champion, 'dmgChamp')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.dmgChamp|kilo }}</td>
         <td
-          :style="bgColor(champion, '146, 145, 106', 'dmgTaken')"
+          :style="bgColor(champion, 'dmgTaken')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.dmgTaken|kilo }}</td>
         <td
-          :style="bgColor(champion, '71, 132, 116', 'gameLength')"
+          :style="bgColor(champion, 'gameLength')"
           class="px-2 py-3 text-sm text-white"
         >{{ champion.gameLength|secToTime }}</td>
         <td
@@ -129,6 +129,7 @@
 </template>
 
 <script>
+import { colors } from '@/data/data.js'
 import { ContentLoader } from 'vue-content-loader'
 import { timeDifference } from '@/helpers/functions.js'
 
@@ -232,7 +233,7 @@ export default {
   },
 
   methods: {
-    bgColor(champion, rgb, stats) {
+    bgColor(champion, stats) {
       const biggestValue = Math.max(
         ...this.championsToDisplay
           .filter(c => c[stats] !== Infinity)
@@ -243,7 +244,7 @@ export default {
       const opacity = (value / biggestValue).toFixed(2)
 
       return {
-        backgroundColor: `rgba(${rgb}, ${opacity})`
+        backgroundColor: `rgba(${colors[stats]}, ${opacity})`
       }
     },
     sortBy(props) {
