@@ -74,3 +74,43 @@ export const gameModes = {
     name: 'Nexus Blitz'
   }
 }
+
+/* ========= OLD 5 COLORS ========= */
+// KILLS, KP : green -> 71, 132, 116
+// DEATHS, DMGCHAMP, DMGOBJ: red -> 156, 71, 109
+// ASSISTS, GOLD, DMGTAKEN: golden -> 146, 100, 79
+// MINIONS: purple -> 140, 101, 182
+// VISION: blue -> 55, 118, 179
+
+const colorValues = {
+  green: '54,148,109',
+  red: '197,85,93',
+  purple: '141,116,217',
+  teal: '104,186,191',
+  yellow: '166,176,134',
+  orange: '184,137,101',
+  brown: '161,127,134',
+  blue: '55, 118, 179',
+}
+
+export const colors = {
+  // match-details
+  kills: colorValues['green'],
+  deaths: colorValues['red'],
+  assists: colorValues['purple'],
+  minions: colorValues['teal'],
+  vision: colorValues['yellow'],
+  gold: colorValues['orange'],
+  dmgChamp: colorValues['red'],
+  dmgObj: colorValues['yellow'],
+  dmgTaken: colorValues['red'],
+  kp: colorValues['brown'],
+
+  // champions
+  winrate: colorValues['green'],
+  playrate: colorValues['purple'],
+  wins: colorValues['green'],
+  count: colorValues['purple'],
+  kda: colorValues['blue'],
+  gameLength: colorValues['green'],
+}

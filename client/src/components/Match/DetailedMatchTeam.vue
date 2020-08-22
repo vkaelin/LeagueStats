@@ -163,61 +163,61 @@
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '71, 132, 116', 'kills')"
+            :style="bgColor(player, 'kills')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ player.stats.kills }}</div>
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '156, 71, 109', 'deaths')"
+            :style="bgColor(player, 'deaths')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ player.stats.deaths }}</div>
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '146, 100, 79', 'assists')"
+            :style="bgColor(player, 'assists')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ player.stats.assists }}</div>
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '140, 101, 182', 'minions')"
+            :style="bgColor(player, 'minions')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ player[statsFormat].minions }}</div>
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '55, 118, 179', 'vision')"
+            :style="bgColor(player, 'vision')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ player[statsFormat].vision }}</div>
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '146, 100, 79', 'gold')"
+            :style="bgColor(player, 'gold')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ roundStats(player[statsFormat].gold) }}</div>
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '156, 71, 109', 'dmgChamp')"
+            :style="bgColor(player, 'dmgChamp')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ roundStats(player[statsFormat].dmgChamp) }}</div>
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '156, 71, 109', 'dmgObj')"
+            :style="bgColor(player, 'dmgObj')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ roundStats(player[statsFormat].dmgObj) }}</div>
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '146, 145, 106', 'dmgTaken')"
+            :style="bgColor(player, 'dmgTaken')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ roundStats(player[statsFormat].dmgTaken) }}</div>
         </td>
         <td class="relative">
           <div
-            :style="bgColor(player, '71, 132, 116', 'kp')"
+            :style="bgColor(player, 'kp')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
           >{{ player.stats.kp }}</div>
         </td>
@@ -227,6 +227,7 @@
 </template>
 
 <script>
+import { colors } from '@/data/data.js'
 import { mapState } from 'vuex'
 import DotsLoader from '@/components/Common/DotsLoader.vue'
 import Tooltip from '@/components/Common/Tooltip.vue'
@@ -265,7 +266,7 @@ export default {
   },
 
   methods: {
-    bgColor(player, rgb, stats) {
+    bgColor(player, stats) {
       const value = parseFloat(player.stats[stats])
       const biggestValue = Math.max(...this.allPlayers.map(p => parseFloat(p.stats[stats])), 0)
       const opacity = (value / biggestValue).toFixed(2)
@@ -279,7 +280,7 @@ export default {
       }
 
       return {
-        backgroundColor: `rgba(${rgb}, ${opacity})`,
+        backgroundColor: `rgba(${colors[stats]}, ${opacity})`,
         ...biggestValueStyle
       }
     },

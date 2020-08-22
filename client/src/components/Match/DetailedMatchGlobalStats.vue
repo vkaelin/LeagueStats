@@ -38,33 +38,33 @@
           :class="textColor"
           class="text-sm font-medium"
         >{{ `${team.teamStats.kills}/${team.teamStats.deaths}/${team.teamStats.assists}` }}</div>
-        <div class="text-xs text-white">k / d / a</div>
+        <div class="text-xs text-white">K / D / A</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'">
         <div
           :class="textColor"
           class="text-sm font-medium"
         >{{ +(team.teamStats.gold / 1000).toFixed(1) + 'k' }}</div>
-        <div class="text-xs text-white">gold</div>
+        <div class="text-xs text-white">Gold</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'">
         <div
           :class="textColor"
           class="text-sm font-medium"
         >{{ +(team.teamStats.dmgChamp / 1000).toFixed(1) + 'k' }}</div>
-        <div class="text-xs text-white">dmg</div>
+        <div class="text-xs text-white">Dmg</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'" class="flex flex-col justify-end">
         <div class="text-sm font-medium text-teal-400"></div>
         <div class="flex text-xs text-white">
           <div :class="allyTeam ? '' : 'mr-2'">
-            <span :class="textColor">{{ team.towers }}</span> towers
+            <span :class="textColor">{{ team.towers }}</span> Towers
           </div>
           <div :class="allyTeam ? 'ml-2' : 'mr-2'">
-            <span :class="textColor">{{ team.dragons }}</span> dragons
+            <span :class="textColor">{{ team.dragons }}</span> Dragons
           </div>
           <div :class="allyTeam ? 'ml-2' : ''">
-            <span :class="textColor">{{ team.barons }}</span> barons
+            <span :class="textColor">{{ team.barons }}</span> Barons
           </div>
         </div>
       </div>
