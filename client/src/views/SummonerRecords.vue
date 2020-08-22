@@ -1,143 +1,169 @@
 <template>
   <div key="records">
     <template v-if="!recordsLoaded || (recordsLoaded && records.maxKda)">
-      <div class="mx-4 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">Basics</div>
+      <div
+        class="relative pl-6 text-2xl text-blue-200 border-b-2 border-blue-800 category blue-900"
+      >Basics</div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
-            color="text-blue-400"
+            color="#63b3ed"
+            text-color="text-blue-400"
+            border-color="border-blue-400"
             property="kda"
             :record="records.maxKda"
-            title="best kda"
+            title="KDA"
           />
           <RecordCard
-            color="text-green-400"
+            color="#68D391"
+            text-color="text-green-400"
+            border-color="border-green-400"
             property="kills"
             :record="records.maxKills"
-            title="most kills"
+            title="Kills"
           />
           <RecordCard
-            color="text-blue-500"
+            color="#9F7AEA"
+            text-color="text-purple-500"
+            border-color="border-purple-500"
             property="assists"
             :record="records.maxAssists"
-            title="most assists"
+            title="Assists"
           />
           <RecordCard
-            color="text-red-500"
+            color="#F56565"
+            text-color="text-red-500"
+            border-color="border-red-500"
             property="deaths"
             :record="records.maxDeaths"
-            title="most deaths"
+            title="Deaths"
           />
           <RecordCard
-            color="text-yellow-600"
+            color="#D69E2E"
+            text-color="text-yellow-600"
+            border-color="border-yellow-600"
             property="gold"
             :record="records.maxGold"
-            title="most gold earned"
+            title="Gold earned"
           />
           <RecordCard
-            color="text-white"
-            property="time"
-            :record="records.maxTime"
-            title="longest game"
-          />
-          <RecordCard
-            color="text-pink-500"
+            color="#81E6D9"
+            text-color="text-teal-300"
+            border-color="border-teal-300"
             property="minions"
             :record="records.maxMinions"
-            title="most minions killed"
+            title="Minions killed"
           />
         </template>
         <template v-else>
           <div
-            v-for="index in 7"
+            v-for="index in 6"
             :key="index"
-            style="width: 288px; height: 146px;"
+            style="width: 176px; height: 294px;"
             class="mx-2 mt-6"
           >
             <content-loader
-              :height="146"
-              :width="288"
+              :height="294"
+              :width="176"
               :speed="2"
               primary-color="#17314f"
               secondary-color="#2b6cb0"
             >
-              <rect x="0" y="0" rx="8" ry="8" width="288" height="146" />
+              <rect x="0" y="0" rx="8" ry="8" width="176" height="294" />
             </content-loader>
           </div>
         </template>
       </div>
-      <div class="mx-4 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">Game impact</div>
+      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900 category">Game impact</div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
-            color="text-yellow-400"
-            property="dmgTaken"
-            :record="records.maxDmgTaken"
-            title="highest damage taken"
-          />
-          <RecordCard
-            color="text-red-400"
+            color="#FC8181"
+            text-color="text-red-400"
+            border-color="border-red-400"
             property="dmgChamp"
             :record="records.maxDmgChamp"
-            title="highest damage to champions"
+            title="Damage champions"
           />
           <RecordCard
-            color="text-yellow-400"
+            color="#D69E2E"
+            text-color="text-yellow-400"
+            border-color="border-yellow-400"
             property="dmgObj"
             :record="records.maxDmgObj"
-            title="highest damage to objectives"
+            title="Damage objectives"
           />
           <RecordCard
-            color="text-green-400"
+            color="#FC8181"
+            text-color="text-red-400"
+            border-color="border-red-400"
+            property="dmgTaken"
+            :record="records.maxDmgTaken"
+            title="Damage taken"
+          />
+          <RecordCard
+            color="#68D391"
+            text-color="text-green-400"
+            border-color="border-green-400"
             property="kp"
             :record="records.maxKp"
-            title="highest kill participation"
+            title="Kill participation"
           />
         </template>
         <template v-else>
           <div
             v-for="index in 4"
             :key="index"
-            style="width: 288px; height: 146px;"
+            style="width: 176px; height: 294px;"
             class="mx-2 mt-6"
           >
             <content-loader
-              :height="146"
-              :width="288"
+              :height="294"
+              :width="176"
               :speed="2"
               primary-color="#17314f"
               secondary-color="#2b6cb0"
             >
-              <rect x="0" y="0" rx="8" ry="8" width="288" height="146" />
+              <rect x="0" y="0" rx="8" ry="8" width="176" height="294" />
             </content-loader>
           </div>
         </template>
       </div>
-      <div class="mx-4 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">Team work</div>
+      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Extra</div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
-            color="text-blue-500"
+            color="#D69E2E"
+            text-color="text-yellow-400"
+            border-color="border-yellow-400"
             property="vision"
             :record="records.maxVision"
-            title="highest vision score"
+            title="Vision score"
+          />
+          <RecordCard
+            color="#4299E1"
+            text-color="text-blue-500"
+            border-color="border-blue-500"
+            property="time"
+            :record="records.maxTime"
+            title="Longest game"
           />
         </template>
         <template v-else>
           <div
-            v-for="index in 1"
+            v-for="index in 2"
             :key="index"
-            style="width: 288px; height: 146px;"
+            style="width: 176px; height: 294px;"
             class="mx-2 mt-6"
           >
             <content-loader
-              :height="146"
-              :width="288"
+              :height="294"
+              :width="176"
               :speed="2"
               primary-color="#17314f"
               secondary-color="#2b6cb0"
             >
-              <rect x="0" y="0" rx="8" ry="8" width="288" height="146" />
+              <rect x="0" y="0" rx="8" ry="8" width="176" height="294" />
             </content-loader>
           </div>
         </template>
@@ -200,3 +226,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.category:before {
+  @apply w-2 h-2 bg-blue-200 absolute block left-0 ml-1;
+  content: "";
+  top: 35%;
+  transform: rotate(45deg);
+}
+</style>
