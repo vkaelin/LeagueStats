@@ -233,8 +233,13 @@ export default {
 
   methods: {
     bgColor(champion, rgb, stats) {
-      const value = parseFloat(champion[stats])
-      const biggestValue = Math.max(...this.championsToDisplay.map(c => parseFloat(c[stats])), 0)
+      const biggestValue = Math.max(
+        ...this.championsToDisplay
+          .filter(c => c[stats] !== Infinity)
+          .map(c => parseFloat(c[stats]))
+        , 0)
+      // Take the second biggest Value if it's an Infinity KDA
+      const value = champion[stats] === Infinity ? biggestValue : parseFloat(champion[stats])
       const opacity = (value / biggestValue).toFixed(2)
 
       return {
