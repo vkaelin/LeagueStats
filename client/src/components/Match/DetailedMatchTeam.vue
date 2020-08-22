@@ -269,10 +269,18 @@ export default {
       const value = parseFloat(player.stats[stats])
       const biggestValue = Math.max(...this.allPlayers.map(p => parseFloat(p.stats[stats])), 0)
       const opacity = (value / biggestValue).toFixed(2)
+      const biggestValueStyle = {}
+      if (value === biggestValue && value !== 0) {
+        biggestValueStyle.boxShadow = 'rgba(181, 160, 122, 0.5) 0px 0px 10px'
+        biggestValueStyle.border = '2px solid'
+        biggestValueStyle.borderImageSlice = '1'
+        biggestValueStyle.borderImageSource = 'linear-gradient(to top, #edb457, #f9e9ce)'
+        biggestValueStyle.borderCollapse = 'separate'
+      }
 
       return {
         backgroundColor: `rgba(${rgb}, ${opacity})`,
-        boxShadow: value === biggestValue && value !== 0 ? '#abb4d0 0px 0px 0px 2px inset' : ''
+        ...biggestValueStyle
       }
     },
     displayBorderbottom(index) {
