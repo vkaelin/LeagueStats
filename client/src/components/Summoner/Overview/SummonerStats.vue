@@ -4,7 +4,7 @@
       <svg class="w-6 h-6">
         <use xlink:href="#graph" />
       </svg>
-      <span class="mx-4 text-lg font-bold uppercase">STATS</span>
+      <span class="mx-4 text-lg font-semibold uppercase">STATS</span>
       <svg class="w-6 h-6" style="transform: scaleX(-1);">
         <use xlink:href="#graph" />
       </svg>
@@ -78,7 +78,7 @@
       </div>
     </div>
     <div class="py-2 text-sm text-center">
-      <div class="flex items-baseline px-4 text-sm font-bold text-blue-300 uppercase">
+      <div class="flex items-baseline px-4 text-xs font-semibold text-blue-300 uppercase">
         <div class="w-1/4 text-base text-left text-blue-400">Stat</div>
         <div class="w-1/4">Total</div>
         <div class="w-1/4">Per min</div>
@@ -91,31 +91,31 @@
           :class="{'bg-blue-760': index % 2 !== 0}"
           class="flex items-center justify-between px-4 py-1 leading-tight"
         >
-          <div class="w-1/4 text-left">{{ name }}</div>
+          <div class="w-1/4 text-left capitalize">{{ name }}</div>
           <div class="w-1/4">{{ stat }}</div>
           <div class="w-1/4">{{ stat / (stats.global.time / 60)|round }}</div>
           <div class="w-1/4">{{ stat / stats.global.count|round }}</div>
         </li>
         <li class="flex items-center justify-between px-4 py-1 leading-tight bg-blue-760">
-          <div class="w-1/4 text-left whitespace-no-wrap">time</div>
+          <div class="w-1/4 text-left whitespace-no-wrap">Time</div>
           <div class="w-1/4">{{ (stats.global.time / 3600).toFixed(1) + 'h' }}</div>
           <div class="w-1/4"></div>
           <div class="w-1/4">{{ (stats.global.time / stats.global.count)|secToTime(true) }}</div>
         </li>
         <li class="flex items-center justify-between px-4 py-1 leading-tight">
-          <div class="w-1/4 text-left whitespace-no-wrap">kda</div>
+          <div class="w-1/4 text-left whitespace-no-wrap">KDA</div>
           <div
             class="w-1/4"
           >{{ (stats.global.kills + stats.global.assists) / stats.global.deaths|round }}</div>
         </li>
         <li class="flex items-center justify-between px-4 py-1 leading-tight bg-blue-760">
-          <div class="w-1/4 text-left whitespace-no-wrap">kill participation</div>
+          <div class="w-1/4 text-left whitespace-no-wrap">Kill participation</div>
           <div class="w-1/4">{{ stats.global.kp|percent }}</div>
         </li>
       </ul>
       <template v-if="leagueStatsByType('Ranked').length">
-        <div class="flex items-baseline px-4 mt-3 text-sm font-bold text-blue-300 uppercase">
-          <div class="w-2/4 text-base text-left text-blue-400">Ranked Stats</div>
+        <div class="flex items-baseline px-4 mt-3 text-xs font-semibold text-blue-300 uppercase">
+          <div class="w-2/4 text-base text-left text-blue-400">Ranked</div>
           <div class="w-1/4">Winrate</div>
           <div class="w-1/4">Record</div>
         </div>
@@ -126,7 +126,7 @@
             :class="{'bg-blue-760': index % 2 !== 0}"
             class="flex items-center justify-between px-4 py-1 leading-tight"
           >
-            <div class="w-2/4 text-left">{{ league.name.toLowerCase() }}</div>
+            <div class="w-2/4 text-left capitalize">{{ league.name.toLowerCase() }}</div>
             <div
               :class="calculateWinrate(league.wins, league.count).color"
               class="w-1/4"
@@ -134,20 +134,20 @@
             <div class="w-1/4">
               <span
                 :class="winLossColor(league.wins, league.losses).win"
-                class="font-bold"
+                class="font-semibold"
               >{{ league.wins }}</span>
-              <span class="mx-1 font-bold text-gray-400">-</span>
+              <span class="mx-1 font-semibold text-gray-400">-</span>
               <span
                 :class="winLossColor(league.wins, league.losses).loss"
-                class="font-bold"
+                class="font-semibold"
               >{{ league.losses }}</span>
             </div>
           </li>
         </ul>
       </template>
       <template v-if="leagueStatsByType('Normal').length">
-        <div class="flex items-baseline px-4 mt-3 text-sm font-bold text-blue-300 uppercase">
-          <div class="w-2/4 text-base text-left text-blue-400">Normal Stats</div>
+        <div class="flex items-baseline px-4 mt-3 text-xs font-semibold text-blue-300 uppercase">
+          <div class="w-2/4 text-base text-left text-blue-400">Normal</div>
           <div class="w-1/4">Winrate</div>
           <div class="w-1/4">Record</div>
         </div>
@@ -158,7 +158,7 @@
             :class="{'bg-blue-760': index % 2 !== 0}"
             class="flex items-center justify-between px-4 py-1 leading-tight"
           >
-            <div class="w-2/4 text-left">{{ league.name.toLowerCase() }}</div>
+            <div class="w-2/4 text-left capitalize">{{ league.name.toLowerCase() }}</div>
             <div
               :class="calculateWinrate(league.wins, league.count).color"
               class="w-1/4"
@@ -166,20 +166,20 @@
             <div class="w-1/4">
               <span
                 :class="winLossColor(league.wins, league.losses).win"
-                class="font-bold"
+                class="font-semibold"
               >{{ league.wins }}</span>
-              <span class="mx-1 font-bold text-gray-400">-</span>
+              <span class="mx-1 font-semibold text-gray-400">-</span>
               <span
                 :class="winLossColor(league.wins, league.losses).loss"
-                class="font-bold"
+                class="font-semibold"
               >{{ league.losses }}</span>
             </div>
           </li>
         </ul>
       </template>
 
-      <div class="flex items-baseline px-4 mt-3 text-sm font-bold text-blue-300 uppercase">
-        <div class="w-2/4 text-base text-left text-blue-400">Stats by Class</div>
+      <div class="flex items-baseline px-4 mt-3 text-xs font-semibold text-blue-300 uppercase">
+        <div class="w-2/4 text-base text-left text-blue-400">Class</div>
         <div class="w-1/4">Winrate</div>
         <div class="w-1/4">Record</div>
       </div>
@@ -198,12 +198,12 @@
           <div class="w-1/4">
             <span
               :class="winLossColor(championClass.wins, championClass.losses).win"
-              class="font-bold"
+              class="font-semibold"
             >{{ championClass.wins }}</span>
-            <span class="mx-1 font-bold text-gray-400">-</span>
+            <span class="mx-1 font-semibold text-gray-400">-</span>
             <span
               :class="winLossColor(championClass.wins, championClass.losses).loss"
-              class="font-bold"
+              class="font-semibold"
             >{{ championClass.losses }}</span>
           </div>
         </li>

@@ -4,7 +4,7 @@
       <svg class="w-5 h-5" style="transform: rotate(-5deg);">
         <use xlink:href="#layers" />
       </svg>
-      <span class="mx-4 text-lg font-bold uppercase">CHAMPIONS</span>
+      <span class="mx-4 text-lg font-semibold uppercase">CHAMPIONS</span>
       <svg class="w-5 h-5" style="transform: rotate(5deg);">
         <use xlink:href="#layers" />
       </svg>
@@ -31,11 +31,11 @@
       </div>
     </div>
     <div v-if="stats.champion.length">
-      <div class="flex items-baseline px-4 mt-3 text-sm font-bold text-left text-blue-300">
+      <div class="flex items-baseline px-4 mt-3 text-xs font-semibold text-left text-blue-300 uppercase">
         <div class="ml-2 text-base text-blue-400 w-champion">Champion</div>
-        <div class="w-plays">plays</div>
-        <div class="w-winrate">winrate</div>
-        <div class="w-kda">kda</div>
+        <div class="w-plays">Plays</div>
+        <div class="w-winrate">Winrate</div>
+        <div class="w-kda">KDA</div>
       </div>
       <ul class="mt-1 text-sm text-left text-gray-100">
         <li

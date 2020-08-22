@@ -233,7 +233,7 @@ module.exports = {
     },
     fontFamily: {
       sans: [
-        'Lato',
+        'Inter',
         '-apple-system',
         'BlinkMacSystemFont',
         '"Segoe UI"',

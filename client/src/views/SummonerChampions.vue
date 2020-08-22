@@ -43,7 +43,7 @@ export default {
             [key]: gameModes[key]
           }
         }, {})
-      return { '-1': { type: 'Normal', name: 'ALL QUEUES' }, ...queues }
+      return { '-1': { type: 'Normal', name: 'All queues' }, ...queues }
     },
     ...mapGetters('summoner', ['summonerFound']),
     ...mapState({

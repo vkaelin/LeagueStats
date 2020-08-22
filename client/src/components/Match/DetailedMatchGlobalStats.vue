@@ -36,26 +36,26 @@
       <div>
         <div
           :class="textColor"
-          class="text-base font-semibold"
+          class="text-sm font-medium"
         >{{ `${team.teamStats.kills}/${team.teamStats.deaths}/${team.teamStats.assists}` }}</div>
         <div class="text-xs text-white">k / d / a</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'">
         <div
           :class="textColor"
-          class="text-base font-semibold"
+          class="text-sm font-medium"
         >{{ +(team.teamStats.gold / 1000).toFixed(1) + 'k' }}</div>
         <div class="text-xs text-white">gold</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'">
         <div
           :class="textColor"
-          class="text-base font-semibold"
+          class="text-sm font-medium"
         >{{ +(team.teamStats.dmgChamp / 1000).toFixed(1) + 'k' }}</div>
         <div class="text-xs text-white">dmg</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'" class="flex flex-col justify-end">
-        <div class="text-base font-semibold text-teal-400"></div>
+        <div class="text-sm font-medium text-teal-400"></div>
         <div class="flex text-xs text-white">
           <div :class="allyTeam ? '' : 'mr-2'">
             <span :class="textColor">{{ team.towers }}</span> towers

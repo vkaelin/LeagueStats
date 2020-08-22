@@ -1,7 +1,7 @@
 <template>
   <div key="records">
     <template v-if="!recordsLoaded || (recordsLoaded && records.maxKda)">
-      <div class="mx-4 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">basics</div>
+      <div class="mx-4 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">Basics</div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
@@ -66,7 +66,7 @@
           </div>
         </template>
       </div>
-      <div class="mx-4 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">game impact</div>
+      <div class="mx-4 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">Game impact</div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
@@ -113,7 +113,7 @@
           </div>
         </template>
       </div>
-      <div class="mx-4 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">team work</div>
+      <div class="mx-4 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900">Team work</div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard

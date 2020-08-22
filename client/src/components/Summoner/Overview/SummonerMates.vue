@@ -5,7 +5,7 @@
         <svg class="w-5 h-5" style="transform: rotate(-5deg);">
           <use xlink:href="#people" />
         </svg>
-        <span class="mx-4 text-lg font-bold uppercase">FRIENDS</span>
+        <span class="mx-4 text-lg font-semibold uppercase">FRIENDS</span>
         <svg class="w-5 h-5" style="transform: rotate(5deg);">
           <use xlink:href="#people" />
         </svg>

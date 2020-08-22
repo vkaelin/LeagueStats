@@ -1,10 +1,10 @@
 <template>
   <div
     @mousedown="clickDropdown"
-    class="absolute z-30 w-full px-3 py-2 mt-2 bg-blue-900 rounded-lg shadow"
+    class="absolute z-30 w-full px-3 py-2 mt-2 bg-blue-900 border border-blue-800 rounded-lg shadow"
   >
     <div v-if="favorites.length">
-      <div class="text-base text-blue-100">favorites:</div>
+      <div class="text-base text-blue-100">Favorites:</div>
       <div class="flex flex-wrap items-center -mx-1 text-xs leading-none">
         <SearchFormDropdownPlayer
           v-for="player in favorites"
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div :class="{'mt-2': favorites.length}">
-      <div class="text-base text-blue-100">recent searches:</div>
+      <div class="text-base text-blue-100">Recent searches:</div>
       <div class="flex flex-wrap items-center -mx-1 text-xs leading-none">
         <template v-if="recentSearches.length">
           <SearchFormDropdownPlayer

@@ -26,25 +26,29 @@
             </div>
           </div>
         </th>
-        <th class="px-2 py-5 text-sm w-kda">K</th>
-        <th class="px-2 py-5 text-sm w-kda">D</th>
-        <th class="px-2 py-5 text-sm w-kda">A</th>
-        <th class="px-2 py-5 text-sm w-minions">{{ statsFormat === 'stats' ? 'cs' : 'cs/m' }}</th>
-        <th class="px-2 py-5 text-sm w-vision">{{ statsFormat === 'stats' ? 'vs' : 'vs/m' }}</th>
-        <th class="px-2 py-5 text-sm w-gold-dmg-kp">gold</th>
-        <th class="px-2 py-5 text-sm w-gold-dmg-kp">
+        <th class="px-2 py-5 text-sm font-medium w-kda">K</th>
+        <th class="px-2 py-5 text-sm font-medium w-kda">D</th>
+        <th class="px-2 py-5 text-sm font-medium w-kda">A</th>
+        <th
+          class="px-2 py-5 text-sm font-medium w-minions"
+        >{{ statsFormat === 'stats' ? 'cs' : 'cs/m' }}</th>
+        <th
+          class="px-2 py-5 text-sm font-medium w-vision"
+        >{{ statsFormat === 'stats' ? 'vs' : 'vs/m' }}</th>
+        <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">gold</th>
+        <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">
           dmg
           <br />champ
         </th>
-        <th class="px-2 py-5 text-sm w-gold-dmg-kp">
+        <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">
           dmg
           <br />obj
         </th>
-        <th class="px-2 py-5 text-sm w-gold-dmg-kp">
+        <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">
           dmg
           <br />taken
         </th>
-        <th class="px-2 py-5 text-sm w-gold-dmg-kp">kp</th>
+        <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">kp</th>
       </tr>
     </thead>
     <tbody :class="{'border-b border-blue-700': allyTeam}" class="leading-none">
@@ -157,46 +161,66 @@
             </div>
           </div>
         </td>
-        <td
-          :style="bgColor(player, '71, 132, 116', 'kills')"
-          class="p-2 text-sm text-white"
-        >{{ player.stats.kills }}</td>
-        <td
-          :style="bgColor(player, '156, 71, 109', 'deaths')"
-          class="p-2 text-sm text-white"
-        >{{ player.stats.deaths }}</td>
-        <td
-          :style="bgColor(player, '146, 100, 79', 'assists')"
-          class="p-2 text-sm text-white"
-        >{{ player.stats.assists }}</td>
-        <td
-          class="p-2 text-sm text-white"
-          :style="bgColor(player, '140, 101, 182', 'minions')"
-        >{{ player[statsFormat].minions }}</td>
-        <td
-          class="p-2 text-sm text-white"
-          :style="bgColor(player, '55, 118, 179', 'vision')"
-        >{{ player[statsFormat].vision }}</td>
-        <td
-          class="p-2 text-sm text-white"
-          :style="bgColor(player, '146, 100, 79', 'gold')"
-        >{{ roundStats(player[statsFormat].gold) }}</td>
-        <td
-          :style="bgColor(player, '156, 71, 109', 'dmgChamp')"
-          class="p-2 text-sm text-white"
-        >{{ roundStats(player[statsFormat].dmgChamp) }}</td>
-        <td
-          :style="bgColor(player, '156, 71, 109', 'dmgObj')"
-          class="p-2 text-sm text-white text-red"
-        >{{ roundStats(player[statsFormat].dmgObj) }}</td>
-        <td
-          :style="bgColor(player, '146, 145, 106', 'dmgTaken')"
-          class="p-2 text-sm text-white"
-        >{{ roundStats(player[statsFormat].dmgTaken) }}</td>
-        <td
-          :style="bgColor(player, '71, 132, 116', 'kp')"
-          class="p-2 text-sm text-white"
-        >{{ player.stats.kp }}</td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '71, 132, 116', 'kills')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ player.stats.kills }}</div>
+        </td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '156, 71, 109', 'deaths')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ player.stats.deaths }}</div>
+        </td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '146, 100, 79', 'assists')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ player.stats.assists }}</div>
+        </td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '140, 101, 182', 'minions')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ player[statsFormat].minions }}</div>
+        </td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '55, 118, 179', 'vision')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ player[statsFormat].vision }}</div>
+        </td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '146, 100, 79', 'gold')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ roundStats(player[statsFormat].gold) }}</div>
+        </td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '156, 71, 109', 'dmgChamp')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ roundStats(player[statsFormat].dmgChamp) }}</div>
+        </td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '156, 71, 109', 'dmgObj')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ roundStats(player[statsFormat].dmgObj) }}</div>
+        </td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '146, 145, 106', 'dmgTaken')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ roundStats(player[statsFormat].dmgTaken) }}</div>
+        </td>
+        <td class="relative">
+          <div
+            :style="bgColor(player, '71, 132, 116', 'kp')"
+            class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
+          >{{ player.stats.kp }}</div>
+        </td>
       </tr>
     </tbody>
   </table>

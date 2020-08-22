@@ -15,9 +15,9 @@
           </div>
         </div>
         <div
-          class="ml-2 text-3xl font-extrabold text-teal-500 uppercase"
+          class="ml-2 text-3xl font-bold text-teal-500 uppercase"
         >{{ selectedLeague.fullRank }}</div>
-        <div class="ml-4 text-2xl font-extrabold">{{ selectedLeague.leaguePoints }} LP</div>
+        <div class="ml-4 text-2xl font-bold">{{ selectedLeague.leaguePoints }} LP</div>
         <div
           v-if="selectedLeague.miniSeries"
           class="flex items-center p-2 ml-2 bg-blue-800 rounded"
@@ -34,7 +34,7 @@
         <div class="relative inline-block text-white">
           <select
             v-model="selectedKey"
-            class="block w-full px-4 py-2 pr-8 text-lg font-extrabold leading-tight bg-blue-800 rounded-md appearance-none cursor-pointer hover:bg-blue-700 focus:outline-none"
+            class="block w-full px-4 py-2 pr-8 text-lg font-bold leading-tight bg-blue-800 rounded-md appearance-none cursor-pointer hover:bg-blue-700 focus:outline-none"
           >
             <option
               v-for="(data, leagueName) in ranked"
@@ -51,13 +51,13 @@
           </div>
         </div>
         <div class="flex items-center p-2 ml-2 bg-blue-800 rounded">
-          <div class="text-base font-bold uppercase">Record</div>
-          <div class="ml-2 font-bold text-green-400">{{ selectedLeague.wins }}</div>
+          <div class="text-base font-semibold uppercase">Record</div>
+          <div class="ml-2 font-semibold text-green-400">{{ selectedLeague.wins }}</div>
           <span class="mx-1">-</span>
-          <div class="font-bold text-red-400">{{ selectedLeague.losses }}</div>
-          <div class="ml-3 text-base font-bold uppercase">Winrate</div>
+          <div class="font-semibold text-red-400">{{ selectedLeague.losses }}</div>
+          <div class="ml-3 text-base font-semibold uppercase">Winrate</div>
           <div
-            :class="['ml-2 text-base leading-tight font-bold', parseFloat(selectedLeague.winrate) >= 50 ? 'text-green-400' : 'text-red-400']"
+            :class="['ml-2 text-base leading-tight font-semibold', parseFloat(selectedLeague.winrate) >= 50 ? 'text-green-400' : 'text-red-400']"
           >{{ selectedLeague.winrate }}</div>
         </div>
       </div>

@@ -35,8 +35,8 @@
                 />
               </svg>
               <span class="ml-8">
-                Join us
-                <span class="font-bold">on Discord</span>
+                Join
+                <span class="font-bold">our Discord</span>
               </span>
             </a>
           </div>
@@ -126,25 +126,25 @@
                 :class="isRouteActive('summoner')"
                 class="pb-2 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
-              >overview</router-link>
+              >Overview</router-link>
               <router-link
                 :to="{ name: 'summonerChampions', params: { region: $route.params.region, name: $route.params.name }}"
                 :class="isRouteActive('summonerChampions')"
                 class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
-              >champions</router-link>
+              >Champions</router-link>
               <router-link
                 :to="{ name: 'summonerRecords', params: { region: $route.params.region, name: $route.params.name }}"
                 :class="isRouteActive('summonerRecords')"
                 class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
-              >records</router-link>
+              >Records</router-link>
               <router-link
                 :to="{ name: 'summonerLive', params: { region: $route.params.region, name: $route.params.name }}"
                 :class="isRouteActive('summonerLive')"
                 class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
-              >live game</router-link>
+              >Live game</router-link>
             </div>
 
             <!-- Select Season -->

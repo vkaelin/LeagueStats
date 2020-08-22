@@ -13,7 +13,7 @@
           @click="sortBy(heading.props)"
           v-html="heading.name"
           :class="[
-            {'rounded-tr-lg': index === headings.length - 1, 'w-name': heading.name === 'name'}, 
+            {'rounded-tr-lg': index === headings.length - 1, 'w-name': heading.name === 'Name'}, 
             sortedClasses(heading.props)
           ]"
           class="relative px-2 py-4 font-normal cursor-pointer hover:bg-blue-700"
@@ -28,7 +28,7 @@
       >
         <td
           :class="{'rounded-bl-lg': index === championsToDisplay.length - 1}"
-          class="relative px-2 py-3 text-sm text-white bg-blue-800 border-t-table border-t-table-70"
+          class="relative px-2 py-3 text-sm text-white bg-blue-800 border-t-table"
         >{{ champion.index + 1 }}</td>
         <td class="relative px-2 py-3 text-sm text-white bg-blue-800 border-t-table">
           <div class="flex items-center">
@@ -91,7 +91,7 @@
         >{{ champion.gameLength|secToTime }}</td>
         <td
           :class="{'rounded-br-lg': index === championsToDisplay.length - 1}"
-          class="px-2 py-3 text-sm text-white"
+          class="px-2 py-3 text-xs text-white"
         >{{ champion.lastPlayed }}</td>
       </tr>
     </tbody>
@@ -152,55 +152,55 @@ export default {
     return {
       headings: [
         {
-          name: 'name',
+          name: 'Name',
           props: 'champion.name'
         },
         {
-          name: 'win rate',
+          name: 'Win <br> rate',
           props: 'winrate'
         },
         {
-          name: 'play <br> rate',
+          name: 'Play <br> rate',
           props: 'playrate'
         },
         {
-          name: 'wins',
+          name: 'Wins',
           props: 'wins'
         },
         {
-          name: 'plays',
+          name: 'Plays',
           props: 'count'
         },
         {
-          name: 'kda',
+          name: 'KDA',
           props: 'kda'
         },
         {
-          name: 'kp',
+          name: 'KP',
           props: 'kp'
         },
         {
-          name: 'minions',
+          name: 'Minions',
           props: 'minions'
         },
         {
-          name: 'gold',
+          name: 'Gold',
           props: 'gold'
         },
         {
-          name: 'dmg <br> champ',
+          name: 'Dmg <br> champ',
           props: 'dmgChamp'
         },
         {
-          name: 'dmg <br> taken',
+          name: 'Dmg <br> taken',
           props: 'dmgTaken'
         },
         {
-          name: 'game <br> length',
+          name: 'Game <br> length',
           props: 'gameLength'
         },
         {
-          name: 'last played',
+          name: 'Last <br> played',
           props: 'date'
         }
       ],
@@ -301,10 +301,6 @@ export default {
   width: 100%;
   height: 2px;
   background-color: rgba(190, 227, 248, 0.2);
-}
-
-.border-t-table-70::after {
-  width: 70%;
 }
 
 .sorted::after {
