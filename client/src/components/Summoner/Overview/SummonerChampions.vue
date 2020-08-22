@@ -53,10 +53,10 @@
             <div class="mx-1 truncate">{{ champion.champion.name }}</div>
           </div>
           <div class="w-plays">
-            <div class="text-xs text-blue-400">{{ champion.count }}</div>
+            <div class="text-xs text-purple-400">{{ champion.count }}</div>
             <div
               :style="{width: widthBar(champion.count, mostPlayed)}"
-              class="h-1 bg-blue-400 rounded-full mt-2px"
+              class="h-1 bg-purple-400 rounded-full mt-2px"
             ></div>
           </div>
           <div class="w-winrate">
@@ -68,11 +68,11 @@
           </div>
           <div class="w-kda">
             <div
-              class="text-xs text-purple-400"
+              class="text-xs text-blue-400"
             >{{ kda(champion.kills, champion.deaths, champion.assists) }}</div>
             <div
               :style="{width: widthBar(kda(champion.kills, champion.deaths, champion.assists), bestKda)}"
-              class="h-1 bg-purple-400 rounded-full mt-2px"
+              class="h-1 bg-blue-400 rounded-full mt-2px"
             ></div>
           </div>
         </li>

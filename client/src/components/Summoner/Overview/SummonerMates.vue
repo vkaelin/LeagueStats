@@ -11,9 +11,9 @@
         </svg>
       </div>
       <div v-if="hasMates" class="px-4 py-2 text-sm text-left">
-        <div class="flex text-base font-bold text-blue-400">
-          <div class="w-2/4">Summoner</div>
-          <div class="w-1/4">W / L</div>
+        <div class="flex items-baseline text-xs font-semibold text-blue-300 uppercase">
+          <div class="w-2/4 text-base text-blue-400">Summoner</div>
+          <div class="w-1/4">Record</div>
           <div class="w-1/4">Winrate</div>
         </div>
         <ul class="mt-1 text-gray-100">

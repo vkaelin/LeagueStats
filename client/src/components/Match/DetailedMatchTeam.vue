@@ -31,24 +31,24 @@
         <th class="px-2 py-5 text-sm font-medium w-kda">A</th>
         <th
           class="px-2 py-5 text-sm font-medium w-minions"
-        >{{ statsFormat === 'stats' ? 'cs' : 'cs/m' }}</th>
+        >{{ statsFormat === 'stats' ? 'Cs' : 'Cs/m' }}</th>
         <th
           class="px-2 py-5 text-sm font-medium w-vision"
-        >{{ statsFormat === 'stats' ? 'vs' : 'vs/m' }}</th>
-        <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">gold</th>
+        >{{ statsFormat === 'stats' ? 'Vs' : 'Vs/m' }}</th>
+        <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">Gold</th>
         <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">
-          dmg
+          Dmg
           <br />champ
         </th>
         <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">
-          dmg
+          Dmg
           <br />obj
         </th>
         <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">
-          dmg
+          Dmg
           <br />taken
         </th>
-        <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">kp</th>
+        <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">KP</th>
       </tr>
     </thead>
     <tbody :class="{'border-b border-blue-700': allyTeam}" class="leading-none">
