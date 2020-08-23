@@ -17,7 +17,7 @@
 
       <div class="relative flex flex-col items-center w-full max-w-lg">
         <img class="absolute logo" src="@/assets/img/Logo.svg" alt="logo" />
-        <SearchForm @formSubmit="redirect" />
+        <SearchForm @formSubmit="redirect" :homepage="true" />
       </div>
 
       <p

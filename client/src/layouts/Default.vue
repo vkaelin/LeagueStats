@@ -12,14 +12,14 @@
       class="fixed left-0 right-0 z-20 px-4 text-teal-100 transition-colors duration-100 ease-in-out border-b-2"
       style="border-color: rgba(144, 205, 244, 0.4);"
     >
-      <div class="flex items-center justify-between -mb-2px">
+      <div class="flex items-center justify-between py-2 -mb-2px">
         <div class="flex flex-1">
           <router-link to="/">
             <img class="block h-10" src="@/assets/img/Logo.svg" alt="LeagueStats logo" />
           </router-link>
         </div>
 
-        <SearchForm @formSubmit="redirect" size="small" />
+        <SearchForm @formSubmit="redirect" :homepage="false" />
 
         <div class="flex-1">
           <div class="flex items-center justify-end">
@@ -44,7 +44,7 @@
       </div>
     </header>
 
-    <div class="relative z-10 flex-grow mx-auto mt-16 text-white page-wrapper">
+    <div class="relative z-10 flex-grow mx-auto mt-20 text-white page-wrapper">
       <template v-if="summonerLoading || summonerFound">
         <template v-if="summonerLoading">
           <HeaderLoader />

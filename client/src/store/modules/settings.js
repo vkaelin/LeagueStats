@@ -12,27 +12,32 @@ export const mutations = {
     state.favorites.push(summoner)
   },
   ADD_SEARCH(state, summoner) {
+    const alreadyFav = state.favorites.find(s => s.name === summoner.name && s.region === summoner.region)
+    if (alreadyFav) {
+      return
+    }
+
     let searches = state.recentSearches
 
-    const alreadySearch = searches.find(s => s.name === summoner.name)
+    const alreadySearch = searches.find(s => s.name === summoner.name && s.region === summoner.region)
     if (alreadySearch) {
       alreadySearch.date = Date.now()
       searches.sort((a, b) => b.date - a.date)
       return
     }
 
-    if (searches.length >= 6) {
+    if (searches.length > 10) {
       searches.pop()
     }
 
     summoner.date = Date.now()
     searches.unshift(summoner)
   },
-  REMOVE_FAVORITE(state, summonerName) {
-    state.favorites = state.favorites.filter(s => s.name !== summonerName)
+  REMOVE_FAVORITE(state, summoner) {
+    state.favorites = state.favorites.filter(s => s.name !== summoner.name || s.region !== summoner.region)
   },
-  REMOVE_SEARCH(state, summonerName) {
-    state.recentSearches = state.recentSearches.filter(s => s.name !== summonerName)
+  REMOVE_SEARCH(state, summoner) {
+    state.recentSearches = state.recentSearches.filter(s => s.name !== summoner.name || s.region !== summoner.region)
   },
   UPDATE_SETTING(state, { name, value }) {
     state[name] = value
@@ -45,13 +50,13 @@ export const actions = {
     dispatch('updateSettings', { name: 'recentSearches', value: state.recentSearches, isJson: true })
   },
   removeRecentSearch({ commit, dispatch }, summoner) {
-    commit('REMOVE_SEARCH', summoner.name)
+    commit('REMOVE_SEARCH', summoner)
     dispatch('updateSettings', { name: 'recentSearches', value: state.recentSearches, isJson: true })
   },
   updateFavorite({ commit, dispatch, state }, summoner) {
-    const alreadyFav = state.favorites.find(s => s.name === summoner.name)
+    const alreadyFav = state.favorites.find(s => s.name === summoner.name && s.region === summoner.region)
     if (alreadyFav) {
-      commit('REMOVE_FAVORITE', summoner.name)
+      commit('REMOVE_FAVORITE', summoner)
     } else {
       if (state.favorites.length >= 6) {
         // Display error message
@@ -61,6 +66,10 @@ export const actions = {
         }, { root: true })
       }
       commit('ADD_FAVORITE', summoner)
+      const searched = state.recentSearches.find(s => s.name === summoner.name && s.region === summoner.region)
+      if (searched) {
+        dispatch('removeRecentSearch', summoner)
+      }
     }
 
     dispatch('updateSettings', { name: 'favorites', value: state.favorites, isJson: true })

@@ -10,6 +10,11 @@
   background: rgba(23, 49, 79, .6);
 }
 
+.light-scrollbar::-webkit-scrollbar,
+.light-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 ::-webkit-scrollbar-thumb {
   background-color: rgba(194, 217, 254, .6);
   border-radius: 8px
