@@ -15,7 +15,7 @@
             ref="input"
             @input="$emit('input', $event.target.value)"
             :value="value"
-            class="w-full px-12 py-2 pr-4 placeholder-blue-200 placeholder-opacity-75 bg-blue-700 border border-blue-500 rounded-md outline-none focus:bg-blue-760"
+            class="w-full px-12 py-2 pr-4 placeholder-blue-200 placeholder-opacity-75 bg-blue-700 border border-blue-500 rounded-md outline-none focus:bg-blue-760 summoner-input"
             type="text"
             placeholder="Search summoner"
             spellcheck="false"
@@ -165,7 +165,8 @@ export default {
   },
 
   mounted() {
-    this.$refs.searches.focus()
+    const input = document.querySelector('.summoner-input')
+    input.focus()
     this.recentSearchesCount = this.$refs.searches ? this.$refs.searches.children.length : 0
     this.favoritesCount = this.$refs.favorites ? this.$refs.favorites.children.length : 0
     this.totalCount = this.recentSearchesCount + this.favoritesCount
@@ -219,8 +220,8 @@ export default {
         (e.key === 'k' && (e.ctrlKey || e.metaKey))) {
         return
       }
-
-      this.$refs.input.focus()
+      const input = document.querySelector('.summoner-input')
+      input.focus()
     },
     onArrow() {
       const scrollIntoBlock = this.selected === 1 ? 'end' : 'nearest'
