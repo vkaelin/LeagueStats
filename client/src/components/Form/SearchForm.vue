@@ -102,14 +102,18 @@ export default {
 
   watch: {
     open(newVal) {
+      const header = document.querySelector('.header div')
       // Search Dropdown open
       if (newVal) {
+        console.log(this.getScrollbarWidth())
         if (!this.homepage) {
-          document.body.style.marginLeft = '-8px'
+          document.body.style.marginLeft = `-${this.getScrollbarWidth()}px`
+          header.style.paddingRight = `${this.getScrollbarWidth()}px`
         }
         document.body.style.overflow = 'hidden'
       } else {
         document.body.style.marginLeft = 0
+        header.style.paddingRight = 0
         document.body.style.overflow = 'auto'
       }
     },
@@ -138,6 +142,21 @@ export default {
       if (search.length) {
         this.$emit('formSubmit', search, this.selectedRegion)
       }
+    },
+    getScrollbarWidth() {
+      const outer = document.createElement('div')
+      outer.style.visibility = 'hidden'
+      outer.style.overflow = 'scroll' // forcing scrollbar to appear
+      outer.style.msOverflowStyle = 'scrollbar' // needed for WinJS apps
+      document.body.appendChild(outer)
+
+      const inner = document.createElement('div')
+      outer.appendChild(inner)
+      const scrollbarWidth = (outer.offsetWidth - inner.offsetWidth)
+
+      outer.parentNode.removeChild(outer)
+
+      return scrollbarWidth
     },
     handleEscape(e) {
       if (e.key === 'Esc' || e.key === 'Escape') {

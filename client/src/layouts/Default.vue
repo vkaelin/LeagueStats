@@ -9,7 +9,7 @@
 
     <header
       :class="bgHeader ? 'header-scrolled' : 'bg-transparent'"
-      class="fixed left-0 right-0 z-20 px-4 text-teal-100 transition-colors duration-100 ease-in-out border-b-2"
+      class="fixed left-0 right-0 z-20 px-4 text-teal-100 transition-colors duration-100 ease-in-out border-b-2 header"
       style="border-color: rgba(144, 205, 244, 0.4);"
     >
       <div class="flex items-center justify-between py-2 -mb-2px">
