@@ -8,7 +8,7 @@
       v-if="open"
       @click="open = false"
       :style="{opacity: homepage ? 0 : 0.9}"
-      class="fixed inset-0 z-20 w-screen h-screen bg-gray-900"
+      class="fixed inset-0 z-20 bg-gray-900"
     ></div>
     <div class="relative w-full">
       <button
