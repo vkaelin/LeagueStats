@@ -105,15 +105,16 @@ export default {
       const header = document.querySelector('.header div')
       // Search Dropdown open
       if (newVal) {
-        console.log(this.getScrollbarWidth())
         if (!this.homepage) {
           document.body.style.marginLeft = `-${this.getScrollbarWidth()}px`
           header.style.paddingRight = `${this.getScrollbarWidth()}px`
         }
         document.body.style.overflow = 'hidden'
       } else {
+        if (!this.homepage) {
+          header.style.paddingRight = 0
+        }
         document.body.style.marginLeft = 0
-        header.style.paddingRight = 0
         document.body.style.overflow = 'auto'
       }
     },
@@ -128,12 +129,12 @@ export default {
       this.summoner = this.$route.params.name
     }
     window.addEventListener('blur', this.windowBlur)
-    document.addEventListener('keydown', this.handleEscape)
+    window.addEventListener('keydown', this.handleEscape)
   },
 
   beforeDestroy() {
     window.removeEventListener('blur', this.windowBlur)
-    document.removeEventListener('keydown', this.handleEscape)
+    window.removeEventListener('keydown', this.handleEscape)
   },
 
   methods: {

@@ -12,6 +12,7 @@
             </svg>
           </button>
           <input
+            ref="input"
             @input="$emit('input', $event.target.value)"
             :value="value"
             class="w-full px-12 py-2 pr-4 placeholder-blue-200 placeholder-opacity-75 bg-blue-700 border border-blue-500 rounded-md outline-none focus:bg-blue-760"
@@ -37,8 +38,6 @@
             </div>
             <div
               ref="searches"
-              @keydown.prevent.up="onArrowUp()"
-              @keydown.prevent.down="onArrowDown()"
               @keydown.prevent.stop.enter="onOptionSelect()"
               @keydown.prevent.stop.space="onOptionSelect()"
               role="listbox"
@@ -71,8 +70,6 @@
             <div class="text-base text-blue-100">Favorites</div>
             <div
               ref="favorites"
-              @keydown.prevent.up="onArrowUp()"
-              @keydown.prevent.down="onArrowDown()"
               @keydown.prevent.stop.enter="onOptionSelect()"
               @keydown.prevent.stop.space="onOptionSelect()"
               role="listbox"
@@ -144,6 +141,7 @@ export default {
 
   data() {
     return {
+      bypassKeys: ['Esc', 'Escape', 'ArrowUp', 'ArrowDown', 'Enter', 'Space', '/'],
       favoritesCount: null,
       totalCount: null,
       recentSearchesCount: null,
@@ -163,6 +161,7 @@ export default {
 
   created() {
     window.addEventListener('mousedown', this.handleClick)
+    window.addEventListener('keydown', this.handleKeyDown)
   },
 
   mounted() {
@@ -178,6 +177,7 @@ export default {
 
   beforeDestroy() {
     window.removeEventListener('mousedown', this.handleClick)
+    window.removeEventListener('keydown', this.handleKeyDown)
   },
 
   methods: {
@@ -203,6 +203,24 @@ export default {
 
       e.preventDefault()
       this.$refs.searches.focus()
+    },
+    handleKeyDown(e) {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault()
+        this.$refs.searches.focus()
+        if (e.key === 'ArrowUp') {
+          this.onArrowUp()
+        } else {
+          this.onArrowDown()
+        }
+      }
+
+      if (this.bypassKeys.includes(e.key) ||
+        (e.key === 'k' && (e.ctrlKey || e.metaKey))) {
+        return
+      }
+
+      this.$refs.input.focus()
     },
     onArrow() {
       const scrollIntoBlock = this.selected === 1 ? 'end' : 'nearest'
