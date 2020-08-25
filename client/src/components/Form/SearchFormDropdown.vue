@@ -58,8 +58,7 @@
                 <SearchFormDropdownPlayer
                   v-for="(player, index) in recentSearchesSliced"
                   :key="player.name + player.region"
-                  @mouseenter.native="selected = index + 1"
-                  @mouseleave.native="selected = null"
+                  @mousemove.native="onHover(index + 1)"
                   :selected="index === selected - 1"
                   :player="player"
                   :favorites-list="false"
@@ -67,8 +66,7 @@
               </template>
               <template v-else-if="favorites.length === 0">
                 <SearchFormDropdownPlayer
-                  @mouseenter.native="selected = 1"
-                  @mouseleave.native="selected = null"
+                  @mousemove.native="onHover(1)"
                   :player="{name: 'Alderiate', icon: 1150, region: 'euw'}"
                   :selected="selected === 1"
                   :favorites-list="false"
@@ -89,8 +87,7 @@
               <SearchFormDropdownPlayer
                 v-for="(player, index) in favorites"
                 :key="player.name + player.region"
-                @mouseenter.native="selected = index + recentSearchesCount + 1"
-                @mouseleave.native="selected = null"
+                @mousemove.native="onHover(index + recentSearchesCount + 1)"
                 :player="player"
                 :selected="index === selected - 1 - recentSearchesCount"
                 :favorites-list="true"
@@ -234,7 +231,7 @@ export default {
       input.focus()
     },
     onArrow() {
-      const scrollIntoBlock = this.selected === 1 ? 'end' : 'nearest'
+      const scrollIntoBlock = this.selected === 1 ? 'end' : (this.selected >= 7 ? 'start' : 'nearest')
       if (this.selected > this.recentSearchesCount) {
         this.$refs.favorites.children[this.selected - this.recentSearchesCount - 1].scrollIntoView({ block: scrollIntoBlock })
       } else {
@@ -249,7 +246,16 @@ export default {
       this.selected = this.selected + 1 > this.totalCount ? 1 : this.selected + 1
       this.onArrow()
     },
+    async onHover(id) {
+      this.selected = id
+
+      if (this.$refs.searches !== document.activeElement) {
+        await this.$nextTick()
+        this.$refs.searches.focus()
+      }
+    },
     onOptionSelect() {
+      console.log('OPTION SELECT')
       if (this.selected === null) {
         return
       }
