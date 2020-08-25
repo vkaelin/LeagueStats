@@ -58,6 +58,7 @@
                 <SearchFormDropdownPlayer
                   v-for="(player, index) in recentSearchesSliced"
                   :key="player.name + player.region"
+                  @close="close"
                   @mousemove.native="onHover(index + 1)"
                   :selected="index === selected - 1"
                   :player="player"
@@ -66,6 +67,7 @@
               </template>
               <template v-else-if="favorites.length === 0">
                 <SearchFormDropdownPlayer
+                  @close="close"
                   @mousemove.native="onHover(1)"
                   :player="{name: 'Alderiate', icon: 1150, region: 'euw'}"
                   :selected="selected === 1"
@@ -87,6 +89,7 @@
               <SearchFormDropdownPlayer
                 v-for="(player, index) in favorites"
                 :key="player.name + player.region"
+                @close="close"
                 @mousemove.native="onHover(index + recentSearchesCount + 1)"
                 :player="player"
                 :selected="index === selected - 1 - recentSearchesCount"
@@ -246,12 +249,12 @@ export default {
       this.selected = this.selected + 1 > this.totalCount ? 1 : this.selected + 1
       this.onArrow()
     },
-    async onHover(id) {
+    onHover(id) {
       this.selected = id
 
-      if (this.$refs.searches !== document.activeElement) {
-        await this.$nextTick()
+      if (this.$refs.searches && this.$refs.searches !== document.activeElement) {
         this.$refs.searches.focus()
+        this.onArrow()
       }
     },
     onOptionSelect() {

@@ -1,5 +1,6 @@
 <template>
   <router-link
+    @click.native="close"
     :to="{ name: 'summoner', params: { region: player.region, name: player.name }}"
     :title="player.name"
     :class="selected ? 'bg-blue-760' : 'bg-blue-900'"
@@ -66,6 +67,9 @@ export default {
   },
 
   methods: {
+    close() {
+      this.$emit('close')
+    },
     closeClick() {
       if (this.favoritesList) {
         this.updateFavorite(this.player)
