@@ -11,16 +11,6 @@
       class="fixed inset-0 z-20 bg-gray-900"
     ></div>
     <div class="relative w-full">
-      <button
-        v-if="homepage"
-        ref="submit"
-        class="absolute right-0 z-40 w-12 h-full hover:text-teal-200"
-        type="submit"
-      >
-        <svg class="absolute w-4 h-4 vertical-center horizontal-center">
-          <use xlink:href="#search" />
-        </svg>
-      </button>
       <input
         v-if="homepage"
         ref="input"
@@ -32,6 +22,16 @@
         type="text"
         placeholder="Search summoner"
       />
+      <button
+        v-if="homepage"
+        ref="submit"
+        class="absolute right-0 z-40 w-12 h-full hover:text-teal-200"
+        type="submit"
+      >
+        <svg class="absolute w-4 h-4 vertical-center horizontal-center">
+          <use xlink:href="#search" />
+        </svg>
+      </button>
       <button
         v-if="!homepage"
         @click="open = true"

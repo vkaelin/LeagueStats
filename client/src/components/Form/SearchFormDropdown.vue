@@ -6,7 +6,7 @@
     <div class="shadow">
       <div class="pt-3">
         <div v-if="!homepage" class="relative px-3 bypass-click">
-          <button class="absolute w-12 h-full text-blue-300 hover:text-white" type="submit">
+          <button class="absolute w-12 h-full text-blue-200 hover:text-white" type="submit">
             <svg class="absolute w-4 h-4 vertical-center horizontal-center">
               <use xlink:href="#search" />
             </svg>
@@ -15,11 +15,21 @@
             ref="input"
             @input="$emit('input', $event.target.value)"
             :value="value"
-            class="w-full px-12 py-2 pr-4 placeholder-blue-200 placeholder-opacity-75 bg-blue-700 border border-blue-500 rounded-md outline-none focus:bg-blue-760 summoner-input"
+            class="w-full py-2 pl-12 pr-32 placeholder-blue-200 placeholder-opacity-75 bg-blue-700 border border-blue-500 rounded-md outline-none focus:bg-blue-760 summoner-input"
             type="text"
             placeholder="Search summoner"
             spellcheck="false"
           />
+          <button
+            v-if="!homepage && value.length"
+            @click="$emit('input', '')"
+            class="absolute right-0 flex items-center justify-center p-1 mr-24 text-blue-200 rounded-full vertical-center hover:text-white"
+            type="button"
+          >
+            <svg class="w-4 h-4">
+              <use xlink:href="#times" />
+            </svg>
+          </button>
           <div v-if="!homepage" ref="region-dropdown">
             <SearchFormRegion @toggle="toggle" :dropdown="dropdown" :homepage="homepage" />
           </div>
