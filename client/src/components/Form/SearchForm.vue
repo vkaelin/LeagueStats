@@ -102,20 +102,11 @@ export default {
 
   watch: {
     open(newVal) {
-      const header = document.querySelector('.header div')
       // Search Dropdown open
       if (newVal) {
-        if (!this.homepage) {
-          document.body.style.marginLeft = `-${this.getScrollbarWidth()}px`
-          header.style.paddingRight = `${this.getScrollbarWidth()}px`
-        }
-        document.body.style.overflow = 'hidden'
+        this.dropDownOpening()
       } else {
-        if (!this.homepage) {
-          header.style.paddingRight = 0
-        }
-        document.body.style.marginLeft = 0
-        document.body.style.overflow = 'auto'
+        this.dropDownClosing()
       }
     },
     $route(newRoute) {
@@ -136,9 +127,26 @@ export default {
   beforeDestroy() {
     window.removeEventListener('blur', this.windowBlur)
     window.removeEventListener('keydown', this.handleEscape)
+    this.dropDownClosing()
   },
 
   methods: {
+    dropDownClosing() {
+      const header = document.querySelector('.header div')
+      if (!this.homepage && header) {
+        header.style.paddingRight = 0
+      }
+      document.body.style.marginLeft = 0
+      document.body.style.overflow = 'auto'
+    },
+    dropDownOpening() {
+      const header = document.querySelector('.header div')
+      if (!this.homepage) {
+        document.body.style.marginLeft = `-${this.getScrollbarWidth()}px`
+        header.style.paddingRight = `${this.getScrollbarWidth()}px`
+      }
+      document.body.style.overflow = 'hidden'
+    },
     formSubmit() {
       const search = this.summoner.split(' ').join('')
       if (search.length) {
