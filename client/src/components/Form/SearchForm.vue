@@ -118,7 +118,8 @@ export default {
         document.body.style.overflow = 'auto'
       }
     },
-    $route() {
+    $route(newRoute) {
+      this.summoner = newRoute.params.name
       this.dropdown = false
       this.open = false
     }
