@@ -724,5 +724,8 @@ module.exports = {
       './src/**/*.vue',
       './public/**/*.html',
     ]
-  }
+  },
+  future: {
+    removeDeprecatedGapUtilities: true,
+  },
 }
