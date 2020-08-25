@@ -123,7 +123,7 @@ export default {
 
   methods: {
     animateLeagueDegrees(stop = false) {
-      if (stop) return
+      if (stop || !this.$refs.leagueBorder) return
       this.selectedLeague.leaguePoints > 50 ? this.currentDegree += 2 : this.currentDegree++
 
 
