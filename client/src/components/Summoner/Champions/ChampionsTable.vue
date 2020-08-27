@@ -143,6 +143,10 @@ export default {
       type: Array,
       required: true
     },
+    onlyMostPlayed: {
+      type: Boolean,
+      default: false
+    },
     search: {
       type: String,
       default: ''
@@ -214,7 +218,9 @@ export default {
   computed: {
     championsToDisplay() {
       return this.championsFull.filter(c => {
-        return c.champion.name.toLowerCase().includes(this.search.toLowerCase())
+        const playedEnough = this.onlyMostPlayed ? c.playrate >= 1 : true
+        const searched = c.champion.name.toLowerCase().includes(this.search.toLowerCase())
+        return playedEnough && searched
       })
     },
     totalGames() {

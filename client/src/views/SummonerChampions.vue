@@ -1,10 +1,16 @@
 <template>
   <div key="champions" class="mt-3">
-    <div class="flex items-center">
+    <div class="flex items-center space-x-4">
       <ChampionsSearch @search-champions="updateSearch" />
-      <FilterQueue @filter-queue="filterByQueue" :choices="queues" class="ml-4" />
+      <FilterQueue @filter-queue="filterByQueue" :choices="queues" />
+      <OnlyMostPlayed v-model="onlyMostPlayed" />
     </div>
-    <ChampionsTable :champions="champions" :search="searchChampions" class="mt-6" />
+    <ChampionsTable
+      :champions="champions"
+      :search="searchChampions"
+      :only-most-played="onlyMostPlayed"
+      class="mt-6"
+    />
   </div>
 </template>
 
@@ -14,16 +20,19 @@ import { gameModes } from '@/data/data.js'
 import ChampionsSearch from '@/components/Summoner/Champions/ChampionsSearch.vue'
 import ChampionsTable from '@/components/Summoner/Champions/ChampionsTable.vue'
 import FilterQueue from '@/components/Summoner/Champions/FilterQueue.vue'
+import OnlyMostPlayed from '@/components/Summoner/Champions/OnlyMostPlayed.vue'
 
 export default {
   components: {
     ChampionsSearch,
     ChampionsTable,
     FilterQueue,
+    OnlyMostPlayed,
   },
 
   data() {
     return {
+      onlyMostPlayed: false,
       queue: null,
       searchChampions: ''
     }

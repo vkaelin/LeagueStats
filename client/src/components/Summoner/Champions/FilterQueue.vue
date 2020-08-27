@@ -4,6 +4,7 @@
       v-model="queue"
       @change="filterQueue"
       class="block w-full px-4 py-2 pr-8 font-semibold capitalize bg-blue-800 rounded-md appearance-none cursor-pointer hover:bg-blue-700 focus:outline-none"
+      style="width: 144px;"
     >
       <option v-for="(key) in Object.keys(choices)" :key="key" :value="key">{{ choices[key].name }}</option>
     </select>
