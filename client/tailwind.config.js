@@ -3,6 +3,26 @@ module.exports = {
   important: false,
   separator: ':',
   theme: {
+    customForms: theme => ({
+      default: {
+        checkbox: {
+          width: theme('spacing.6'),
+          height: theme('spacing.6'),
+          backgroundColor: 'rgba(23, 49, 79, 0.6)',
+          borderColor: theme('colors.blue.800'),
+          textColor: theme('colors.blue.1000'),
+          '&:focus': {
+            backgroundColor: theme('colors.blue.1000'),
+            borderColor: theme('colors.blue.700'),
+            boxShadow: undefined,
+          },
+          '&:checked': {
+            backgroundColor: theme('colors.blue.1000'),
+            borderColor: 'transparent',
+          },
+        },
+      },
+    }),
     screens: {
       sm: '640px',
       md: '768px',
@@ -717,7 +737,9 @@ module.exports = {
     transitionDuration: ['responsive'],
   },
   corePlugins: {},
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/custom-forms'),
+  ],
   purge: {
     enabled: process.env.NODE_ENV === 'production',
     content: [
