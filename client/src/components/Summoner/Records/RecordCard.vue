@@ -40,13 +40,15 @@
         <span class="font-semibold text-white">{{ record.champion.name }}</span>
       </div>
     </div>
-    <div
-      class="mt-6 text-xs font-light text-right text-gray-200 opacity-25"
-    >match {{ record.gameId }}</div>
+    <div class="mt-6 text-xs font-light text-right text-gray-200 opacity-25">
+      <span v-if="hover">match {{ record.gameId }}</span>
+      <span v-else>{{ gameModes[record.gamemode].name }}</span>
+    </div>
   </div>
 </template>
 
 <script>
+import { gameModes } from '@/data/data.js'
 import { timeDifference } from '@/helpers/functions.js'
 
 export default {
@@ -82,6 +84,7 @@ export default {
       gradient: 'linear-gradient(180deg, rgba(42, 67, 101, 0.8) 0%, rgba(42, 67, 101, 0.95) 60%, rgba(42, 67, 101, 1) 100%)',
       gradientHover: 'linear-gradient(rgba(42, 67, 101, 0.1) 0%, rgba(42, 67, 101, 0.3) 60%, rgba(42, 67, 101, 0.5) 100%)',
       hover: false,
+      gameModes,
     }
   },
 

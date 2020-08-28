@@ -212,6 +212,7 @@ class MatchRepository {
               'pentaKills': '$stats.pentaKills',
               'result': '$result',
               'date': '$date',
+              'gamemode': '$gamemode',
             }
           }
         }
