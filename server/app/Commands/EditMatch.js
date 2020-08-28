@@ -11,7 +11,8 @@ class EditMatch extends Command {
   static get signature() {
     return `
       edit:match
-      { concurrent?=10 : Number of concurrent jobs }
+      { concurrent?=10 : Number of concurrent jobs },
+      { puuid? : Only update matches for a specific summoner },
     `
   }
 
@@ -51,10 +52,12 @@ class EditMatch extends Command {
   async handle(args, options) {
     console.time('EditMatches')
 
+    this.info(`Concurrent: ${args.concurrent}`)
+    this.info(`PUUID: ${args.puuid}`)
     this.createQueue(args.concurrent)
 
     // All matches from the db
-    const matches = await Match.all()
+    const matches = args.puuid ? await Match.query().where({ summoner_puuid: args.puuid }).fetch() : await Match.all()
     const matchesArray = matches.toJSON()
     console.log(`${matchesArray.length} matches to edit.`)
 
