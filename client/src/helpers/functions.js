@@ -25,9 +25,21 @@ export function timeDifference(previous) {
 }
 
 /**
+ * Convert seconds to a readable string
+ * @param {Number} seconds 
+ */
+export function secToTime(seconds) {
+  const min = Math.floor(seconds / 60)
+  let newSec = Math.floor(seconds - min * 60)
+  newSec = newSec < 10 ? '0' + newSec : newSec
+  
+  return `${min}:${newSec}`
+}
+
+/**
  * Sort an array of players by role
  */
-export function sortTeamByRole (a, b) {
+export function sortTeamByRole(a, b) {
   const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }

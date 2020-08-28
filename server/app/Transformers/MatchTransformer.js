@@ -111,6 +111,15 @@ class MatchTransformer {
         return prev + current.stats.kills
       }, 0)
 
+      stats.criticalStrike = player.stats.largestCriticalStrike
+      stats.killingSpree = player.stats.largestKillingSpree
+      stats.doubleKills = player.stats.doubleKills
+      stats.tripleKills = player.stats.tripleKills
+      stats.quadraKills = player.stats.quadraKills
+      stats.pentaKills = player.stats.pentaKills
+      stats.heal = player.stats.totalHeal
+      stats.towers = player.stats.turretKills
+      stats.longestLiving = player.stats.longestTimeSpentLiving
       stats.kp = totalKills === 0 ? 0 : +((stats.kills + stats.assists) * 100 / totalKills).toFixed(1)
     }
 

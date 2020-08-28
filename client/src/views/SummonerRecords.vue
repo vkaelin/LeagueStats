@@ -102,12 +102,87 @@
             title="Damage taken"
           />
           <RecordCard
+            v-if="records.maxTowers"
+            color="#D69E2E"
+            text-color="text-yellow-400"
+            border-color="border-yellow-400"
+            property="towers"
+            :record="records.maxTowers"
+            title="Towers"
+          />
+          <RecordCard
             color="#68D391"
             text-color="text-green-400"
             border-color="border-green-400"
             property="kp"
             :record="records.maxKp"
             title="Kill participation"
+          />
+          <RecordCard
+            color="#D69E2E"
+            text-color="text-yellow-400"
+            border-color="border-yellow-400"
+            property="vision"
+            :record="records.maxVision"
+            title="Vision score"
+          />
+        </template>
+        <template v-else>
+          <div
+            v-for="index in 6"
+            :key="index"
+            style="width: 176px; height: 294px;"
+            class="mx-2 mt-6"
+          >
+            <content-loader
+              :height="294"
+              :width="176"
+              :speed="2"
+              primary-color="#17314f"
+              secondary-color="#2b6cb0"
+            >
+              <rect x="0" y="0" rx="8" ry="8" width="176" height="294" />
+            </content-loader>
+          </div>
+        </template>
+      </div>
+      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Miscellaneous</div>
+      <div class="flex flex-wrap -mx-2">
+        <template v-if="recordsLoaded">
+          <RecordCard
+            color="#4299E1"
+            text-color="text-blue-500"
+            border-color="border-blue-500"
+            property="time"
+            :record="records.maxTime"
+            title="Longest game"
+          />
+          <RecordCard
+            v-if="records.maxLiving"
+            color="#4299E1"
+            text-color="text-blue-500"
+            border-color="border-blue-500"
+            property="longestLiving"
+            :record="records.maxLiving"
+            title="Longest living"
+          />
+          <RecordCard
+            v-if="records.maxCriticalStrike"
+            color="#D69E2E"
+            text-color="text-yellow-400"
+            border-color="border-yellow-400"
+            property="criticalStrike"
+            :record="records.maxCriticalStrike"
+            title="Critical Strike"
+          />
+          <RecordCard
+            v-if="records.maxHeal"
+            color="#68D391"
+            text-color="text-green-400"
+            border-color="border-green-400"
+            property="heal"
+            :record="records.maxHeal"
+            title="Heal"
           />
         </template>
         <template v-else>
@@ -129,29 +204,53 @@
           </div>
         </template>
       </div>
-      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Extra</div>
-      <div class="flex flex-wrap -mx-2">
+      <div v-if="records.maxDouble" class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Multi kills</div>
+      <div v-if="records.maxDouble" class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
-            color="#D69E2E"
-            text-color="text-yellow-400"
-            border-color="border-yellow-400"
-            property="vision"
-            :record="records.maxVision"
-            title="Vision score"
+            color="#FEFCBF"
+            text-color="text-yellow-200"
+            border-color="border-yellow-200"
+            property="doubleKills"
+            :record="records.maxDouble"
+            title="Double kills"
           />
           <RecordCard
-            color="#4299E1"
-            text-color="text-blue-500"
-            border-color="border-blue-500"
-            property="time"
-            :record="records.maxTime"
-            title="Longest game"
+            color="#F6E05E"
+            text-color="text-yellow-400"
+            border-color="border-yellow-400"
+            property="tripleKills"
+            :record="records.maxTriple"
+            title="Triple kills"
+          />
+          <RecordCard
+            color="#D69E2E"
+            text-color="text-yellow-600"
+            border-color="border-yellow-600"
+            property="quadraKills"
+            :record="records.maxQuadra"
+            title="Quadra kills"
+          />
+          <RecordCard
+            color="#F56565"
+            text-color="text-red-500"
+            border-color="border-red-500"
+            property="pentaKills"
+            :record="records.maxPenta"
+            title="Penta kills"
+          />
+          <RecordCard
+            color="#63b3ed"
+            text-color="text-blue-400"
+            border-color="border-blue-400"
+            property="killingSpree"
+            :record="records.maxKillingSpree"
+            title="Killing Spree"
           />
         </template>
         <template v-else>
           <div
-            v-for="index in 2"
+            v-for="index in 5"
             :key="index"
             style="width: 176px; height: 294px;"
             class="mx-2 mt-6"

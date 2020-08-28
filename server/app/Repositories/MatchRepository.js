@@ -176,6 +176,15 @@ class MatchRepository {
           maxDmgObj: { $max: '$stats.dmgObj' },
           maxKp: { $max: '$stats.kp' },
           maxVision: { $max: '$stats.vision' },
+          maxCriticalStrike: { $max: '$stats.criticalStrike' },
+          maxLiving: { $max: '$stats.longestLiving' },
+          maxHeal: { $max: '$stats.heal' },
+          maxTowers: { $max: '$stats.towers' },
+          maxKillingSpree: { $max: '$stats.killingSpree' },
+          maxDouble: { $max: '$stats.doubleKills' },
+          maxTriple: { $max: '$stats.tripleKills' },
+          maxQuadra: { $max: '$stats.quadraKills' },
+          maxPenta: { $max: '$stats.pentaKills' },
           docs: {
             '$push': {
               'champion': '$champion',
@@ -192,6 +201,15 @@ class MatchRepository {
               'dmgObj': '$stats.dmgObj',
               'kp': '$stats.kp',
               'vision': '$stats.vision',
+              'criticalStrike': '$stats.criticalStrike',
+              'longestLiving': '$stats.longestLiving',
+              'heal': '$stats.heal',
+              'towers': '$stats.towers',
+              'killingSpree': '$stats.killingSpree',
+              'doubleKills': '$stats.doubleKills',
+              'tripleKills': '$stats.tripleKills',
+              'quadraKills': '$stats.quadraKills',
+              'pentaKills': '$stats.pentaKills',
               'result': '$result',
               'date': '$date',
             }
@@ -213,6 +231,15 @@ class MatchRepository {
           maxDmgObj: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.dmgObj', '$maxDmgObj'] } } }, 0] },
           maxKp: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.kp', '$maxKp'] } } }, 0] },
           maxVision: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.vision', '$maxVision'] } } }, 0] },
+          maxCriticalStrike: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.criticalStrike', '$maxCriticalStrike'] } } }, 0] },
+          maxLiving: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.longestLiving', '$maxLiving'] } } }, 0] },
+          maxHeal: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.heal', '$maxHeal'] } } }, 0] },
+          maxTowers: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.towers', '$maxTowers'] } } }, 0] },
+          maxKillingSpree: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.killingSpree', '$maxKillingSpree'] } } }, 0] },
+          maxDouble: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.doubleKills', '$maxDouble'] } } }, 0] },
+          maxTriple: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.tripleKills', '$maxTriple'] } } }, 0] },
+          maxQuadra: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.quadraKills', '$maxQuadra'] } } }, 0] },
+          maxPenta: { $arrayElemAt: [{ $filter: { input: '$docs', cond: { $eq: ['$$this.pentaKills', '$maxPenta'] } } }, 0] },
         }
       }
     ])

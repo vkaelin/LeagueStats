@@ -1,4 +1,4 @@
-import { timeDifference } from '@/helpers/functions.js'
+import { secToTime, timeDifference } from '@/helpers/functions.js'
 import { maps, gameModes } from '@/data/data.js'
 import summonerSpells from '@/data/summonerSpells.json'
 
@@ -63,15 +63,18 @@ export function createBasicSummonerData(RiotData) {
  * @param {Object} records : raw records from the database stats
  */
 export function createRecordsData(records) {
-  const min = Math.floor(records.maxTime.time / 60)
-  let newSec = Math.floor(records.maxTime.time - min * 60)
-  newSec = newSec < 10 ? '0' + newSec : newSec
-  records.maxTime.time = `${min}:${newSec}`
+  records.maxTime.time = secToTime(records.maxTime.time)
   records.maxGold.gold = records.maxGold.gold.toLocaleString()
   records.maxDmgTaken.dmgTaken = records.maxDmgTaken.dmgTaken.toLocaleString()
   records.maxDmgChamp.dmgChamp = records.maxDmgChamp.dmgChamp.toLocaleString()
   records.maxDmgObj.dmgObj = records.maxDmgObj.dmgObj.toLocaleString()
   records.maxKp.kp = `${records.maxKp.kp}%`
+
+  // New record fields
+  if (records.maxLiving) {
+    records.maxLiving.longestLiving = secToTime(records.maxLiving.longestLiving)
+    records.maxHeal.heal = records.maxHeal.heal.toLocaleString()
+  }
 
   return records
 }
