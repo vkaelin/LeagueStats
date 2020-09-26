@@ -13,7 +13,9 @@
           @click="sortBy(heading.props)"
           v-html="heading.name"
           :class="[
-            {'rounded-tr-lg': index === headings.length - 1, 'w-name': heading.name === 'Name'}, 
+            {'rounded-tr-lg': index === headings.length - 1,
+             'w-name': heading.name === 'Name',
+             'w-kda': heading.name === 'KDA'}, 
             sortedClasses(heading.props)
           ]"
           class="relative px-2 py-4 font-normal cursor-pointer hover:bg-blue-700"
@@ -57,7 +59,7 @@
         >{{ champion.count }}</td>
         <td :style="bgColor(champion, 'kda')" class="px-2 py-3 text-sm text-white">
           <div>{{ champion.kda|round }}</div>
-          <div class="mt-1 text-blue-200 text-xxs">
+          <div class="mt-1 text-blue-200 whitespace-no-wrap text-xxs">
             {{ champion.kills/champion.count|round(1) }}
             /
             {{ champion.deaths/champion.count|round(1) }}
@@ -343,5 +345,9 @@ export default {
 
 .w-name {
   width: 135px;
+}
+
+.w-kda {
+  width: 90px;
 }
 </style>
