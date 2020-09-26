@@ -52,12 +52,11 @@
         <template v-else-if="summonerFound">
           <div class="flex items-center justify-between">
             <div>
-              <div class="flex items-center">
+              <div class="flex items-center mt-2">
                 <Tooltip>
                   <template v-slot:trigger>
-                    <h1 class="text-4xl font-extrabold uppercase">
-                      <span class="text-5xl">{{ basic.account.name[0] }}</span>
-                      <span>{{ basic.account.name.substring(1) }}</span>
+                    <h1 class="text-4xl font-extrabold">
+                      {{ basic.account.name }}
                     </h1>
                   </template>
                   <template v-slot:default>
@@ -94,7 +93,7 @@
                   <div class="ml-1 text-xs font-bold text-teal-200">Favorite</div>
                 </div>
               </div>
-              <div class="flex">
+              <div class="flex mt-2">
                 <div :class="{'playing': playing}" class="relative w-24 h-24">
                   <div
                     :class="{'border-2': !playing}"
