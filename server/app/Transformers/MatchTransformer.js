@@ -98,7 +98,7 @@ class MatchTransformer {
         vision: +(stats.vision / (match.gameDuration / 60)).toFixed(2),
         gold: +(player.stats.goldEarned * 100 / teamStats.gold).toFixed(1) + '%',
         dmgChamp: +(player.stats.totalDamageDealtToChampions * 100 / teamStats.dmgChamp).toFixed(1) + '%',
-        dmgObj: +(player.stats.damageDealtToObjectives * 100 / teamStats.dmgObj).toFixed(1) + '%',
+        dmgObj: +(teamStats.dmgObj ? player.stats.damageDealtToObjectives * 100 / teamStats.dmgObj : 0).toFixed(1) + '%',
         dmgTaken: +(player.stats.totalDamageTaken * 100 / teamStats.dmgTaken).toFixed(1) + '%',
       }
 
