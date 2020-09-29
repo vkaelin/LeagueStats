@@ -22,7 +22,7 @@ class Jax {
     this.Spectator = new SpectatorEndpoint(this.config, this.limiter)
     this.Summoner = new SummonerEndpoint(this.config, this.limiter)
 
-    this.CDragon = new CDragonEndpoint()
+    this.CDragon = new CDragonEndpoint(this.config)
   }
 
   set regionName(regionName) {
