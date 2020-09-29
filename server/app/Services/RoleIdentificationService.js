@@ -197,7 +197,7 @@ class RoleIdentificationService {
       // Done! Grab the results.
       const positionsWithMetric = {}
       for (const [position, champion] of Object.entries(positions)) {
-        if (Object.keys(identified).includes(position)) {
+        if (Object.keys(identified).includes(position) || champion === jungle || champion === support) {
           continue
         }
         positionsWithMetric[position] = {

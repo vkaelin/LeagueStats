@@ -212,7 +212,7 @@ class MatchTransformer {
     const teamSupports = team.filter(p => p.support && !p.jungle)
     const support = teamSupports.length === 1 ? teamSupports[0].champion : null
 
-    return RoleIdentificationService.getRoles(this.championRoles, team.map(p => p.champion), null, support)
+    return RoleIdentificationService.getRoles(this.championRoles, team.map(p => p.champion), jungle, support)
   }
 
   /**
