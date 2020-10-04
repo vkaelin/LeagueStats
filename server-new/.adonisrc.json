@@ -2,7 +2,8 @@
   "typescript": true,
   "commands": [
     "./commands",
-    "@adonisjs/core/build/commands"
+    "@adonisjs/core/build/commands",
+    "@zakodium/adonis-mongodb/lib/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -17,7 +18,8 @@
   ],
   "providers": [
     "./providers/AppProvider",
-    "@adonisjs/core"
+    "@adonisjs/core",
+    "@zakodium/adonis-mongodb"
   ],
   "metaFiles": [
     ".env",

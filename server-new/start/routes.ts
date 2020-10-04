@@ -19,7 +19,13 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import mongodb from '@ioc:Mongodb/Database'
 
 Route.get('/', async () => {
   return { hello: 'world' }
+})
+
+Route.get('mongo', async () => {
+  const match = await (await mongodb.connection().collection('matches')).findOne({})
+  return { test: match }
 })

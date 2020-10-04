@@ -23,7 +23,8 @@
       ]
     },
     "types": [
-      "@adonisjs/core"
+      "@adonisjs/core",
+      "@zakodium/adonis-mongodb"
     ]
   }
 }
