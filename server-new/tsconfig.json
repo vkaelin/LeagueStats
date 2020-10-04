@@ -24,7 +24,8 @@
     },
     "types": [
       "@adonisjs/core",
-      "@zakodium/adonis-mongodb"
+      "@zakodium/adonis-mongodb",
+      "@adonisjs/redis"
     ]
   }
 }
