@@ -2,6 +2,17 @@ import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
 import { JaxConfig } from '../../JaxConfig'
 import JaxRequest from '../JaxRequest'
 
+export interface SummonerDTO {
+  accountId:	string,
+  profileIconId: number,
+  revisionDate:	number,
+  name:	string,
+  id:	string,
+  puuid:	string,
+  summonerLevel:	number,
+  region?: string
+}
+
 export default class SummonerEndpoint {
   private config: JaxConfig
   private limiter: RiotRateLimiter
@@ -11,7 +22,7 @@ export default class SummonerEndpoint {
     this.limiter = limiter
   }
 
-  public summonerName (summonerName: string, region: string) {
+  public summonerName (summonerName: string, region: string): Promise<SummonerDTO> {
     return new JaxRequest(
       region,
       this.config,

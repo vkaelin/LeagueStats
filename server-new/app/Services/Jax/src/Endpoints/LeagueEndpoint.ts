@@ -2,6 +2,30 @@ import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
 import { JaxConfig } from '../../JaxConfig'
 import JaxRequest from '../JaxRequest'
 
+export interface LeagueEntryDTO {
+  leagueId: string;
+  queueType: string;
+  tier: string;
+  rank: string;
+  summonerId: string;
+  summonerName: string;
+  leaguePoints: number;
+  wins: number;
+  losses: number;
+  veteran: boolean;
+  inactive: boolean;
+  freshBlood: boolean;
+  hotStreak: boolean;
+  miniSeries?: MiniSeriesDTO
+}
+
+interface MiniSeriesDTO {
+  losses: number,
+  progress: string,
+  target: number,
+  wins: number
+}
+
 export default class LeagueEndpoint {
   private config: JaxConfig
   private limiter: RiotRateLimiter
@@ -11,7 +35,7 @@ export default class LeagueEndpoint {
     this.limiter = limiter
   }
 
-  public summonerID (summonerID:number, region: string) {
+  public summonerID (summonerID: string, region: string): Promise<LeagueEntryDTO[]> {
     return new JaxRequest(
       region,
       this.config,

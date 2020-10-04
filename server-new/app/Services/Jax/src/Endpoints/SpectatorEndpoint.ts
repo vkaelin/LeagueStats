@@ -11,7 +11,7 @@ export default class SpectatorEndpoint {
     this.limiter = limiter
   }
 
-  public summonerID (summonerID: number, region: string) {
+  public summonerID (summonerID: string, region: string) {
     return new JaxRequest(
       region,
       this.config,
