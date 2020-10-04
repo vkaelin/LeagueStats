@@ -35,3 +35,13 @@ Route.get('jax', async () => {
   const summoner = await Jax.Summoner.summonerName('LeagueStats GG', 'euw1')
   return { player: summoner }
 })
+
+Route.post('/summoner/basic', 'SummonersController.basic')
+Route.post('/summoner/overview', 'SummonersController.overview')
+Route.post('/summoner/champions', 'SummonersController.champions')
+Route.post('/summoner/records', 'SummonersController.records')
+Route.post('/summoner/live', 'SummonersController.liveMatchDetails')
+
+Route.post('/match', 'MatchesController.index')
+Route.post('/match/details', 'MatchesController.show')
+Route.post('/match/details/ranks', 'MatchesController.showRanks')
