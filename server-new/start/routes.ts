@@ -20,6 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import mongodb from '@ioc:Mongodb/Database'
+import Jax from 'App/Services/Jax'
 
 Route.get('/', async () => {
   return { hello: 'world' }
@@ -28,4 +29,9 @@ Route.get('/', async () => {
 Route.get('mongo', async () => {
   const match = await (await mongodb.connection().collection('matches')).findOne({})
   return { test: match }
+})
+
+Route.get('jax', async () => {
+  const summoner = await Jax.Summoner.summonerName('LeagueStats GG', 'euw1')
+  return { player: summoner }
 })

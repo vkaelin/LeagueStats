@@ -1,0 +1,76 @@
+import { promisify } from 'util'
+import { JaxConfig } from '../JaxConfig'
+import Logger from '@ioc:Adonis/Core/Logger'
+import Redis from '@ioc:Adonis/Addons/Redis'
+import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
+
+export default class JaxRequest {
+  private region: string
+  private config: JaxConfig
+  private endpoint: string
+  private limiter: RiotRateLimiter
+  private cacheTime: number
+  private retries: number
+  private sleep: { (ms: number): Promise<void>; <T>(ms: number, value: T): Promise<T> }
+
+  constructor (region: string, config: JaxConfig, endpoint: string, limiter: RiotRateLimiter, cacheTime: number) {
+    this.region = region
+    this.config = config
+    this.endpoint = endpoint
+    this.limiter = limiter
+    this.cacheTime = cacheTime
+    this.retries = config.requestOptions.retriesBeforeAbort
+
+    this.sleep = promisify(setTimeout)
+  }
+
+  public async execute () {
+    const url = `https://${this.region}.api.riotgames.com/lol/${this.endpoint}`
+
+    // Redis cache
+    if (this.cacheTime > 0) {
+      const requestCached = await Redis.get(url)
+      if (requestCached) {
+        return JSON.parse(requestCached)
+      }
+    }
+
+    try {
+      const resp = await this.limiter.execute({
+        url,
+        options: {
+          headers: {
+            'X-Riot-Token': this.config.key,
+          },
+        },
+      })
+
+      if (this.cacheTime > 0) {
+        await Redis.setex(url, this.cacheTime, JSON.stringify(resp))
+      }
+      return resp
+    } catch ({ statusCode, ...rest }) {
+      this.retries--
+
+      if (statusCode !== 500 && statusCode !== 503 && statusCode !== 504) {
+        // Don't log 404 when summoner isn't playing or the summoner doesn't exist
+        if (!this.endpoint.includes('spectator/v4/active-games/by-summoner') &&
+          !this.endpoint.includes('summoner/v4/summoners/by-name')
+        ) {
+          Logger.error(`JaxRequest Error ${statusCode} : `, rest)
+        }
+
+        return
+      }
+
+      console.log('====================================')
+      console.log(statusCode)
+      console.log('====================================')
+
+      if (this.retries > 0) {
+        await this.sleep(this.config.requestOptions.delayBeforeRetry)
+        return this.execute()
+      }
+    }
+  }
+}
