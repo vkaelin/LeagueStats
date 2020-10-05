@@ -1,8 +1,7 @@
-'use strict'
-
 import Jax from './Jax'
 import { SummonerDTO } from 'App/Services/Jax/src/Endpoints/SummonerEndpoint'
 import { LeagueEntryDTO } from './Jax/src/Endpoints/LeagueEndpoint'
+import { SummonerModel } from '@ioc:Adonis/League'
 
 class SummonerService {
   private uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
@@ -46,10 +45,10 @@ class SummonerService {
    * @param account of the summoner
    * @param summonerDB summoner in the database
    */
-  public getAllSummonerNames (account: SummonerDTO, summonerDB:any) {
+  public getAllSummonerNames (account: SummonerDTO, summonerDB:SummonerModel) {
     const names = summonerDB.names ? summonerDB.names : []
 
-    if (!names.find((n: any) => n.name === account.name)) {
+    if (!names.find(n => n.name === account.name)) {
       names.push({
         name: account.name,
         date: new Date(),

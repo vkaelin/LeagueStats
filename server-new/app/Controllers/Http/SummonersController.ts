@@ -1,16 +1,20 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { SummonerModel } from '@ioc:Adonis/League'
 import mongodb from '@ioc:Mongodb/Database'
+import MatchRepository from 'App/Repositories/MatchRepository'
 import Jax from 'App/Services/Jax'
+import MatchService from 'App/Services/MatchService'
 import SummonerService from 'App/Services/SummonerService'
 
 export default class SummonersController {
-  // private async getSeasons (puuid) {
-  //   let seasons = await MatchRepository.seasons(puuid)
-  //   return seasons.length ? seasons.map(s => s._id) : [10]
-  // }
+  private async getSeasons (puuid: string) {
+    let seasons = await MatchRepository.seasons(puuid)
+    return seasons.length ? seasons.map(s => s._id) : [10]
+  }
 
   /**
    * POST: get basic summoner data
+   * @param ctx 
    */
   public async basic ({ request, response }: HttpContextContract) {
     console.time('all')
@@ -41,9 +45,10 @@ export default class SummonersController {
       // )
 
       const summonersCollection = await mongodb.connection().collection('summoners')
-      const summonerDB = await summonersCollection.findOne({ puuid: account.puuid })
+      let summonerDB:SummonerModel|null = await summonersCollection.findOne({ puuid: account.puuid })
       if(!summonerDB) {
         await summonersCollection.insertOne({ puuid: account.puuid })
+        summonerDB = {puuid: account.puuid }
       }
 
       // Summoner names

@@ -36,6 +36,13 @@ Route.get('jax', async () => {
   return { player: summoner }
 })
 
+Route.get('test', async () => {
+  const summonersCollection = await mongodb.connection().collection('summoners')
+  const summonerDB = await summonersCollection.findOne({ puuid: 1234 })
+
+  return { player: summonerDB }
+})
+
 Route.post('/summoner/basic', 'SummonersController.basic')
 Route.post('/summoner/overview', 'SummonersController.overview')
 Route.post('/summoner/champions', 'SummonersController.champions')
