@@ -8,8 +8,11 @@ export default class AppProvider {
     // Register your own bindings
   }
 
-  public boot () {
+  public async boot () {
     // IoC container is ready
+
+    // Load Match Collections
+    await import('App/Repositories/MatchRepository')
   }
 
   public shutdown () {

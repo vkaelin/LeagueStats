@@ -5,6 +5,7 @@ import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
 import SummonerService from 'App/Services/SummonerService'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
+import SummonerChampionValidator from 'App/Validators/SummonerChampionValidator'
 
 export default class SummonersController {
   /**
@@ -22,8 +23,8 @@ export default class SummonersController {
    */
   public async basic ({ request, response }: HttpContextContract) {
     console.time('all')
-    const { summoner, region} = await request.validate(SummonerBasicValidator)
-    const finalJSON:any = {}
+    const { summoner, region } = await request.validate(SummonerBasicValidator)
+    const finalJSON: any = {}
 
     try {
       const account = await SummonerService.getAccount(summoner, region)
@@ -36,7 +37,7 @@ export default class SummonersController {
 
       // Summoner in DB
       let summonerDB = await Summoner.findOne({ puuid: account.puuid })
-      if(!summonerDB) {
+      if (!summonerDB) {
         summonerDB = await Summoner.create({ puuid: account.puuid })
       }
 
@@ -68,5 +69,17 @@ export default class SummonersController {
 
     console.timeEnd('all')
     return response.json(finalJSON)
+  }
+
+  /**
+   * POST: get champions view summoner data
+   * @param ctx 
+   */
+  public async champions ({ request, response }) {
+    console.time('championsRequest')
+    const { puuid, queue, season } = await request.validate(SummonerChampionValidator)
+    const championStats = await MatchRepository.championCompleteStats(puuid, queue, season)
+    console.timeEnd('championsRequest')
+    return response.json(championStats)
   }
 }
