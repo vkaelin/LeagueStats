@@ -4,10 +4,15 @@ import MatchRepository from 'App/Repositories/MatchRepository'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
 import SummonerService from 'App/Services/SummonerService'
+import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
 
 export default class SummonersController {
+  /**
+   * Get all played seasons for a summoner
+   * @param puuid of the summoner
+   */
   private async getSeasons (puuid: string) {
-    let seasons = await MatchRepository.seasons(puuid)
+    const seasons = await MatchRepository.seasons(puuid)
     return seasons.length ? seasons.map(s => s._id) : [10]
   }
 
@@ -17,15 +22,7 @@ export default class SummonersController {
    */
   public async basic ({ request, response }: HttpContextContract) {
     console.time('all')
-    const summoner = request.input('summoner')
-    const region = request.input('region')
-    console.log(summoner, region)
-
-    const regexSummonerName = new RegExp('^[0-9\\p{L} _\\.]+$', 'u')
-    if (!regexSummonerName.exec(summoner)) {
-      return response.json(null)
-    }
-
+    const { summoner, region} = await request.validate(SummonerBasicValidator)
     const finalJSON:any = {}
 
     try {
@@ -38,11 +35,6 @@ export default class SummonersController {
       finalJSON.account = account
 
       // Summoner in DB
-      // const summonerDB = await Summoner.findOrCreate(
-      //   { puuid: account.puuid },
-      //   { puuid: account.puuid }
-      // )
-
       let summonerDB = await Summoner.findOne({ puuid: account.puuid })
       if(!summonerDB) {
         summonerDB = await Summoner.create({ puuid: account.puuid })
@@ -67,7 +59,6 @@ export default class SummonersController {
       finalJSON.ranked = await SummonerService.getRanked(account, region)
 
       // SAVE IN DB
-      // await summonerDB.save()
       await summonerDB.save()
     } catch (error) {
       console.log('username not found')

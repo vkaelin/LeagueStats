@@ -1,17 +1,26 @@
 import mongodb from '@ioc:Mongodb/Database'
+import { Collection } from 'mongodb'
 
 class MatchRepository {
   private season?: number
+  private collection: Collection
 
   constructor () {
-    // TODO: keep matches collection in the repo instance
+    this.getCollection()
+  }
+
+  /**
+   * Get MongoDB matches collection
+   */
+  private async getCollection () {
+    this.collection = await mongodb.connection().collection('matches')
   }
 
   /**
    * Basic matchParams used in a lot of requests
    * @param puuid of the summoner
    */
-  private _matchParams (puuid: string) {
+  private matchParams (puuid: string) {
     return {
       summoner_puuid: puuid,
       result: { $not: { $eq: 'Remake' } },
@@ -19,18 +28,17 @@ class MatchRepository {
       season: this.season ? this.season : { $exists: true },
     }
   }
+
   /**
    * Get Summoner's played seasons
    * @param puuid of the summoner
    */
   public async seasons (puuid: string) {
     this.season = undefined
-    const matchesCollections = await mongodb.connection().collection('matches')
-
-    return matchesCollections.aggregate([
+    return this.collection.aggregate([
       {
         $match: {
-          ...this._matchParams(puuid),
+          ...this.matchParams(puuid),
         },
       },
       {
