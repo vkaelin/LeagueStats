@@ -3,7 +3,7 @@ import Jax from './Jax'
 import { getSeasonNumber } from 'App/helpers'
 import { MatchReferenceDto } from './Jax/src/Endpoints/MatchListEndpoint'
 import { SummonerDTO } from './Jax/src/Endpoints/SummonerEndpoint'
-import { SummonerModel } from '@ioc:Adonis/League'
+import { SummonerModel } from 'App/Models/Summoner'
 
 class MatchService {
   /**

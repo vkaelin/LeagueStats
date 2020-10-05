@@ -1,7 +1,7 @@
 import Jax from './Jax'
 import { SummonerDTO } from 'App/Services/Jax/src/Endpoints/SummonerEndpoint'
 import { LeagueEntryDTO } from './Jax/src/Endpoints/LeagueEndpoint'
-import { SummonerModel } from '@ioc:Adonis/League'
+import { SummonerModel } from 'App/Models/Summoner'
 
 class SummonerService {
   private uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']

@@ -1,6 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { SummonerModel } from '@ioc:Adonis/League'
-import mongodb from '@ioc:Mongodb/Database'
+import Summoner from 'App/Models/Summoner'
 import MatchRepository from 'App/Repositories/MatchRepository'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
@@ -44,11 +43,9 @@ export default class SummonersController {
       //   { puuid: account.puuid }
       // )
 
-      const summonersCollection = await mongodb.connection().collection('summoners')
-      let summonerDB:SummonerModel|null = await summonersCollection.findOne({ puuid: account.puuid })
+      let summonerDB = await Summoner.findOne({ puuid: account.puuid })
       if(!summonerDB) {
-        await summonersCollection.insertOne({ puuid: account.puuid })
-        summonerDB = {puuid: account.puuid }
+        summonerDB = await Summoner.create({ puuid: account.puuid })
       }
 
       // Summoner names
@@ -71,7 +68,7 @@ export default class SummonersController {
 
       // SAVE IN DB
       // await summonerDB.save()
-      await summonersCollection.updateOne({ puuid: account.puuid }, summonerDB)
+      await summonerDB.save()
     } catch (error) {
       console.log('username not found')
       console.log(error)
