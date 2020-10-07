@@ -1,6 +1,14 @@
 import Redis from '@ioc:Adonis/Addons/Redis'
 import got from 'got/dist/source'
 
+export interface FinalRoleComposition {
+  'TOP'?: number,
+  'JUNGLE'?: number,
+  'MIDDLE'?: number,
+  'BOTTOM'?: number,
+  'SUPPORT'?: number,
+}
+
 export interface RoleComposition {
   'TOP'?: number,
   'JUNGLE'?: number,
@@ -186,7 +194,12 @@ class RoleIdentificationService {
    * @param jungle
    * @param support
    */
-  public getRoles (championPositions: ChampionsRates, composition: number[], jungle?: number, support?: number) {
+  public getRoles (
+    championPositions: ChampionsRates,
+    composition: number[],
+    jungle?: number,
+    support?: number
+  ): FinalRoleComposition {
     // Set composition champion playrate to 0% if not present in the json data
     for (const compChamp of composition) {
       if (championPositions[compChamp]) {

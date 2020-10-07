@@ -20,10 +20,10 @@ export interface ParticipantDetails {
   summonerId: string,
   champion: Champion,
   role: string,
-  primaryRune: string,
-  secondaryRune: string,
+  primaryRune: string | null,
+  secondaryRune: string | null,
   level: number,
-  items: Item[],
+  items: (Item | null)[],
   firstSum: SummonerSpell | number,
   secondSum: SummonerSpell | number,
   stats: Stats,
@@ -39,32 +39,32 @@ export interface Champion {
   icon: string
 }
 
-interface SummonerSpell {
+export interface SummonerSpell {
   name: string,
   description: string,
   icon: string
 }
 
-interface Rank {
+export interface Rank {
   tier: string,
   shortName: string
 }
 
-interface ParticipantBasic {
+export interface ParticipantBasic {
   account_id: string,
   name: string,
   role: string,
   champion: Champion
 }
 
-interface Item {
+export interface Item {
   image: string,
   name: string,
   description: string,
   price: number
 }
 
-interface Stats {
+export interface Stats {
   kills: number,
   deaths: number,
   assists: number,
@@ -74,21 +74,21 @@ interface Stats {
   dmgChamp: number,
   dmgObj: number,
   dmgTaken: number,
-  kda: number,
+  kda: number | string,
   realKda: number,
-  criticalStrike: number,
-  killingSpree: number,
-  doubleKills: number,
-  tripleKills: number,
-  quadraKills: number,
-  pentaKills: number,
-  heal: number,
-  towers: number,
-  longestLiving: number,
-  kp: number,
+  criticalStrike?: number,
+  killingSpree?: number,
+  doubleKills?: number,
+  tripleKills?: number,
+  quadraKills?: number,
+  pentaKills?: number,
+  heal?: number,
+  towers?: number,
+  longestLiving?: number,
+  kp: number | string,
 }
 
-interface PercentStats {
+export interface PercentStats {
   minions: number,
   vision: number,
   gold: string,

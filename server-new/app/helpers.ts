@@ -1,3 +1,5 @@
+import { ParticipantBasic } from './Models/Match'
+
 /**
  * League of Legends queues with defined role for each summoner
  */
@@ -40,7 +42,7 @@ export function getSeasonNumber (timestamp: number) {
  * @param a first role
  * @param b second role
  */
-export function sortTeamByRole (a:any, b:any) {
+export function sortTeamByRole (a:ParticipantBasic, b:ParticipantBasic) {
   const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }

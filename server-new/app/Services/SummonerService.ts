@@ -3,6 +3,17 @@ import { SummonerDTO } from 'App/Services/Jax/src/Endpoints/SummonerEndpoint'
 import { LeagueEntryDTO } from './Jax/src/Endpoints/LeagueEndpoint'
 import { SummonerModel } from 'App/Models/Summoner'
 
+export interface LeagueEntriesByQueue {
+  soloQ?: LeagueEntryByQueue,
+  flex5v5?: LeagueEntryByQueue
+}
+
+export interface LeagueEntryByQueue extends LeagueEntryDTO {
+  fullRank: string,
+  winrate: string,
+  shortName: string | number
+}
+
 class SummonerService {
   private uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
   private leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
@@ -11,7 +22,7 @@ class SummonerService {
    * Helper to transform League Data from the Riot API
    * @param league raw data of the league from Riot API
    */
-  private getleagueData (league?: LeagueEntryDTO) {
+  private getleagueData (league?: LeagueEntryDTO): LeagueEntryByQueue | null {
     if (!league) {
       return null
     }
@@ -45,7 +56,7 @@ class SummonerService {
    * @param account of the summoner
    * @param summonerDB summoner in the database
    */
-  public getAllSummonerNames (account: SummonerDTO, summonerDB:SummonerModel) {
+  public getAllSummonerNames (account: SummonerDTO, summonerDB: SummonerModel) {
     const names = summonerDB.names ? summonerDB.names : []
 
     if (!names.find(n => n.name === account.name)) {
@@ -64,12 +75,11 @@ class SummonerService {
    * @param account
    * @param region 
    */
-  public async getRanked (account: SummonerDTO, region: string) {
+  public async getRanked (account: SummonerDTO, region: string): Promise<LeagueEntriesByQueue> {
     const ranked = await Jax.League.summonerID(account.id, region)
     const result = {
-      soloQ: this.getleagueData(ranked.find(e => e.queueType === 'RANKED_SOLO_5x5')) || null,
-      flex5v5: this.getleagueData(ranked.find(e => e.queueType === 'RANKED_FLEX_SR')) || null,
-      flex3v3: this.getleagueData(ranked.find(e => e.queueType === 'RANKED_FLEX_TT')) || null,
+      soloQ: this.getleagueData(ranked.find(e => e.queueType === 'RANKED_SOLO_5x5')) || undefined,
+      flex5v5: this.getleagueData(ranked.find(e => e.queueType === 'RANKED_FLEX_SR')) || undefined,
     }
     return result
   }
