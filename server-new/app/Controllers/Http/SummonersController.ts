@@ -4,8 +4,10 @@ import MatchRepository from 'App/Repositories/MatchRepository'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
 import SummonerService from 'App/Services/SummonerService'
+import LiveMatchTransformer from 'App/Transformers/LiveMatchTransformer'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
 import SummonerChampionValidator from 'App/Validators/SummonerChampionValidator'
+import SummonerLiveValidator from 'App/Validators/SummonerLiveValidator'
 import SummonerRecordValidator from 'App/Validators/SummonerRecordValidator'
 
 export default class SummonersController {
@@ -76,7 +78,7 @@ export default class SummonersController {
    * POST: get champions view summoner data
    * @param ctx 
    */
-  public async champions ({ request, response }) {
+  public async champions ({ request, response }: HttpContextContract) {
     console.time('championsRequest')
     const { puuid, queue, season } = await request.validate(SummonerChampionValidator)
     const championStats = await MatchRepository.championCompleteStats(puuid, queue, season)
@@ -88,11 +90,32 @@ export default class SummonersController {
    * POST: get records view summoner data
    * @param ctx 
    */
-  public async records ({ request, response }) {
+  public async records ({ request, response }: HttpContextContract) {
     console.time('recordsRequest')
     const { puuid, season } = await request.validate(SummonerRecordValidator)
     const records = await MatchRepository.records(puuid, season)
     console.timeEnd('recordsRequest')
     return response.json(records)
+  }
+
+  /**
+   * POST - Return live match detail
+   * @param ctx 
+   */
+  public async liveMatchDetails ({ request, response }: HttpContextContract) {
+    console.time('liveMatchDetails')
+    const { id, region } = await request.validate(SummonerLiveValidator)
+
+    // CURRENT GAME
+    let currentGame = await Jax.Spectator.summonerID(id, region)
+
+    if (!currentGame) {
+      return response.json(null)
+    }
+
+    currentGame = await LiveMatchTransformer.transform(currentGame, { region })
+    console.timeEnd('liveMatchDetails')
+
+    return response.json(currentGame)
   }
 }
