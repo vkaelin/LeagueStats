@@ -205,6 +205,14 @@ class RoleIdentificationService {
           metric: championPositions[champion][position],
         }
       }
+
+      // TODO: Tmp fix
+      if (!Object.keys(positionsWithMetric).length) {
+        jungle = null
+        support = null
+        continue
+      }
+
       const bestPosition = Object.keys(positionsWithMetric).reduce((posA, posB) => {
         return positionsWithMetric[posA].metric > positionsWithMetric[posB].metric ? posA : posB
       })
