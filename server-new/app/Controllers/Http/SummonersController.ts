@@ -6,6 +6,7 @@ import MatchService from 'App/Services/MatchService'
 import SummonerService from 'App/Services/SummonerService'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
 import SummonerChampionValidator from 'App/Validators/SummonerChampionValidator'
+import SummonerRecordValidator from 'App/Validators/SummonerRecordValidator'
 
 export default class SummonersController {
   /**
@@ -81,5 +82,17 @@ export default class SummonersController {
     const championStats = await MatchRepository.championCompleteStats(puuid, queue, season)
     console.timeEnd('championsRequest')
     return response.json(championStats)
+  }
+
+  /**
+   * POST: get records view summoner data
+   * @param ctx 
+   */
+  public async records ({ request, response }) {
+    console.time('recordsRequest')
+    const { puuid, season } = await request.validate(SummonerRecordValidator)
+    const records = await MatchRepository.records(puuid, season)
+    console.timeEnd('recordsRequest')
+    return response.json(records)
   }
 }
