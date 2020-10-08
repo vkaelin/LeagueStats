@@ -3,11 +3,13 @@ import Summoner from 'App/Models/Summoner'
 import MatchRepository from 'App/Repositories/MatchRepository'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
+import StatsService from 'App/Services/StatsService'
 import SummonerService from 'App/Services/SummonerService'
 import LiveMatchTransformer from 'App/Transformers/LiveMatchTransformer'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
 import SummonerChampionValidator from 'App/Validators/SummonerChampionValidator'
 import SummonerLiveValidator from 'App/Validators/SummonerLiveValidator'
+import SummonerOverviewValidator from 'App/Validators/SummonerOverviewValidator'
 import SummonerRecordValidator from 'App/Validators/SummonerRecordValidator'
 
 export default class SummonersController {
@@ -15,7 +17,7 @@ export default class SummonersController {
    * Get all played seasons for a summoner
    * @param puuid of the summoner
    */
-  private async getSeasons (puuid: string) {
+  private async getSeasons (puuid: string): Promise<number[]> {
     const seasons = await MatchRepository.seasons(puuid)
     return seasons.length ? seasons.map(s => s._id) : [10]
   }
@@ -71,6 +73,43 @@ export default class SummonersController {
     }
 
     console.timeEnd('all')
+    return response.json(finalJSON)
+  }
+
+  /**
+   * POST: get overview view summoner data
+   * @param ctx 
+   */
+  public async overview ({ request, response }: HttpContextContract) {
+    console.time('overview')
+    const { puuid, accountId, region, season } = await request.validate(SummonerOverviewValidator)
+    const finalJSON: any = {}
+
+    // Summoner in DB
+    let summonerDB = await Summoner.findOne({ puuid: puuid })
+    if (!summonerDB) {
+      summonerDB = await Summoner.create({ puuid: puuid })
+    }
+
+    // MATCHES BASIC
+    const gameIds = summonerDB.matchList!.slice(0)
+      .filter(m => {
+        return season ? m.seasonMatch === season : true
+      })
+      .slice(0, 10)
+      .map(({ gameId }) => gameId)
+    finalJSON.matchesDetails = await MatchService.getMatches(puuid, accountId, region, gameIds, summonerDB)
+
+    // STATS
+    console.time('STATS')
+    finalJSON.stats = await StatsService.getSummonerStats(puuid, season)
+    console.timeEnd('STATS')
+
+    // SAVE IN DB
+    await summonerDB.save()
+
+    console.timeEnd('overview')
+    console.log(finalJSON)
     return response.json(finalJSON)
   }
 

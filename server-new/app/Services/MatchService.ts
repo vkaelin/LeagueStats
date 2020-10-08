@@ -1,9 +1,12 @@
 import Jax from './Jax'
-// import Logger from '@ioc:Adonis/Core/Logger'
+import Logger from '@ioc:Adonis/Core/Logger'
 import { getSeasonNumber } from 'App/helpers'
 import { MatchReferenceDto } from './Jax/src/Endpoints/MatchListEndpoint'
 import { SummonerDTO } from './Jax/src/Endpoints/SummonerEndpoint'
 import { SummonerModel } from 'App/Models/Summoner'
+import Match, { MatchModel } from 'App/Models/Match'
+import BasicMatchTransformer from 'App/Transformers/BasicMatchTransformer'
+import mongodb from '@ioc:Mongodb/Database'
 
 class MatchService {
   /**
@@ -84,53 +87,62 @@ class MatchService {
 
   /**
    * Fetch list of matches for a specific Summoner
-   * @param account of the summoner
-   * @param gameIds of the matches to fetch
-   * @param summonerDB summoner in the database
+   * @param puuid 
+   * @param accountId
+   * @param region 
+   * @param gameIds 
+   * @param summonerDB 
    */
-  // public async getMatches (account, gameIds, summonerDB) {
-  //   console.time('getMatches')
+  public async getMatches (puuid: string, accountId: string, region: string, gameIds: number[], summonerDB: SummonerModel) {
+    console.time('getMatches')
 
-  //   let matchesDetails = []
-  //   const matchesToGetFromRiot = []
-  //   for (let i = 0; i < gameIds.length; ++i) {
-  //     const matchSaved = await summonerDB.matches().where({ gameId: gameIds[i] }).first()
-  //     if (matchSaved) {
-  //       matchesDetails.push(matchSaved)
-  //     } else {
-  //       matchesToGetFromRiot.push(gameIds[i])
-  //     }
-  //   }
+    let matchesDetails: MatchModel[] = []
+    const matchesToGetFromRiot: number[] = []
+    // TODO: replace it with Match Model once the package is fixed
+    const matchesCollection = await mongodb.connection().collection('matches')
+    for (let i = 0; i < gameIds.length; ++i) {
+      const matchSaved = await matchesCollection.findOne({
+        summoner_puuid: puuid,
+        gameId: gameIds[i],
+      })
+      if (matchSaved) {
+        console.log('match saved')
+        console.log(matchSaved)
+        matchesDetails.push(matchSaved)
+      } else {
+        matchesToGetFromRiot.push(gameIds[i])
+      }
+    }
 
-  //   const requests = matchesToGetFromRiot.map(gameId => Jax.Match.get(gameId, account.region))
-  //   let matchesFromApi = await Promise.all(requests)
+    const requests = matchesToGetFromRiot.map(gameId => Jax.Match.get(gameId, region))
+    let matchesFromApi = await Promise.all(requests)
 
-  //   /* If we have to store some matches in the db */
-  //   if (matchesFromApi.length !== 0) {
-  //     // Try to see why matches are sometimes undefined
-  //     matchesFromApi.filter(m => {
-  //       if (m === undefined) {
-  //         Logger.info(`Match undefined, summoner: ${summonerDB.puuid}`, m)
-  //       }
-  //     })
+    /* If we have to store some matches in the db */
+    if (matchesFromApi.length !== 0) {
+      // Try to see why matches are sometimes undefined
+      matchesFromApi.filter(m => {
+        if (m === undefined) {
+          Logger.info(`Match undefined, summoner: ${summonerDB.puuid}`, m)
+        }
+      })
 
-  //     // Transform raw matches data
-  //     await BasicMatchTransformer.transform(matchesFromApi, { account })
+      // Transform raw matches data
+      const transformedMatches = await BasicMatchTransformer.transform(matchesFromApi, { puuid, accountId })
 
-  //     /* Save all matches from Riot Api in db */
-  //     for (const match of matchesFromApi) {
-  //       await summonerDB.matches().create(match)
-  //       match.newMatch = true
-  //     }
-  //     matchesDetails = [...matchesDetails, ...matchesFromApi]
-  //   }
+      /* Save all matches from Riot Api in db */
+      for (const match of transformedMatches) {
+        await Match.create(match)
+        match.newMatch = true
+      }
+      matchesDetails = [...matchesDetails, ...transformedMatches]
+    }
 
-  //   /* Sort matches */
-  //   matchesDetails.sort((a, b) => (a.date < b.date) ? 1 : -1)
-  //   console.timeEnd('getMatches')
+    /* Sort matches */
+    matchesDetails.sort((a, b) => (a.date < b.date) ? 1 : -1)
+    console.timeEnd('getMatches')
 
-  //   return matchesDetails
-  // }
+    return matchesDetails
+  }
 }
 
 export default new MatchService()

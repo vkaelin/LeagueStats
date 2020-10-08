@@ -78,6 +78,36 @@ class MatchRepository {
   }
 
   /**
+   * Get Summoner's statistics for the N most played champions
+   * @param puuid of the summoner
+   * @param limit number of champions to fetch
+   * @param season
+   */
+  public async championStats (puuid: string, limit = 5, season?: number) {
+    const groupParams = {
+      champion: { $first: '$champion' },
+      kills: { $sum: '$stats.kills' },
+      deaths: { $sum: '$stats.deaths' },
+      assists: { $sum: '$stats.assists' },
+    }
+    const finalSteps = [
+      { $sort: { 'count': -1, 'champion.name': 1 } },
+      { $limit: limit },
+    ]
+    return this.aggregate(puuid, {}, [], '$champion.id', groupParams, finalSteps, season)
+  }
+
+  /**
+   * Get Summoner's statistics for all played champion classes
+   * @param puuid of the summoner
+   * @param season
+   */
+  public async championClassStats (puuid: string, season?: number) {
+    const groupId = { '$arrayElemAt': ['$champion.roles', 0] }
+    return this.aggregate(puuid, {}, [], groupId, {}, [], season)
+  }
+
+  /**
    * Get Summoner's complete statistics for the all played champs
    * @param puuid  of the summoner
    * @param queue  of the matches to fetch, if not set: get all matches
@@ -103,6 +133,33 @@ class MatchRepository {
       { $sort: { 'count': -1, 'champion.name': 1 } },
     ]
     return this.aggregate(puuid, matchParams, [], '$champion.id', groupParams, finalSteps, season)
+  }
+
+  /**
+   * Get Summoner's statistics for all played modes
+   * @param puuid of the summoner
+   * @param season
+   */
+  public async gamemodeStats (puuid: string, season?: number) {
+    return this.aggregate(puuid, {}, [], '$gamemode', {}, [], season)
+  }
+
+  /**
+   * Get global Summoner's statistics
+   * @param puuid of the summoner
+   * @param season
+   */
+  public async globalStats (puuid: string, season?: number) {
+    const groupParams = {
+      time: { $sum: '$time' },
+      kills: { $sum: '$stats.kills' },
+      deaths: { $sum: '$stats.deaths' },
+      assists: { $sum: '$stats.assists' },
+      minions: { $sum: '$stats.minions' },
+      vision: { $sum: '$stats.vision' },
+      kp: { $avg: '$stats.kp' },
+    }
+    return this.aggregate(puuid, {}, [], null, groupParams, [], season)
   }
 
   /**
@@ -206,6 +263,28 @@ class MatchRepository {
   }
 
   /**
+   * Get Summoner's statistics for the 5 differnt roles
+   * @param puuid of the summoner
+   * @param season
+   */
+  public async roleStats (puuid: string, season?: number) {
+    const matchParams = {
+      role: { $not: { $eq: 'NONE' } },
+    }
+    const finalSteps = [
+      {
+        $project: {
+          role: '$_id',
+          count: '$count',
+          wins: '$wins',
+          losses: '$losses',
+        },
+      },
+    ]
+    return this.aggregate(puuid, matchParams, [], '$role', {}, finalSteps, season)
+  }
+
+  /**
    * Get Summoner's played seasons
    * @param puuid of the summoner
    */
@@ -220,6 +299,39 @@ class MatchRepository {
         $group: { _id: '$season' },
       },
     ]).toArray()
+  }
+
+  /**
+   * Get Summoner's mates list
+   * @param puuid of the summoner
+   * @param season
+   */
+  public async mates (puuid: string, season?: number) {
+    const intermediateSteps = [
+      { $sort: { 'gameId': -1 } },
+      { $unwind: '$allyTeam' },
+    ]
+    const groupParams = {
+      account_id: { $first: '$account_id' },
+      name: { $first: '$allyTeam.name' },
+      mateId: { $first: '$allyTeam.account_id' },
+    }
+    const finalSteps = [
+      {
+        '$addFields': {
+          'idEq': { '$eq': ['$mateId', '$account_id'] },
+        },
+      },
+      {
+        $match: {
+          'idEq': false,
+          'count': { $gte: 2 },
+        },
+      },
+      { $sort: { 'count': -1, 'name': 1 } },
+      { $limit: 15 },
+    ]
+    return this.aggregate(puuid, {}, intermediateSteps, '$allyTeam.account_id', groupParams, finalSteps, season)
   }
 }
 

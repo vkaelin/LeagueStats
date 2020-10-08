@@ -1,19 +1,19 @@
 import { MatchModel, ParticipantBasic } from 'App/Models/Match'
 import { MatchDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
-import { SummonerDTO } from 'App/Services/Jax/src/Endpoints/SummonerEndpoint'
 import MatchTransformer from 'App/Transformers/MatchTransformer'
 
 class BasicMatchTransformer extends MatchTransformer {
   /**
    * Transform raw data for 1 match
    * @param match 
-   * @param account 
+   * @param puuid 
+   * @param accountId 
    */
-  private transformOneMatch (match: MatchDto, account: SummonerDTO) {
+  private transformOneMatch (match: MatchDto, puuid: string, accountId: string): MatchModel {
     // Global data about the match
     const globalInfos = super.getGameInfos(match)
 
-    const identity = match.participantIdentities.find((p) => p.player.currentAccountId === account.accountId)
+    const identity = match.participantIdentities.find((p) => p.player.currentAccountId === accountId)
     const player = match.participants[identity!.participantId - 1]
 
     let win = match.teams.find((t) => t.teamId === player.teamId)!.win
@@ -50,7 +50,7 @@ class BasicMatchTransformer extends MatchTransformer {
 
     return {
       account_id: identity!.player.currentAccountId,
-      summoner_puuid: account.puuid,
+      summoner_puuid: puuid,
       gameId: match.gameId,
       result: win,
       allyTeam,
@@ -62,21 +62,17 @@ class BasicMatchTransformer extends MatchTransformer {
 
   /**
    * Transform raw data from Riot API
-   * @param matches data from Riot API, Array of match or a single match
+   * @param matches data from Riot API, Array of matches
    * @param ctx context
    */
-  public async transform (matches: MatchDto[] | MatchDto, { account }: { account: SummonerDTO }) {
+  public async transform (matches: MatchDto[], { puuid, accountId }: { puuid: string, accountId: string }) {
     await super.getContext()
 
-    if (Array.isArray(matches)) {
-      const finalMatches:MatchModel[] = []
-      matches.forEach((match, index) => {
-        finalMatches[index] = this.transformOneMatch(match, account)
-      })
-      return finalMatches
-    } else {
-      return this.transformOneMatch(matches, account) as MatchModel
-    }
+    const finalMatches:MatchModel[] = []
+    matches.forEach((match, index) => {
+      finalMatches[index] = this.transformOneMatch(match, puuid, accountId)
+    })
+    return finalMatches
   }
 }
 

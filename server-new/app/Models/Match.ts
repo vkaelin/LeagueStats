@@ -13,6 +13,7 @@ export interface MatchModel extends ParticipantDetails {
   region: string,
   season: number,
   time: number,
+  newMatch?: boolean,
 }
 
 export interface ParticipantDetails {
