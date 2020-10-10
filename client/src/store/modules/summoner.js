@@ -179,8 +179,16 @@ export const actions = {
     const newMatches = createMatchData(resp.data.matches)
     commit('MATCHES_FOUND', { newMatches, stats: resp.data.stats })
   },
-  async overviewRequest({ commit }) {
-    const resp = await axios(({ url: 'summoner/overview', data: { account: state.basic.account }, method: 'POST' })).catch(() => { })
+  async overviewRequest({ commit, rootState }) {
+    const resp = await axios(({
+      url: 'summoner/overview',
+      data: {
+        puuid: state.basic.account.puuid,
+        accountId: state.basic.account.accountId,
+        region: rootState.regionsList[rootState.settings.region],
+      },
+      method: 'POST'
+    })).catch(() => { })
     console.log('---OVERVIEW---')
     console.log(resp.data)
     resp.data.matches = createMatchData(resp.data.matchesDetails)
