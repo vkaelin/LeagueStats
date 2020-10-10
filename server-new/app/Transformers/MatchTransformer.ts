@@ -43,11 +43,9 @@ export default abstract class MatchTransformer {
    * @param id of the champion
    */
   public getChampion (id: number) {
-    const champion = { ...this.champions.find(c => c.id === id) }
-    champion.icon = `
-      https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/
-      ${champion.squarePortraitPath.split('/assets/')[1].toLowerCase()}
-    `
+    const champion = { ...this.champions.find((c: any) => c.id === id) }
+    champion.icon = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/'
+      + `${champion.squarePortraitPath.split('/assets/')[1].toLowerCase()}`
     delete champion.squarePortraitPath
     return champion
   }
