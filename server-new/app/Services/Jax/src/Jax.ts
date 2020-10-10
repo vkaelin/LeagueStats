@@ -5,7 +5,9 @@ import SummonerEndpoint from './Endpoints/SummonerEndpoint'
 import SpectatorEndpoint from './Endpoints/SpectatorEndpoint'
 import CDragonEndpoint from './Endpoints/CDragonEndpoint'
 import { JaxConfig } from '../JaxConfig'
-import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
+// import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
+import RiotRateLimiter from 'riot-ratelimiter'
+import { STRATEGY } from 'riot-ratelimiter/dist/RateLimiter'
 
 export default class Jax {
   public key: string
@@ -20,8 +22,13 @@ export default class Jax {
 
   constructor (config:JaxConfig) {
     this.key = config.key
+    // this.limiter = new RiotRateLimiter({
+    //   debug: true,
+    //   retryCount: 0,
+    // })
     this.limiter = new RiotRateLimiter({
-      debug: true,
+      debug: false,
+      strategy: STRATEGY.SPREAD,
     })
     this.config = config
 

@@ -19,7 +19,7 @@ class MatchService {
     let alreadyIn = false
     let index = 0
     do {
-      let { matches: newMatchList } = await Jax.Matchlist.accountID(account.accountId, account.region as string, index)
+      let newMatchList = await Jax.Matchlist.accountID(account.accountId, account.region as string, index)
       // Error while fetching Riot API
       if (!newMatchList) {
         matchList = matchList.map(m => {
@@ -28,8 +28,8 @@ class MatchService {
         })
         return matchList
       }
-      matchList = [...matchList, ...newMatchList]
-      alreadyIn = newMatchList.length === 0 || stopFetching(newMatchList)
+      matchList = [...matchList, ...newMatchList.matches]
+      alreadyIn = newMatchList.matches.length === 0 || stopFetching(newMatchList.matches)
       // If the match is made in another region : we stop fetching
       if (matchList[matchList.length - 1].platformId.toLowerCase() !== account.region) {
         alreadyIn = true
@@ -106,8 +106,6 @@ class MatchService {
         gameId: gameIds[i],
       })
       if (matchSaved) {
-        console.log('match saved')
-        console.log(matchSaved)
         matchesDetails.push(matchSaved)
       } else {
         matchesToGetFromRiot.push(gameIds[i])

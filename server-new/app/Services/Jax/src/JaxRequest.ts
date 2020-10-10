@@ -2,7 +2,8 @@ import { promisify } from 'util'
 import { JaxConfig } from '../JaxConfig'
 import Logger from '@ioc:Adonis/Core/Logger'
 import Redis from '@ioc:Adonis/Addons/Redis'
-import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
+import RiotRateLimiter from 'riot-ratelimiter'
+// import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
 
 export default class JaxRequest {
   private region: string
@@ -36,35 +37,43 @@ export default class JaxRequest {
     }
 
     try {
-      const resp = await this.limiter.execute({
+      // const resp = await this.limiter.execute({
+      //   url,
+      //   options: {
+      //     headers: {
+      //       'X-Riot-Token': this.config.key,
+      //     },
+      //   },
+      // })
+
+      const resp:any = await this.limiter.executing({
         url,
-        options: {
-          headers: {
-            'X-Riot-Token': this.config.key,
-          },
-        },
+        token: this.config.key,
+        resolveWithFullResponse: false,
       })
 
       if (this.cacheTime > 0) {
-        await Redis.setex(url, this.cacheTime, JSON.stringify(resp))
+        await Redis.setex(url, this.cacheTime, resp)
       }
-      return resp
-    } catch ({ statusCode, ...rest }) {
+      return JSON.parse(resp)
+    } catch ({ status, ...rest }) {
       this.retries--
 
-      if (statusCode !== 500 && statusCode !== 503 && statusCode !== 504) {
+      if (status !== 500 && status !== 503 && status !== 504) { //
         // Don't log 404 when summoner isn't playing or the summoner doesn't exist
+        // Or if summoner has no MatchList
         if (!this.endpoint.includes('spectator/v4/active-games/by-summoner') &&
-          !this.endpoint.includes('summoner/v4/summoners/by-name')
+          !this.endpoint.includes('summoner/v4/summoners/by-name') &&
+          !this.endpoint.includes('match/v4/matchlists/by-account')
         ) {
-          Logger.error(`JaxRequest Error ${statusCode} : `, rest)
+          Logger.error(`JaxRequest Error  ${status}: `, rest)
         }
 
         return
       }
 
       console.log('====================================')
-      console.log(statusCode)
+      console.log(status)
       console.log('====================================')
 
       if (this.retries > 0) {

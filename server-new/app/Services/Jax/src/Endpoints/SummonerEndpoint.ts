@@ -1,4 +1,5 @@
-import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
+// import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
+import RiotRateLimiter from 'riot-ratelimiter'
 import { JaxConfig } from '../../JaxConfig'
 import JaxRequest from '../JaxRequest'
 

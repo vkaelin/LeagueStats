@@ -109,7 +109,6 @@ export default class SummonersController {
     await summonerDB.save()
 
     console.timeEnd('overview')
-    console.log(finalJSON)
     return response.json(finalJSON)
   }
 

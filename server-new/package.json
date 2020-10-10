@@ -28,6 +28,8 @@
     "got": "^11.7.0",
     "proxy-addr": "^2.0.6",
     "reflect-metadata": "^0.1.13",
+    "request": "^2.88.2",
+    "riot-ratelimiter": "^0.1.5",
     "source-map-support": "^0.5.19"
   }
 }
