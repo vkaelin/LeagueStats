@@ -155,9 +155,14 @@ export const actions = {
   },
   async liveMatchRequest({ commit, rootState }) {
     commit('LIVE_LOADING')
-    const region = rootState.regionsList[rootState.settings.region]
-
-    const resp = await axios(({ url: 'summoner/live', data: { account: state.basic.account, region }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({
+      url: 'summoner/live',
+      data: {
+        id: state.basic.account.id,
+        region: rootState.regionsList[rootState.settings.region]
+      },
+      method: 'POST'
+    })).catch(() => { })
     console.log('---LIVE---')
     console.log(resp.data)
 
