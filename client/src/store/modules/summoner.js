@@ -172,13 +172,21 @@ export const actions = {
       commit('SUMMONER_NOT_PLAYING')
     }
   },
-  async moreMatches({ commit }) {
+  async moreMatches({ commit, rootState }) {
     commit('MATCHES_LOADING')
 
-    const account = state.basic.account
     const gameIds = state.basic.matchList.slice(state.overview.matchIndex, state.overview.matchIndex + 10).map(({ gameId }) => gameId)
 
-    const resp = await axios(({ url: 'match', data: { account, gameIds }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({
+      url: 'match',
+      data: {
+        puuid: state.basic.account.puuid,
+        accountId: state.basic.account.accountId,
+        region: rootState.regionsList[rootState.settings.region],
+        gameIds
+      },
+      method: 'POST'
+    })).catch(() => { })
     console.log('---MATCHES INFOS---')
     console.log(resp.data)
     const newMatches = createMatchData(resp.data.matches)
