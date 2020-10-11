@@ -25,19 +25,19 @@ export interface ParticipantDetails {
   secondaryRune: string | null,
   level: number,
   items: (Item | null)[],
-  firstSum: SummonerSpell | number,
-  secondSum: SummonerSpell | number,
+  firstSum: SummonerSpell | number | null,
+  secondSum: SummonerSpell | number | null,
   stats: Stats,
   percentStats?: PercentStats
-  rank?: Rank
+  rank?: Rank | null
 }
 
-export interface Champion {
-  id: number,
-  name: string,
-  alias: string,
-  roles: string[],
-  icon: string
+export interface Champion<T = number, U = string> {
+  id: number | T,
+  name: string | U,
+  alias?: string,
+  roles?: string[],
+  icon?: string
 }
 
 export interface SummonerSpell {
@@ -48,7 +48,7 @@ export interface SummonerSpell {
 
 export interface Rank {
   tier: string,
-  shortName: string
+  shortName: string | number
 }
 
 export interface ParticipantBasic {

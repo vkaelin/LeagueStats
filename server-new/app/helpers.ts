@@ -1,4 +1,4 @@
-import { ParticipantBasic } from './Models/Match'
+import { ParticipantBasic, ParticipantDetails } from './Models/Match'
 
 /**
  * League of Legends queues with defined role for each summoner
@@ -29,7 +29,7 @@ export const supportItems = [3850, 3851, 3853, 3854, 3855, 3857, 3858, 3859, 386
  * Get season number for a match
  * @param timestamp 
  */
-export function getSeasonNumber (timestamp: number) {
+export function getSeasonNumber (timestamp: number): number {
   const arrSeasons = Object.keys(seasons).map(k => Number(k))
   arrSeasons.push(timestamp)
   arrSeasons.sort()
@@ -38,11 +38,11 @@ export function getSeasonNumber (timestamp: number) {
 }
 
 /**
- * Sort array of Roles according to a specific order
- * @param a first role
- * @param b second role
+ * Sort array of Players by roles according to a specific order
+ * @param a first player
+ * @param b second player
  */
-export function sortTeamByRole (a:ParticipantBasic, b:ParticipantBasic) {
+export function sortTeamByRole (a: ParticipantBasic | ParticipantDetails, b: ParticipantBasic | ParticipantDetails) {
   const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }

@@ -2,7 +2,7 @@ import { Model } from '@ioc:Mongodb/Model'
 import { Champion, ParticipantDetails } from 'App/Models/Match'
 
 export interface DetailedMatchModel {
-  gameId: string,
+  gameId: number,
   season: number,
   blueTeam: Team,
   redTeam: Team,
@@ -26,10 +26,10 @@ interface Team {
   towers: number
 }
 
-interface Ban {
-  championID: number,
+export interface Ban {
+  championId: number,
   pickTurn: number,
-  champion: Champion
+  champion: Champion<null, null>
 }
 
 interface TeamStats {
@@ -45,7 +45,7 @@ interface TeamStats {
 export default class DetailedMatch extends Model implements DetailedMatchModel {
   public static collectionName = 'detailed_matches'
 
-  public gameId: string
+  public gameId: number
   public season: number
   public blueTeam: Team
   public redTeam: Team

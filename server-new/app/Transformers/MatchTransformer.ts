@@ -1,7 +1,7 @@
 import { getSeasonNumber, queuesWithRole, sortTeamByRole, supportItems } from 'App/helpers'
 import Jax from 'App/Services/Jax'
 import { MatchDto, ParticipantDto, ParticipantTimelineDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
-import { Item, ParticipantBasic, ParticipantDetails, PercentStats, Stats } from 'App/Models/Match'
+import { Item, ParticipantBasic, ParticipantDetails, PercentStats, Stats, SummonerSpell } from 'App/Models/Match'
 import RoleIdentificationService from 'App/Services/RoleIdentiticationService'
 
 export interface PlayerRole {
@@ -17,7 +17,7 @@ export default abstract class MatchTransformer {
   protected perkstyles: any
   protected summonerSpells: any
   protected championRoles: any
-  protected sortTeamByRole: (a: ParticipantBasic, b: ParticipantBasic) => number
+  protected sortTeamByRole: (a: ParticipantBasic | ParticipantDetails, b: ParticipantBasic | ParticipantDetails) => number
   /**
    * Get global Context with CDragon Data
    */
@@ -239,7 +239,11 @@ export default abstract class MatchTransformer {
    * @param champs 5 champions + smite from the team
    * @param playerData data of the searched player, only for basic matches 
    */
-  public updateTeamRoles (team: ParticipantBasic[], champs: PlayerRole[], playerData?: ParticipantDetails) {
+  public updateTeamRoles (
+    team: ParticipantBasic[] | ParticipantDetails[],
+    champs: PlayerRole[],
+    playerData?: ParticipantDetails
+  ) {
     // const actualRoles = [...new Set(team.map(p => p.role))]
     // if (actualRoles.length === 5) {
     //   return
@@ -265,8 +269,8 @@ export default abstract class MatchTransformer {
    */
   public getMatchRoles (
     match: MatchDto,
-    allyTeam: ParticipantBasic[],
-    enemyTeam: ParticipantBasic[],
+    allyTeam: ParticipantBasic[] | ParticipantDetails[],
+    enemyTeam: ParticipantBasic[] | ParticipantDetails[],
     allyTeamId = 100,
     playerData?: ParticipantDetails
   ) {
@@ -297,7 +301,7 @@ export default abstract class MatchTransformer {
    * Get Summoner Spell Data from CDragon
    * @param id of the summonerSpell
    */
-  public getSummonerSpell (id: number) {
+  public getSummonerSpell (id: number): SummonerSpell | null {
     if (id === 0) {
       return null
     }
