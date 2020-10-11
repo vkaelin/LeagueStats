@@ -29,10 +29,10 @@ interface Team {
 export interface Ban {
   championId: number,
   pickTurn: number,
-  champion: Champion<null, null>
+  champion: Champion<null | number, null | string>
 }
 
-interface TeamStats {
+export interface TeamStats {
   kills: number,
   deaths: number,
   assists: number,

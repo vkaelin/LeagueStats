@@ -1,20 +1,30 @@
 import Redis from '@ioc:Adonis/Addons/Redis'
 import got from 'got/dist/source'
 
+export interface ChampionsPlayRate {
+  [champion: string]: {
+    TOP: number,
+    JUNGLE: number,
+    MIDDLE: number,
+    BOTTOM: number,
+    UTILITY: number,
+  }
+}
+
 export interface FinalRoleComposition {
-  'TOP'?: number,
-  'JUNGLE'?: number,
-  'MIDDLE'?: number,
-  'BOTTOM'?: number,
-  'SUPPORT'?: number,
+  TOP?: number,
+  JUNGLE?: number,
+  MIDDLE?: number,
+  BOTTOM?: number,
+  SUPPORT?: number,
 }
 
 export interface RoleComposition {
-  'TOP'?: number,
-  'JUNGLE'?: number,
-  'MIDDLE'?: number,
-  'BOTTOM'?: number,
-  'UTILITY'?: number,
+  TOP?: number,
+  JUNGLE?: number,
+  MIDDLE?: number,
+  BOTTOM?: number,
+  UTILITY?: number,
 }
 
 export interface ChampionComposition {
@@ -153,7 +163,7 @@ class RoleIdentificationService {
   /**
    * Get the CDN data of the champion playrates by role
    */
-  public async pullData () {
+  public async pullData (): Promise<ChampionsPlayRate> {
     const url = 'http://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/championrates.json'
 
     // Check if cached

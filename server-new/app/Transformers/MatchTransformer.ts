@@ -2,8 +2,9 @@ import { getSeasonNumber, queuesWithRole, sortTeamByRole, supportItems } from 'A
 import Jax from 'App/Services/Jax'
 import { MatchDto, ParticipantDto, ParticipantTimelineDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
 import { Champion, Item, ParticipantBasic, ParticipantDetails, PercentStats, Stats, SummonerSpell } from 'App/Models/Match'
-import RoleIdentificationService from 'App/Services/RoleIdentiticationService'
+import RoleIdentificationService, { ChampionsPlayRate } from 'App/Services/RoleIdentiticationService'
 import { ChampionDTO, ItemDTO, PerkDTO, PerkStyleDTO, SummonerSpellDTO } from 'App/Services/Jax/src/Endpoints/CDragonEndpoint'
+import { TeamStats } from 'App/Models/DetailedMatch'
 
 export interface PlayerRole {
   champion: number,
@@ -17,7 +18,7 @@ export default abstract class MatchTransformer {
   protected perks: PerkDTO[]
   protected perkstyles: PerkStyleDTO[]
   protected summonerSpells: SummonerSpellDTO[]
-  protected championRoles: any
+  protected championRoles: ChampionsPlayRate
   protected sortTeamByRole: (a: ParticipantBasic | ParticipantDetails, b: ParticipantBasic | ParticipantDetails) => number
   /**
    * Get global Context with CDragon Data
@@ -35,7 +36,7 @@ export default abstract class MatchTransformer {
     this.perks = perks
     this.perkstyles = perkstyles.styles
     this.summonerSpells = summonerSpells
-    this.championRoles = championRoles
+    this.championRoles = championRoles as ChampionsPlayRate
     this.sortTeamByRole = sortTeamByRole
   }
 
@@ -78,7 +79,7 @@ export default abstract class MatchTransformer {
    * @param detailed : detailed or not stats 
    * @param teamStats : if detailed, the teamStats argument is mandatory
    */
-  public getPlayerData (match: MatchDto, player: ParticipantDto, detailed: boolean, teamStats: any = {}) {
+  public getPlayerData (match: MatchDto, player: ParticipantDto, detailed: boolean, teamStats?: TeamStats) {
     const identity = match.participantIdentities.find(p => p.participantId === player.participantId)
     const name = identity!.player.summonerName
     const champion = this.getChampion(player.championId)
@@ -112,6 +113,7 @@ export default abstract class MatchTransformer {
     // Percent stats / Per minute stats : only for detailed match
     let percentStats: PercentStats
     if (detailed) {
+      teamStats = teamStats!
       percentStats = {
         minions: +(stats.minions / (match.gameDuration / 60)).toFixed(2),
         vision: +(stats.vision / (match.gameDuration / 60)).toFixed(2),

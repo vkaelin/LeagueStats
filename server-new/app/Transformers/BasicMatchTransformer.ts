@@ -27,8 +27,8 @@ class BasicMatchTransformer extends MatchTransformer {
     const playerData = super.getPlayerData(match, player, false)
 
     // Teams data
-    const allyTeam:ParticipantBasic[] = []
-    const enemyTeam:ParticipantBasic[] = []
+    const allyTeam: ParticipantBasic[] = []
+    const enemyTeam: ParticipantBasic[] = []
     for (let summoner of match.participantIdentities) {
       const allData = match.participants[summoner.participantId - 1]
       const playerInfos = {
@@ -68,7 +68,7 @@ class BasicMatchTransformer extends MatchTransformer {
   public async transform (matches: MatchDto[], { puuid, accountId }: { puuid: string, accountId: string }) {
     await super.getContext()
 
-    const finalMatches:MatchModel[] = []
+    const finalMatches: MatchModel[] = []
     matches.forEach((match, index) => {
       finalMatches[index] = this.transformOneMatch(match, puuid, accountId)
     })

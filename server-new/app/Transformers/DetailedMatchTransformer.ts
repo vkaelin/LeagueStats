@@ -1,5 +1,4 @@
 import { Ban, DetailedMatchModel } from 'App/Models/DetailedMatch'
-import { Champion } from 'App/Models/Match'
 import { MatchDto, TeamStatsDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
 import MatchTransformer from './MatchTransformer'
 
@@ -37,9 +36,7 @@ class DetailedMatchTransformer extends MatchTransformer {
     const bans: Ban[] = []
     if (team.bans) {
       for (const ban of team.bans) {
-        const champion: Champion<null, null> = (ban.championId === -1)
-          ? { id: null, name: null }
-          : super.getChampion(ban.championId)
+        const champion = (ban.championId === -1) ? { id: null, name: null } : super.getChampion(ban.championId)
 
         bans.push({
           ...ban,
