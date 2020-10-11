@@ -1,8 +1,9 @@
 import { getSeasonNumber, queuesWithRole, sortTeamByRole, supportItems } from 'App/helpers'
 import Jax from 'App/Services/Jax'
 import { MatchDto, ParticipantDto, ParticipantTimelineDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
-import { Item, ParticipantBasic, ParticipantDetails, PercentStats, Stats, SummonerSpell } from 'App/Models/Match'
+import { Champion, Item, ParticipantBasic, ParticipantDetails, PercentStats, Stats, SummonerSpell } from 'App/Models/Match'
 import RoleIdentificationService from 'App/Services/RoleIdentiticationService'
+import { ChampionDTO, ItemDTO, PerkDTO, PerkStyleDTO, SummonerSpellDTO } from 'App/Services/Jax/src/Endpoints/CDragonEndpoint'
 
 export interface PlayerRole {
   champion: number,
@@ -11,11 +12,11 @@ export interface PlayerRole {
 }
 
 export default abstract class MatchTransformer {
-  protected champions: any
-  protected items: any
-  protected perks: any
-  protected perkstyles: any
-  protected summonerSpells: any
+  protected champions: ChampionDTO[]
+  protected items: ItemDTO[]
+  protected perks: PerkDTO[]
+  protected perkstyles: PerkStyleDTO[]
+  protected summonerSpells: SummonerSpellDTO[]
   protected championRoles: any
   protected sortTeamByRole: (a: ParticipantBasic | ParticipantDetails, b: ParticipantBasic | ParticipantDetails) => number
   /**
@@ -42,12 +43,18 @@ export default abstract class MatchTransformer {
    * Get champion specific data
    * @param id of the champion
    */
-  public getChampion (id: number) {
-    const champion = { ...this.champions.find((c: any) => c.id === id) }
-    champion.icon = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/'
-      + `${champion.squarePortraitPath.split('/assets/')[1].toLowerCase()}`
-    delete champion.squarePortraitPath
-    return champion
+  public getChampion (id: number): Champion {
+    const originalChampionData = this.champions.find(c => c.id === id)
+    const icon = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/'
+      + originalChampionData!.squarePortraitPath.split('/assets/')[1].toLowerCase()
+
+    return {
+      icon,
+      id: originalChampionData!.id,
+      name: originalChampionData!.name,
+      alias: originalChampionData!.alias,
+      roles: originalChampionData!.roles,
+    }
   }
 
   /**
@@ -149,14 +156,14 @@ export default abstract class MatchTransformer {
         continue
       }
 
-      const item = this.items.find((i: any) => i.id === id)
-      const itemUrl = item.iconPath.split('/assets/')[1].toLowerCase()
+      const item = this.items.find(i => i.id === id)
+      const itemUrl = item!.iconPath.split('/assets/')[1].toLowerCase()
 
       items.push({
         image: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${itemUrl}`,
-        name: item.name,
-        description: item.description,
-        price: item.priceTotal,
+        name: item!.name,
+        description: item!.description,
+        price: item!.priceTotal,
       })
     }
 
@@ -189,11 +196,11 @@ export default abstract class MatchTransformer {
    * @param perkSubStyle secondary perks category
    */
   public getPerksImages (perk0: number, perkSubStyle: number) {
-    const firstRune = this.perks.find((p: any) => p.id === perk0)
-    const firstRuneUrl = firstRune.iconPath.split('/assets/')[1].toLowerCase()
+    const firstRune = this.perks.find(p => p.id === perk0)
+    const firstRuneUrl = firstRune!.iconPath.split('/assets/')[1].toLowerCase()
     const primaryRune = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${firstRuneUrl}`
 
-    const secondRuneStyle = this.perkstyles.find((p: any) => p.id === perkSubStyle)
+    const secondRuneStyle = this.perkstyles.find(p => p.id === perkSubStyle)
 
     const secondRuneStyleUrl = secondRuneStyle ? secondRuneStyle.iconPath.split('/assets/')[1].toLowerCase() : null
     const secondaryRune = secondRuneStyleUrl ?
@@ -305,11 +312,11 @@ export default abstract class MatchTransformer {
     if (id === 0) {
       return null
     }
-    const spell = this.summonerSpells.find((s: any) => s.id === id)
-    const spellName = spell.iconPath.split('/assets/')[1].toLowerCase()
+    const spell = this.summonerSpells.find(s => s.id === id)
+    const spellName = spell!.iconPath.split('/assets/')[1].toLowerCase()
     return {
-      name: spell.name,
-      description: spell.description,
+      name: spell!.name,
+      description: spell!.description,
       icon: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${spellName}`,
     }
   }

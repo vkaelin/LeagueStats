@@ -24,6 +24,7 @@ export default class CDragonRequest {
   // https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json
   // https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perkstyles.json
   // https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json
+  // https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/summoner-spells.json
 
   public async execute () {
     const url = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/${this.endpoint}`
