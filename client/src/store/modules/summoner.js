@@ -115,32 +115,35 @@ export const actions = {
     commit('BASIC_REQUEST')
     try {
       const resp = await axios(({ url: 'summoner/basic', data: { summoner, region: regionId }, method: 'POST' }))
-      if (resp.data) {
-        console.log(`---SUMMONER INFOS ${resp.data.account.name}---`)
-        console.log(resp.data)
-        const infos = createBasicSummonerData(resp.data)
-        commit('SUMMONER_FOUND', infos)
-
-        // Add summoner to recent searches
-        dispatch('settings/addRecentSearch', {
-          name: infos.account.name,
-          icon: infos.account.profileIconId,
-          region,
-        }, { root: true })
-      } else {
-        commit('SUMMONER_NOT_FOUND')
-
+      if (!resp.data) {
         dispatch('notification/add', {
           type: 'error',
           message: 'Summoner not found.'
         }, { root: true })
-        console.log('Summoner not found - store')
+        return commit('SUMMONER_NOT_FOUND')
       }
+
+      console.log(`---SUMMONER INFOS ${resp.data.account.name}---`)
+      console.log(resp.data)
+      const infos = createBasicSummonerData(resp.data)
+      commit('SUMMONER_FOUND', infos)
+
+      // Add summoner to recent searches
+      dispatch('settings/addRecentSearch', {
+        name: infos.account.name,
+        icon: infos.account.profileIconId,
+        region,
+      }, { root: true })
     } catch (error) {
+      if (error.response && error.response.status === 422) {
+        dispatch('notification/add', {
+          type: 'error',
+          message: 'Summoner not found.'
+        }, { root: true })
+      }
       if (error.message !== 'Summoner changed') {
         commit('SUMMONER_NOT_FOUND')
       }
-      console.log(error)
     }
   },
   championsNotLoaded({ commit }) {
