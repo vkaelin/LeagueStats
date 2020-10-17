@@ -115,32 +115,35 @@ export const actions = {
     commit('BASIC_REQUEST')
     try {
       const resp = await axios(({ url: 'summoner/basic', data: { summoner, region: regionId }, method: 'POST' }))
-      if (resp.data) {
-        console.log(`---SUMMONER INFOS ${resp.data.account.name}---`)
-        console.log(resp.data)
-        const infos = createBasicSummonerData(resp.data)
-        commit('SUMMONER_FOUND', infos)
-
-        // Add summoner to recent searches
-        dispatch('settings/addRecentSearch', {
-          name: infos.account.name,
-          icon: infos.account.profileIconId,
-          region,
-        }, { root: true })
-      } else {
-        commit('SUMMONER_NOT_FOUND')
-
+      if (!resp.data) {
         dispatch('notification/add', {
           type: 'error',
           message: 'Summoner not found.'
         }, { root: true })
-        console.log('Summoner not found - store')
+        return commit('SUMMONER_NOT_FOUND')
       }
+
+      console.log(`---SUMMONER INFOS ${resp.data.account.name}---`)
+      console.log(resp.data)
+      const infos = createBasicSummonerData(resp.data)
+      commit('SUMMONER_FOUND', infos)
+
+      // Add summoner to recent searches
+      dispatch('settings/addRecentSearch', {
+        name: infos.account.name,
+        icon: infos.account.profileIconId,
+        region,
+      }, { root: true })
     } catch (error) {
+      if (error.response && error.response.status === 422) {
+        dispatch('notification/add', {
+          type: 'error',
+          message: 'Summoner not found.'
+        }, { root: true })
+      }
       if (error.message !== 'Summoner changed') {
         commit('SUMMONER_NOT_FOUND')
       }
-      console.log(error)
     }
   },
   championsNotLoaded({ commit }) {
@@ -155,9 +158,14 @@ export const actions = {
   },
   async liveMatchRequest({ commit, rootState }) {
     commit('LIVE_LOADING')
-    const region = rootState.regionsList[rootState.settings.region]
-
-    const resp = await axios(({ url: 'summoner/live', data: { account: state.basic.account, region }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({
+      url: 'summoner/live',
+      data: {
+        id: state.basic.account.id,
+        region: rootState.regionsList[rootState.settings.region]
+      },
+      method: 'POST'
+    })).catch(() => { })
     console.log('---LIVE---')
     console.log(resp.data)
 
@@ -167,20 +175,36 @@ export const actions = {
       commit('SUMMONER_NOT_PLAYING')
     }
   },
-  async moreMatches({ commit }) {
+  async moreMatches({ commit, rootState }) {
     commit('MATCHES_LOADING')
 
-    const account = state.basic.account
     const gameIds = state.basic.matchList.slice(state.overview.matchIndex, state.overview.matchIndex + 10).map(({ gameId }) => gameId)
 
-    const resp = await axios(({ url: 'match', data: { account, gameIds }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({
+      url: 'match',
+      data: {
+        puuid: state.basic.account.puuid,
+        accountId: state.basic.account.accountId,
+        region: rootState.regionsList[rootState.settings.region],
+        gameIds
+      },
+      method: 'POST'
+    })).catch(() => { })
     console.log('---MATCHES INFOS---')
     console.log(resp.data)
     const newMatches = createMatchData(resp.data.matches)
     commit('MATCHES_FOUND', { newMatches, stats: resp.data.stats })
   },
-  async overviewRequest({ commit }) {
-    const resp = await axios(({ url: 'summoner/overview', data: { account: state.basic.account }, method: 'POST' })).catch(() => { })
+  async overviewRequest({ commit, rootState }) {
+    const resp = await axios(({
+      url: 'summoner/overview',
+      data: {
+        puuid: state.basic.account.puuid,
+        accountId: state.basic.account.accountId,
+        region: rootState.regionsList[rootState.settings.region],
+      },
+      method: 'POST'
+    })).catch(() => { })
     console.log('---OVERVIEW---')
     console.log(resp.data)
     resp.data.matches = createMatchData(resp.data.matchesDetails)

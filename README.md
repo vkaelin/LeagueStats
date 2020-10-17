@@ -18,10 +18,9 @@ Here is an [example](https://leaguestats.gg/summoner/euw/Alderiate) of stats for
 ## Installation
 
 Development environment requirements :
-- [Node.js](https://nodejs.org/en/download/)
-- [MongoDB](https://www.mongodb.com/download-center/community)
+- [Node.js](https://nodejs.org/en/download/) >= 12.0.0
+- [MongoDB](https://www.mongodb.com/download-center/community) >= 4.4
 - [Redis](https://redis.io/download)
-- [Adonis CLI](https://github.com/adonisjs/adonis-cli)
 
 Setting up your development environment on your local machine :
 ```bash
@@ -33,26 +32,32 @@ Setting up your development environment on your local machine :
 
 > cd leaguestats/server
 > npm install
-> cp .env.example .env
-> adonis migration:run
+> cp .env.example .env # edit the values
+> node ace mongodb:migration:run # your MongoDB installation needs to by a Replica Set and not a Standalone
 ```
 
 ## Useful commands
 Running the app :
 ```bash
 > cd client
-> npm run serve
+> npm run dev
 
 # And
 
 > cd server
-> adonis serve --dev
+> npm run dev
 ```
 
-Building the app :
+Deploying the app :
 ```bash
 > cd client
 > npm run build
+
+# And
+
+> cd server
+> npm run build
+> node build/server.js
 ```
 
 ## Contributing

@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "plugin:adonis/typescriptApp"
+  ],
+  "rules": {
+    "max-len": [
+      "error",
+      {
+        "code": 130
+      }
+    ]
+  }
+}
