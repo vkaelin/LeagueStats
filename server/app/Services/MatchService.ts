@@ -1,7 +1,7 @@
 import Jax from './Jax'
 import Logger from '@ioc:Adonis/Core/Logger'
 import { getSeasonNumber } from 'App/helpers'
-import { MatchReferenceDto } from './Jax/src/Endpoints/MatchListEndpoint'
+import { MatchReferenceDto } from './Jax/src/Endpoints/MatchlistEndpoint'
 import { SummonerDTO } from './Jax/src/Endpoints/SummonerEndpoint'
 import { SummonerModel } from 'App/Models/Summoner'
 import Match, { MatchModel } from 'App/Models/Match'
