@@ -56,24 +56,24 @@ export default class JaxRequest {
         await Redis.setex(url, this.cacheTime, resp)
       }
       return JSON.parse(resp)
-    } catch ({ status, ...rest }) {
+    } catch ({ statusCode , ...rest }) {
       this.retries--
 
-      if (status !== 500 && status !== 503 && status !== 504) { //
+      if (statusCode !== 500 && statusCode !== 503 && statusCode !== 504) { //
         // Don't log 404 when summoner isn't playing or the summoner doesn't exist
         // Or if summoner has no MatchList
         if (!this.endpoint.includes('spectator/v4/active-games/by-summoner') &&
           !this.endpoint.includes('summoner/v4/summoners/by-name') &&
           !this.endpoint.includes('match/v4/matchlists/by-account')
         ) {
-          Logger.error(`JaxRequest Error  ${status}: `, rest)
+          Logger.error(`JaxRequest Error  ${statusCode}: `, rest)
         }
 
         return
       }
 
       console.log('====================================')
-      console.log(status)
+      console.log(statusCode)
       console.log('====================================')
 
       if (this.retries > 0) {
