@@ -19,29 +19,8 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import mongodb from '@ioc:Mongodb/Database'
-import Jax from 'App/Services/Jax'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
-
-Route.get('mongo', async () => {
-  const match = await (await mongodb.connection().collection('matches')).findOne({})
-  return { test: match }
-})
-
-Route.get('jax', async () => {
-  const summoner = await Jax.Summoner.summonerName('LeagueStats GG', 'euw1')
-  return { player: summoner }
-})
-
-Route.get('test', async () => {
-  const summonersCollection = await mongodb.connection().collection('summoners')
-  const summonerDB = await summonersCollection.findOne({ puuid: 1234 })
-
-  return { player: summonerDB }
-})
+Route.get('/', async () => ({ hi: 'Hello World from LeagueStats API', uptime: process.uptime() }))
 
 Route.post('/summoner/basic', 'SummonersController.basic')
 Route.post('/summoner/overview', 'SummonersController.overview')
