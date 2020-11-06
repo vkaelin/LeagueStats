@@ -175,10 +175,13 @@ export const actions = {
       commit('SUMMONER_NOT_PLAYING')
     }
   },
-  async moreMatches({ commit, rootState }) {
+  async moreMatches({ commit, getters, rootState }) {
     commit('MATCHES_LOADING')
 
-    const gameIds = state.basic.matchList.slice(state.overview.matchIndex, state.overview.matchIndex + 10).map(({ gameId }) => gameId)
+    const gameIds = state.basic.matchList
+      .filter(match => !getters.regionFilterApplied || match.seasonMatch === state.basic.currentSeason)
+      .slice(state.overview.matchIndex, state.overview.matchIndex + 10)
+      .map(({ gameId }) => gameId)
 
     const resp = await axios(({
       url: 'match',
@@ -231,6 +234,7 @@ export const getters = {
   moreMatchesToFetch: state => state.overview.matchIndex < state.basic.matchList.length,
   overviewLoaded: state => state.overview.loaded,
   playing: state => state.live.playing,
+  regionFilterApplied: state => !!state.basic.currentSeason,
   summonerFound: state => state.basic.status === 'found',
   summonerNotFound: state => state.basic.status === 'error',
   summonerLoading: state => state.basic.status === 'loading',
