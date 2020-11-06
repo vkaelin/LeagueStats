@@ -5,8 +5,8 @@ const config: MongodbConfig = {
   default: 'mongodb',
   connections: {
     mongodb: {
-      url: Env.getOrFail('MONGODB_URL') as string,
-      database: Env.getOrFail('MONGODB_DATABASE') as string,
+      url: Env.get('MONGODB_URL') as string,
+      database: Env.get('MONGODB_DATABASE') as string,
     },
   },
 }

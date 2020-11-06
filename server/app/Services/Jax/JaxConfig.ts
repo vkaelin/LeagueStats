@@ -12,7 +12,7 @@ export interface JaxConfigRequestOptions {
 }
 
 export const JAX_CONFIG: JaxConfig = {
-  key: Env.getOrFail('API_KEY') as string,
+  key: Env.get('API_KEY') as string,
   region: 'euw1',
   requestOptions: {
     retriesBeforeAbort: 3,

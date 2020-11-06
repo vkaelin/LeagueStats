@@ -27,7 +27,7 @@ type HttpConfig = RequestConfig & ResponseConfig
 | be decrypted.
 |
 */
-export const appKey: string = Env.getOrFail('APP_KEY') as string
+export const appKey: string = Env.get('APP_KEY') as string
 
 /*
 |--------------------------------------------------------------------------
