@@ -18,6 +18,7 @@ export const queuesWithRole = [
 export const seasons = {
   0: 9,
   1578628800000: 10,
+  1604970061000: 10.5, // Preseason 11
 }
 
 /**
