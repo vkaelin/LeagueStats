@@ -159,13 +159,18 @@ export default abstract class MatchTransformer {
       }
 
       const item = this.items.find(i => i.id === id)
-      const itemUrl = item!.iconPath.split('/assets/')[1].toLowerCase()
+      // TODO: get deleted item from old patch CDragon JSON instead of null
+      if (!item) {
+        items.push(null)
+        continue
+      }
 
+      const itemUrl = item.iconPath.split('/assets/')[1].toLowerCase()
       items.push({
         image: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${itemUrl}`,
-        name: item!.name,
-        description: item!.description,
-        price: item!.priceTotal,
+        name: item.name,
+        description: item.description,
+        price: item.priceTotal,
       })
     }
 
