@@ -178,8 +178,7 @@ export const actions = {
   async moreMatches({ commit, getters, rootState }) {
     commit('MATCHES_LOADING')
 
-    const gameIds = state.basic.matchList
-      .filter(match => !getters.regionFilterApplied || match.seasonMatch === state.basic.currentSeason)
+    const gameIds = getters.filteredMatchList
       .slice(state.overview.matchIndex, state.overview.matchIndex + 10)
       .map(({ gameId }) => gameId)
 
@@ -230,8 +229,14 @@ export const actions = {
 }
 
 export const getters = {
+  filteredMatchList: (state, getters) => {
+    return state.basic.matchList
+      .filter(match => !getters.regionFilterApplied || match.seasonMatch === state.basic.currentSeason)
+  },
   matchesLoading: state => state.overview.matchesLoading,
-  moreMatchesToFetch: state => state.overview.matchIndex < state.basic.matchList.length,
+  moreMatchesToFetch: (state, getters) => {
+    return state.overview.matchIndex < getters.filteredMatchList.length
+  },
   overviewLoaded: state => state.overview.loaded,
   playing: state => state.live.playing,
   regionFilterApplied: state => !!state.basic.currentSeason,
