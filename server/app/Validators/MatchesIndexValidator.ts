@@ -31,6 +31,7 @@ export default class MatchesIndexValidator {
     gameIds: schema.array().members(
       schema.number()
     ),
+    season: schema.number.optional(),
   })
 
   /**

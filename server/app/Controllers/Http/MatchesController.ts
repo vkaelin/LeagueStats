@@ -35,7 +35,7 @@ export default class MatchesController {
    */
   public async index ({ request, response }: HttpContextContract) {
     console.log('More Matches Request')
-    const { puuid, accountId, region, gameIds } = await request.validate(MatchesIndexValidator)
+    const { puuid, accountId, region, gameIds, season } = await request.validate(MatchesIndexValidator)
 
     const summonerDB = await Summoner.findOne({ puuid })
     if (!summonerDB) {
@@ -45,7 +45,7 @@ export default class MatchesController {
 
     await summonerDB.save()
 
-    const stats = await StatsService.getSummonerStats(puuid)
+    const stats = await StatsService.getSummonerStats(puuid, season)
 
     return response.json({
       matches,
