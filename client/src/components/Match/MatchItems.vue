@@ -21,7 +21,7 @@
             class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
           ></div>
           <div class="ml-2 leading-none">
-            <div class="text-base">{{ item.name }}</div>
+            <div class="text-base">{{ itemName(item.name) }}</div>
             <div class="mt-1">
               <span class="text-blue-200">Price:</span>
               <span class="ml-1 text-sm font-semibold text-yellow-500">{{
@@ -68,6 +68,10 @@ export default {
       const originalUrl = item.image
       const newUrl = originalUrl.includes('/global/default/assets/items/') ? originalUrl : originalUrl.replace('latest', '10.22')
       return `url('${newUrl}')`
+    },
+    itemName(name) {
+      // Remove placeholders in item names (e.g.: for Ornn items)
+      return name.replace(/%[^%]*%/, '')
     }
   }
 }
@@ -80,28 +84,40 @@ export default {
 }
 
 .item-description >>> stats {
-  color: #fff;
-  line-height: 1.25;
+  @apply text-white leading-tight;
 }
 
 .item-description >>> br + br {
-  display: none;
+  @apply hidden;
 }
 
 .item-description >>> stats br {
-  display: block;
+  @apply block;
+}
+
+.item-description >>> li {
+  @apply block mt-2;
+}
+
+.item-description >>> passive {
+  @apply text-white font-normal;
+}
+
+.item-description >>> active {
+  @apply inline-block text-white font-bold mt-2;
 }
 
 .item-description >>> unique,
-.item-description >>> passive,
-.item-description >>> active {
-  color: #fff;
-  font-weight: bold;
-  display: block;
-  margin-top: 0.5rem;
+.item-description >>> li > passive:first-child,
+.item-description >>> rarityMythic {
+  @apply text-white font-bold block mt-2;
 }
 
 .item-description >>> font {
-  color: #63b3ed;
+  @apply text-blue-400;
+}
+
+.item-description >>> rules {
+  @apply block mt-2 text-blue-400 italic;
 }
 </style>
