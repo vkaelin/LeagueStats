@@ -5,14 +5,26 @@
   >
     <Tooltip v-for="(item, index) in items" :key="index">
       <template v-slot:trigger>
-        <div
-          :style="{ backgroundImage: itemLink(item) }"
-          :class="[
-            oneRow ? 'ml-2px w-6 h-6' : 'ml-1 w-8 h-8',
-            { 'cursor-pointer': item !== null },
-          ]"
-          class="bg-center bg-cover rounded-md bg-blue-1000"
-        ></div>
+        <div class="relative">
+          <div
+            :style="{ backgroundImage: itemLink(item) }"
+            :class="[
+              oneRow ? 'ml-2px w-6 h-6' : 'ml-1 w-8 h-8',
+              { 'cursor-pointer': item !== null },
+            ]"
+            class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000"
+          >
+            <div
+              v-if="isMythic(item)"
+              class="w-full h-full rounded-md mythic-inside"
+            ></div>
+          </div>
+          <div
+            v-if="isMythic(item)"
+            class="absolute rounded-md mythic"
+            :class="oneRow ? 'mythic-sm' : 'mythic-xl'"
+          ></div>
+        </div>
       </template>
       <template v-if="item !== null" v-slot:default>
         <div class="flex max-w-md p-2 text-xs text-left text-white select-none">
@@ -59,6 +71,9 @@ export default {
   },
 
   methods: {
+    isMythic(item) {
+      return item && item.image.includes('t4')
+    },
     itemLink(item) {
       if (!item) {
         return null
@@ -78,6 +93,33 @@ export default {
 </script>
 
 <style scoped>
+.mythic {
+  background: linear-gradient(
+    195deg,
+    rgb(255, 197, 47) 0%,
+    rgb(255, 231, 146) 50%,
+    rgb(214, 128, 0) 100%
+  );
+}
+
+.mythic-sm {
+  top: -1px;
+  left: 1px;
+  width: calc(1.5rem + 2px);
+  height: calc(1.5rem + 2px);
+}
+
+.mythic-xl {
+  top: -2px;
+  left: 2px;
+  width: calc(2rem + 4px);
+  height: calc(2rem + 4px);
+}
+
+.mythic-inside {
+  box-shadow: rgb(26, 32, 44) 0px 0px 0px 1px inset;
+}
+
 .items-2-rows {
   width: 7rem;
   height: 4.5rem;
