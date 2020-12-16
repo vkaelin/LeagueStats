@@ -160,6 +160,10 @@ export default {
 }
 
 .item-description >>> rules {
-  @apply block mt-2 text-blue-400 italic;
+  @apply inline-block mt-2 text-blue-400 italic;
+}
+
+.item-description >>> rules active {
+  @apply inline text-white font-normal;
 }
 </style>
