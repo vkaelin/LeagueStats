@@ -228,7 +228,7 @@
 
 <script>
 import { colors } from '@/data/data.js'
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import DotsLoader from '@/components/Common/DotsLoader.vue'
 import Tooltip from '@/components/Common/Tooltip.vue'
 import MatchItems from '@/components/Match/MatchItems.vue'
@@ -300,6 +300,14 @@ export default {
     roundStats(value) {
       return this.percentSettings ? value : this.$options.filters.kilo(value)
     },
+    selectRunes(player) {
+      const runes = {
+        primary: player.primaryRune,
+        secondary: player.secondaryRune
+      }
+      this.displayOrHideRunes(runes)
+    },
+    ...mapActions('cdragon', ['displayOrHideRunes']),
   }
 }
 </script>
