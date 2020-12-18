@@ -29,7 +29,7 @@
       >
         <div
           v-if="runesOpen"
-          class="relative overflow-hidden rounded-md shadow-lg"
+          class="relative overflow-hidden bg-gray-900 rounded-md shadow-lg"
           style="width: 800px; height: 500px"
         >
           <LazyBackground
@@ -38,8 +38,8 @@
             "
             image-class="absolute inset-0"
             more-backgrounds="linear-gradient(rgba(26, 32, 44, 0.6), rgba(26, 32, 44, 0.8)),"
-            style="filter: blur(2px)"
             transition-name="fade-fast"
+            style="filter: blur(2px)"
           >
           </LazyBackground>
           <div class="relative flex items-start h-full px-4 py-2">
