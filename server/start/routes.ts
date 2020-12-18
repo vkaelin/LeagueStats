@@ -22,6 +22,8 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async () => ({ hi: 'Hello World from LeagueStats API', uptime: process.uptime() }))
 
+Route.get('/cdragon/runes', 'CDragonController.runes')
+
 Route.post('/summoner/basic', 'SummonersController.basic')
 Route.post('/summoner/overview', 'SummonersController.overview')
 Route.post('/summoner/champions', 'SummonersController.champions')

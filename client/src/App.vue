@@ -2,6 +2,7 @@
   <div id="app" class="min-h-screen font-sans antialiased bg-blue-900">
     <SVGContainer />
     <NotificationsContainer />
+    <RunesContainer />
     <component :is="layout">
       <router-view />
     </component>
@@ -13,6 +14,7 @@ import { mapActions } from 'vuex'
 import Default from '@/layouts/Default.vue'
 import Home from '@/layouts/Home.vue'
 import NotificationsContainer from '@/components/Global/NotificationsContainer.vue'
+import RunesContainer from '@/components/Match/Runes/RunesContainer.vue'
 import SVGContainer from '@/components/Global/SVGContainer.vue'
 
 export default {
@@ -20,13 +22,14 @@ export default {
     Default,
     Home,
     NotificationsContainer,
-    SVGContainer
+    RunesContainer,
+    SVGContainer,
   },
 
   computed: {
     layout() {
-      return (this.$route.meta.layout || 'Default')
-    }
+      return this.$route.meta.layout || 'Default'
+    },
   },
 
   created() {
@@ -38,6 +41,6 @@ export default {
 
   methods: {
     ...mapActions('settings', ['updatePercent', 'updateSettings']),
-  }
+  },
 }
 </script>

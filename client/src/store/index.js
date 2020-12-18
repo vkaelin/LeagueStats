@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as cdragon from '@/store/modules/cdragon'
 import * as detailedMatch from '@/store/modules/detailedMatch'
 import * as notification from '@/store/modules/notification'
 import * as settings from '@/store/modules/settings'
@@ -11,6 +12,7 @@ const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
   modules: {
+    cdragon,
     detailedMatch,
     notification,
     settings,

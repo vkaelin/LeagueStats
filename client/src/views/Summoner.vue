@@ -76,7 +76,7 @@ export default {
   computed: {
     ...mapState({
       current: state => state.summoner.live.match,
-      overview: state => state.summoner.overview
+      overview: state => state.summoner.overview,
     }),
     ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'overviewLoaded', 'summonerFound'])
   },
@@ -92,6 +92,8 @@ export default {
 
   created() {
     this.fetchData()
+
+    this.getRunes()
   },
 
   methods: {
@@ -104,6 +106,7 @@ export default {
         this.sliceOverviewMatches(10)
       }
     },
+    ...mapActions('cdragon', ['getRunes']),
     ...mapActions('summoner', ['moreMatches', 'overviewRequest', 'sliceOverviewMatches']),
   },
 

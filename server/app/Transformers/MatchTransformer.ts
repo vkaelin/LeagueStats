@@ -1,10 +1,15 @@
 import { getSeasonNumber, queuesWithRole, sortTeamByRole, supportItems } from 'App/helpers'
 import Jax from 'App/Services/Jax'
-import { MatchDto, ParticipantDto, ParticipantTimelineDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
-import { Champion, Item, ParticipantBasic, ParticipantDetails, PercentStats, Stats, SummonerSpell } from 'App/Models/Match'
+import { Champion, Item, ParticipantBasic, ParticipantDetails, PercentStats, Perks, Stats, SummonerSpell } from 'App/Models/Match'
 import RoleIdentificationService, { ChampionsPlayRate } from 'App/Services/RoleIdentiticationService'
 import { ChampionDTO, ItemDTO, PerkDTO, PerkStyleDTO, SummonerSpellDTO } from 'App/Services/Jax/src/Endpoints/CDragonEndpoint'
 import { TeamStats } from 'App/Models/DetailedMatch'
+import {
+  MatchDto,
+  ParticipantDto,
+  ParticipantStatsDto,
+  ParticipantTimelineDto,
+} from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
 
 export interface PlayerRole {
   champion: number,
@@ -194,7 +199,27 @@ export default abstract class MatchTransformer {
       playerData.percentStats = percentStats!
     }
 
+    playerData.perks = this.getFullPerks(player.stats)
+
     return playerData
+  }
+
+  public getFullPerks (stats: ParticipantStatsDto) {
+    const perks: Perks = {
+      primaryStyle: stats.perkPrimaryStyle,
+      secondaryStyle: stats.perkSubStyle,
+      selected: [],
+    }
+
+    for (let i = 0; i < 6; i++) {
+      perks.selected.push(stats[`perk${i}`])
+    }
+
+    for (let i = 0; i < 3; i++) {
+      perks.selected.push(stats[`statPerk${i}`])
+    }
+
+    return perks
   }
 
   /**

@@ -1,6 +1,6 @@
 <template>
   <table
-    :class="[{'rounded-b-lg overflow-hidden': !allyTeam}, data.result]"
+    :class="[{ 'rounded-b-lg overflow-hidden': !allyTeam }, data.result]"
     class="w-full table-fixed"
   >
     <thead class="leading-none heading-detailed">
@@ -13,7 +13,7 @@
             <span
               :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
               class="pl-2"
-            >{{ allyTeam ? 'Ally' : 'Enemy' }} Team</span>
+            >{{ allyTeam ? "Ally" : "Enemy" }} Team</span>
             <div
               v-if="data.result === 'Win'"
               :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
@@ -29,12 +29,12 @@
         <th class="px-2 py-5 text-sm font-medium w-kda">K</th>
         <th class="px-2 py-5 text-sm font-medium w-kda">D</th>
         <th class="px-2 py-5 text-sm font-medium w-kda">A</th>
-        <th
-          class="px-2 py-5 text-sm font-medium w-minions"
-        >{{ statsFormat === 'stats' ? 'Cs' : 'Cs/m' }}</th>
-        <th
-          class="px-2 py-5 text-sm font-medium w-vision"
-        >{{ statsFormat === 'stats' ? 'Vs' : 'Vs/m' }}</th>
+        <th class="px-2 py-5 text-sm font-medium w-minions">
+          {{ statsFormat === "stats" ? "Cs" : "Cs/m" }}
+        </th>
+        <th class="px-2 py-5 text-sm font-medium w-vision">
+          {{ statsFormat === "stats" ? "Vs" : "Vs/m" }}
+        </th>
         <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">Gold</th>
         <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">
           Dmg
@@ -51,7 +51,10 @@
         <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">KP</th>
       </tr>
     </thead>
-    <tbody :class="{'border-b border-blue-700': allyTeam}" class="leading-none">
+    <tbody
+      :class="{ 'border-b border-blue-700': allyTeam }"
+      class="leading-none"
+    >
       <tr v-for="(player, index) in data.players" :key="player.name + index">
         <td class="py-2 border-r border-blue-700">
           <div class="flex justify-between px-1">
@@ -59,16 +62,24 @@
               <div class="flex items-center">
                 <div
                   v-if="player.role !== 'NONE'"
-                  :style="{backgroundImage: `url(${require('@/assets/img/roles/' + player.role + '.png')})`}"
+                  :style="{
+                    backgroundImage: `url(${require('@/assets/img/roles/' +
+                      player.role +
+                      '.png')})`,
+                  }"
                   class="w-4 h-4 bg-center bg-cover"
                 ></div>
               </div>
               <div
-                :style="{backgroundImage: `url('${player.champion.icon}')`}"
+                :style="{ backgroundImage: `url('${player.champion.icon}')` }"
                 class="relative w-8 h-8 ml-2 bg-center bg-cover rounded-full bg-blue-1000"
               >
                 <div
-                  :class="allyTeam ? 'bg-teal-500 text-teal-100' : 'bg-red-500 text-red-100'"
+                  :class="
+                    allyTeam
+                      ? 'bg-teal-500 text-teal-100'
+                      : 'bg-red-500 text-red-100'
+                  "
                   class="absolute bottom-0 flex items-center justify-center w-4 h-4 rounded-full level-position text-xxs"
                 >
                   <span>{{ player.level }}</span>
@@ -78,20 +89,32 @@
                 <Tooltip>
                   <template v-slot:trigger>
                     <div
-                      :style="{backgroundImage: `url(${player.firstSum ? player.firstSum.icon : null})`}"
-                      :class="{'cursor-pointer': player.firstSum}"
+                      :style="{
+                        backgroundImage: `url(${
+                          player.firstSum ? player.firstSum.icon : null
+                        })`,
+                      }"
+                      :class="{ 'cursor-pointer': player.firstSum }"
                       class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                     ></div>
                   </template>
                   <template v-if="player.firstSum" v-slot:default>
-                    <div class="flex max-w-sm p-2 text-xs text-left text-white select-none">
+                    <div
+                      class="flex max-w-sm p-2 text-xs text-left text-white select-none"
+                    >
                       <div
-                        :style="{backgroundImage: `url('${player.firstSum.icon}')`}"
+                        :style="{
+                          backgroundImage: `url('${player.firstSum.icon}')`,
+                        }"
                         class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
                       ></div>
                       <div class="ml-2 leading-tight">
-                        <div class="text-base leading-none">{{ player.firstSum.name }}</div>
-                        <div class="mt-1 font-light text-blue-200">{{ player.firstSum.description }}</div>
+                        <div class="text-base leading-none">
+                          {{ player.firstSum.name }}
+                        </div>
+                        <div class="mt-1 font-light text-blue-200">
+                          {{ player.firstSum.description }}
+                        </div>
                       </div>
                     </div>
                   </template>
@@ -99,57 +122,111 @@
                 <Tooltip>
                   <template v-slot:trigger>
                     <div
-                      :style="{backgroundImage: `url(${player.secondSum ? player.secondSum.icon : null})`}"
-                      :class="{'cursor-pointer': player.secondSum}"
+                      :style="{
+                        backgroundImage: `url(${
+                          player.secondSum ? player.secondSum.icon : null
+                        })`,
+                      }"
+                      :class="{ 'cursor-pointer': player.secondSum }"
                       class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                     ></div>
                   </template>
                   <template v-if="player.secondSum" v-slot:default>
-                    <div class="flex max-w-sm p-2 text-xs text-left text-white select-none">
+                    <div
+                      class="flex max-w-sm p-2 text-xs text-left text-white select-none"
+                    >
                       <div
-                        :style="{backgroundImage: `url('${player.secondSum.icon}')`}"
+                        :style="{
+                          backgroundImage: `url('${player.secondSum.icon}')`,
+                        }"
                         class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
                       ></div>
                       <div class="ml-2 leading-tight">
-                        <div class="text-base leading-none">{{ player.secondSum.name }}</div>
-                        <div
-                          class="mt-1 font-light text-blue-200"
-                        >{{ player.secondSum.description }}</div>
+                        <div class="text-base leading-none">
+                          {{ player.secondSum.name }}
+                        </div>
+                        <div class="mt-1 font-light text-blue-200">
+                          {{ player.secondSum.description }}
+                        </div>
                       </div>
                     </div>
                   </template>
                 </Tooltip>
               </div>
-              <div class="flex flex-col justify-around ml-2px">
-                <div
-                  :style="[player.primaryRune ? {background: `url(${player.primaryRune}) center/cover`} : '']"
-                  class="w-4 h-4 rounded-md bg-blue-1000"
-                ></div>
-                <div
-                  :style="[player.secondaryRune ? {background: `url(${player.secondaryRune}) center/cover`} : '']"
-                  class="w-4 h-4 rounded-md bg-blue-1000"
-                ></div>
-              </div>
-              <div class="flex flex-col items-start justify-center ml-1 leading-none">
+              <Tooltip>
+                <template v-slot:trigger>
+                  <div
+                    @click="selectRunes(player)"
+                    :class="{ 'cursor-pointer': player.perks }"
+                    class="flex flex-col justify-around cursor-pointer ml-2px"
+                  >
+                    <div
+                      :style="[
+                        player.primaryRune
+                          ? {
+                            background: `url(${player.primaryRune}) center/cover`,
+                          }
+                          : '',
+                      ]"
+                      class="w-4 h-4 rounded-md bg-blue-1000"
+                    ></div>
+                    <div
+                      :style="[
+                        player.secondaryRune
+                          ? {
+                            background: `url(${player.secondaryRune}) center/cover`,
+                          }
+                          : '',
+                      ]"
+                      class="w-4 h-4 rounded-md bg-blue-1000"
+                    ></div>
+                  </div>
+                </template>
+                <template v-if="player.perks" v-slot:default>
+                  <div
+                    class="px-2 text-sm leading-relaxed text-center text-white select-none"
+                  >
+                    <p>Click to display</p>
+                    <p class="font-bold text-teal-400">full runes</p>
+                  </div>
+                </template>
+              </Tooltip>
+              <div
+                class="flex flex-col items-start justify-center ml-1 leading-none"
+              >
                 <router-link
                   v-if="player.firstSum"
-                  :to="{ name: 'summoner', params: { region: $route.params.region, name: player.name }}"
-                  :class="{'font-semibold text-yellow-400': account.id === player.summonerId}"
+                  :to="{
+                    name: 'summoner',
+                    params: { region: $route.params.region, name: player.name },
+                  }"
+                  :class="{
+                    'font-semibold text-yellow-400':
+                      account.id === player.summonerId,
+                  }"
                   class="overflow-hidden text-xs text-left text-white whitespace-no-wrap w-22 text-overflow hover:text-blue-200"
                 >{{ player.name }}</router-link>
                 <div
                   v-else
                   class="overflow-hidden text-xs text-left text-white whitespace-no-wrap w-22 text-overflow"
-                >{{ player.name }}</div>
-                <div class="text-teal-500 text-xxs">{{ player.champion.name }}</div>
+                >
+                  {{ player.name }}
+                </div>
+                <div class="text-teal-500 text-xxs">
+                  {{ player.champion.name }}
+                </div>
               </div>
             </div>
             <div class="flex items-center">
               <div v-if="player.rank">
                 <svg class="w-5 h-5 ml-auto">
-                  <use :xlink:href="`#rank-${player.rank.tier.toLowerCase()}`" />
+                  <use
+                    :xlink:href="`#rank-${player.rank.tier.toLowerCase()}`"
+                  />
                 </svg>
-                <div class="text-blue-300 text-xxs">{{ player.rank.shortName }}</div>
+                <div class="text-blue-300 text-xxs">
+                  {{ player.rank.shortName }}
+                </div>
               </div>
               <div v-else-if="player.rank === undefined">
                 <DotsLoader width="30px" dot-width="10px" />
@@ -165,61 +242,81 @@
           <div
             :style="bgColor(player, 'kills')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ player.stats.kills }}</div>
+          >
+            {{ player.stats.kills }}
+          </div>
         </td>
         <td class="relative">
           <div
             :style="bgColor(player, 'deaths')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ player.stats.deaths }}</div>
+          >
+            {{ player.stats.deaths }}
+          </div>
         </td>
         <td class="relative">
           <div
             :style="bgColor(player, 'assists')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ player.stats.assists }}</div>
+          >
+            {{ player.stats.assists }}
+          </div>
         </td>
         <td class="relative">
           <div
             :style="bgColor(player, 'minions')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ player[statsFormat].minions }}</div>
+          >
+            {{ player[statsFormat].minions }}
+          </div>
         </td>
         <td class="relative">
           <div
             :style="bgColor(player, 'vision')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ player[statsFormat].vision }}</div>
+          >
+            {{ player[statsFormat].vision }}
+          </div>
         </td>
         <td class="relative">
           <div
             :style="bgColor(player, 'gold')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ roundStats(player[statsFormat].gold) }}</div>
+          >
+            {{ roundStats(player[statsFormat].gold) }}
+          </div>
         </td>
         <td class="relative">
           <div
             :style="bgColor(player, 'dmgChamp')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ roundStats(player[statsFormat].dmgChamp) }}</div>
+          >
+            {{ roundStats(player[statsFormat].dmgChamp) }}
+          </div>
         </td>
         <td class="relative">
           <div
             :style="bgColor(player, 'dmgObj')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ roundStats(player[statsFormat].dmgObj) }}</div>
+          >
+            {{ roundStats(player[statsFormat].dmgObj) }}
+          </div>
         </td>
         <td class="relative">
           <div
             :style="bgColor(player, 'dmgTaken')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ roundStats(player[statsFormat].dmgTaken) }}</div>
+          >
+            {{ roundStats(player[statsFormat].dmgTaken) }}
+          </div>
         </td>
         <td class="relative">
           <div
             :style="bgColor(player, 'kp')"
             class="absolute inset-0 flex items-center justify-center p-2 text-sm text-white"
-          >{{ player.stats.kp }}</div>
+          >
+            {{ player.stats.kp }}
+          </div>
         </td>
       </tr>
     </tbody>
@@ -228,7 +325,7 @@
 
 <script>
 import { colors } from '@/data/data.js'
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import DotsLoader from '@/components/Common/DotsLoader.vue'
 import Tooltip from '@/components/Common/Tooltip.vue'
 import MatchItems from '@/components/Match/MatchItems.vue'
@@ -243,15 +340,15 @@ export default {
   props: {
     allPlayers: {
       type: Array,
-      required: true
+      required: true,
     },
     allyTeam: {
       type: Boolean,
-      required: true
+      required: true,
     },
     data: {
       type: Object,
-      required: true
+      required: true,
     },
   },
 
@@ -260,28 +357,32 @@ export default {
       return this.percentSettings ? 'percentStats' : 'stats'
     },
     ...mapState({
-      account: state => state.summoner.basic.account,
-      percentSettings: state => state.settings.percent
+      account: (state) => state.summoner.basic.account,
+      percentSettings: (state) => state.settings.percent,
     }),
   },
 
   methods: {
     bgColor(player, stats) {
       const value = parseFloat(player.stats[stats])
-      const biggestValue = Math.max(...this.allPlayers.map(p => parseFloat(p.stats[stats])), 0)
+      const biggestValue = Math.max(
+        ...this.allPlayers.map((p) => parseFloat(p.stats[stats])),
+        0
+      )
       const opacity = (value / biggestValue).toFixed(2)
       const biggestValueStyle = {}
       if (value === biggestValue && value !== 0) {
         biggestValueStyle.boxShadow = 'rgba(181, 160, 122, 0.5) 0px 0px 10px'
         biggestValueStyle.border = '2px solid'
         biggestValueStyle.borderImageSlice = '1'
-        biggestValueStyle.borderImageSource = 'linear-gradient(to top, #edb457, #f9e9ce)'
+        biggestValueStyle.borderImageSource =
+          'linear-gradient(to top, #edb457, #f9e9ce)'
         biggestValueStyle.borderCollapse = 'separate'
       }
 
       return {
         backgroundColor: `rgba(${colors[stats]}, ${opacity})`,
-        ...biggestValueStyle
+        ...biggestValueStyle,
       }
     },
     displayBorderbottom(index) {
@@ -290,17 +391,34 @@ export default {
     getHeadingColor(result) {
       switch (result) {
         case 'Win':
-          return { '--bg-img': 'linear-gradient(90deg, rgba(1, 97, 28, 0.3) 0%, rgba(44, 82, 130, 0) 45% )' }
+          return {
+            '--bg-img':
+              'linear-gradient(90deg, rgba(1, 97, 28, 0.3) 0%, rgba(44, 82, 130, 0) 45% )',
+          }
         case 'Fail':
-          return { '--bg-img': 'linear-gradient(90deg, rgba(140, 0, 0, 0.3) 0%, rgba(44, 82, 130, 0) 45% )' }
+          return {
+            '--bg-img':
+              'linear-gradient(90deg, rgba(140, 0, 0, 0.3) 0%, rgba(44, 82, 130, 0) 45% )',
+          }
         default:
-          return { '--bg-img': 'linear-gradient(90deg, rgba(233, 169, 75, 0.3) 0%, rgba(44, 82, 130, 0) 45% )' }
+          return {
+            '--bg-img':
+              'linear-gradient(90deg, rgba(233, 169, 75, 0.3) 0%, rgba(44, 82, 130, 0) 45% )',
+          }
       }
     },
     roundStats(value) {
       return this.percentSettings ? value : this.$options.filters.kilo(value)
     },
-  }
+    selectRunes(player) {
+      if (!player.perks) {
+        return
+      }
+
+      this.displayOrHideRunes(player.perks)
+    },
+    ...mapActions('cdragon', ['displayOrHideRunes']),
+  },
 }
 </script>
 

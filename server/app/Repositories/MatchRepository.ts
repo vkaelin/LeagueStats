@@ -16,7 +16,7 @@ class MatchRepository {
     return {
       summoner_puuid: puuid,
       result: { $not: { $eq: 'Remake' } },
-      gamemode: { $nin: [800, 810, 820, 830, 840, 850] },
+      gamemode: { $nin: [800, 810, 820, 830, 840, 850, 2000, 2010, 2020] },
       season: season ? season : { $exists: true },
     }
   }
