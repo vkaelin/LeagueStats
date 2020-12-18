@@ -159,11 +159,11 @@ export default {
   methods: {
     createCategoryBorderUrl(name) {
       const lower = name.toLowerCase()
-      return `http://raw.communitydragon.org/pbe/plugins/rcp-fe-lol-collections/global/default/perks/images/${lower}/vfx-${lower[0]}.png`
+      return `https://raw.communitydragon.org/pbe/plugins/rcp-fe-lol-collections/global/default/perks/images/${lower}/vfx-${lower[0]}.png`
     },
     createCategoryUrl(name) {
       const lower = name.toLowerCase()
-      return `http://raw.communitydragon.org/latest/plugins/rcp-fe-lol-collections/global/default/perks/images/${lower}/icon-${lower[0]}.png`
+      return `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-collections/global/default/perks/images/${lower}/icon-${lower[0]}.png`
     },
     createCDragonAssetUrl,
   }
