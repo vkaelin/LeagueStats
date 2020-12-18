@@ -2,20 +2,27 @@ import { PerkDTO, PerkStyleDTO } from 'App/Services/Jax/src/Endpoints/CDragonEnd
 
 class RuneTransformer {
   public transformPerks (perks: PerkDTO[]) {
-    return perks.map((perk) => ({
-      id: perk.id,
-      name: perk.name,
-      desc: perk.longDesc,
-      icon: perk.iconPath,
-    }))
+    return perks.reduce((acc, perk) => {
+      acc[perk.id] = {
+        name: perk.name,
+        desc: perk.longDesc,
+        icon: perk.iconPath,
+      }
+      return acc
+    }, {})
   }
 
   public transformStyles (styles: PerkStyleDTO[]) {
-    return styles.map(style => ({
-      id: style.id,
-      name: style.name,
-      icon: style.iconPath,
-    }))
+    return styles.reduce((acc, style) => {
+      acc[style.id] = {
+        name: style.name,
+        icon: style.iconPath,
+        slots: style.slots
+          .filter(s => s.type !== 'kStatMod')
+          .map(s => s.perks),
+      }
+      return acc
+    }, {})
   }
 }
 

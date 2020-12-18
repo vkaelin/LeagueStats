@@ -3,6 +3,11 @@ import { axios } from '@/plugins/axios'
 export const namespaced = true
 
 export const state = {
+  kStats: [
+    [5008, 5005, 5007],
+    [5008, 5002, 5003],
+    [5001, 5002, 5003],
+  ],
   runes: null,
   runesOpen: false,
   selectedRunes: {},

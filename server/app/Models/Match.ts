@@ -29,7 +29,8 @@ export interface ParticipantDetails {
   secondSum: SummonerSpell | number | null,
   stats: Stats,
   percentStats?: PercentStats
-  rank?: Rank | null
+  rank?: Rank | null,
+  perks?: Perks
 }
 
 export interface Champion<T = number, U = string> {
@@ -49,6 +50,12 @@ export interface SummonerSpell {
 export interface Rank {
   tier: string,
   shortName: string | number
+}
+
+export interface Perks {
+  primaryStyle: number;
+  secondaryStyle: number;
+  selected: number[];
 }
 
 export interface ParticipantBasic {

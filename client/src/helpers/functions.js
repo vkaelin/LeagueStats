@@ -43,3 +43,12 @@ export function sortTeamByRole(a, b) {
   const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }
+
+/**
+ *  Give the full CDragon image path from the iconPath field
+ * @param {String} iconPath 
+ */
+export function createCDragonAssetUrl(iconPath) {
+  const name = iconPath.split('/assets/')[1].toLowerCase()
+  return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${name}`
+}
