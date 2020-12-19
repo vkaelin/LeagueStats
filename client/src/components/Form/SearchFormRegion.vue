@@ -7,7 +7,7 @@
       <div
         @click="toggle"
         :class="[selectRegionClasses]"
-        class="flex items-center transition-all border-2 border-transparent rounded cursor-pointer transition-fast ease-in-quad ease-out-quad hover:text-white"
+        class="flex items-center transition duration-150 ease-in-out border-2 border-transparent rounded cursor-pointer hover:text-white"
       >
         <span class="font-bold uppercase select-none selected">{{ selectedRegion }}</span>
         <svg class="w-4 h-4 ml-1 -mr-1">
