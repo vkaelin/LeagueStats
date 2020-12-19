@@ -24,7 +24,11 @@
         >
           <td class="py-1 pl-2 rounded-l-lg">
             <div class="flex items-center">
-              <div class="flex flex-col items-center">
+              <div 
+                @click="selectRunes(player)"
+                :class="{ 'cursor-pointer': player.perks }"
+                class="flex flex-col items-center runes"
+              >
                 <div
                   :style="{backgroundImage: `url('${player.runes.primaryRune}')`}"
                   class="w-6 h-6 bg-center bg-cover"
@@ -180,7 +184,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { getSummonerLink } from '@/helpers/summoner.js'
 import { ContentLoader } from 'vue-content-loader'
 
@@ -259,7 +263,19 @@ export default {
             url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${championId}/${championId}000.jpg')`,
       }
     },
+    selectRunes(player) {
+      if(!player.perks) {
+        return
+      }
+      
+      this.displayOrHideRunes({
+        primaryStyle: player.perks.perkStyle,
+        secondaryStyle: player.perks.perkSubStyle,
+        selected: player.perks.perkIds
+      })
+    },
     getSummonerLink,
+     ...mapActions('cdragon', ['displayOrHideRunes']),
   }
 }
 </script>
@@ -293,5 +309,13 @@ export default {
   background-position: center;
   background-size: cover;
   border-radius: 0.5rem;
+}
+
+.runes {
+  @apply transition-all duration-150 ease-in-out;
+}
+
+.runes:hover {
+  filter: brightness(1.3);
 }
 </style>

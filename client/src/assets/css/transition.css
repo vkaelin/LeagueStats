@@ -41,7 +41,7 @@
 }
 
 .fade-fast-enter-active, .fade-fast-leave-active {
-  transition: opacity .5s;
+  transition: opacity .3s;
 }
 
 .fade-fast-enter, .fade-fast-leave-to,
