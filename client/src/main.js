@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueAxios from './plugins/axios'
-import VueGtag from 'vue-gtag'
 import VueMeta from 'vue-meta'
+import { VuePlausible } from 'vue-plausible'
+
 
 import '@/assets/css/main.css'
 
@@ -11,9 +12,11 @@ import store from './store'
 
 Vue.config.productionTip = false
 Vue.use(VueAxios)
-Vue.use(VueGtag, {
-  config: { id: 'UA-113251543-3' }
-}, router)
+Vue.use(VuePlausible, {
+  domain: 'leaguestats.gg',
+  trackLocalhost: false,
+})
+Vue.$plausible.enableAutoPageviews()
 Vue.use(VueMeta)
 
 Vue.filter('capitalize', (value) => {
