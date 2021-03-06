@@ -5,7 +5,7 @@
 
 
 The goal of [leaguestats.gg](https://leaguestats.gg) is to provide global complete data for all League of Legends summoners.  
-Here is an [example](https://leaguestats.gg/summoner/euw/Alderiate) of stats for some summoner.
+Here is an [example](https://leaguestats.gg/summoner/euw/MattDonovan) of stats for some summoner.
 
 ![Screenshot](https://res.cloudinary.com/kln/image/upload/v1580935119/leaguestats-preview.png)
 
