@@ -15,6 +15,7 @@ Vue.use(VueAxios)
 Vue.use(VuePlausible, {
   domain: 'leaguestats.gg',
   trackLocalhost: false,
+  apiHost: 'https://stats.leaguestats.gg'
 })
 Vue.$plausible.enableAutoPageviews()
 Vue.use(VueMeta)
