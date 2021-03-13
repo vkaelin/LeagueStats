@@ -23,6 +23,16 @@ export default class SummonerEndpoint {
     this.limiter = limiter
   }
 
+  public summonerId (summonerId: string, region: string): Promise<SummonerDTO> {
+    return new JaxRequest(
+      region,
+      this.config,
+      `summoner/v4/summoners/${summonerId}`,
+      this.limiter,
+      36000
+    ).execute()
+  }
+
   public summonerName (summonerName: string, region: string): Promise<SummonerDTO> {
     return new JaxRequest(
       region,

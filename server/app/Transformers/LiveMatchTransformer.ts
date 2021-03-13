@@ -1,4 +1,5 @@
 import { queuesWithRole } from 'App/helpers'
+import Jax from 'App/Services/Jax'
 import { CurrentGameInfo, CurrentGameParticipant } from 'App/Services/Jax/src/Endpoints/SpectatorEndpoint'
 import { FinalRoleComposition } from 'App/Services/RoleIdentiticationService'
 import SummonerService, { LeagueEntriesByQueue } from 'App/Services/SummonerService'
@@ -11,7 +12,7 @@ class LiveMatchTransformer extends MatchTransformer {
    * @param region 
    */
   private async getPlayerRank (participant: CurrentGameParticipant, region: string) {
-    const account = await SummonerService.getAccount(participant.summonerName, region)
+    const account = await Jax.Summoner.summonerId(participant.summonerId, region)
     let ranked: LeagueEntriesByQueue
     if (account) {
       ranked = await SummonerService.getRanked(account, region)

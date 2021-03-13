@@ -18,7 +18,7 @@ export default class MatchesController {
    * @param region of the match
    */
   private async getPlayerRank (summoner: ParticipantDetails, region: string) {
-    const account = await SummonerService.getAccount(summoner.name, region)
+    const account = await Jax.Summoner.summonerId(summoner.summonerId, region)
     if (account) {
       const ranked = await SummonerService.getRanked(account, region)
       summoner.rank = ranked.soloQ ? (({ tier, shortName }) => ({ tier, shortName }))(ranked.soloQ) : null
