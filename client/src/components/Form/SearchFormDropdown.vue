@@ -69,7 +69,7 @@
                 <SearchFormDropdownPlayer
                   @close="close"
                   @mousemove.native="onHover(1)"
-                  :player="{name: 'Matt Donovan', icon: 4, region: 'euw'}"
+                  :player="{name: 'Sammy Winchester', icon: 4, region: 'euw'}"
                   :selected="selected === 1"
                   :favorites-list="false"
                 />
