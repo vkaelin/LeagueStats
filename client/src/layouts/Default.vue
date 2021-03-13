@@ -65,9 +65,9 @@
                       class="px-2 text-sm text-center text-white select-none"
                     >
                       <div>Old summoner names</div>
-                      <ul class="pl-2 text-left">
+                      <ul class="pl-2 text-left list-disc list-inside">
                         <li
-                          v-for="name in basic.account.names"
+                          v-for="name in basic.account.names.slice(0, -1)"
                           :key="name.date"
                           class="text-teal-400"
                         >{{ name.name }}</li>
