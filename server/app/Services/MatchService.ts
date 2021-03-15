@@ -6,7 +6,6 @@ import { SummonerDTO } from './Jax/src/Endpoints/SummonerEndpoint'
 import { SummonerModel } from 'App/Models/Summoner'
 import Match, { MatchModel } from 'App/Models/Match'
 import BasicMatchTransformer from 'App/Transformers/BasicMatchTransformer'
-import mongodb from '@ioc:Mongodb/Database'
 
 class MatchService {
   /**
@@ -98,10 +97,8 @@ class MatchService {
 
     let matchesDetails: MatchModel[] = []
     const matchesToGetFromRiot: number[] = []
-    // TODO: replace it with Match Model once the package is fixed
-    const matchesCollection = await mongodb.connection().collection('matches')
     for (let i = 0; i < gameIds.length; ++i) {
-      const matchSaved = await matchesCollection.findOne({
+      const matchSaved = await Match.findOne({
         summoner_puuid: puuid,
         gameId: gameIds[i],
       })

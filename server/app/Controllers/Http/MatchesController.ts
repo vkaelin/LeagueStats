@@ -1,5 +1,4 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import mongodb from '@ioc:Mongodb/Database'
 import DetailedMatch, { DetailedMatchModel } from 'App/Models/DetailedMatch'
 import { ParticipantDetails } from 'App/Models/Match'
 import Summoner from 'App/Models/Summoner'
@@ -62,9 +61,8 @@ export default class MatchesController {
     const { gameId, region } = await request.validate(DetailedMatchValidator)
 
     let matchDetails: DetailedMatchModel
-    // TODO: replace it with Match Model once the package is fixed
-    const detailedMatchesCollection = await mongodb.connection().collection('detailed_matches')
-    const alreadySaved = await detailedMatchesCollection.findOne<DetailedMatchModel>({ gameId, region })
+    const alreadySaved = await DetailedMatch.findOne({ gameId, region })
+
     if (alreadySaved) {
       console.log('MATCH DETAILS ALREADY SAVED')
       matchDetails = alreadySaved
