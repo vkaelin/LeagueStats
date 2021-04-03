@@ -4,7 +4,7 @@
     class="flex"
   >
     <Tooltip v-for="(item, index) in items" :key="index">
-      <template v-slot:trigger>
+      <template #trigger>
         <div class="relative">
           <div
             :style="{ backgroundImage: itemLink(item) }"
@@ -26,7 +26,7 @@
           ></div>
         </div>
       </template>
-      <template v-if="item !== null" v-slot:default>
+      <template v-if="item !== null" #default>
         <div class="flex max-w-md p-2 text-xs text-left text-white select-none">
           <div
             :style="{ backgroundImage: itemLink(item) }"

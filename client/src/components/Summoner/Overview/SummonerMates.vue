@@ -29,7 +29,7 @@
             <div class="w-1/4">{{ mate.wins }} / {{ mate.losses }}</div>
             <div class="w-1/4">
               <Tooltip>
-                <template v-slot:trigger>
+                <template #trigger>
                   <div class="h-2 bg-blue-900 rounded-full cursor-pointer">
                     <div
                       :class="getWinrateColor(mate.wins, mate.count)"
@@ -38,7 +38,7 @@
                     ></div>
                   </div>
                 </template>
-                <template v-slot:default>
+                <template #default>
                   <div class="px-2 text-xs text-center text-white">
                     <div>Winrate</div>
                     <div>

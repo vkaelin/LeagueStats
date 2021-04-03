@@ -10,12 +10,12 @@
       </svg>
       <div class="absolute top-0 right-0 mt-3 mr-2">
         <Tooltip>
-          <template v-slot:trigger>
+          <template #trigger>
             <svg class="w-4 h-4 cursor-pointer">
               <use xlink:href="#info" />
             </svg>
           </template>
-          <template v-slot:default>
+          <template #default>
             <div class="px-2 text-sm text-center text-white select-none">
               <div>Stats based on</div>
               <div>

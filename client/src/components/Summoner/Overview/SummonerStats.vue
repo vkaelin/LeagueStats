@@ -10,12 +10,12 @@
       </svg>
       <div class="absolute top-0 right-0 mt-3 mr-2">
         <Tooltip>
-          <template v-slot:trigger>
+          <template #trigger>
             <svg class="w-4 h-4 cursor-pointer">
               <use xlink:href="#info" />
             </svg>
           </template>
-          <template v-slot:default>
+          <template #default>
             <div class="px-2 text-sm text-center text-white select-none">
               <div>Stats based on</div>
               <div>
@@ -37,7 +37,7 @@
         class="flex flex-col items-center w-1/5"
       >
         <Tooltip>
-          <template v-slot:trigger>
+          <template #trigger>
             <div class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full cursor-pointer">
               <div
                 :style="{height: (role.count * 3 / mostPlayedRole) * role.wins / role.count + 'rem'}"
@@ -51,7 +51,7 @@
               ></div>
             </div>
           </template>
-          <template v-slot:default>
+          <template #default>
             <div class="px-2 text-sm text-center text-white select-none">
               <div>{{ role.role|capitalize }}</div>
               <span

@@ -34,13 +34,13 @@
             style="width: calc(20px * 15); height: calc(20px * 7)"
           >
             <Tooltip v-for="(day, index) in gridDays.slice(indexFirstMonday)" :key="day.timestamp">
-              <template v-slot:trigger>
+              <template #trigger>
                 <div
                   :class="[getCaseMargin(index), getCaseColor(day.matches)]"
                   class="w-4 h-4 ml-1 cursor-pointer"
                 />
               </template>
-              <template v-slot:default>
+              <template #default>
                 <div class="px-2 text-xs text-center text-white">
                   <div>{{ day.date }}</div>
                   <div>

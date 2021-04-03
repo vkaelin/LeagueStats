@@ -54,12 +54,12 @@
             <div>
               <div class="flex items-center mt-2">
                 <Tooltip>
-                  <template v-slot:trigger>
+                  <template #trigger>
                     <h1 class="text-4xl font-extrabold">
                       {{ basic.account.name }}
                     </h1>
                   </template>
-                  <template v-slot:default>
+                  <template #default>
                     <div
                       v-if="basic.account.names.length > 1"
                       class="px-2 text-sm text-center text-white select-none"

@@ -158,10 +158,10 @@
             </svg>
             <div class="text-lg font-medium text-teal-400">{{ data.time|secToTime }}</div>
             <Tooltip>
-              <template v-slot:trigger>
+              <template #trigger>
                 <div class="text-xs font-medium text-white">{{ data.date }}</div>
               </template>
-              <template v-slot:default>
+              <template #default>
                 <div class="px-2 text-xs leading-tight text-center text-white select-none">
                   <svg class="w-4 h-4 mx-auto text-teal-400">
                     <use xlink:href="#time" />

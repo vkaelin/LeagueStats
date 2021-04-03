@@ -24,7 +24,7 @@
         <div class="flex space-x-4">
           <ul v-for="runeId in category" :key="`slot-${runeId}`">
             <Tooltip>
-              <template v-slot:trigger>
+              <template #trigger>
                 <li
                   :style="{
                     backgroundImage: `url('${createCDragonAssetUrl(
@@ -39,7 +39,7 @@
                   class="w-12 h-12 bg-center bg-cover border-2 border-gray-700 rounded-full cursor-pointer"
                 ></li>
               </template>
-              <template v-slot:default>
+              <template #default>
                 <div
                   class="flex max-w-md p-2 text-sm text-left text-white select-none"
                 >
@@ -78,7 +78,7 @@
           >
             <ul v-for="(kStat, i) in row" :key="`${kStat}-${i}`">
               <Tooltip>
-                <template v-slot:trigger>
+                <template #trigger>
                   <li
                     :style="{
                       backgroundImage: `url('${createCDragonAssetUrl(
@@ -93,7 +93,7 @@
                     class="w-8 h-8 bg-gray-900 bg-center bg-cover border-2 border-gray-700 rounded-full cursor-pointer"
                   ></li>
                 </template>
-                <template v-slot:default>
+                <template #default>
                   <div
                     class="flex max-w-md p-2 text-sm text-left text-white select-none"
                   >

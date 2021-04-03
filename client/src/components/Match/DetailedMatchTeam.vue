@@ -87,7 +87,7 @@
               </div>
               <div class="flex flex-col justify-around ml-1">
                 <Tooltip>
-                  <template v-slot:trigger>
+                  <template #trigger>
                     <div
                       :style="{
                         backgroundImage: `url(${
@@ -98,7 +98,7 @@
                       class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                     ></div>
                   </template>
-                  <template v-if="player.firstSum" v-slot:default>
+                  <template v-if="player.firstSum" #default>
                     <div
                       class="flex max-w-sm p-2 text-xs text-left text-white select-none"
                     >
@@ -120,7 +120,7 @@
                   </template>
                 </Tooltip>
                 <Tooltip>
-                  <template v-slot:trigger>
+                  <template #trigger>
                     <div
                       :style="{
                         backgroundImage: `url(${
@@ -131,7 +131,7 @@
                       class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                     ></div>
                   </template>
-                  <template v-if="player.secondSum" v-slot:default>
+                  <template v-if="player.secondSum" #default>
                     <div
                       class="flex max-w-sm p-2 text-xs text-left text-white select-none"
                     >
@@ -154,7 +154,7 @@
                 </Tooltip>
               </div>
               <Tooltip>
-                <template v-slot:trigger>
+                <template #trigger>
                   <div
                     @click="selectRunes(player)"
                     :class="{ 'cursor-pointer': player.perks }"
@@ -182,7 +182,7 @@
                     ></div>
                   </div>
                 </template>
-                <template v-if="player.perks" v-slot:default>
+                <template v-if="player.perks" #default>
                   <div
                     class="px-2 text-sm leading-relaxed text-center text-white select-none"
                   >

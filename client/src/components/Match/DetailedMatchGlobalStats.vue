@@ -7,7 +7,7 @@
         :class="{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}"
         class="inline-block"
       >
-        <template v-slot:trigger>
+        <template #trigger>
           <div
             :class="[allyTeam ? 'ban-blue border-teal-500' : 'ban-red border-red-500']"
             class="relative border-2 rounded-full cursor-pointer ban"
@@ -22,7 +22,7 @@
             >{{ ban.pickTurn }}</div>
           </div>
         </template>
-        <template v-slot:default>
+        <template #default>
           <div class="px-2 text-xs leading-tight text-center text-white select-none">
             <div>{{ ban.champion.id ? ban.champion.name : 'No ban' }}</div>
           </div>

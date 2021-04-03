@@ -8,10 +8,10 @@
       type="checkbox"
     />
     <Tooltip>
-      <template v-slot:trigger>
+      <template #trigger>
         <label for="onlyMostPlayed" class="cursor-pointer select-none">Only most played</label>
       </template>
-      <template v-slot:default>
+      <template #default>
         <div class="px-2 text-xs text-center text-white">
           Hide champions with less than
           <br />
