@@ -38,7 +38,10 @@ class LiveMatchTransformer extends MatchTransformer {
     const redTeam: PlayerRole[] = [] // 200
     let blueRoles: FinalRoleComposition = {}
     let redRoles: FinalRoleComposition = {}
-    const needsRole = this.championRoles && queuesWithRole.includes(liveMatch.gameQueueConfigId)
+    const needsRole = this.championRoles &&
+      (queuesWithRole.includes(liveMatch.gameQueueConfigId) ||
+      (liveMatch.gameType === 'CUSTOM_GAME' && liveMatch.participants.length === 10))
+
     if (needsRole) {
       liveMatch.participants.map(p => {
         const playerRole = { champion: p.championId, jungle: p.spell1Id === 11 || p.spell2Id === 11 }
