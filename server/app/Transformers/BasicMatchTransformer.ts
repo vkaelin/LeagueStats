@@ -46,7 +46,8 @@ class BasicMatchTransformer extends MatchTransformer {
     }
 
     // Roles
-    super.getMatchRoles(match, allyTeam, enemyTeam, player.teamId, playerData)
+    // TODO: while CDN is broken : get Riot Roles
+    //super.getMatchRoles(match, allyTeam, enemyTeam, player.teamId, playerData)
 
     return {
       account_id: identity!.player.currentAccountId,
