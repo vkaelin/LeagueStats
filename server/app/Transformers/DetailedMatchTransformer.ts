@@ -84,8 +84,7 @@ class DetailedMatchTransformer extends MatchTransformer {
     const secondTeam = this.getTeamData(match, match.teams[1])
 
     // Roles
-    // TODO: while CDN is broken : get Riot Roles
-    //super.getMatchRoles(match, firstTeam.players, secondTeam.players)
+    super.getMatchRoles(match, firstTeam.players, secondTeam.players)
 
     return {
       gameId: match.gameId,
