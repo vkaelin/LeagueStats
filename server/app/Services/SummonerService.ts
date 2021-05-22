@@ -46,7 +46,7 @@ class SummonerService {
    * @param region 
    */
   public async getAccount (summonerName: string, region: string) {
-    const name = summonerName.toLowerCase().replace(/ /g, '')
+    const name = summonerName.toLowerCase()
     const account = await Jax.Summoner.summonerName(name, region)
     return account
   }
