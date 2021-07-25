@@ -298,5 +298,16 @@
       "ODYSSEY"
     ],
     "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/SummonerTemp1.png"
+  },
+  {
+    "id": 54,
+    "name": "Placeholder",
+    "description": "",
+    "summonerLevel": 1,
+    "cooldown": 0,
+    "gameModes": [
+    "ULTBOOK"
+    ],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_Empty.png"
   }
 ]

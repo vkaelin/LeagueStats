@@ -72,6 +72,10 @@ export const gameModes = {
   1300: {
     type: 'Normal',
     name: 'Nexus Blitz'
+  },
+  1400: {
+    type: 'Normal',
+    name: 'Ultimate Spellbook'
   }
 }
 

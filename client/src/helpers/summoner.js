@@ -21,7 +21,9 @@ export function createMatchData(matches) {
 
     match.map = maps[match.map]
     match.gamemode = gameModes[match.gamemode]
-    if (!match.gamemode) match.gamemode = 'Undefined gamemode'
+    if (!match.gamemode) {
+      match.gamemode = { name: 'Unknown gamemode' }
+    }
   } // end loop matches
 
   return matches
