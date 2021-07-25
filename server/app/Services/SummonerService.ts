@@ -77,10 +77,13 @@ class SummonerService {
    */
   public async getRanked (account: SummonerDTO, region: string): Promise<LeagueEntriesByQueue> {
     const ranked = await Jax.League.summonerID(account.id, region)
-    const result = {
-      soloQ: this.getleagueData(ranked.find(e => e.queueType === 'RANKED_SOLO_5x5')) || undefined,
-      flex5v5: this.getleagueData(ranked.find(e => e.queueType === 'RANKED_FLEX_SR')) || undefined,
+    const result:LeagueEntriesByQueue = {}
+
+    if (ranked && ranked.length) {
+      result.soloQ = this.getleagueData(ranked.find(e => e.queueType === 'RANKED_SOLO_5x5')) || undefined
+      result.flex5v5 = this.getleagueData(ranked.find(e => e.queueType === 'RANKED_FLEX_SR')) || undefined
     }
+
     return result
   }
 }
