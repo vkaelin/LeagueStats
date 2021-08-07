@@ -14,6 +14,9 @@ export interface MatchModel extends ParticipantDetails {
   season: number,
   time: number,
   newMatch?: boolean,
+
+  // V5
+  matchId: string,
 }
 
 export interface ParticipantDetails {
@@ -131,4 +134,7 @@ export default class Match extends Model implements MatchModel {
   public firstSum: number
   public secondSum: number
   public stats: Stats
+
+  // V5
+  public matchId: string
 }

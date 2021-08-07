@@ -93,11 +93,10 @@ export default class SummonersController {
 
     // MATCHES BASIC
     const gameIds = summonerDB.matchList!.slice(0)
-      .filter(m => {
-        return season ? m.seasonMatch === season : true
-      })
+      // .filter(m => {
+      //   return season ? m.seasonMatch === season : true // TODO: filter by season
+      // })
       .slice(0, 10)
-      .map(({ gameId }) => gameId)
     finalJSON.matchesDetails = await MatchService.getMatches(puuid, accountId, region, gameIds, summonerDB)
 
     // STATS

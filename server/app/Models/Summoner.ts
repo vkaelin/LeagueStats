@@ -1,9 +1,9 @@
 import { Model } from '@ioc:Mongodb/Model'
-import { MatchReferenceDto } from 'App/Services/Jax/src/Endpoints/MatchlistEndpoint'
+import { MatchlistDto } from 'App/Services/Jax/src/Endpoints/MatchlistEndpoint'
 
 export interface SummonerModel {
   puuid: string,
-  matchList?: MatchReferenceDto[],
+  matchList?: MatchlistDto,
   names?: SummonerNames[]
 }
 
@@ -16,6 +16,6 @@ export default class Summoner extends Model implements SummonerModel {
   public static collectionName = 'summoners'
 
   public puuid: string
-  public matchList?: MatchReferenceDto[]
+  public matchList?: MatchlistDto
   public names?: SummonerNames[]
 }

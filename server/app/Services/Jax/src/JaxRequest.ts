@@ -37,15 +37,6 @@ export default class JaxRequest {
     }
 
     try {
-      // const resp = await this.limiter.execute({
-      //   url,
-      //   options: {
-      //     headers: {
-      //       'X-Riot-Token': this.config.key,
-      //     },
-      //   },
-      // })
-
       const resp:any = await this.limiter.executing({
         url,
         token: this.config.key,

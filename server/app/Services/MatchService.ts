@@ -1,7 +1,6 @@
 import Jax from './Jax'
 import Logger from '@ioc:Adonis/Core/Logger'
-import { getSeasonNumber } from 'App/helpers'
-import { MatchReferenceDto } from './Jax/src/Endpoints/MatchlistEndpoint'
+import { MatchlistDto } from './Jax/src/Endpoints/MatchlistEndpoint'
 import { SummonerDTO } from './Jax/src/Endpoints/SummonerEndpoint'
 import { SummonerModel } from 'App/Models/Summoner'
 import Match, { MatchModel } from 'App/Models/Match'
@@ -14,41 +13,41 @@ class MatchService {
    * @param stopFetching condition to stop fetching the MatchList
    */
   private async _fetchMatchListUntil (account: SummonerDTO, stopFetching: any) {
-    let matchList: MatchReferenceDto[] = []
+    let matchList: MatchlistDto = []
     let alreadyIn = false
     let index = 0
     do {
-      let newMatchList = await Jax.Matchlist.accountID(account.accountId, account.region as string, index)
+      let newMatchList = await Jax.Matchlist.puuid(account.puuid, account.region as string, index)
       // Error while fetching Riot API
       if (!newMatchList) {
-        matchList = matchList.map(m => {
-          m.seasonMatch = getSeasonNumber(m.timestamp)
-          return m
-        })
+        // matchList = matchList.map(m => {
+        //   m.season = getSeasonNumber(m.timestamp)
+        //   return m
+        // })
         return matchList
       }
-      matchList = [...matchList, ...newMatchList.matches]
-      alreadyIn = newMatchList.matches.length === 0 || stopFetching(newMatchList.matches)
+      matchList = [...matchList, ...newMatchList]
+      alreadyIn = newMatchList.length === 0 || stopFetching(newMatchList)
       // If the match is made in another region : we stop fetching
-      if (matchList[matchList.length - 1].platformId.toLowerCase() !== account.region) {
-        alreadyIn = true
-      }
+      // if (matchList[matchList.length - 1].platformId.toLowerCase() !== account.region) { // TODO: check this...
+      //   alreadyIn = true
+      // }
       index += 100
     } while (!alreadyIn)
 
     // Remove matches from MatchList made in another region and tutorial games
-    const tutorialModes = [2000, 2010, 2020]
-    matchList = matchList
-      .filter(m => {
-        const sameRegion = m.platformId.toLowerCase() === account.region
-        const notATutorialGame = !tutorialModes.includes(m.queue)
+    // const tutorialModes = [2000, 2010, 2020]
+    // matchList = matchList
+    //   .filter(m => {
+    //     const sameRegion = m.platformId.toLowerCase() === account.region
+    //     const notATutorialGame = !tutorialModes.includes(m.queue)
 
-        return sameRegion && notATutorialGame
-      })
-      .map(m => {
-        m.seasonMatch = getSeasonNumber(m.timestamp)
-        return m
-      })
+    //     return sameRegion && notATutorialGame
+    //   })
+    //   .map(m => {
+    //     m.seasonMatch = getSeasonNumber(m.timestamp)
+    //     return m
+    //   })
 
     return matchList
   }
@@ -63,20 +62,21 @@ class MatchService {
     // Summoner has already been searched : we already have a MatchList and we need to update it
     if (summonerDB.matchList) {
       // Get MatchList
-      const matchList = await this._fetchMatchListUntil(account, (newMatchList: MatchReferenceDto[]) => {
-        return summonerDB.matchList!.some(m => m.gameId === newMatchList[newMatchList.length - 1].gameId)
+      const matchList = await this._fetchMatchListUntil(account, (newMatchList: MatchlistDto) => {
+        return summonerDB.matchList!.some(m => m === newMatchList[newMatchList.length - 1])
       })
       // Update Summoner's MatchList
       for (const match of matchList.reverse()) {
-        if (!summonerDB.matchList.some(m => m.gameId === match.gameId)) {
+        if (!summonerDB.matchList.some(m => m === match)) {
           summonerDB.matchList.unshift(match)
         }
       }
     } else { // First search of the Summoner 
-      const today = Date.now()
+      // const today = Date.now()
       // Get MatchList
-      const matchList = await this._fetchMatchListUntil(account, (newMatchList: MatchReferenceDto[]) => {
-        return (newMatchList.length !== 100 || today - newMatchList[newMatchList.length - 1].timestamp > 10368000000)
+      const matchList = await this._fetchMatchListUntil(account, (newMatchList: MatchlistDto) => {
+        // return (newMatchList.length !== 100 || today - newMatchList[newMatchList.length - 1].timestamp > 10368000000)
+        return newMatchList.length === 0 // TODO: useless
       })
       // Create Summoner's MatchList in Database
       summonerDB.matchList = matchList
@@ -92,20 +92,20 @@ class MatchService {
    * @param gameIds 
    * @param summonerDB 
    */
-  public async getMatches (puuid: string, accountId: string, region: string, gameIds: number[], summonerDB: SummonerModel) {
+  public async getMatches (puuid: string, accountId: string, region: string, matchIds: string[], summonerDB: SummonerModel) {
     console.time('getMatches')
 
     let matchesDetails: MatchModel[] = []
-    const matchesToGetFromRiot: number[] = []
-    for (let i = 0; i < gameIds.length; ++i) {
+    const matchesToGetFromRiot: string[] = []
+    for (let i = 0; i < matchIds.length; ++i) {
       const matchSaved = await Match.findOne({
         summoner_puuid: puuid,
-        gameId: gameIds[i],
+        matchId: matchIds[i],
       })
       if (matchSaved) {
         matchesDetails.push(matchSaved)
       } else {
-        matchesToGetFromRiot.push(gameIds[i])
+        matchesToGetFromRiot.push(matchIds[i])
       }
     }
 
@@ -122,14 +122,16 @@ class MatchService {
       })
 
       // Transform raw matches data
-      const transformedMatches = await BasicMatchTransformer.transform(matchesFromApi, { puuid, accountId })
+      // const transformedMatches = await BasicMatchTransformer.transform(matchesFromApi, { puuid, accountId })
 
       /* Save all matches from Riot Api in db */
-      for (const match of transformedMatches) {
-        await Match.create(match)
-        match.newMatch = true
-      }
-      matchesDetails = [...matchesDetails, ...transformedMatches]
+      // for (const match of transformedMatches) {
+      //   // await Match.create(match)
+      //   match.newMatch = true
+      // }
+      // matchesDetails = [...matchesDetails, ...transformedMatches]
+
+      matchesDetails = [...matchesDetails, ...matchesFromApi as unknown as MatchModel[]]
     }
 
     /* Sort matches */

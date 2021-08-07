@@ -7,8 +7,6 @@ import { TeamStats } from 'App/Models/DetailedMatch'
 import {
   MatchDto,
   ParticipantDto,
-  ParticipantStatsDto,
-  ParticipantTimelineDto,
 } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
 
 export interface PlayerRole {
@@ -68,12 +66,12 @@ export default abstract class MatchTransformer {
    */
   public getGameInfos (match: MatchDto) {
     return {
-      map: match.mapId,
-      gamemode: match.queueId,
-      date: match.gameCreation,
-      region: match.platformId.toLowerCase(),
-      season: getSeasonNumber(match.gameCreation),
-      time: match.gameDuration,
+      map: match.info.mapId,
+      gamemode: match.info.queueId,
+      date: match.info.gameCreation,
+      region: match.info.platformId.toLowerCase(),
+      season: getSeasonNumber(match.info.gameCreation),
+      time: match.info.gameDuration,
     }
   }
 
@@ -179,8 +177,8 @@ export default abstract class MatchTransformer {
       })
     }
 
-    const firstSum = player.spell1Id
-    const secondSum = player.spell2Id
+    const firstSum = player.summoner1Id
+    const secondSum = player.summoner2Id
 
     const playerData: ParticipantDetails = {
       name,
@@ -313,7 +311,7 @@ export default abstract class MatchTransformer {
     allyTeamId = 100,
     playerData?: ParticipantDetails
   ) {
-    if (!this.championRoles || !queuesWithRole.includes(match.queueId)) {
+    if (!this.championRoles || !queuesWithRole.includes(match.info.queueId)) {
       return
     }
 

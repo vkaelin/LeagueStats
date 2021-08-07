@@ -1,6 +1,40 @@
 import { ParticipantBasic, ParticipantDetails } from './Models/Match'
 
 /**
+ * All League of Legends regions used in Riot API
+ */
+export type Region = 'br1' | 'eun1' | 'euw1' | 'jp1' | 'kr' | 'la1' | 'la2' | 'na1' | 'oc1' | 'tr1' | 'ru'
+
+/**
+ * New regions used in Riot API >= v5
+ */
+export type V5Region = 'americas' | 'asia' | 'europe'
+
+/**
+ * Map old Riot API regions to new ones
+ * @param region : old region
+ * @returns new region name
+ */
+export function getV5Region (region: string): V5Region {
+  switch (region as Region) { // TODO: remove cast when region is typed to "Region" everywhere instead of string
+    case 'na1':
+    case 'br1':
+    case 'la1':
+    case 'la2':
+    case 'oc1':
+      return 'americas'
+    case 'kr':
+    case 'jp1':
+      return 'asia'
+    case 'eun1':
+    case 'euw1':
+    case 'tr1':
+    case 'ru':
+      return 'europe'
+  }
+}
+
+/**
  * League of Legends queues with defined role for each summoner
  */
 export const queuesWithRole = [
