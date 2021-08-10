@@ -29,7 +29,7 @@ class MatchService {
       matchList = [...matchList, ...newMatchList]
       alreadyIn = newMatchList.length === 0 || stopFetching(newMatchList)
       // If the match is made in another region : we stop fetching
-      // if (matchList[matchList.length - 1].platformId.toLowerCase() !== account.region) { // TODO: check this...
+      // if (matchList[matchList.length - 1].platformId.toLowerCase() !== account.region) { // TODO: check if region has changed
       //   alreadyIn = true
       // }
       index += 100
@@ -92,11 +92,11 @@ class MatchService {
    * @param gameIds 
    * @param summonerDB 
    */
-  public async getMatches (puuid: string, accountId: string, region: string, matchIds: string[], summonerDB: SummonerModel) {
+  public async getMatches (puuid: string, accountId: string, region: string, matchIds: MatchlistDto, summonerDB: SummonerModel) {
     console.time('getMatches')
 
     let matchesDetails: MatchModel[] = []
-    const matchesToGetFromRiot: string[] = []
+    const matchesToGetFromRiot: MatchlistDto = []
     for (let i = 0; i < matchIds.length; ++i) {
       const matchSaved = await Match.findOne({
         summoner_puuid: puuid,
@@ -122,16 +122,14 @@ class MatchService {
       })
 
       // Transform raw matches data
-      // const transformedMatches = await BasicMatchTransformer.transform(matchesFromApi, { puuid, accountId })
+      const transformedMatches = await BasicMatchTransformer.transform(matchesFromApi, { puuid, accountId })
 
       /* Save all matches from Riot Api in db */
-      // for (const match of transformedMatches) {
-      //   // await Match.create(match)
-      //   match.newMatch = true
-      // }
-      // matchesDetails = [...matchesDetails, ...transformedMatches]
-
-      matchesDetails = [...matchesDetails, ...matchesFromApi as unknown as MatchModel[]]
+      for (const match of transformedMatches) {
+        await Match.create(match)
+        match.newMatch = true
+      }
+      matchesDetails = [...matchesDetails, ...transformedMatches]
     }
 
     /* Sort matches */

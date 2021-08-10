@@ -13,13 +13,12 @@ class BasicMatchTransformer extends MatchTransformer {
     // Global data about the match
     const globalInfos = super.getGameInfos(match)
 
-    const identity = match.participantIdentities.find((p) => p.player.currentAccountId === accountId)
-    const player = match.participants[identity!.participantId - 1]
+    const player = match.info.participants.find(p => p.puuid === puuid)!
 
-    let win = match.teams.find((t) => t.teamId === player.teamId)!.win
+    let win = match.info.teams.find((t) => t.teamId === player.teamId)!.win ? 'Win' : 'Fail'
 
     // Match less than 5min
-    if (match.gameDuration < 300) {
+    if (match.info.gameDuration < 300) {
       win = 'Remake'
     }
 
@@ -29,16 +28,15 @@ class BasicMatchTransformer extends MatchTransformer {
     // Teams data
     const allyTeam: ParticipantBasic[] = []
     const enemyTeam: ParticipantBasic[] = []
-    for (let summoner of match.participantIdentities) {
-      const allData = match.participants[summoner.participantId - 1]
+    for (let summoner of match.info.participants) {
       const playerInfos = {
-        account_id: summoner.player.currentAccountId,
-        name: summoner.player.summonerName,
-        role: super.getRoleName(allData.timeline, match.queueId),
-        champion: super.getChampion(allData.championId),
+        account_id: summoner.puuid, // TODO: switch to puuid
+        name: summoner.summonerName,
+        role: super.getRoleName(summoner.teamPosition, match.info.queueId),
+        champion: super.getChampion(summoner.championId),
       }
 
-      if (allData.teamId === player.teamId) {
+      if (summoner.teamId === player.teamId) {
         allyTeam.push(playerInfos)
       } else {
         enemyTeam.push(playerInfos)
@@ -49,9 +47,10 @@ class BasicMatchTransformer extends MatchTransformer {
     super.getMatchRoles(match, allyTeam, enemyTeam, player.teamId, playerData)
 
     return {
-      account_id: identity!.player.currentAccountId,
+      account_id: accountId,
       summoner_puuid: puuid,
-      gameId: match.gameId,
+      gameId: match.info.gameId,
+      matchId: match.metadata.matchId,
       result: win,
       allyTeam,
       enemyTeam,

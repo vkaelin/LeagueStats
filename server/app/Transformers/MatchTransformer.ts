@@ -7,6 +7,7 @@ import { TeamStats } from 'App/Models/DetailedMatch'
 import {
   MatchDto,
   ParticipantDto,
+  PerksDto,
 } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
 
 export interface PlayerRole {
@@ -83,23 +84,22 @@ export default abstract class MatchTransformer {
    * @param teamStats : if detailed, the teamStats argument is mandatory
    */
   public getPlayerData (match: MatchDto, player: ParticipantDto, detailed: boolean, teamStats?: TeamStats) {
-    const identity = match.participantIdentities.find(p => p.participantId === player.participantId)
-    const name = identity!.player.summonerName
+    const name = player.summonerName
     const champion = this.getChampion(player.championId)
-    const role = this.getRoleName(player.timeline, match.queueId)
-    const level = player.stats.champLevel
+    const role = this.getRoleName(player.teamPosition, match.info.queueId)
+    const level = player.champLevel
 
     // Regular stats / Full match stats
     const stats: Stats = {
-      kills: player.stats.kills,
-      deaths: player.stats.deaths,
-      assists: player.stats.assists,
-      minions: player.stats.totalMinionsKilled + player.stats.neutralMinionsKilled,
-      vision: player.stats.visionScore,
-      gold: player.stats.goldEarned,
-      dmgChamp: player.stats.totalDamageDealtToChampions,
-      dmgObj: player.stats.damageDealtToObjectives,
-      dmgTaken: player.stats.totalDamageTaken,
+      kills: player.kills,
+      deaths: player.deaths,
+      assists: player.assists,
+      minions: player.totalMinionsKilled + player.neutralMinionsKilled,
+      vision: player.visionScore,
+      gold: player.goldEarned,
+      dmgChamp: player.totalDamageDealtToChampions,
+      dmgObj: player.damageDealtToObjectives,
+      dmgTaken: player.totalDamageTaken,
       kp: 0,
       kda: 0,
       realKda: 0,
@@ -118,44 +118,48 @@ export default abstract class MatchTransformer {
     if (detailed) {
       teamStats = teamStats!
       percentStats = {
-        minions: +(stats.minions / (match.gameDuration / 60)).toFixed(2),
-        vision: +(stats.vision / (match.gameDuration / 60)).toFixed(2),
-        gold: +(player.stats.goldEarned * 100 / teamStats.gold).toFixed(1) + '%',
-        dmgChamp: +(player.stats.totalDamageDealtToChampions * 100 / teamStats.dmgChamp).toFixed(1) + '%',
-        dmgObj: +(teamStats.dmgObj ? player.stats.damageDealtToObjectives * 100 / teamStats.dmgObj : 0).toFixed(1) + '%',
-        dmgTaken: +(player.stats.totalDamageTaken * 100 / teamStats.dmgTaken).toFixed(1) + '%',
+        minions: +(stats.minions / (match.info.gameDuration / 60)).toFixed(2),
+        vision: +(stats.vision / (match.info.gameDuration / 60)).toFixed(2),
+        gold: +(player.goldEarned * 100 / teamStats.gold).toFixed(1) + '%',
+        dmgChamp: +(player.totalDamageDealtToChampions * 100 / teamStats.dmgChamp).toFixed(1) + '%',
+        dmgObj: +(teamStats.dmgObj ? player.damageDealtToObjectives * 100 / teamStats.dmgObj : 0).toFixed(1) + '%',
+        dmgTaken: +(player.totalDamageTaken * 100 / teamStats.dmgTaken).toFixed(1) + '%',
       }
 
       stats.kp = teamStats.kills === 0 ? '0%' : +((stats.kills + stats.assists) * 100 / teamStats.kills).toFixed(1) + '%'
     } else {
-      const totalKills = match.participants.reduce((prev, current) => {
+      const totalKills = match.info.participants.reduce((prev, current) => {
         if (current.teamId !== player.teamId) {
           return prev
         }
-        return prev + current.stats.kills
+        return prev + current.kills
       }, 0)
 
-      stats.criticalStrike = player.stats.largestCriticalStrike
-      stats.killingSpree = player.stats.largestKillingSpree
-      stats.doubleKills = player.stats.doubleKills
-      stats.tripleKills = player.stats.tripleKills
-      stats.quadraKills = player.stats.quadraKills
-      stats.pentaKills = player.stats.pentaKills
-      stats.heal = player.stats.totalHeal
-      stats.towers = player.stats.turretKills
-      stats.longestLiving = player.stats.longestTimeSpentLiving
+      stats.criticalStrike = player.largestCriticalStrike
+      stats.killingSpree = player.largestKillingSpree
+      stats.doubleKills = player.doubleKills
+      stats.tripleKills = player.tripleKills
+      stats.quadraKills = player.quadraKills
+      stats.pentaKills = player.pentaKills
+      stats.heal = player.totalHeal
+      stats.towers = player.turretKills
+      stats.longestLiving = player.longestTimeSpentLiving
       stats.kp = totalKills === 0 ? 0 : +((stats.kills + stats.assists) * 100 / totalKills).toFixed(1)
     }
 
     let primaryRune: string | null = null
     let secondaryRune: string | null = null
-    if (player.stats.perkPrimaryStyle) {
-      ({ primaryRune, secondaryRune } = this.getPerksImages(player.stats.perk0, player.stats.perkSubStyle))
+
+    const primaryStyle = player.perks.styles.find(s => s.description === 'primaryStyle')
+    const subStyle = player.perks.styles.find(s => s.description === 'subStyle')
+
+    if (primaryStyle && subStyle && primaryStyle.selections.length) {
+      ({ primaryRune, secondaryRune } = this.getPerksImages(primaryStyle.selections[0].perk, subStyle.style))
     }
 
     const items: (Item | null)[] = []
     for (let i = 0; i < 6; i++) {
-      const id = player.stats['item' + i]
+      const id = player['item' + i]
       if (id === 0) {
         items.push(null)
         continue
@@ -182,7 +186,7 @@ export default abstract class MatchTransformer {
 
     const playerData: ParticipantDetails = {
       name,
-      summonerId: identity!.player.summonerId,
+      summonerId: player.summonerId,
       champion,
       role,
       primaryRune,
@@ -197,25 +201,25 @@ export default abstract class MatchTransformer {
       playerData.percentStats = percentStats!
     }
 
-    playerData.perks = this.getFullPerks(player.stats)
+    playerData.perks = this.getFullPerks(player.perks)
 
     return playerData
   }
 
-  public getFullPerks (stats: ParticipantStatsDto) {
+  public getFullPerks (perksDto: PerksDto) {
     const perks: Perks = {
-      primaryStyle: stats.perkPrimaryStyle,
-      secondaryStyle: stats.perkSubStyle,
+      primaryStyle: perksDto.styles.find(s => s.description === 'primaryStyle')!.style,
+      secondaryStyle: perksDto.styles.find(s => s.description === 'subStyle')!.style,
       selected: [],
     }
 
-    for (let i = 0; i < 6; i++) {
-      perks.selected.push(stats[`perk${i}`])
+    for (const styles of perksDto.styles) {
+      for (const perk of styles.selections) {
+        perks.selected.push(perk.perk)
+      }
     }
 
-    for (let i = 0; i < 3; i++) {
-      perks.selected.push(stats[`statPerk${i}`])
-    }
+    perks.selected.concat(Object.values(perksDto.statPerks))
 
     return perks
   }
@@ -245,16 +249,16 @@ export default abstract class MatchTransformer {
   * @param timeline from Riot Api
   * @param gamemode of the match to check if a role is needed
   */
-  public getRoleName (timeline: ParticipantTimelineDto, gamemode: number) {
-    if (!queuesWithRole.includes(gamemode)) {
+  public getRoleName (teamPosition: string, gamemode: number) {
+    if (!queuesWithRole.includes(gamemode) || !teamPosition) {
       return 'NONE'
     }
 
-    if (timeline.lane === 'BOTTOM' && timeline.role.includes('SUPPORT')) {
+    if (teamPosition === 'UTILITY') {
       return 'SUPPORT'
     }
 
-    return timeline.lane
+    return teamPosition
   }
 
   /**
@@ -317,11 +321,11 @@ export default abstract class MatchTransformer {
 
     let allyChamps: PlayerRole[] = []
     let enemyChamps: PlayerRole[] = []
-    match.participants.map(p => {
-      const items = [p.stats.item0, p.stats.item1, p.stats.item2, p.stats.item3, p.stats.item4, p.stats.item5]
+    match.info.participants.map(p => {
+      const items = [p.item0, p.item1, p.item2, p.item3, p.item4, p.item5]
       const playerRole = {
         champion: p.championId,
-        jungle: p.spell1Id === 11 || p.spell2Id === 11,
+        jungle: p.summoner1Id === 11 || p.summoner2Id === 11,
         support: supportItems.some(suppItem => items.includes(suppItem)),
       }
       p.teamId === allyTeamId ? allyChamps.push(playerRole) : enemyChamps.push(playerRole)

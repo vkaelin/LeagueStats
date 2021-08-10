@@ -1,5 +1,5 @@
 // import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
-import { getV5Region } from 'App/helpers'
+import { getRiotRegion } from 'App/helpers'
 import RiotRateLimiter from 'riot-ratelimiter'
 import { JaxConfig } from '../../JaxConfig'
 import JaxRequest from '../JaxRequest'
@@ -44,7 +44,7 @@ export default class MatchlistEndpoint {
 
   public puuid (puuid: string, region: string, beginIndex = 0, count = 100): Promise<MatchlistDto> {
     return new JaxRequest(
-      getV5Region(region),
+      getRiotRegion(region),
       this.config,
       `match/v5/matches/by-puuid/${puuid}/ids?start=${beginIndex}&count=${count}`,
       this.limiter,

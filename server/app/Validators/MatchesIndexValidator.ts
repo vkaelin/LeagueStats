@@ -29,7 +29,7 @@ export default class MatchesIndexValidator {
     accountId: schema.string(),
     region: schema.string(),
     gameIds: schema.array().members(
-      schema.number()
+      schema.string()
     ),
     season: schema.number.optional(),
   })

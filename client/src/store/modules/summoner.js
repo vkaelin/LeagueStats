@@ -180,7 +180,12 @@ export const actions = {
 
     const gameIds = getters.filteredMatchList
       .slice(state.overview.matchIndex, state.overview.matchIndex + 10)
-      .map(({ gameId }) => gameId)
+      .map((gameId) => {
+        if(typeof gameId == 'string') {
+          return gameId
+        }
+        return gameId.gameId.toString()
+      })
 
     const resp = await axios(({
       url: 'match',

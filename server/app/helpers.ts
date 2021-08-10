@@ -3,34 +3,50 @@ import { ParticipantBasic, ParticipantDetails } from './Models/Match'
 /**
  * All League of Legends regions used in Riot API
  */
-export type Region = 'br1' | 'eun1' | 'euw1' | 'jp1' | 'kr' | 'la1' | 'la2' | 'na1' | 'oc1' | 'tr1' | 'ru'
+export enum LeagueRegion {
+  BRAZIL = 'br1',
+  EUROPE_NORTHEAST = 'eun1',
+  EUROPE_WEST = 'euw1',
+  KOREA = 'kr',
+  LATIN_AMERICA_NORTH = 'la1',
+  LATIN_AMERICA_SOUTH = 'la2',
+  NORTH_AMERICA = 'na1',
+  OCEANIA = 'oc1',
+  RUSSIA = 'ru',
+  TURKEY = 'tr1',
+  JAPAN = 'jp1',
+}
 
 /**
  * New regions used in Riot API >= v5
  */
-export type V5Region = 'americas' | 'asia' | 'europe'
+export enum RiotRegion {
+  AMERICAS = 'americas',
+  ASIA = 'asia',
+  EUROPE = 'europe',
+}
 
 /**
  * Map old Riot API regions to new ones
  * @param region : old region
  * @returns new region name
  */
-export function getV5Region (region: string): V5Region {
-  switch (region as Region) { // TODO: remove cast when region is typed to "Region" everywhere instead of string
-    case 'na1':
-    case 'br1':
-    case 'la1':
-    case 'la2':
-    case 'oc1':
-      return 'americas'
-    case 'kr':
-    case 'jp1':
-      return 'asia'
-    case 'eun1':
-    case 'euw1':
-    case 'tr1':
-    case 'ru':
-      return 'europe'
+export function getRiotRegion (region: string): RiotRegion {
+  switch (region as LeagueRegion) { // TODO: remove cast when region is typed to "Region" everywhere instead of string
+    case LeagueRegion.NORTH_AMERICA:
+    case LeagueRegion.BRAZIL:
+    case LeagueRegion.LATIN_AMERICA_NORTH:
+    case LeagueRegion.LATIN_AMERICA_SOUTH:
+    case LeagueRegion.OCEANIA:
+      return RiotRegion.AMERICAS
+    case LeagueRegion.KOREA:
+    case LeagueRegion.JAPAN:
+      return RiotRegion.ASIA
+    case LeagueRegion.EUROPE_NORTHEAST:
+    case LeagueRegion.EUROPE_WEST:
+    case LeagueRegion.TURKEY:
+    case LeagueRegion.RUSSIA:
+      return RiotRegion.EUROPE
   }
 }
 

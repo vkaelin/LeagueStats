@@ -40,7 +40,9 @@ export default class MatchesController {
     if (!summonerDB) {
       return response.json(null)
     }
-    const matches = await MatchService.getMatches(puuid, accountId, region, gameIds, summonerDB)
+
+    const matchesId = /^\d/.test(gameIds[0]) ? gameIds.map(id => `${region.toUpperCase()}_${id}`) : gameIds
+    const matches = await MatchService.getMatches(puuid, accountId, region, matchesId, summonerDB)
 
     await summonerDB.save()
 
@@ -67,7 +69,8 @@ export default class MatchesController {
       console.log('MATCH DETAILS ALREADY SAVED')
       matchDetails = alreadySaved
     } else {
-      const match = await Jax.Match.get(gameId, region)
+      const matchId = `${region.toUpperCase()}_${gameId}`
+      const match = await Jax.Match.get(matchId, region)
       matchDetails = await DetailedMatchTransformer.transform(match)
       await DetailedMatch.create(matchDetails)
     }
