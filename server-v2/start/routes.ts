@@ -18,8 +18,9 @@
 |
 */
 
+import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async () => {
-  return { hello: 'world from LeagueStats V2' }
+  return { report: await HealthCheck.getReport() }
 })
