@@ -90,6 +90,14 @@ export function getSeasonNumber (timestamp: number): number {
 }
 
 /**
+ * Return current League of Legends season number
+ */
+export function getCurrentSeason () : number {
+  const lastTimestamp = Object.keys(seasons).pop()!
+  return seasons[lastTimestamp]
+}
+
+/**
  * Sort array of Players by roles according to a specific order
  * @param a first player
  * @param b second player
