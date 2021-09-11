@@ -156,7 +156,7 @@
             <svg class="w-5 h-5 text-blue-200">
               <use xlink:href="#stopwatch" />
             </svg>
-            <div class="text-lg font-medium text-teal-400">{{ data.time|secToTime }}</div>
+            <div class="text-lg font-medium text-teal-400">{{ (data.time/1000)|secToTime }}</div>
             <Tooltip>
               <template #trigger>
                 <div class="text-xs font-medium text-white">{{ data.date }}</div>
