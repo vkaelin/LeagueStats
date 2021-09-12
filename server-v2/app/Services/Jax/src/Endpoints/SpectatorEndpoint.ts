@@ -66,7 +66,7 @@ export default class SpectatorEndpoint {
     this.limiter = limiter
   }
 
-  public summonerID(summonerID: string, region: string) {
+  public summonerID(summonerID: string, region: string): Promise<CurrentGameInfo | undefined> {
     return new JaxRequest(
       region,
       this.config,

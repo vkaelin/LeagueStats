@@ -20,7 +20,7 @@ export default class Summoner extends BaseModel {
     localKey: 'puuid',
     foreignKey: 'summonerPuuid',
   })
-  public matchlist: HasMany<typeof SummonerMatchlist>
+  public matchList: HasMany<typeof SummonerMatchlist>
 
   @hasMany(() => MatchPlayer, {
     localKey: 'puuid',
