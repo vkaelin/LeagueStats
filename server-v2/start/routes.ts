@@ -20,6 +20,8 @@
 
 import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 import Route from '@ioc:Adonis/Core/Route'
+import MatchParser from 'App/Parsers/MatchParser'
+import Jax from 'App/Services/Jax'
 
 Route.get('/', async () => ({
   hi: 'Hello World from LeagueStats V2 API',
@@ -40,3 +42,23 @@ Route.post('/summoner/overview', 'SummonersController.overview')
 // Route.post('/match/details/ranks', 'MatchesController.showRanks')
 
 // Route.get('/cdragon/runes', 'CDragonController.runes')
+
+Route.get('/test', async () => {
+  const ids = [
+    'EUW1_5221171940',
+    'EUW1_5220845489',
+    'EUW1_5220852134',
+    'EUW1_5220728352',
+    'EUW1_5220656980',
+    'EUW1_5215357679',
+    'EUW1_5215311330',
+    'EUW1_5215244329',
+    'EUW1_5214301786',
+    'EUW1_5212337578',
+    'EUW1_5212353922',
+    'EUW1_5212371343',
+  ]
+  const region = 'euw1'
+  const matches = await Promise.all(ids.map((id) => Jax.Match.get(id, region)))
+  await MatchParser.parse(matches)
+})
