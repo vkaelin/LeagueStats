@@ -3,6 +3,8 @@ import { MatchlistDto } from './Jax/src/Endpoints/MatchlistEndpoint'
 import { SummonerDTO } from './Jax/src/Endpoints/SummonerEndpoint'
 import Summoner from 'App/Models/Summoner'
 import Database from '@ioc:Adonis/Lucid/Database'
+import SummonerMatchlist from 'App/Models/SummonerMatchlist'
+import MatchParser from 'App/Parsers/MatchParser'
 
 class MatchService {
   /**
@@ -35,8 +37,6 @@ class MatchService {
   }
   /**
    * Update the full MatchList of the summoner
-   * @param account of the summoner
-   * @param summonerDB summoner in the database
    */
   public async updateMatchList(account: SummonerDTO, summonerDB: Summoner): Promise<MatchlistDto> {
     console.time('matchList')
@@ -71,6 +71,45 @@ class MatchService {
 
     console.timeEnd('matchList')
     return currentMatchListIds
+  }
+
+  /**
+   * Fetch list of matches for a specific Summoner
+   */
+  public async getMatches(region: string, matchList: SummonerMatchlist[], summonerDB: Summoner) {
+    console.time('getMatches')
+
+    let matches: any[] = [] // Todo: add type of serialized matches here
+    const matchesToGetFromRiot: MatchlistDto = []
+    for (let i = 0; i < matchList.length; ++i) {
+      const matchSaved = await summonerDB
+        .related('matches')
+        .query()
+        .where('matchId', matchList[i].matchId)
+        .preload('match')
+        .first()
+
+      if (matchSaved) {
+        // TODO: Serialize match from DB + put it in Redis + push it in "matches"
+      } else {
+        matchesToGetFromRiot.push(matchList[i].matchId)
+      }
+    }
+
+    const requests = matchesToGetFromRiot.map((gameId) => Jax.Match.get(gameId, region))
+    const matchesFromApi = await Promise.all(requests)
+
+    /* If we have to store some matches in the db */
+    if (matchesFromApi.length !== 0) {
+      // Transform raw matches data
+      const parsedMatches = await MatchParser.parse(matchesFromApi)
+
+      // TODO: Serialize match from DB + put it in Redis + push it in "matches"
+    }
+
+    // Todo: Sort and return "matches"
+
+    console.timeEnd('getMatches')
   }
 }
 

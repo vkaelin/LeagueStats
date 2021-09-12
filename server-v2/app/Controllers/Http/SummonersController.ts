@@ -5,6 +5,7 @@ import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
 import SummonerService from 'App/Services/SummonerService'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
+import SummonerOverviewValidator from 'App/Validators/SummonerOverviewValidator'
 
 export default class SummonersController {
   public async basic({ request, response }: HttpContextContract) {
@@ -51,7 +52,30 @@ export default class SummonersController {
     return response.json(finalJSON)
   }
 
-  public async overview({ response }: HttpContextContract) {
+  public async overview({ request, response }: HttpContextContract) {
+    console.time('OVERVIEW_REQUEST')
+    const { puuid, accountId, region, season } = await request.validate(SummonerOverviewValidator)
+    const finalJSON: any = {}
+
+    // Summoner in DB
+    const summonerDB = await Summoner.firstOrCreate({ puuid: puuid })
+
+    // MATCHES BASIC
+    const matchIds = await summonerDB
+      .related('matchList')
+      .query()
+      .select('matchId')
+      .orderBy('matchId', 'desc')
+      .limit(10)
+
+    finalJSON.matchesDetails = await MatchService.getMatches(region, matchIds, summonerDB)
+
+    // TODO: STATS
+    // console.time('STATS')
+    // finalJSON.stats = 'todo'
+    // console.timeEnd('STATS')
+
+    console.timeEnd('OVERVIEW_REQUEST')
     return response.json('OVERVIEW REQUEST')
   }
 }
