@@ -59,13 +59,10 @@ class SummonerService {
    * @param summonerDB summoner in the database
    */
   public async getAllSummonerNames(account: SummonerDTO, summonerDB: Summoner) {
-    if (!summonerDB.names.find((n) => n.name === account.name)) {
-      await summonerDB.related('names').create({
-        name: account.name,
-      })
-    }
-
-    return summonerDB.names
+    await summonerDB.related('names').firstOrCreate({
+      name: account.name,
+    })
+    return summonerDB.related('names').query().select('name', 'created_at')
   }
 
   /**
