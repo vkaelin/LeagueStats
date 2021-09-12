@@ -5,6 +5,7 @@ import Summoner from 'App/Models/Summoner'
 import Database from '@ioc:Adonis/Lucid/Database'
 import SummonerMatchlist from 'App/Models/SummonerMatchlist'
 import MatchParser from 'App/Parsers/MatchParser'
+import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 
 class MatchService {
   /**
@@ -102,9 +103,13 @@ class MatchService {
     /* If we have to store some matches in the db */
     if (matchesFromApi.length !== 0) {
       // Transform raw matches data
-      const parsedMatches = await MatchParser.parse(matchesFromApi)
+      const parsedMatches: any = await MatchParser.parse(matchesFromApi)
 
       // TODO: Serialize match from DB + put it in Redis + push it in "matches"
+      const serializedMatches = await BasicMatchSerializer.serialize(
+        parsedMatches,
+        summonerDB.puuid
+      )
     }
 
     // Todo: Sort and return "matches"
