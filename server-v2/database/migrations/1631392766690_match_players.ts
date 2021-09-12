@@ -19,7 +19,8 @@ export default class MatchPlayers extends BaseSchema {
       table.integer('kills').notNullable()
       table.integer('deaths').notNullable()
       table.integer('assists').notNullable()
-      table.integer('kda').notNullable()
+      table.float('kda').notNullable()
+      table.float('kp').notNullable()
 
       table.integer('champ_level').notNullable()
       table.integer('champion_id').notNullable()
@@ -49,7 +50,7 @@ export default class MatchPlayers extends BaseSchema {
       table.integer('item6').notNullable()
 
       table.integer('damage_dealt_objectives').notNullable()
-      table.integer('damage_dealt_to_champions').notNullable()
+      table.integer('damage_dealt_champions').notNullable()
       table.integer('damage_taken').notNullable()
       table.integer('heal').notNullable()
       table.integer('minions').notNullable()
