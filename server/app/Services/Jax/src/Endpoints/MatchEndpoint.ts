@@ -298,7 +298,7 @@ export interface ParticipantDto {
   objectivesStolenAssists: number;
   participantId: number;
   pentaKills: number;
-  perks: PerksDto; // TODO
+  perks: PerksDto;
   physicalDamageDealt: number;
   physicalDamageDealtToChampions: number;
   physicalDamageTaken: number;
@@ -357,23 +357,23 @@ export enum ChampionTransformDto {
 export type LaneDto = 'TOP' | 'JUNGLE' |'MIDDLE' | 'BOTTOM'
 
 export interface PerksDto {
-  statPerks: StatPerksDto;
-  styles: StyleDto[];
+  statPerks: PerkStatsDto;
+  styles: PerkStyleDto[];
 }
 
-export interface StatPerksDto {
+export interface PerkStatsDto {
   defense: number;
   flex: number;
   offense: number;
 }
 
-export interface StyleDto {
+export interface PerkStyleDto {
   description: 'primaryStyle' | 'subStyle';
-  selections: SelectionDto[];
+  selections: PerkStyleSelectionDto[];
   style: number;
 }
 
-export interface SelectionDto {
+export interface PerkStyleSelectionDto {
   perk: number;
   var1: number;
   var2: number;
