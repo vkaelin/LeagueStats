@@ -16,7 +16,7 @@ export default class MatchPlayer extends BaseModel {
   public participantId: number
 
   @column()
-  public summonerId: number
+  public summonerId: string
 
   @column()
   public summonerPuuid: string
