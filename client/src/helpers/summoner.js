@@ -1,6 +1,7 @@
-import { secToTime, timeDifference } from '@/helpers/functions.js'
+import { createCDragonAssetUrl, secToTime, timeDifference } from '@/helpers/functions.js'
 import { maps, gameModes } from '@/data/data.js'
 import summonerSpells from '@/data/summonerSpells.json'
+import store from '@/store'
 
 const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
 
@@ -10,6 +11,12 @@ const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
  */
 export function createMatchData(matches) {
   for (const match of matches) {
+    // Runes
+    const primaryRune = match.perks.selected.length ? store.state.cdragon.runes.perks[match.perks.selected[0]] : null
+    const secondaryRune = store.state.cdragon.runes.perkstyles[match.perks.secondaryStyle]
+    match.primaryRune = primaryRune ? createCDragonAssetUrl(primaryRune.icon) : null
+    match.secondaryRune = secondaryRune ? createCDragonAssetUrl(secondaryRune.icon) : null
+
     const date = new Date(match.date)
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
     const timeOptions = { hour12: false, hour: '2-digit', minute: '2-digit' }

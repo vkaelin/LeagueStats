@@ -114,7 +114,7 @@ class MatchParser {
         time_spent_living: player.longestTimeSpentLiving,
         perks_primary_style: primaryStyle!.style,
         perks_secondary_style: secondaryStyle!.style,
-        perks_selected: perksSelected,
+        perks_selected: perksSelected.concat(Object.values(player.perks.statPerks)),
       })
     }
     await Database.table('match_players').multiInsert(matchPlayers)
