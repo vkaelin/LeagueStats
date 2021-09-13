@@ -10,9 +10,6 @@ const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
  */
 export function createMatchData(matches) {
   for (const match of matches) {
-    match.firstSum = getSummonerLink(match.firstSum)
-    match.secondSum = getSummonerLink(match.secondSum)
-
     const date = new Date(match.date)
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
     const timeOptions = { hour12: false, hour: '2-digit', minute: '2-digit' }

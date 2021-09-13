@@ -3,7 +3,6 @@ export interface SerializedMatch {
   champion: SerializedMatchChampion
   date: number
   enemyTeam: SerializedMatchTeamPlayer[]
-  firstSum: number
   matchId: string
   gamemode: number
   items: Array<SerializedMatchItem | null>
@@ -15,10 +14,11 @@ export interface SerializedMatch {
   result: string
   role: string
   season: number
-  secondSum: number
   stats: SerializedMatchStats
   summonerId: string
   summonerPuuid: string
+  summonerSpell1: SerializedMatchSummonerSpell | null
+  summonerSpell2: SerializedMatchSummonerSpell | null
   time: number
 }
 
@@ -35,6 +35,12 @@ export interface SerializedMatchChampion {
   id: number
   name: string
   roles: string[]
+}
+
+export interface SerializedMatchSummonerSpell {
+  name: string
+  description: string
+  icon: string
 }
 
 export interface SerializedMatchItem {

@@ -9,6 +9,7 @@ import {
   SerializedMatchItem,
   SerializedMatchPerks,
   SerializedMatchStats,
+  SerializedMatchSummonerSpell,
   SerializedMatchTeamPlayer,
 } from './SerializedTypes'
 
@@ -43,6 +44,23 @@ class BasicMatchSerializer extends MatchSerializer {
 
   protected getTeamSummary(players: MatchPlayer[]): SerializedMatchTeamPlayer[] {
     return players.map((p) => this.getPlayerSummary(p)).sort(sortTeamByRole)
+  }
+
+  /**
+   * Get Summoner Spell Data from CDragon
+   * @param id of the summonerSpell
+   */
+  public getSummonerSpell(id: number): SerializedMatchSummonerSpell | null {
+    if (id === 0) {
+      return null
+    }
+    const spell = CDragonService.summonerSpells.find((s) => s.id === id)!
+    const spellName = spell.iconPath.split('/assets/')[1].toLowerCase()
+    return {
+      name: spell.name,
+      description: spell.description,
+      icon: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${spellName}`,
+    }
   }
 
   protected getItems(player: MatchPlayer): Array<SerializedMatchItem | null> {
@@ -123,7 +141,6 @@ class BasicMatchSerializer extends MatchSerializer {
       champion: this.getChampion(identity.championId),
       date: match.date,
       enemyTeam: this.getTeamSummary(enemyPlayers),
-      firstSum: identity.summoner1Id,
       matchId: match.id,
       gamemode: match.gamemode,
       items: this.getItems(identity),
@@ -135,9 +152,10 @@ class BasicMatchSerializer extends MatchSerializer {
       result: allyTeam.result,
       role: identity.teamPosition.length ? identity.teamPosition : 'NONE',
       season: getSeasonNumber(match.date),
-      secondSum: identity.summoner2Id,
       stats: this.getStats(identity),
       summonerId: identity.summonerId,
+      summonerSpell1: this.getSummonerSpell(identity.summoner1Id),
+      summonerSpell2: this.getSummonerSpell(identity.summoner2Id),
       summonerPuuid: puuid,
       time: match.gameDuration,
     }

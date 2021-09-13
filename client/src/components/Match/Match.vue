@@ -35,11 +35,11 @@
               ></div>
               <div class="flex flex-col justify-around ml-2">
                 <div
-                  :style="{backgroundImage: `url(${data.firstSum})`}"
+                  :style="{backgroundImage: `url(${data.summonerSpell1.icon})`}"
                   class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-1000"
                 ></div>
                 <div
-                  :style="{backgroundImage: `url(${data.secondSum})`}"
+                  :style="{backgroundImage: `url(${data.summonerSpell2.icon})`}"
                   class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-1000"
                 ></div>
               </div>
