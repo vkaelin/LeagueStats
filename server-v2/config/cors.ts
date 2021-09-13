@@ -20,7 +20,7 @@ const corsConfig: CorsConfig = {
   | you can define a function to enable/disable it on per request basis as well.
   |
   */
-  enabled: false,
+  enabled: true,
 
   // You can also use a function that return true or false.
   // enabled: (request) => request.url().startsWith('/api')
@@ -44,7 +44,17 @@ const corsConfig: CorsConfig = {
   |                     one of the above values.
   |
   */
-  origin: true,
+  origin: (origin) => {
+    if (process.env.NODE_ENV === 'development') {
+      return true
+    }
+
+    if (origin.includes('leaguestats.gg')) {
+      return true
+    }
+
+    return false
+  },
 
   /*
   |--------------------------------------------------------------------------
