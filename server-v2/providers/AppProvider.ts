@@ -9,6 +9,10 @@ export default class AppProvider {
 
   public async boot() {
     // IoC container is ready
+
+    // Load CDragon Service
+    const CDragon = await import('App/Services/CDragonService')
+    await CDragon.default.getContext()
   }
 
   public async ready() {

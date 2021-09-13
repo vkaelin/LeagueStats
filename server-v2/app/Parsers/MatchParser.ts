@@ -2,6 +2,8 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import { MatchDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
 import Match from 'App/Models/Match'
 import { getSeasonNumber } from 'App/helpers'
+import CDragonService from 'App/Services/CDragonService'
+import { ChampionRoles } from './ParsedType'
 class MatchParser {
   public async parseOneMatch(match: MatchDto) {
     // Parse + store in database
@@ -25,7 +27,7 @@ class MatchParser {
         result = 'Remake'
       }
       const teamColor = team.teamId === 100 ? 'blueTeam' : 'redTeam'
-      parsedMatch.related(teamColor).create({
+      await parsedMatch.related(teamColor).create({
         matchId: match.metadata.matchId,
         color: team.teamId,
         result: result,
@@ -64,6 +66,9 @@ class MatchParser {
         }
       }
 
+      const originalChampionData = CDragonService.champions.find((c) => c.id === player.championId)!
+      const champRoles = originalChampionData.roles
+
       matchPlayers.push({
         match_id: match.metadata.matchId,
         participant_id: player.participantId,
@@ -79,8 +84,8 @@ class MatchParser {
         kp: kp,
         champ_level: player.champLevel,
         champion_id: player.championId,
-        champion_role1: 0, // TODO
-        champion_role2: 0, // TODO
+        champion_role1: ChampionRoles[champRoles[0]],
+        champion_role2: ChampionRoles[champRoles[1]],
         double_kills: player.doubleKills,
         triple_kills: player.tripleKills,
         quadra_kills: player.quadraKills,
@@ -113,6 +118,11 @@ class MatchParser {
       })
     }
     await Database.table('match_players').multiInsert(matchPlayers)
+
+    // Load Match relations
+    await parsedMatch.load((loader) => {
+      loader.load('blueTeam').load('redTeam').load('players')
+    })
     return parsedMatch
   }
 

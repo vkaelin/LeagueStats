@@ -98,7 +98,7 @@ class MatchService {
 
       if (matchSaved) {
         // TODO: Serialize match from DB + put it in Redis + push it in "matches"
-        matches.push(await BasicMatchSerializer.serializeOneMatch(matchSaved, summonerDB.puuid))
+        matches.push(BasicMatchSerializer.serializeOneMatch(matchSaved, summonerDB.puuid))
       } else {
         matchesToGetFromRiot.push(matchList[i].matchId)
       }
@@ -113,10 +113,7 @@ class MatchService {
       const parsedMatches: any = await MatchParser.parse(matchesFromApi)
 
       // TODO: Serialize match from DB + put it in Redis + push it in "matches"
-      const serializedMatches = await BasicMatchSerializer.serialize(
-        parsedMatches,
-        summonerDB.puuid
-      )
+      const serializedMatches = BasicMatchSerializer.serialize(parsedMatches, summonerDB.puuid)
       matches = [...matches, ...serializedMatches]
     }
 

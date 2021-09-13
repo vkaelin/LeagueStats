@@ -1,6 +1,7 @@
 import { getSeasonNumber, sortTeamByRole } from 'App/helpers'
 import Match from 'App/Models/Match'
 import MatchPlayer from 'App/Models/MatchPlayer'
+import CDragonService from 'App/Services/CDragonService'
 import MatchSerializer from './MatchSerializer'
 import {
   SerializedMatch,
@@ -17,7 +18,7 @@ class BasicMatchSerializer extends MatchSerializer {
    * @param id of the champion
    */
   protected getChampion(id: number): SerializedMatchChampion {
-    const originalChampionData = this.champions.find((c) => c.id === id)
+    const originalChampionData = CDragonService.champions.find((c) => c.id === id)
     const icon =
       'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/' +
       originalChampionData!.squarePortraitPath.split('/assets/')[1].toLowerCase()
@@ -53,7 +54,7 @@ class BasicMatchSerializer extends MatchSerializer {
         continue
       }
 
-      const item = this.items.find((i) => i.id === id)
+      const item = CDragonService.items.find((i) => i.id === id)
       if (!item) {
         items.push(null)
         continue
@@ -104,19 +105,7 @@ class BasicMatchSerializer extends MatchSerializer {
     }
   }
 
-  public async serializeOneMatch(match: Match, puuid: string): Promise<SerializedMatch> {
-    // TODO: use a CDragon Service
-    await super.getContext()
-
-    // TODO: do we really need to...
-    if (!match.players) {
-      console.log('NEED TO LOAD')
-
-      await match.load('players')
-      await match.load('blueTeam')
-      await match.load('redTeam')
-    }
-
+  public serializeOneMatch(match: Match, puuid: string): SerializedMatch {
     const identity = match.players.find((p) => p.summonerPuuid === puuid)!
 
     const allyTeamColor = identity.team === 100 ? 'blueTeam' : 'redTeam'
@@ -126,7 +115,7 @@ class BasicMatchSerializer extends MatchSerializer {
     const enemyPlayers: MatchPlayer[] = []
 
     for (const p of match.players) {
-      p.team === allyTeam.color ? allyPlayers.push(p) : enemyPlayers.push(p)
+      p.team === identity.team ? allyPlayers.push(p) : enemyPlayers.push(p)
     }
 
     return {
@@ -144,7 +133,7 @@ class BasicMatchSerializer extends MatchSerializer {
       perks: this.getPerks(identity),
       region: match.region,
       result: allyTeam.result,
-      role: identity.teamPosition,
+      role: identity.teamPosition.length ? identity.teamPosition : 'NONE',
       season: getSeasonNumber(match.date),
       secondSum: identity.summoner2Id,
       stats: this.getStats(identity),
@@ -153,10 +142,8 @@ class BasicMatchSerializer extends MatchSerializer {
       time: match.gameDuration,
     }
   }
-  public async serialize(matches: Match[], puuid: string): Promise<SerializedMatch[]> {
-    await super.getContext()
-
-    return await Promise.all(matches.map((match) => this.serializeOneMatch(match, puuid)))
+  public serialize(matches: Match[], puuid: string): SerializedMatch[] {
+    return matches.map((match) => this.serializeOneMatch(match, puuid))
   }
 }
 
