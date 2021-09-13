@@ -22,6 +22,10 @@ export default abstract class MatchSerializer {
    * Get global Context with CDragon Data
    */
   public async getContext() {
+    if (this.champions) {
+      return
+    }
+
     const items = await Jax.CDragon.items()
     const champions = await Jax.CDragon.champions()
     const perks = await Jax.CDragon.perks()

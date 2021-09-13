@@ -76,6 +76,6 @@ export default class SummonersController {
     // console.timeEnd('STATS')
 
     console.timeEnd('OVERVIEW_REQUEST')
-    return response.json('OVERVIEW REQUEST')
+    return response.json(finalJSON)
   }
 }

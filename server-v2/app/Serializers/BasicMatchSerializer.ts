@@ -104,7 +104,19 @@ class BasicMatchSerializer extends MatchSerializer {
     }
   }
 
-  public serializeOneMatch(match: Match, puuid: string): SerializedMatch {
+  public async serializeOneMatch(match: Match, puuid: string): Promise<SerializedMatch> {
+    // TODO: use a CDragon Service
+    await super.getContext()
+
+    // TODO: do we really need to...
+    if (!match.players) {
+      console.log('NEED TO LOAD')
+
+      await match.load('players')
+      await match.load('blueTeam')
+      await match.load('redTeam')
+    }
+
     const identity = match.players.find((p) => p.summonerPuuid === puuid)!
 
     const allyTeamColor = identity.team === 100 ? 'blueTeam' : 'redTeam'
@@ -114,8 +126,7 @@ class BasicMatchSerializer extends MatchSerializer {
     const enemyPlayers: MatchPlayer[] = []
 
     for (const p of match.players) {
-      // TODO: remove Number() when Lazar push the updated migration
-      p.team === Number(allyTeam.color) ? allyPlayers.push(p) : enemyPlayers.push(p)
+      p.team === allyTeam.color ? allyPlayers.push(p) : enemyPlayers.push(p)
     }
 
     return {
@@ -132,7 +143,7 @@ class BasicMatchSerializer extends MatchSerializer {
       name: identity.summonerName,
       perks: this.getPerks(identity),
       region: match.region,
-      result: allyTeam.result.toString(), // TODO: remove toString() when Lazar push the updated migration
+      result: allyTeam.result,
       role: identity.teamPosition,
       season: getSeasonNumber(match.date),
       secondSum: identity.summoner2Id,
@@ -145,7 +156,7 @@ class BasicMatchSerializer extends MatchSerializer {
   public async serialize(matches: Match[], puuid: string): Promise<SerializedMatch[]> {
     await super.getContext()
 
-    return matches.map((match) => this.serializeOneMatch(match, puuid))
+    return await Promise.all(matches.map((match) => this.serializeOneMatch(match, puuid)))
   }
 }
 

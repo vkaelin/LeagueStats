@@ -7,6 +7,7 @@ import SummonerMatchlist from 'App/Models/SummonerMatchlist'
 import MatchParser from 'App/Parsers/MatchParser'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 import { SerializedMatch } from 'App/Serializers/SerializedTypes'
+import Match from 'App/Models/Match'
 
 class MatchService {
   /**
@@ -88,18 +89,16 @@ class MatchService {
     let matches: SerializedMatch[] = []
     const matchesToGetFromRiot: MatchlistDto = []
     for (let i = 0; i < matchList.length; ++i) {
-      const matchSaved = await summonerDB
-        .related('matches')
-        .query()
-        .where('matchId', matchList[i].matchId)
-        .preload('match', (preloader) => {
-          preloader.preload('blueTeam').preload('redTeam').preload('players')
-        })
+      const matchSaved = await Match.query()
+        .where('id', matchList[i].matchId)
+        .preload('blueTeam')
+        .preload('redTeam')
+        .preload('players')
         .first()
 
       if (matchSaved) {
         // TODO: Serialize match from DB + put it in Redis + push it in "matches"
-        matches.push(BasicMatchSerializer.serializeOneMatch(matchSaved.match, summonerDB.puuid))
+        matches.push(await BasicMatchSerializer.serializeOneMatch(matchSaved, summonerDB.puuid))
       } else {
         matchesToGetFromRiot.push(matchList[i].matchId)
       }

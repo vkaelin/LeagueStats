@@ -19,10 +19,10 @@ class MatchParser {
     })
 
     // - 2x MatchTeam : Red and Blue
-    let result = 'Remake'
     for (const team of match.info.teams) {
-      if (match.info.gameDuration >= 300) {
-        result = team.win ? 'Win' : 'Fail'
+      let result = team.win ? 'Win' : 'Fail'
+      if (match.info.gameDuration < 300) {
+        result = 'Remake'
       }
       const teamColor = team.teamId === 100 ? 'blueTeam' : 'redTeam'
       parsedMatch.related(teamColor).create({
@@ -41,9 +41,9 @@ class MatchParser {
     // - 10x MatchPlayer
     const matchPlayers: any[] = []
     for (const player of match.info.participants) {
-      const kda: number =
+      const kda =
         player.kills + player.assists !== 0 && player.deaths === 0
-          ? Infinity
+          ? player.kills + player.assists
           : +(player.deaths === 0 ? 0 : (player.kills + player.assists) / player.deaths).toFixed(2)
 
       const teamKills =
@@ -51,7 +51,7 @@ class MatchParser {
           ? match.info.teams[0].objectives.champion.kills
           : match.info.teams[1].objectives.champion.kills
 
-      const kp: number =
+      const kp =
         teamKills === 0 ? 0 : +(((player.kills + player.assists) * 100) / teamKills).toFixed(1)
 
       const primaryStyle = player.perks.styles.find((s) => s.description === 'primaryStyle')
