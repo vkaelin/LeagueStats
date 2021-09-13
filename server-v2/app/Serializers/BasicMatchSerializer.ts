@@ -1,4 +1,4 @@
-import { getSeasonNumber } from 'App/helpers'
+import { getSeasonNumber, sortTeamByRole } from 'App/helpers'
 import Match from 'App/Models/Match'
 import MatchPlayer from 'App/Models/MatchPlayer'
 import MatchSerializer from './MatchSerializer'
@@ -41,7 +41,7 @@ class BasicMatchSerializer extends MatchSerializer {
   }
 
   protected getTeamSummary(players: MatchPlayer[]): SerializedMatchTeamPlayer[] {
-    return players.map((p) => this.getPlayerSummary(p))
+    return players.map((p) => this.getPlayerSummary(p)).sort(sortTeamByRole)
   }
 
   protected getItems(player: MatchPlayer): Array<SerializedMatchItem | null> {
@@ -104,20 +104,16 @@ class BasicMatchSerializer extends MatchSerializer {
     }
   }
 
-  public async serializeOneMatch(match: Match, puuid: string): Promise<SerializedMatch> {
-    const players = await match.related('players').query()
-    const identity = players.find((p) => p.summonerPuuid === puuid)!
+  public serializeOneMatch(match: Match, puuid: string): SerializedMatch {
+    const identity = match.players.find((p) => p.summonerPuuid === puuid)!
 
     const allyTeamColor = identity.team === 100 ? 'blueTeam' : 'redTeam'
-    // const enemyTeamColor = allyTeamColor === 'blueTeam' ? 'redTeam' : 'blueTeam'
-
-    const allyTeam = await match.related(allyTeamColor).query().firstOrFail()
-    // const enemyTeam = await match.related(enemyTeamColor).query().firstOrFail()
+    const allyTeam = match[allyTeamColor]
 
     const allyPlayers: MatchPlayer[] = []
     const enemyPlayers: MatchPlayer[] = []
 
-    for (const p of players) {
+    for (const p of match.players) {
       // TODO: remove Number() when Lazar push the updated migration
       p.team === Number(allyTeam.color) ? allyPlayers.push(p) : enemyPlayers.push(p)
     }
@@ -149,7 +145,7 @@ class BasicMatchSerializer extends MatchSerializer {
   public async serialize(matches: Match[], puuid: string): Promise<SerializedMatch[]> {
     await super.getContext()
 
-    return Promise.all(matches.map((match) => this.serializeOneMatch(match, puuid)))
+    return matches.map((match) => this.serializeOneMatch(match, puuid))
   }
 }
 

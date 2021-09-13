@@ -6,6 +6,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import SummonerMatchlist from 'App/Models/SummonerMatchlist'
 import MatchParser from 'App/Parsers/MatchParser'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
+import { SerializedMatch } from 'App/Serializers/SerializedTypes'
 
 class MatchService {
   /**
@@ -77,21 +78,28 @@ class MatchService {
   /**
    * Fetch list of matches for a specific Summoner
    */
-  public async getMatches(region: string, matchList: SummonerMatchlist[], summonerDB: Summoner) {
+  public async getMatches(
+    region: string,
+    matchList: SummonerMatchlist[],
+    summonerDB: Summoner
+  ): Promise<SerializedMatch[]> {
     console.time('getMatches')
 
-    let matches: any[] = [] // Todo: add type of serialized matches here
+    let matches: SerializedMatch[] = []
     const matchesToGetFromRiot: MatchlistDto = []
     for (let i = 0; i < matchList.length; ++i) {
       const matchSaved = await summonerDB
         .related('matches')
         .query()
         .where('matchId', matchList[i].matchId)
-        .preload('match')
+        .preload('match', (preloader) => {
+          preloader.preload('blueTeam').preload('redTeam').preload('players')
+        })
         .first()
 
       if (matchSaved) {
         // TODO: Serialize match from DB + put it in Redis + push it in "matches"
+        matches.push(BasicMatchSerializer.serializeOneMatch(matchSaved.match, summonerDB.puuid))
       } else {
         matchesToGetFromRiot.push(matchList[i].matchId)
       }
@@ -110,11 +118,13 @@ class MatchService {
         parsedMatches,
         summonerDB.puuid
       )
+      matches = [...matches, ...serializedMatches]
     }
 
-    // Todo: Sort and return "matches"
-
+    // Todo: check if we need to sort here
+    matches.sort((a, b) => (a.date < b.date ? 1 : -1))
     console.timeEnd('getMatches')
+    return matches
   }
 }
 
