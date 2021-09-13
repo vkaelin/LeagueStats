@@ -1,12 +1,10 @@
+import Database from '@ioc:Adonis/Lucid/Database'
 import { MatchDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
 import Match from 'App/Models/Match'
-import MatchPlayer from 'App/Models/MatchPlayer'
 import { getSeasonNumber } from 'App/helpers'
 class MatchParser {
   public async parseOneMatch(match: MatchDto) {
-    // TODO: parse + store in database
-    // From the MatchDto, we need these Models in the DB:
-
+    // Parse + store in database
     // - 1x Match
     const parsedMatch = await Match.create({
       id: match.metadata.matchId,
@@ -15,7 +13,7 @@ class MatchParser {
       gamemode: match.info.queueId,
       date: match.info.gameCreation,
       region: match.info.platformId.toLowerCase(),
-      result: 0, // TODO
+      result: match.info.teams[0].win ? match.info.teams[0].teamId : match.info.teams[1].teamId,
       season: getSeasonNumber(match.info.gameCreation),
       gameDuration: match.info.gameDuration,
     })
@@ -40,60 +38,81 @@ class MatchParser {
       })
     }
 
-    // - 10x MatchPlayer // TODO
+    // - 10x MatchPlayer
+    const matchPlayers: any[] = []
+    for (const player of match.info.participants) {
+      const kda: number =
+        player.kills + player.assists !== 0 && player.deaths === 0
+          ? Infinity
+          : +(player.deaths === 0 ? 0 : (player.kills + player.assists) / player.deaths).toFixed(2)
 
-    const matchPlayers = match.info.participants.map(
-      (p) => <MatchPlayer>(<unknown>{
-          matchId: match.metadata.matchId,
-          participantId: p.participantId,
-          summonerId: p.summonerId,
-          summonerPuuid: p.puuid,
-          summonerName: p.summonerName,
-          team: p.teamId,
-          teamPosition: p.teamPosition,
-          kills: p.kills,
-          deaths: p.deaths,
-          assists: p.assists,
-          kda: 100,
-          kp: 100,
-          champLevel: p.champLevel,
-          championId: p.championId,
-          championRole1: 1,
-          championRole2: 2,
-          doubleKills: p.doubleKills,
-          tripleKills: p.tripleKills,
-          quadraKills: p.quadraKills,
-          pentaKills: p.pentaKills,
-          baronKills: p.baronKills,
-          dragonKills: p.dragonKills,
-          turretKills: p.turretKills,
-          visionScore: p.visionScore,
-          gold: p.goldEarned,
-          summoner1Id: p.summoner1Id,
-          summoner2Id: p.summoner2Id,
-          item0: p.item0,
-          item1: p.item1,
-          item2: p.item2,
-          item3: p.item3,
-          item4: p.item4,
-          item5: p.item5,
-          item6: p.item6,
-          damageDealtObjectives: p.damageDealtToObjectives,
-          damageDealtChampions: p.totalDamageDealtToChampions,
-          damageTaken: p.totalDamageTaken,
-          heal: p.totalHeal,
-          minions: p.totalMinionsKilled,
-          criticalStrike: p.largestCriticalStrike,
-          killingSpree: p.killingSprees,
-          timeSpentLiving: p.longestTimeSpentLiving,
-          perksPrimaryStyle: 100,
-          perksSecondaryStyle: 100,
-          perksSelected: [1, 2, 3],
-        })
-    )
+      const teamKills =
+        match.info.teams[0].teamId === player.teamId
+          ? match.info.teams[0].objectives.champion.kills
+          : match.info.teams[1].objectives.champion.kills
 
-    parsedMatch.related('players').createMany(matchPlayers)
+      const kp: number =
+        teamKills === 0 ? 0 : +(((player.kills + player.assists) * 100) / teamKills).toFixed(1)
 
+      const primaryStyle = player.perks.styles.find((s) => s.description === 'primaryStyle')
+      const secondaryStyle = player.perks.styles.find((s) => s.description === 'subStyle')
+
+      const perksSelected: number[] = []
+      for (const styles of player.perks.styles) {
+        for (const perk of styles.selections) {
+          perksSelected.push(perk.perk)
+        }
+      }
+
+      matchPlayers.push({
+        match_id: match.metadata.matchId,
+        participant_id: player.participantId,
+        summoner_id: player.summonerId,
+        summoner_puuid: player.puuid,
+        summoner_name: player.summonerName,
+        team: player.teamId,
+        team_position: player.teamPosition,
+        kills: player.kills,
+        deaths: player.deaths,
+        assists: player.assists,
+        kda: kda,
+        kp: kp,
+        champ_level: player.champLevel,
+        champion_id: player.championId,
+        champion_role1: 0, // TODO
+        champion_role2: 0, // TODO
+        double_kills: player.doubleKills,
+        triple_kills: player.tripleKills,
+        quadra_kills: player.quadraKills,
+        penta_kills: player.pentaKills,
+        baron_kills: player.baronKills,
+        dragon_kills: player.dragonKills,
+        turret_kills: player.turretKills,
+        vision_score: player.visionScore,
+        gold: player.goldEarned,
+        summoner1_id: player.summoner1Id,
+        summoner2_id: player.summoner2Id,
+        item0: player.item0,
+        item1: player.item1,
+        item2: player.item2,
+        item3: player.item3,
+        item4: player.item4,
+        item5: player.item5,
+        item6: player.item6,
+        damage_dealt_objectives: player.damageDealtToObjectives,
+        damage_dealt_champions: player.totalDamageDealtToChampions,
+        damage_taken: player.totalDamageTaken,
+        heal: player.totalHeal,
+        minions: player.totalMinionsKilled,
+        critical_strike: player.largestCriticalStrike,
+        killing_spree: player.killingSprees,
+        time_spent_living: player.longestTimeSpentLiving,
+        perks_primary_style: primaryStyle!.style,
+        perks_secondary_style: secondaryStyle!.style,
+        perks_selected: perksSelected,
+      })
+    }
+    await Database.table('match_players').multiInsert(matchPlayers)
     return parsedMatch
   }
 
