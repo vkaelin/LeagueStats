@@ -41,7 +41,7 @@ Route.post('/summoner/overview', 'SummonersController.overview')
 // Route.post('/match/details', 'MatchesController.show')
 // Route.post('/match/details/ranks', 'MatchesController.showRanks')
 
-// Route.get('/cdragon/runes', 'CDragonController.runes')
+Route.get('/cdragon/runes', 'CDragonController.runes')
 
 Route.get('/test', async () => {
   const ids = [
