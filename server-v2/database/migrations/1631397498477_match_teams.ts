@@ -8,8 +8,8 @@ export default class MatchTeams extends BaseSchema {
       table.increments('id')
       table.string('match_id', 15)
 
-      table.string('color', 4).notNullable()
-      table.integer('result').notNullable()
+      table.integer('color').notNullable() // 100 ou 200
+      table.string('result', 6) // Win - Remake - Fail
 
       table.integer('barons').notNullable()
       table.integer('dragons').notNullable()

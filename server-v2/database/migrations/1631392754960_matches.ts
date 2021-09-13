@@ -6,10 +6,10 @@ export default class Matches extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id', 15).primary()
-      table.integer('game_id').notNullable()
+      table.bigInteger('game_id').notNullable()
       table.integer('map').notNullable()
       table.integer('gamemode').notNullable()
-      table.integer('date').notNullable()
+      table.bigInteger('date').notNullable()
       table.string('region', 4).notNullable()
       table.integer('result').notNullable()
 

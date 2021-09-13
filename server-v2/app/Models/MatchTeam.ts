@@ -12,10 +12,10 @@ export default class MatchTeam extends BaseModel {
   public match: BelongsTo<typeof Match>
 
   @column()
-  public color: string
+  public color: number
 
   @column()
-  public result: number
+  public result: string
 
   @column()
   public barons: number
