@@ -5,6 +5,7 @@
  * file.
  */
 
+import pg from 'pg'
 import Env from '@ioc:Adonis/Core/Env'
 import { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
 
@@ -50,5 +51,10 @@ const databaseConfig: DatabaseConfig = {
     },
   },
 }
+
+// Set bigint as number instead of string in postgres
+pg.types.setTypeParser(20, (value) => {
+  return parseInt(value)
+})
 
 export default databaseConfig
