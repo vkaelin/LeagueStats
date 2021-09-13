@@ -6,7 +6,7 @@ export interface SerializedMatch {
   firstSum: number
   matchId: string
   gamemode: number
-  items: SerializedMatchItem[]
+  items: Array<SerializedMatchItem | null>
   level: number
   map: number
   name: string
@@ -60,7 +60,7 @@ export interface SerializedMatchStats {
   doubleKills: number
   gold: number
   heal: number
-  kda: number
+  kda: number | string
   killingSpree: number
   kills: number
   kp: number
