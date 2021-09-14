@@ -10,22 +10,33 @@ import RoleIdentificationService, {
   ChampionsPlayRate,
 } from 'App/Services/RoleIdentificationService'
 
+interface Identifiable {
+  id: number
+}
+
+export interface CDragonCache<T> {
+  [id: number]: T
+}
+
 class CDragonService {
-  public champions: ChampionDTO[]
-  public items: ItemDTO[]
-  public perks: PerkDTO[]
-  public perkstyles: PerkStyleDTO[]
-  public summonerSpells: SummonerSpellDTO[]
+  public champions: CDragonCache<ChampionDTO>
+  public items: CDragonCache<ItemDTO>
+  public perks: CDragonCache<PerkDTO>
+  public perkstyles: CDragonCache<PerkStyleDTO>
+  public summonerSpells: CDragonCache<SummonerSpellDTO>
   public championRoles: ChampionsPlayRate
+
+  public readonly BASE_URL =
+    'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/'
+
+  private setupCache<T extends Identifiable>(dto: T[]) {
+    return dto.reduce((obj, item) => ((obj[item.id] = item), obj), {})
+  }
 
   /**
    * Get global Context with CDragon Data
    */
   public async getContext() {
-    if (this.champions) {
-      return
-    }
-
     const items = await Jax.CDragon.items()
     const champions = await Jax.CDragon.champions()
     const perks = await Jax.CDragon.perks()
@@ -33,11 +44,11 @@ class CDragonService {
     const summonerSpells = await Jax.CDragon.summonerSpells()
     const championRoles = await RoleIdentificationService.pullData().catch(() => {})
 
-    this.champions = champions
-    this.items = items
-    this.perks = perks
-    this.perkstyles = perkstyles.styles
-    this.summonerSpells = summonerSpells
+    this.champions = this.setupCache(champions)
+    this.items = this.setupCache(items)
+    this.perks = this.setupCache(perks)
+    this.perkstyles = this.setupCache(perkstyles.styles)
+    this.summonerSpells = this.setupCache(summonerSpells)
     this.championRoles = championRoles as ChampionsPlayRate
   }
 }

@@ -19,17 +19,17 @@ class BasicMatchSerializer extends MatchSerializer {
    * @param id of the champion
    */
   protected getChampion(id: number): SerializedMatchChampion {
-    const originalChampionData = CDragonService.champions.find((c) => c.id === id)
+    const originalChampionData = CDragonService.champions[id]
     const icon =
-      'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/' +
-      originalChampionData!.squarePortraitPath.split('/assets/')[1].toLowerCase()
+      CDragonService.BASE_URL +
+      originalChampionData.squarePortraitPath.split('/assets/')[1].toLowerCase()
 
     return {
       icon,
-      id: originalChampionData!.id,
-      name: originalChampionData!.name,
-      alias: originalChampionData!.alias,
-      roles: originalChampionData!.roles,
+      id: originalChampionData.id,
+      name: originalChampionData.name,
+      alias: originalChampionData.alias,
+      roles: originalChampionData.roles,
     }
   }
 
@@ -51,15 +51,15 @@ class BasicMatchSerializer extends MatchSerializer {
    * @param id of the summonerSpell
    */
   public getSummonerSpell(id: number): SerializedMatchSummonerSpell | null {
-    if (id === 0) {
+    const spell = CDragonService.summonerSpells[id]
+    if (id === 0 || !spell) {
       return null
     }
-    const spell = CDragonService.summonerSpells.find((s) => s.id === id)!
     const spellName = spell.iconPath.split('/assets/')[1].toLowerCase()
     return {
       name: spell.name,
       description: spell.description,
-      icon: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${spellName}`,
+      icon: `${CDragonService.BASE_URL}${spellName}`,
     }
   }
 
@@ -72,7 +72,7 @@ class BasicMatchSerializer extends MatchSerializer {
         continue
       }
 
-      const item = CDragonService.items.find((i) => i.id === id)
+      const item = CDragonService.items[id]
       if (!item) {
         items.push(null)
         continue
@@ -80,7 +80,7 @@ class BasicMatchSerializer extends MatchSerializer {
 
       const itemUrl = item.iconPath.split('/assets/')[1].toLowerCase()
       items.push({
-        image: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${itemUrl}`,
+        image: `${CDragonService.BASE_URL}${itemUrl}`,
         name: item.name,
         description: item.description,
         price: item.priceTotal,

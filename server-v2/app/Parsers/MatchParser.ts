@@ -66,7 +66,7 @@ class MatchParser {
         }
       }
 
-      const originalChampionData = CDragonService.champions.find((c) => c.id === player.championId)!
+      const originalChampionData = CDragonService.champions[player.championId]
       const champRoles = originalChampionData.roles
 
       matchPlayers.push({
