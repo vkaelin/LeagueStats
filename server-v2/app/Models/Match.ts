@@ -1,4 +1,4 @@
-import { BaseModel, column, HasMany, hasMany, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import MatchPlayer from './MatchPlayer'
 import MatchTeam from './MatchTeam'
 
@@ -32,11 +32,8 @@ export default class Match extends BaseModel {
   @column()
   public gameDuration: number
 
-  @hasOne(() => MatchTeam)
-  public blueTeam: HasOne<typeof MatchTeam>
-
-  @hasOne(() => MatchTeam)
-  public redTeam: HasOne<typeof MatchTeam>
+  @hasMany(() => MatchTeam)
+  public teams: HasMany<typeof MatchTeam>
 
   @hasMany(() => MatchPlayer)
   public players: HasMany<typeof MatchPlayer>

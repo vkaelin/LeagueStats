@@ -123,11 +123,9 @@ class BasicMatchSerializer extends MatchSerializer {
     }
   }
 
-  public serializeOneMatch(match: Match, puuid: string): SerializedMatch {
+  public serializeOneMatch(match: Match, puuid: string, newMatch = false): SerializedMatch {
     const identity = match.players.find((p) => p.summonerPuuid === puuid)!
-
-    const allyTeamColor = identity.team === 100 ? 'blueTeam' : 'redTeam'
-    const allyTeam = match[allyTeamColor]
+    const allyTeam = match.teams.find((t) => t.color === identity.team)!
 
     const allyPlayers: MatchPlayer[] = []
     const enemyPlayers: MatchPlayer[] = []
@@ -147,6 +145,7 @@ class BasicMatchSerializer extends MatchSerializer {
       level: identity.champLevel,
       map: match.map,
       name: identity.summonerName,
+      newMatch,
       perks: this.getPerks(identity),
       region: match.region,
       result: allyTeam.result,
@@ -160,8 +159,8 @@ class BasicMatchSerializer extends MatchSerializer {
       time: match.gameDuration,
     }
   }
-  public serialize(matches: Match[], puuid: string): SerializedMatch[] {
-    return matches.map((match) => this.serializeOneMatch(match, puuid))
+  public serialize(matches: Match[], puuid: string, newMatches = false): SerializedMatch[] {
+    return matches.map((match) => this.serializeOneMatch(match, puuid, newMatches))
   }
 }
 

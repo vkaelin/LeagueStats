@@ -9,6 +9,7 @@ export interface SerializedMatch {
   level: number
   map: number
   name: string
+  newMatch: boolean
   perks: SerializedMatchPerks
   region: string
   result: string

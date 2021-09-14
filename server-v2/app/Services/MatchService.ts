@@ -3,7 +3,6 @@ import { MatchlistDto } from './Jax/src/Endpoints/MatchlistEndpoint'
 import { SummonerDTO } from './Jax/src/Endpoints/SummonerEndpoint'
 import Summoner from 'App/Models/Summoner'
 import Database from '@ioc:Adonis/Lucid/Database'
-import SummonerMatchlist from 'App/Models/SummonerMatchlist'
 import MatchParser from 'App/Parsers/MatchParser'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 import { SerializedMatch } from 'App/Serializers/SerializedTypes'
@@ -91,8 +90,7 @@ class MatchService {
     for (let i = 0; i < matchIds.length; ++i) {
       const matchSaved = await Match.query()
         .where('id', matchIds[i])
-        .preload('blueTeam')
-        .preload('redTeam')
+        .preload('teams')
         .preload('players')
         .first()
 
@@ -113,7 +111,7 @@ class MatchService {
       const parsedMatches: any = await MatchParser.parse(matchesFromApi)
 
       // TODO: Serialize match from DB + put it in Redis + push it in "matches"
-      const serializedMatches = BasicMatchSerializer.serialize(parsedMatches, puuid)
+      const serializedMatches = BasicMatchSerializer.serialize(parsedMatches, puuid, true)
       matches = [...matches, ...serializedMatches]
     }
 

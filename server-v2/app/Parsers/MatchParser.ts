@@ -26,8 +26,7 @@ class MatchParser {
       if (match.info.gameDuration < 300) {
         result = 'Remake'
       }
-      const teamColor = team.teamId === 100 ? 'blueTeam' : 'redTeam'
-      await parsedMatch.related(teamColor).create({
+      await parsedMatch.related('teams').create({
         matchId: match.metadata.matchId,
         color: team.teamId,
         result: result,
@@ -121,7 +120,7 @@ class MatchParser {
 
     // Load Match relations
     await parsedMatch.load((loader) => {
-      loader.load('blueTeam').load('redTeam').load('players')
+      loader.load('teams').load('players')
     })
     return parsedMatch
   }
