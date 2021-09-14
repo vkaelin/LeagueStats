@@ -70,7 +70,9 @@ class MatchParser {
         console.log('CHAMPION ID NOT FOUND: ' + player.championId)
         console.log('FROM MATCH ' + match.metadata.matchId)
         const championId = Object.keys(CDragonService.champions).find(
-          (key) => CDragonService.champions[key].name === player.championName
+          (key) =>
+            CDragonService.champions[key].name === player.championName ||
+            CDragonService.champions[key].alias === player.championName
         )
         player.championId = championId ? Number(championId) : 1
         console.log('CHAMPION ID FROM NAME : ' + championId)

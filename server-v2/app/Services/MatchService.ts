@@ -43,10 +43,7 @@ class MatchService {
   public async updateMatchList(account: SummonerDTO, summonerDB: Summoner): Promise<MatchlistDto> {
     console.time('matchList')
 
-    const currentMatchList = await summonerDB
-      .related('matchList')
-      .query()
-      .orderBy('matchId', 'desc')
+    const currentMatchList = await summonerDB.related('matchList').query().orderBy('matchId', 'asc')
     const currentMatchListIds = currentMatchList.map((m) => m.matchId)
 
     const newMatchList = await this._fetchMatchListUntil(account, (newMatchList: MatchlistDto) => {
@@ -72,7 +69,7 @@ class MatchService {
     }
 
     console.timeEnd('matchList')
-    return currentMatchListIds
+    return currentMatchListIds.reverse()
   }
 
   /**
