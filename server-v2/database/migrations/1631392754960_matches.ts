@@ -13,7 +13,7 @@ export default class Matches extends BaseSchema {
       table.string('region', 4).notNullable()
       table.integer('result').notNullable()
 
-      table.integer('season').notNullable()
+      table.float('season').notNullable()
       table.integer('game_duration').notNullable()
 
       // table.integer('blue_team_id').notNullable()

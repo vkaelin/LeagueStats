@@ -85,7 +85,7 @@ class MatchService {
   ): Promise<SerializedMatch[]> {
     console.time('getMatches')
 
-    let matches: SerializedMatch[] = []
+    const matches: SerializedMatch[] = []
     const matchesToGetFromRiot: MatchlistDto = []
     for (let i = 0; i < matchIds.length; ++i) {
       const matchSaved = await Match.query()
@@ -112,7 +112,7 @@ class MatchService {
 
       // TODO: Serialize match from DB + put it in Redis + push it in "matches"
       const serializedMatches = BasicMatchSerializer.serialize(parsedMatches, puuid, true)
-      matches = [...matches, ...serializedMatches]
+      matches.push(...serializedMatches)
     }
 
     // Todo: check if we need to sort here
