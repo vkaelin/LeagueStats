@@ -37,7 +37,7 @@ Route.post('/summoner/overview', 'SummonersController.overview')
 // Route.post('/summoner/records', 'SummonersController.records')
 // Route.post('/summoner/live', 'SummonersController.liveMatchDetails')
 
-// Route.post('/match', 'MatchesController.index')
+Route.post('/match', 'MatchesController.index')
 // Route.post('/match/details', 'MatchesController.show')
 // Route.post('/match/details/ranks', 'MatchesController.showRanks')
 

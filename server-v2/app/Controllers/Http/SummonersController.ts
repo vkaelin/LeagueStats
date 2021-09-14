@@ -54,21 +54,22 @@ export default class SummonersController {
 
   public async overview({ request, response }: HttpContextContract) {
     console.time('OVERVIEW_REQUEST')
-    const { puuid, accountId, region, season } = await request.validate(SummonerOverviewValidator)
+    const { puuid, region, season } = await request.validate(SummonerOverviewValidator)
     const finalJSON: any = {}
 
     // Summoner in DB
     const summonerDB = await Summoner.firstOrCreate({ puuid: puuid })
 
     // MATCHES BASIC
-    const matchIds = await summonerDB
+    const matchlist = await summonerDB
       .related('matchList')
       .query()
       .select('matchId')
       .orderBy('matchId', 'desc')
       .limit(10)
+    const matchIds = matchlist.map((m) => m.matchId)
 
-    finalJSON.matchesDetails = await MatchService.getMatches(region, matchIds, summonerDB)
+    finalJSON.matchesDetails = await MatchService.getMatches(region, matchIds, puuid)
 
     // TODO: STATS
     // console.time('STATS')

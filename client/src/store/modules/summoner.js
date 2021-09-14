@@ -178,22 +178,15 @@ export const actions = {
   async moreMatches({ commit, getters, rootState }) {
     commit('MATCHES_LOADING')
 
-    const gameIds = getters.filteredMatchList
+    const matchIds = getters.filteredMatchList
       .slice(state.overview.matchIndex, state.overview.matchIndex + 10)
-      .map((gameId) => {
-        if(typeof gameId == 'string') {
-          return gameId
-        }
-        return gameId.gameId.toString()
-      })
 
     const resp = await axios(({
       url: 'match',
       data: {
         puuid: state.basic.account.puuid,
-        accountId: state.basic.account.accountId,
         region: rootState.regionsList[rootState.settings.region],
-        gameIds
+        matchIds
       },
       method: 'POST'
     })).catch(() => { })

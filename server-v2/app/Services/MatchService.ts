@@ -81,16 +81,16 @@ class MatchService {
    */
   public async getMatches(
     region: string,
-    matchList: SummonerMatchlist[],
-    summonerDB: Summoner
+    matchIds: string[],
+    puuid: string
   ): Promise<SerializedMatch[]> {
     console.time('getMatches')
 
     let matches: SerializedMatch[] = []
     const matchesToGetFromRiot: MatchlistDto = []
-    for (let i = 0; i < matchList.length; ++i) {
+    for (let i = 0; i < matchIds.length; ++i) {
       const matchSaved = await Match.query()
-        .where('id', matchList[i].matchId)
+        .where('id', matchIds[i])
         .preload('blueTeam')
         .preload('redTeam')
         .preload('players')
@@ -98,9 +98,9 @@ class MatchService {
 
       if (matchSaved) {
         // TODO: Serialize match from DB + put it in Redis + push it in "matches"
-        matches.push(BasicMatchSerializer.serializeOneMatch(matchSaved, summonerDB.puuid))
+        matches.push(BasicMatchSerializer.serializeOneMatch(matchSaved, puuid))
       } else {
-        matchesToGetFromRiot.push(matchList[i].matchId)
+        matchesToGetFromRiot.push(matchIds[i])
       }
     }
 
@@ -113,7 +113,7 @@ class MatchService {
       const parsedMatches: any = await MatchParser.parse(matchesFromApi)
 
       // TODO: Serialize match from DB + put it in Redis + push it in "matches"
-      const serializedMatches = BasicMatchSerializer.serialize(parsedMatches, summonerDB.puuid)
+      const serializedMatches = BasicMatchSerializer.serialize(parsedMatches, puuid)
       matches = [...matches, ...serializedMatches]
     }
 

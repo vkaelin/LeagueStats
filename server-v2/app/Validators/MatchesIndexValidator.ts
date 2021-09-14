@@ -1,7 +1,7 @@
 import { schema } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class SummonerOverviewValidator {
+export default class MatchesIndexValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -26,6 +26,7 @@ export default class SummonerOverviewValidator {
   public schema = schema.create({
     puuid: schema.string(),
     region: schema.string(),
+    matchIds: schema.array().members(schema.string()),
     season: schema.number.optional(),
   })
 
