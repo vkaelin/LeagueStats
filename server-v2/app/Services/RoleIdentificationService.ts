@@ -11,14 +11,6 @@ export interface ChampionsPlayRate {
   }
 }
 
-export interface FinalRoleComposition {
-  TOP?: number
-  JUNGLE?: number
-  MIDDLE?: number
-  BOTTOM?: number
-  SUPPORT?: number
-}
-
 export interface RoleComposition {
   TOP?: number
   JUNGLE?: number
@@ -215,7 +207,7 @@ class RoleIdentificationService {
     composition: number[],
     jungle?: number,
     support?: number
-  ): FinalRoleComposition {
+  ): RoleComposition {
     // Set composition champion playrate to 0% if not present in the json data
     for (const compChamp of composition) {
       if (championPositions[compChamp]) {
@@ -304,10 +296,7 @@ class RoleIdentificationService {
       identified[best[0]] = best[1]
     }
 
-    // Rename UTILITY to SUPPORT
-    const { UTILITY: SUPPORT, ...rest } = positions
-
-    return { ...rest, SUPPORT }
+    return positions
   }
 }
 
