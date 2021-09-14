@@ -16,8 +16,8 @@ export default class MatchTeams extends BaseSchema {
       table.integer('inhibitors').notNullable()
       table.integer('rift_heralds').notNullable()
 
-      table.specificType('bans', 'INT[]').notNullable()
-      table.specificType('ban_orders', 'INT[]').notNullable()
+      table.specificType('bans', 'INT[]').nullable()
+      table.specificType('ban_orders', 'INT[]').nullable()
     })
   }
 

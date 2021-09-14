@@ -14,7 +14,7 @@ export default class MatchPlayers extends BaseSchema {
       table.string('summoner_name', 16).notNullable()
 
       table.integer('team').notNullable()
-      table.string('team_position', 8).notNullable()
+      table.integer('team_position').notNullable()
 
       table.integer('kills').notNullable()
       table.integer('deaths').notNullable()

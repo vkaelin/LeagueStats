@@ -1,9 +1,9 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import { MatchDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
 import Match from 'App/Models/Match'
-import { getSeasonNumber } from 'App/helpers'
+import { getSeasonNumber, queuesWithRole } from 'App/helpers'
 import CDragonService from 'App/Services/CDragonService'
-import { ChampionRoles } from './ParsedType'
+import { ChampionRoles, TeamPosition } from './ParsedType'
 class MatchParser {
   public async parseOneMatch(match: MatchDto) {
     // Parse + store in database
@@ -34,8 +34,8 @@ class MatchParser {
         dragons: team.objectives.dragon.kills,
         inhibitors: team.objectives.inhibitor.kills,
         riftHeralds: team.objectives.riftHerald.kills,
-        bans: team.bans.map((ban) => ban.championId),
-        banOrders: team.bans.map((ban) => ban.pickTurn),
+        bans: team.bans.length ? team.bans.map((ban) => ban.championId) : undefined,
+        banOrders: team.bans.length ? team.bans.map((ban) => ban.pickTurn) : undefined,
       })
     }
 
@@ -65,6 +65,17 @@ class MatchParser {
         }
       }
 
+      // Fix championId bug in older matches
+      if (player.championId > 1000) {
+        console.log('CHAMPION ID NOT FOUND: ' + player.championId)
+        console.log('FROM MATCH ' + match.metadata.matchId)
+        const championId = Object.keys(CDragonService.champions).find(
+          (key) => CDragonService.champions[key].name === player.championName
+        )
+        player.championId = championId ? Number(championId) : 1
+        console.log('CHAMPION ID FROM NAME : ' + championId)
+      }
+
       const originalChampionData = CDragonService.champions[player.championId]
       const champRoles = originalChampionData.roles
 
@@ -75,7 +86,10 @@ class MatchParser {
         summoner_puuid: player.puuid,
         summoner_name: player.summonerName,
         team: player.teamId,
-        team_position: player.teamPosition,
+        team_position:
+          player.teamPosition.length && queuesWithRole.includes(match.info.queueId)
+            ? TeamPosition[player.teamPosition]
+            : TeamPosition.NONE,
         kills: player.kills,
         deaths: player.deaths,
         assists: player.assists,

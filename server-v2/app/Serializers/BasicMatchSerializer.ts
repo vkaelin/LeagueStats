@@ -1,6 +1,7 @@
 import { getSeasonNumber, sortTeamByRole } from 'App/helpers'
 import Match from 'App/Models/Match'
 import MatchPlayer from 'App/Models/MatchPlayer'
+import { TeamPosition } from 'App/Parsers/ParsedType'
 import CDragonService from 'App/Services/CDragonService'
 import MatchSerializer from './MatchSerializer'
 import {
@@ -38,7 +39,7 @@ class BasicMatchSerializer extends MatchSerializer {
       puuid: player.summonerPuuid,
       champion: this.getChampion(player.championId),
       name: player.summonerName,
-      role: player.teamPosition,
+      role: TeamPosition[player.teamPosition],
     }
   }
 
@@ -149,7 +150,7 @@ class BasicMatchSerializer extends MatchSerializer {
       perks: this.getPerks(identity),
       region: match.region,
       result: allyTeam.result,
-      role: identity.teamPosition.length ? identity.teamPosition : 'NONE',
+      role: TeamPosition[identity.teamPosition],
       season: getSeasonNumber(match.date),
       stats: this.getStats(identity),
       summonerId: identity.summonerId,

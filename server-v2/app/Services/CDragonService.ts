@@ -15,7 +15,7 @@ interface Identifiable {
 }
 
 export interface CDragonCache<T> {
-  [id: number]: T
+  [id: string]: T
 }
 
 class CDragonService {

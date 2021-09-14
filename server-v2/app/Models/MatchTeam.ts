@@ -30,8 +30,8 @@ export default class MatchTeam extends BaseModel {
   public riftHeralds: number
 
   @column()
-  public bans: number[]
+  public bans?: number[]
 
   @column()
-  public banOrders: number[]
+  public banOrders?: number[]
 }

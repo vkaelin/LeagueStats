@@ -105,6 +105,6 @@ export function getCurrentSeason(): number {
  * @param b second player
  */
 export function sortTeamByRole(a: SerializedMatchTeamPlayer, b: SerializedMatchTeamPlayer) {
-  const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+  const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }

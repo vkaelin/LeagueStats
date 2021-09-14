@@ -7,5 +7,11 @@ export enum ChampionRoles {
   tank,
 }
 
-// TODO
-export enum TeamPosition {}
+export enum TeamPosition {
+  NONE,
+  TOP,
+  JUNGLE,
+  MIDDLE,
+  BOTTOM,
+  UTILITY,
+}

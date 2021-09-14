@@ -34,7 +34,7 @@ export default class MatchPlayer extends BaseModel {
   public team: number
 
   @column()
-  public teamPosition: string
+  public teamPosition: number
 
   @column()
   public kills: number
