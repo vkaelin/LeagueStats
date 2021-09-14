@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { getCurrentSeason } from 'App/helpers'
 import Summoner from 'App/Models/Summoner'
+import MatchRepository from 'App/Repositories/MatchRepository'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
 import SummonerService from 'App/Services/SummonerService'
@@ -72,9 +73,11 @@ export default class SummonersController {
     finalJSON.matchesDetails = await MatchService.getMatches(region, matchIds, puuid)
 
     // TODO: STATS
-    // console.time('STATS')
-    // finalJSON.stats = 'todo'
-    // console.timeEnd('STATS')
+    console.time('STATS')
+    finalJSON.stats = {
+      global: await MatchRepository.globalStats(puuid),
+    }
+    console.timeEnd('STATS')
 
     console.timeEnd('OVERVIEW_REQUEST')
     return response.json(finalJSON)
