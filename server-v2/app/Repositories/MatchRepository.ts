@@ -7,7 +7,7 @@ class MatchRepository {
   private readonly JOIN_ALL = `${this.JOIN_MATCHES} ${this.JOIN_TEAMS}`
 
   private readonly GLOBAL_FILTERS = `
-    summoner_puuid = :puuid
+    match_players.summoner_puuid = :puuid
     AND match_teams.result != 'Remake'
     AND matches.gamemode NOT IN (800, 810, 820, 830, 840, 850, 2000, 2010, 2020)
   `
@@ -145,6 +145,32 @@ class MatchRepository {
     `
     const { rows } = await Database.rawQuery(query, { puuid })
     return rows
+  }
+
+  public async mates(puuid: string) {
+    const query = `
+    SELECT
+        (array_agg(mates.summoner_name ORDER BY mates.match_id DESC))[1] as name,
+        COUNT(match_players.id) as count,
+        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
+        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+    FROM
+        match_players
+        ${this.JOIN_ALL}
+        INNER JOIN match_players as mates ON match_players.match_id = mates.match_id AND match_players.team = mates.team
+    WHERE
+        ${this.GLOBAL_FILTERS}
+    GROUP BY
+        mates.summoner_puuid
+    ORDER BY
+        count DESC, wins DESC
+    LIMIT
+        15
+    `
+    const { rows } = await Database.rawQuery(query, { puuid })
+
+    // Remove the Summoner himself + unique game mates
+    return rows.splice(1).filter((row) => row.count > 1)
   }
 }
 

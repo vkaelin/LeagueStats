@@ -41,17 +41,17 @@ class StatsService {
       champ.id = ChampionRoles[champ.id]
     }
     console.timeEnd('CHAMPION-CLASS')
-    // console.time('MATES')
-    // const mates = await MatchRepository.mates(puuid, season)
-    // console.timeEnd('MATES')
+    console.time('MATES')
+    const mates = await MatchRepository.mates(puuid)
+    console.timeEnd('MATES')
 
     return {
       global: globalStats,
       league: gamemodeStats,
       role: roleStats.sort(sortTeamByRole),
-      class: championClassStats,
-      // mates,
       champion: championStats,
+      class: championClassStats,
+      mates,
     }
   }
 }
