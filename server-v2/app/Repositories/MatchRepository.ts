@@ -1,9 +1,9 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 
 class MatchRepository {
-  public async globalStats(puuid: string, season?: number) {
+  public async globalStats(puuid: string) {
     const query = `
-      SELECT
+    SELECT
         SUM(assists) as assists,
         SUM(deaths) as deaths,
         SUM(kills) as kills,
@@ -17,12 +17,12 @@ class MatchRepository {
     FROM
         match_players
         INNER JOIN matches ON matches.id = match_players.match_id
-        INNER JOIN match_teams ON matches.id = match_teams.match_id AND match_players.team = match_teams.color
+        INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
     WHERE
         summoner_puuid = :puuid
     LIMIT
         1
-      `
+    `
     const { rows } = await Database.rawQuery(query, { puuid })
     return rows[0]
     // return Database.from('match_players')
@@ -47,6 +47,26 @@ class MatchRepository {
     //   })
     //   .avg('kp')
     //   .first()
+  }
+
+  public async gamemodeStats(puuid: string) {
+    const query = `
+    SELECT
+        matches.gamemode as id,
+        COUNT(match_players.id) as count,
+        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
+        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+    FROM
+        match_players
+        INNER JOIN matches ON matches.id = match_players.match_id
+        INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
+    WHERE
+        summoner_puuid = :puuid
+    GROUP BY
+        matches.gamemode
+    `
+    const { rows } = await Database.rawQuery(query, { puuid })
+    return rows
   }
 }
 

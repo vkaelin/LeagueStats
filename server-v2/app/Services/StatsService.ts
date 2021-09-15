@@ -4,11 +4,11 @@ import MatchRepository from 'App/Repositories/MatchRepository'
 class StatsService {
   public async getSummonerStats(puuid: string, season?: number) {
     console.time('GLOBAL')
-    const globalStats = await MatchRepository.globalStats(puuid, season)
+    const globalStats = await MatchRepository.globalStats(puuid)
     console.timeEnd('GLOBAL')
-    // console.time('GAMEMODE')
-    // const gamemodeStats = await MatchRepository.gamemodeStats(puuid, season)
-    // console.timeEnd('GAMEMODE')
+    console.time('GAMEMODE')
+    const gamemodeStats = await MatchRepository.gamemodeStats(puuid)
+    console.timeEnd('GAMEMODE')
     // console.time('ROLE')
     // const roleStats = await MatchRepository.roleStats(puuid, season)
     // // Check if all roles are in the array
@@ -36,7 +36,7 @@ class StatsService {
 
     return {
       global: globalStats,
-      // league: gamemodeStats,
+      league: gamemodeStats,
       // role: roleStats.sort(sortTeamByRole),
       // class: championClassStats,
       // mates,
