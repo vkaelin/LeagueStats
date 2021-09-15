@@ -185,12 +185,12 @@
       </div>
       <ul class="mt-1 text-gray-100">
         <li
-          v-for="(championClass, index) in championClasses"
+          v-for="(championClass, index) in stats.class"
           :key="index"
           :class="{'bg-blue-760': index % 2 !== 0}"
           class="flex items-center justify-between px-4 py-1 leading-tight"
         >
-          <div class="w-2/4 text-left capitalize">{{ championClass._id }}</div>
+          <div class="w-2/4 text-left capitalize">{{ championClass.id }}</div>
           <div
             :class="calculateWinrate(championClass.wins, championClass.count).color"
             class="w-1/4"
@@ -241,16 +241,12 @@ export default {
   },
 
   computed: {
-    championClasses() {
-      const classes = [...this.stats.class]
-      return classes.sort((a, b) => b.count - a.count)
-    },
     mostPlayedRole() {
       return Math.max(...this.stats.role.map(r => r.count), 0)
     },
     globalStatsKeys() {
       // eslint-disable-next-line no-unused-vars
-      const { _id, wins, losses, count, time, kp, ...rest } = this.stats.global
+      const { id, wins, losses, count, time, kp, ...rest } = this.stats.global
       return rest
     },
     ...mapState({
@@ -270,10 +266,9 @@ export default {
     leagueStatsByType(typeName) {
       return this.stats.league
         .map(l => {
-          return { ...l, ...gameModes[l._id] }
+          return { ...l, ...gameModes[l.id] }
         })
         .filter(l => l.type === typeName)
-        .sort((a, b) => b.count - a.count)
     },
     roundedRoleLosses(win, count) {
       return win === count ? 'rounded-full' : 'rounded-b-full'

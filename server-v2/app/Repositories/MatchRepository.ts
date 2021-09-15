@@ -1,6 +1,17 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 
 class MatchRepository {
+  private readonly JOIN_MATCHES = 'INNER JOIN matches ON matches.id = match_players.match_id'
+  private readonly JOIN_TEAMS =
+    'INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color'
+  private readonly JOIN_ALL = `${this.JOIN_MATCHES} ${this.JOIN_TEAMS}`
+
+  private readonly GLOBAL_FILTERS = `
+    summoner_puuid = :puuid
+    AND match_teams.result != 'Remake'
+    AND matches.gamemode NOT IN (800, 810, 820, 830, 840, 850, 2000, 2010, 2020)
+  `
+
   public async globalStats(puuid: string) {
     const query = `
     SELECT
@@ -16,10 +27,9 @@ class MatchRepository {
         COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
     FROM
         match_players
-        INNER JOIN matches ON matches.id = match_players.match_id
-        INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
+        ${this.JOIN_ALL}
     WHERE
-        summoner_puuid = :puuid
+        ${this.GLOBAL_FILTERS}
     LIMIT
         1
     `
@@ -58,12 +68,13 @@ class MatchRepository {
         COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
     FROM
         match_players
-        INNER JOIN matches ON matches.id = match_players.match_id
-        INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
+        ${this.JOIN_ALL}
     WHERE
-        summoner_puuid = :puuid
+        ${this.GLOBAL_FILTERS}
     GROUP BY
         matches.gamemode
+    ORDER BY
+        count DESC
     `
     const { rows } = await Database.rawQuery(query, { puuid })
     return rows
@@ -78,9 +89,10 @@ class MatchRepository {
         COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
     FROM
         match_players
-        INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
+        ${this.JOIN_ALL}
     WHERE
-        summoner_puuid = :puuid
+        ${this.GLOBAL_FILTERS}
+        AND match_players.team_position != 0
     GROUP BY
         role
     `
@@ -100,13 +112,13 @@ class MatchRepository {
         COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
     FROM
         match_players
-        INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
+        ${this.JOIN_ALL}
     WHERE
-        summoner_puuid = :puuid
+        ${this.GLOBAL_FILTERS}
     GROUP BY
         match_players.champion_id
     ORDER BY
-        count DESC
+        count DESC, match_players.champion_id
     LIMIT
       :limit
     `
@@ -123,9 +135,9 @@ class MatchRepository {
         COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
     FROM
         match_players
-        INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
+        ${this.JOIN_ALL}
     WHERE
-        summoner_puuid = :puuid
+        ${this.GLOBAL_FILTERS}
     GROUP BY
         match_players.champion_role
     ORDER BY

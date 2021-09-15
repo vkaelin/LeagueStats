@@ -17,7 +17,7 @@ class MatchParser {
       region: match.info.platformId.toLowerCase(),
       result: match.info.teams[0].win ? match.info.teams[0].teamId : match.info.teams[1].teamId,
       season: getSeasonNumber(match.info.gameCreation),
-      gameDuration: match.info.gameDuration,
+      gameDuration: Math.round(match.info.gameDuration / 1000),
     })
 
     // - 2x MatchTeam : Red and Blue

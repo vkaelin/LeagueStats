@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import MatchService from 'App/Services/MatchService'
+import StatsService from 'App/Services/StatsService'
 import MatchesIndexValidator from 'App/Validators/MatchesIndexValidator'
 
 export default class MatchesController {
@@ -12,11 +13,10 @@ export default class MatchesController {
     const { puuid, region, matchIds, season } = await request.validate(MatchesIndexValidator)
     const matches = await MatchService.getMatches(region, matchIds, puuid)
 
-    // TODO: add Stats here
-    // const stats = await StatsService.getSummonerStats(puuid, season)
+    const stats = await StatsService.getSummonerStats(puuid, season)
     return response.json({
       matches,
-      stats: 'TODO',
+      stats,
     })
   }
 }

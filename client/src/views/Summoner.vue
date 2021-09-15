@@ -10,10 +10,10 @@
       class="z-40 sidebar"
       container-selector=".vue-sticky-container"
     >
-      <!-- TODO: add it back when implemented -->
-      <!-- <SummonerChampions />
+      <SummonerChampions />
       <SummonerStats />
-      <SummonerMates /> -->
+      <!-- TODO: add it back when implemented -->
+      <!-- <SummonerMates /> -->
     </VueStickySidebar>
     <div class="w-9/12">
       <div v-if="current && current.participants" class="mb-4">
@@ -57,9 +57,9 @@ import LiveMatch from '@/components/Match/LiveMatch.vue'
 import LoadingButton from '@/components/Form/LoadingButton.vue'
 import Match from '@/components/Match/Match.vue'
 import OverviewLoader from '@/components/Summoner/Overview/OverviewLoader.vue'
-// import SummonerChampions from '@/components/Summoner/Overview/SummonerChampions.vue'
+import SummonerChampions from '@/components/Summoner/Overview/SummonerChampions.vue'
 // import SummonerMates from '@/components/Summoner/Overview/SummonerMates.vue'
-// import SummonerStats from '@/components/Summoner/Overview/SummonerStats.vue'
+import SummonerStats from '@/components/Summoner/Overview/SummonerStats.vue'
 import VueStickySidebar from 'vue-sticky-sidebar'
 
 export default {
@@ -68,9 +68,9 @@ export default {
     LoadingButton,
     Match,
     OverviewLoader,
-    // SummonerChampions,
+    SummonerChampions,
     // SummonerMates,
-    // SummonerStats,
+    SummonerStats,
     VueStickySidebar
   },
 
