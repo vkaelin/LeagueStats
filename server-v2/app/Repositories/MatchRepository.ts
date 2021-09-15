@@ -113,6 +113,27 @@ class MatchRepository {
     const { rows } = await Database.rawQuery(query, { puuid, limit })
     return rows
   }
+
+  public async championClassStats(puuid: string) {
+    const query = `
+    SELECT
+        match_players.champion_role as id,
+        COUNT(match_players.id) as count,
+        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
+        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+    FROM
+        match_players
+        INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
+    WHERE
+        summoner_puuid = :puuid
+    GROUP BY
+        match_players.champion_role
+    ORDER BY
+        count DESC
+    `
+    const { rows } = await Database.rawQuery(query, { puuid })
+    return rows
+  }
 }
 
 export default new MatchRepository()

@@ -58,10 +58,7 @@ export default class MatchPlayer extends BaseModel {
   public championId: number
 
   @column()
-  public championRole1: number
-
-  @column()
-  public championRole2: number
+  public championRole: number
 
   @column()
   public doubleKills: number

@@ -24,8 +24,7 @@ export default class MatchPlayers extends BaseSchema {
 
       table.integer('champ_level').notNullable()
       table.integer('champion_id').notNullable()
-      table.integer('champion_role1').notNullable()
-      table.integer('champion_role2').nullable()
+      table.integer('champion_role').notNullable()
 
       table.integer('double_kills').notNullable()
       table.integer('triple_kills').notNullable()

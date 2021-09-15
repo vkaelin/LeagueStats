@@ -1,5 +1,5 @@
 import { sortTeamByRole } from 'App/helpers'
-import { TeamPosition } from 'App/Parsers/ParsedType'
+import { ChampionRoles, TeamPosition } from 'App/Parsers/ParsedType'
 import MatchRepository from 'App/Repositories/MatchRepository'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 
@@ -35,9 +35,12 @@ class StatsService {
       champ.champion = BasicMatchSerializer.getChampion(champ.id)
     }
     console.timeEnd('CHAMPION')
-    // console.time('CHAMPION-CLASS')
-    // const championClassStats = await MatchRepository.championClassStats(puuid, season)
-    // console.timeEnd('CHAMPION-CLASS')
+    console.time('CHAMPION-CLASS')
+    const championClassStats = await MatchRepository.championClassStats(puuid)
+    for (const champ of championClassStats) {
+      champ.id = ChampionRoles[champ.id]
+    }
+    console.timeEnd('CHAMPION-CLASS')
     // console.time('MATES')
     // const mates = await MatchRepository.mates(puuid, season)
     // console.timeEnd('MATES')
@@ -46,7 +49,7 @@ class StatsService {
       global: globalStats,
       league: gamemodeStats,
       role: roleStats.sort(sortTeamByRole),
-      // class: championClassStats,
+      class: championClassStats,
       // mates,
       champion: championStats,
     }
