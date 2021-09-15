@@ -12,6 +12,25 @@ class MatchRepository {
     AND matches.gamemode NOT IN (800, 810, 820, 830, 840, 850, 2000, 2010, 2020)
   `
 
+  public async recentActivity(puuid: string) {
+    const query = `
+    SELECT
+        to_timestamp(matches.date/1000)::date as day,
+        COUNT(match_players.id) as count
+    FROM
+        match_players
+        ${this.JOIN_MATCHES}
+    WHERE
+        match_players.summoner_puuid = :puuid
+    GROUP BY
+        day
+    ORDER BY
+        day
+    `
+    const { rows } = await Database.rawQuery(query, { puuid })
+    return rows
+  }
+
   public async globalStats(puuid: string) {
     const query = `
     SELECT

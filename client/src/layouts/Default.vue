@@ -114,7 +114,7 @@
             </div>
 
             <div>
-              <RecentActivity :matches="basic.matchList" />
+              <RecentActivity />
             </div>
           </div>
           <div class="flex items-center justify-between">

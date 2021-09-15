@@ -4,6 +4,9 @@ import MatchRepository from 'App/Repositories/MatchRepository'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 
 class StatsService {
+  public async getRecentActivity(puuid: string) {
+    return MatchRepository.recentActivity(puuid)
+  }
   public async getSummonerStats(puuid: string, season?: number) {
     console.time('GLOBAL')
     const globalStats = await MatchRepository.globalStats(puuid)
@@ -45,6 +48,10 @@ class StatsService {
     const mates = await MatchRepository.mates(puuid)
     console.timeEnd('MATES')
 
+    console.time('RECENT_ACTIVITY')
+    const recentActivity = await MatchRepository.recentActivity(puuid)
+    console.timeEnd('RECENT_ACTIVITY')
+
     return {
       global: globalStats,
       league: gamemodeStats,
@@ -52,6 +59,7 @@ class StatsService {
       champion: championStats,
       class: championClassStats,
       mates,
+      recentActivity,
     }
   }
 }

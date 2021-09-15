@@ -9,6 +9,7 @@ export const state = {
     currentSeason: null,
     matchList: [],
     ranked: {},
+    recentActivity: [],
     seasons: [],
     status: '',
   },
@@ -66,6 +67,7 @@ export const mutations = {
     state.overview.matchesLoading = true
   },
   MATCHES_FOUND(state, { newMatches, stats }) {
+    state.basic.recentActivity = stats.recentActivity
     state.overview.matchesLoading = false
     state.overview.matches = [...state.overview.matches, ...newMatches]
     state.overview.matchIndex += newMatches.length
@@ -74,6 +76,7 @@ export const mutations = {
     state.records.recordsLoaded = false
   },
   OVERVIEW_FOUND(state, infos) {
+    state.basic.recentActivity = infos.stats.recentActivity
     state.overview.matches = infos.matches
     state.overview.matchIndex = infos.matches.length
     state.overview.stats = infos.stats
@@ -87,6 +90,7 @@ export const mutations = {
     state.basic.account = infos.account
     state.basic.matchList = infos.matchList
     state.basic.ranked = infos.ranked
+    state.basic.recentActivity = infos.recentActivity
     state.basic.seasons = infos.seasons.sort((a, b) => b - a)
     state.basic.status = 'found'
     state.live.match = infos.current
