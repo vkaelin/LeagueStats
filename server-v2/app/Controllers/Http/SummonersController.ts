@@ -1,9 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { getCurrentSeason } from 'App/helpers'
 import Summoner from 'App/Models/Summoner'
-import MatchRepository from 'App/Repositories/MatchRepository'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
+import StatsService from 'App/Services/StatsService'
 import SummonerService from 'App/Services/SummonerService'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
 import SummonerOverviewValidator from 'App/Validators/SummonerOverviewValidator'
@@ -74,9 +74,7 @@ export default class SummonersController {
 
     // TODO: STATS
     console.time('STATS')
-    finalJSON.stats = {
-      global: await MatchRepository.globalStats(puuid),
-    }
+    finalJSON.stats = await StatsService.getSummonerStats(puuid, season)
     console.timeEnd('STATS')
 
     console.timeEnd('OVERVIEW_REQUEST')
