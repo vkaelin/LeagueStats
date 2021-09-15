@@ -1,6 +1,7 @@
 import { sortTeamByRole } from 'App/helpers'
 import { TeamPosition } from 'App/Parsers/ParsedType'
 import MatchRepository from 'App/Repositories/MatchRepository'
+import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 
 class StatsService {
   public async getSummonerStats(puuid: string, season?: number) {
@@ -27,10 +28,13 @@ class StatsService {
         })
       }
     }
-    // console.timeEnd('ROLE')
-    // console.time('CHAMPION')
-    // const championStats = await MatchRepository.championStats(puuid, 5, season)
-    // console.timeEnd('CHAMPION')
+    console.timeEnd('ROLE')
+    console.time('CHAMPION')
+    const championStats = await MatchRepository.championStats(puuid, 5)
+    for (const champ of championStats) {
+      champ.champion = BasicMatchSerializer.getChampion(champ.id)
+    }
+    console.timeEnd('CHAMPION')
     // console.time('CHAMPION-CLASS')
     // const championClassStats = await MatchRepository.championClassStats(puuid, season)
     // console.timeEnd('CHAMPION-CLASS')
@@ -44,7 +48,7 @@ class StatsService {
       role: roleStats.sort(sortTeamByRole),
       // class: championClassStats,
       // mates,
-      // champion: championStats,
+      champion: championStats,
     }
   }
 }

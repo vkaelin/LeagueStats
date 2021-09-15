@@ -19,7 +19,7 @@ class BasicMatchSerializer extends MatchSerializer {
    * Get champion specific data
    * @param id of the champion
    */
-  protected getChampion(id: number): SerializedMatchChampion {
+  public getChampion(id: number): SerializedMatchChampion {
     const originalChampionData = CDragonService.champions[id]
     const icon =
       CDragonService.BASE_URL +

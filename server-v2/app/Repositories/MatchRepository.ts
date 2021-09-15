@@ -78,7 +78,6 @@ class MatchRepository {
         COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
     FROM
         match_players
-        INNER JOIN matches ON matches.id = match_players.match_id
         INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
     WHERE
         summoner_puuid = :puuid
@@ -86,6 +85,32 @@ class MatchRepository {
         role
     `
     const { rows } = await Database.rawQuery(query, { puuid })
+    return rows
+  }
+
+  public async championStats(puuid: string, limit: number) {
+    const query = `
+    SELECT
+        match_players.champion_id as id,
+        SUM(assists) as assists,
+        SUM(deaths) as deaths,
+        SUM(kills) as kills,
+        COUNT(match_players.id) as count,
+        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
+        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+    FROM
+        match_players
+        INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color
+    WHERE
+        summoner_puuid = :puuid
+    GROUP BY
+        match_players.champion_id
+    ORDER BY
+        count DESC
+    LIMIT
+      :limit
+    `
+    const { rows } = await Database.rawQuery(query, { puuid, limit })
     return rows
   }
 }
