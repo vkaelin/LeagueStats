@@ -1,5 +1,6 @@
+import { sortTeamByRole } from 'App/helpers'
+import { TeamPosition } from 'App/Parsers/ParsedType'
 import MatchRepository from 'App/Repositories/MatchRepository'
-// import { sortTeamByRole } from 'App/helpers'
 
 class StatsService {
   public async getSummonerStats(puuid: string, season?: number) {
@@ -9,20 +10,23 @@ class StatsService {
     console.time('GAMEMODE')
     const gamemodeStats = await MatchRepository.gamemodeStats(puuid)
     console.timeEnd('GAMEMODE')
-    // console.time('ROLE')
-    // const roleStats = await MatchRepository.roleStats(puuid, season)
-    // // Check if all roles are in the array
-    // const roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
-    // for (const role of roles) {
-    //   if (!roleStats.find((r) => r.role === role)) {
-    //     roleStats.push({
-    //       count: 0,
-    //       losses: 0,
-    //       role,
-    //       wins: 0,
-    //     })
-    //   }
-    // }
+    console.time('ROLE')
+    const roleStats = await MatchRepository.roleStats(puuid)
+    // Check if all roles are in the array
+    const roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
+    for (const role of roles) {
+      const findedRole = roleStats.find((r) => TeamPosition[r.role] === role)
+      if (findedRole) {
+        findedRole.role = TeamPosition[findedRole.role]
+      } else {
+        roleStats.push({
+          count: 0,
+          losses: 0,
+          role,
+          wins: 0,
+        })
+      }
+    }
     // console.timeEnd('ROLE')
     // console.time('CHAMPION')
     // const championStats = await MatchRepository.championStats(puuid, 5, season)
@@ -37,7 +41,7 @@ class StatsService {
     return {
       global: globalStats,
       league: gamemodeStats,
-      // role: roleStats.sort(sortTeamByRole),
+      role: roleStats.sort(sortTeamByRole),
       // class: championClassStats,
       // mates,
       // champion: championStats,
