@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { getCurrentSeason } from 'App/helpers'
 import Summoner from 'App/Models/Summoner'
 import MatchRepository from 'App/Repositories/MatchRepository'
+import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
 import StatsService from 'App/Services/StatsService'
@@ -94,7 +95,14 @@ export default class SummonersController {
     console.time('recordsRequest')
     const { puuid, season } = await request.validate(SummonerRecordValidator)
     const records = await MatchRepository.records(puuid)
+    const recordsSerialized = records.map((record) => {
+      return {
+        ...record,
+        what: record.what.split('.')[1],
+        champion: BasicMatchSerializer.getChampion(record.champion_id),
+      }
+    })
     console.timeEnd('recordsRequest')
-    return response.json(records)
+    return response.json(recordsSerialized)
   }
 }

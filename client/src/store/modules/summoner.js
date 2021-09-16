@@ -25,7 +25,7 @@ export const state = {
     championsLoaded: false
   },
   records: {
-    list: [],
+    list: {},
     recordsLoaded: false
   },
   live: {
@@ -81,6 +81,7 @@ export const mutations = {
     state.overview.matchIndex = infos.matches.length
     state.overview.stats = infos.stats
     state.overview.loaded = true
+    state.records.recordsLoaded = false
   },
   RECORDS_FOUND(state, { records }) {
     state.records.list = records
@@ -218,7 +219,7 @@ export const actions = {
     const resp = await axios(({ url: 'summoner/records', data: { puuid: state.basic.account.puuid }, method: 'POST' })).catch(() => { })
     console.log('---RECORDS---')
     console.log(resp.data)
-    const records = resp.data ? createRecordsData(resp.data) : {}
+    const records = resp.data.length ? createRecordsData(resp.data) : {}
 
     commit('RECORDS_FOUND', { records })
   },

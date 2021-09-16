@@ -66,21 +66,22 @@ export function createBasicSummonerData(RiotData) {
 
 /**
  * Return the formatted records of a summoner
- * @param {Object} records : raw records from the database stats
+ * @param {Object} recordsDto : raw records from the database stats
  */
-export function createRecordsData(records) {
-  records.maxTime.time = secToTime(records.maxTime.time)
-  records.maxGold.gold = records.maxGold.gold.toLocaleString()
-  records.maxDmgTaken.dmgTaken = records.maxDmgTaken.dmgTaken.toLocaleString()
-  records.maxDmgChamp.dmgChamp = records.maxDmgChamp.dmgChamp.toLocaleString()
-  records.maxDmgObj.dmgObj = records.maxDmgObj.dmgObj.toLocaleString()
-  records.maxKp.kp = `${records.maxKp.kp}%`
+export function createRecordsData(recordsDto) {
+  const records = recordsDto.reduce((acc, record) => {
+    acc[record.what] = record
+    return acc
+  }, {})
 
-  // New record fields
-  if (records.maxLiving) {
-    records.maxLiving.longestLiving = secToTime(records.maxLiving.longestLiving)
-    records.maxHeal.heal = records.maxHeal.heal.toLocaleString()
-  }
+  records.game_duration.amount = secToTime(records.game_duration.amount)
+  records.gold.amount =  records.gold.amount.toLocaleString()
+  records.damage_taken.amount = records.damage_taken.amount.toLocaleString()
+  records.damage_dealt_champions.amount = records.damage_dealt_champions.amount.toLocaleString()
+  records.damage_dealt_objectives.amount = records.damage_dealt_objectives.amount.toLocaleString()
+  records.kp.amount = `${records.kp.amount}%`
+  records.time_spent_living.amount = secToTime(records.time_spent_living.amount)
+  records.heal.amount = records.heal.amount.toLocaleString()
 
   return records
 }
