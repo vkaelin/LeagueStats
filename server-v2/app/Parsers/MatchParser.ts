@@ -127,7 +127,7 @@ class MatchParser {
         damage_dealt_champions: player.totalDamageDealtToChampions,
         damage_taken: player.totalDamageTaken,
         heal: player.totalHeal,
-        minions: player.totalMinionsKilled,
+        minions: player.totalMinionsKilled + player.neutralMinionsKilled,
         critical_strike: player.largestCriticalStrike,
         killing_spree: player.killingSprees,
         time_spent_living: player.longestTimeSpentLiving,

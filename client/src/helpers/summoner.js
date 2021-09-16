@@ -6,16 +6,29 @@ import store from '@/store'
 const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
 
 /**
+ * Get the url of the of the player runes
+ * @param {Object} perks : from the API
+ */
+export function getPrimaryAndSecondaryRune(perks) {
+  const primaryRune = perks.selected.length ? store.state.cdragon.runes.perks[perks.selected[0]] : null
+  const secondaryRune = store.state.cdragon.runes.perkstyles[perks.secondaryStyle]
+
+  return {
+    primaryRune: primaryRune ? createCDragonAssetUrl(primaryRune.icon) : null,
+    secondaryRune: secondaryRune ? createCDragonAssetUrl(secondaryRune.icon) : null
+  }
+}
+
+/**
  * Return all the infos about a list of matches built with the Riot API data
  * @param {Object} RiotData : all data from the Riot API
  */
 export function createMatchData(matches) {
   for (const match of matches) {
     // Runes
-    const primaryRune = match.perks.selected.length ? store.state.cdragon.runes.perks[match.perks.selected[0]] : null
-    const secondaryRune = store.state.cdragon.runes.perkstyles[match.perks.secondaryStyle]
-    match.primaryRune = primaryRune ? createCDragonAssetUrl(primaryRune.icon) : null
-    match.secondaryRune = secondaryRune ? createCDragonAssetUrl(secondaryRune.icon) : null
+    const runes = getPrimaryAndSecondaryRune(match.perks)
+    match.primaryRune = runes.primaryRune
+    match.secondaryRune = runes.secondaryRune
 
     const date = new Date(match.date)
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }

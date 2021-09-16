@@ -36,7 +36,7 @@ Route.post('/summoner/records', 'SummonersController.records')
 // Route.post('/summoner/live', 'SummonersController.liveMatchDetails')
 
 Route.post('/match', 'MatchesController.index')
-// Route.post('/match/details', 'MatchesController.show')
+Route.post('/match/details', 'MatchesController.show')
 // Route.post('/match/details/ranks', 'MatchesController.showRanks')
 
 Route.get('/cdragon/runes', 'CDragonController.runes')

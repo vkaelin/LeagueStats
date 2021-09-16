@@ -2,38 +2,10 @@ import { getSeasonNumber, sortTeamByRole } from 'App/helpers'
 import Match from 'App/Models/Match'
 import MatchPlayer from 'App/Models/MatchPlayer'
 import { TeamPosition } from 'App/Parsers/ParsedType'
-import CDragonService from 'App/Services/CDragonService'
 import MatchSerializer from './MatchSerializer'
-import {
-  SerializedMatch,
-  SerializedMatchChampion,
-  SerializedMatchItem,
-  SerializedMatchPerks,
-  SerializedMatchStats,
-  SerializedMatchSummonerSpell,
-  SerializedMatchTeamPlayer,
-} from './SerializedTypes'
+import { SerializedMatch, SerializedMatchStats, SerializedMatchTeamPlayer } from './SerializedTypes'
 
 class BasicMatchSerializer extends MatchSerializer {
-  /**
-   * Get champion specific data
-   * @param id of the champion
-   */
-  public getChampion(id: number): SerializedMatchChampion {
-    const originalChampionData = CDragonService.champions[id]
-    const icon =
-      CDragonService.BASE_URL +
-      originalChampionData.squarePortraitPath.split('/assets/')[1].toLowerCase()
-
-    return {
-      icon,
-      id: originalChampionData.id,
-      name: originalChampionData.name,
-      alias: originalChampionData.alias,
-      roles: originalChampionData.roles,
-    }
-  }
-
   protected getPlayerSummary(player: MatchPlayer): SerializedMatchTeamPlayer {
     return {
       puuid: player.summonerPuuid,
@@ -45,57 +17,6 @@ class BasicMatchSerializer extends MatchSerializer {
 
   protected getTeamSummary(players: MatchPlayer[]): SerializedMatchTeamPlayer[] {
     return players.map((p) => this.getPlayerSummary(p)).sort(sortTeamByRole)
-  }
-
-  /**
-   * Get Summoner Spell Data from CDragon
-   * @param id of the summonerSpell
-   */
-  public getSummonerSpell(id: number): SerializedMatchSummonerSpell | null {
-    const spell = CDragonService.summonerSpells[id]
-    if (id === 0 || !spell) {
-      return null
-    }
-    const spellName = spell.iconPath.split('/assets/')[1].toLowerCase()
-    return {
-      name: spell.name,
-      description: spell.description,
-      icon: `${CDragonService.BASE_URL}${spellName}`,
-    }
-  }
-
-  protected getItems(player: MatchPlayer): Array<SerializedMatchItem | null> {
-    const items: (SerializedMatchItem | null)[] = []
-    for (let i = 0; i < 6; i++) {
-      const id = player['item' + i]
-      if (id === 0) {
-        items.push(null)
-        continue
-      }
-
-      const item = CDragonService.items[id]
-      if (!item) {
-        items.push(null)
-        continue
-      }
-
-      const itemUrl = item.iconPath.split('/assets/')[1].toLowerCase()
-      items.push({
-        image: `${CDragonService.BASE_URL}${itemUrl}`,
-        name: item.name,
-        description: item.description,
-        price: item.priceTotal,
-      })
-    }
-    return items
-  }
-
-  protected getPerks(player: MatchPlayer): SerializedMatchPerks {
-    return {
-      primaryStyle: player.perksPrimaryStyle,
-      secondaryStyle: player.perksSecondaryStyle,
-      selected: player.perksSelected,
-    }
   }
 
   protected getStats(player: MatchPlayer): SerializedMatchStats {
@@ -137,27 +58,18 @@ class BasicMatchSerializer extends MatchSerializer {
 
     return {
       allyTeam: this.getTeamSummary(allyPlayers),
-      champion: this.getChampion(identity.championId),
       date: match.date,
       enemyTeam: this.getTeamSummary(enemyPlayers),
       matchId: match.id,
       gamemode: match.gamemode,
-      items: this.getItems(identity),
-      level: identity.champLevel,
       map: match.map,
-      name: identity.summonerName,
       newMatch,
-      perks: this.getPerks(identity),
       region: match.region,
       result: allyTeam.result,
-      role: TeamPosition[identity.teamPosition],
       season: getSeasonNumber(match.date),
       stats: this.getStats(identity),
-      summonerId: identity.summonerId,
-      summonerSpell1: this.getSummonerSpell(identity.summoner1Id),
-      summonerSpell2: this.getSummonerSpell(identity.summoner2Id),
-      summonerPuuid: puuid,
       time: match.gameDuration,
+      ...this.getPlayerBase(identity),
     }
   }
   public serialize(matches: Match[], puuid: string, newMatches = false): SerializedMatch[] {

@@ -8,10 +8,10 @@ export const state = {
 }
 
 export const mutations = {
-  MATCH_LOADING(state, gameId) {
-    const alreadyIn = state.matches.find(m => m.gameId === gameId)
+  MATCH_LOADING(state, matchId) {
+    const alreadyIn = state.matches.find(m => m.matchId === matchId)
     if (!alreadyIn) {
-      state.matches.push({ gameId: gameId, status: 'loading' })
+      state.matches.push({ matchId, status: 'loading' })
     }
   },
   MATCH_FOUND(state, matchDetails) {
@@ -28,27 +28,27 @@ export const mutations = {
 }
 
 export const actions = {
-  async matchDetails({ commit, rootState }, gameId) {
-    commit('MATCH_LOADING', gameId)
-    const region = rootState.regionsList[rootState.settings.region]
-    console.log('MATCH DETAILS STORE', gameId, region)
+  async matchDetails({ commit }, matchId) {
+    commit('MATCH_LOADING', matchId)
+    console.log('MATCH DETAILS STORE', matchId)
 
-    const resp = await axios(({ url: 'match/details', data: { gameId, region }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({ url: 'match/details', data: { matchId }, method: 'POST' })).catch(() => { })
     console.log('--- DETAILS INFOS ---')
     console.log(resp.data)
     commit('MATCH_FOUND', resp.data.matchDetails)
 
-    // If the ranks of the players are not yet known
-    if (resp.data.matchDetails.blueTeam.players[0].rank === undefined) {
-      const ranks = await axios(({ url: 'match/details/ranks', data: { gameId, region }, method: 'POST' })).catch(() => { })
-      if (!ranks) return
-      console.log('--- RANK OF MATCH DETAILS ---')
-      console.log(ranks.data)
-      commit('MATCH_RANKS_FOUND', { gameId, ...ranks.data })
-    }
+    // TODO: add ranks back when it's done on the API
+    // // If the ranks of the players are not yet known
+    // if (resp.data.matchDetails.blueTeam.players[0].rank === undefined) {
+    //   const ranks = await axios(({ url: 'match/details/ranks', data: { gameId, region }, method: 'POST' })).catch(() => { })
+    //   if (!ranks) return
+    //   console.log('--- RANK OF MATCH DETAILS ---')
+    //   console.log(ranks.data)
+    //   commit('MATCH_RANKS_FOUND', { gameId, ...ranks.data })
+    // }
   }
 }
 
 export const getters = {
-  getMatchDetails: state => gameId => state.matches.find(m => m.gameId === gameId),
+  getMatchDetails: state => matchId => state.matches.find(m => m.matchId === matchId),
 }

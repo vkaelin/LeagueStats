@@ -1,6 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Match from 'App/Models/Match'
+import DetailedMatchSerializer from 'App/Serializers/DetailedMatchSerializer'
 import MatchService from 'App/Services/MatchService'
 import StatsService from 'App/Services/StatsService'
+import DetailedMatchValidator from 'App/Validators/DetailedMatchValidator'
 import MatchesIndexValidator from 'App/Validators/MatchesIndexValidator'
 
 export default class MatchesController {
@@ -9,7 +12,6 @@ export default class MatchesController {
    * @param ctx
    */
   public async index({ request, response }: HttpContextContract) {
-    console.log('More Matches Request')
     const { puuid, region, matchIds, season } = await request.validate(MatchesIndexValidator)
     const matches = await MatchService.getMatches(region, matchIds, puuid)
 
@@ -17,6 +19,29 @@ export default class MatchesController {
     return response.json({
       matches,
       stats,
+    })
+  }
+
+  /**
+   * POST - Return details data for one specific match
+   * @param ctx
+   */
+  public async show({ request, response }: HttpContextContract) {
+    console.time('MatchDetails')
+    const { matchId } = await request.validate(DetailedMatchValidator)
+
+    const match = await Match.query()
+      .where('id', matchId)
+      .preload('teams')
+      .preload('players')
+      .firstOrFail()
+
+    const matchDetails = DetailedMatchSerializer.serializeOneMatch(match)
+
+    console.timeEnd('MatchDetails')
+
+    return response.json({
+      matchDetails,
     })
   }
 }

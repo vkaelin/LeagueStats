@@ -34,6 +34,14 @@ class CDragonService {
   }
 
   /**
+   *  Give the full CDragon image path from the iconPath field
+   */
+  public createAssetUrl(iconPath: string) {
+    const name = iconPath.split('/assets/')[1].toLowerCase()
+    return `${this.BASE_URL}${name}`
+  }
+
+  /**
    * Get global Context with CDragon Data
    */
   public async getContext() {

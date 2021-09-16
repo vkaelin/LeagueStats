@@ -1,5 +1,3 @@
-import { SerializedMatchTeamPlayer } from './Serializers/SerializedTypes'
-
 /**
  * All League of Legends regions used in Riot API
  */
@@ -99,12 +97,16 @@ export function getCurrentSeason(): number {
   return seasons[lastTimestamp]
 }
 
+interface SortableByRole {
+  role: string
+}
+
 /**
  * Sort array of Players by roles according to a specific order
  * @param a first player
  * @param b second player
  */
-export function sortTeamByRole(a: SerializedMatchTeamPlayer, b: SerializedMatchTeamPlayer) {
+export function sortTeamByRole<T extends SortableByRole>(a: T, b: T) {
   const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }

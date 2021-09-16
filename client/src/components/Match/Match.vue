@@ -175,7 +175,7 @@
         </div>
       </div>
     </Ripple>
-    <DetailedMatch :data="getMatchDetails(data.gameId) || {}" :details-open="showDetails" />
+    <DetailedMatch :data="getMatchDetails(data.matchId) || {}" :details-open="showDetails" />
   </li>
 </template>
 
@@ -223,8 +223,8 @@ export default {
     displayDetails() {
       this.showDetails = !this.showDetails
 
-      if (!this.getMatchDetails(this.data.gameId)) {
-        this.matchDetails(this.data.gameId)
+      if (!this.getMatchDetails(this.data.matchId)) {
+        this.matchDetails(this.data.matchId)
       }
     },
     isSummonerProfile(account_id) {
