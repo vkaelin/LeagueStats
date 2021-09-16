@@ -110,3 +110,10 @@ export function sortTeamByRole<T extends SortableByRole>(a: T, b: T) {
   const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }
+
+// https://stackoverflow.com/a/46700791/9188650
+export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  if (value === null || value === undefined) return false
+  const testDummy: TValue = value
+  return true
+}

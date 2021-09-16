@@ -1,6 +1,7 @@
 import MatchPlayer from 'App/Models/MatchPlayer'
-import { TeamPosition } from 'App/Parsers/ParsedType'
+import { PlayerRankParsed, TeamPosition } from 'App/Parsers/ParsedType'
 import CDragonService from 'App/Services/CDragonService'
+import SummonerService from 'App/Services/SummonerService'
 import {
   SerializedBasePlayer,
   SerializedMatchChampion,
@@ -97,6 +98,17 @@ export default abstract class MatchSerializer {
       summonerPuuid: player.summonerPuuid,
       summonerSpell1: this.getSummonerSpell(player.summoner1Id),
       summonerSpell2: this.getSummonerSpell(player.summoner2Id),
+    }
+  }
+
+  protected getPlayerRank(rank: PlayerRankParsed) {
+    return {
+      tier: rank.tier,
+      rank: rank.rank,
+      lp: rank.lp,
+      wins: rank.wins,
+      losses: rank.losses,
+      shortName: SummonerService.getRankedShortName(rank),
     }
   }
 }

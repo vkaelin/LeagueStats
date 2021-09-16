@@ -1,6 +1,8 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Match from 'App/Models/Match'
+import MatchPlayerRankParser from 'App/Parsers/MatchPlayerRankParser'
 import DetailedMatchSerializer from 'App/Serializers/DetailedMatchSerializer'
+import MatchPlayerRankSerializer from 'App/Serializers/MatchPlayerRankSerializer'
 import MatchService from 'App/Services/MatchService'
 import StatsService from 'App/Services/StatsService'
 import DetailedMatchValidator from 'App/Validators/DetailedMatchValidator'
@@ -8,7 +10,7 @@ import MatchesIndexValidator from 'App/Validators/MatchesIndexValidator'
 
 export default class MatchesController {
   /**
-   * POST - Return data from matches searched by gameIds
+   * POST - Return data from matches searched by matchIds
    * @param ctx
    */
   public async index({ request, response }: HttpContextContract) {
@@ -33,15 +35,33 @@ export default class MatchesController {
     const match = await Match.query()
       .where('id', matchId)
       .preload('teams')
-      .preload('players')
+      .preload('players', (playersQuery) => {
+        playersQuery.preload('ranks')
+      })
       .firstOrFail()
 
-    const matchDetails = DetailedMatchSerializer.serializeOneMatch(match)
+    const { match: matchDetails, ranksLoaded } = DetailedMatchSerializer.serializeOneMatch(match)
 
     console.timeEnd('MatchDetails')
 
     return response.json({
       matchDetails,
+      ranksLoaded,
     })
+  }
+
+  /**
+   * POST - Return ranks of players for a specific game
+   * @param ctx
+   */
+  public async showRanks({ request, response }: HttpContextContract) {
+    console.time('Ranks')
+    const { matchId } = await request.validate(DetailedMatchValidator)
+    const match = await Match.query().where('id', matchId).preload('players').firstOrFail()
+    const parsedRanks = await MatchPlayerRankParser.parse(match)
+    const serializedRanks = MatchPlayerRankSerializer.serialize(parsedRanks)
+
+    console.timeEnd('Ranks')
+    return response.json(serializedRanks)
   }
 }

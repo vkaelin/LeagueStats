@@ -121,6 +121,7 @@ export interface SerializedDetailedMatchBan {
 }
 
 export interface SerializedDetailedMatchPlayer extends SerializedBasePlayer {
+  id: number
   stats: SerializedDetailedMatchStats
   percentStats: SerializedDetailedMatchPercentStats
   primaryRune: string | null
@@ -159,4 +160,21 @@ export interface SerializedDetailedMatchPercentStats {
   gold: string
   minions: number
   vision: number
+}
+
+export interface SerializedPlayerRanksList {
+  [summonerId: string]: SerializedPlayerRanks
+}
+
+export interface SerializedPlayerRanks {
+  [gamemode: number]: SerializedPlayerRank
+}
+
+export interface SerializedPlayerRank {
+  tier: string
+  rank: number
+  lp: number
+  wins: number
+  losses: number
+  shortName: number | string
 }

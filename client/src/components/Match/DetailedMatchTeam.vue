@@ -228,7 +228,7 @@
                   {{ player.rank.shortName }}
                 </div>
               </div>
-              <div v-else-if="player.rank === undefined">
+              <div v-else-if="!ranksLoaded">
                 <DotsLoader width="30px" dot-width="10px" />
               </div>
               <div v-else class="w-5 h-5">
@@ -350,6 +350,10 @@ export default {
       type: Object,
       required: true,
     },
+    ranksLoaded: {
+      type: Boolean,
+      default: false
+    }
   },
 
   computed: {

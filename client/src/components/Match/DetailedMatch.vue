@@ -5,6 +5,7 @@
         :data="allyTeam"
         :all-players="[...allyTeam.players, ...enemyTeam.players]"
         :ally-team="true"
+        :ranks-loaded="data.ranksLoaded"
       />
 
       <div class="flex items-start justify-between px-3 py-2">
@@ -23,6 +24,7 @@
         :data="enemyTeam"
         :all-players="[...allyTeam.players, ...enemyTeam.players]"
         :ally-team="false"
+        :ranks-loaded="data.ranksLoaded"
       />
     </div>
     <div v-else-if="data.status === 'loading' && detailsOpen">

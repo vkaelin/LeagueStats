@@ -1,5 +1,6 @@
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Match from './Match'
+import MatchPlayerRank from './MatchPlayerRank'
 import Summoner from './Summoner'
 
 export default class MatchPlayer extends BaseModel {
@@ -11,6 +12,12 @@ export default class MatchPlayer extends BaseModel {
 
   @belongsTo(() => Match)
   public match: BelongsTo<typeof Match>
+
+  @hasMany(() => MatchPlayerRank, {
+    localKey: 'id',
+    foreignKey: 'playerId',
+  })
+  public ranks: HasMany<typeof MatchPlayerRank>
 
   @column()
   public participantId: number

@@ -75,11 +75,19 @@ class DetailedMatchSerializer extends MatchSerializer {
             ).toFixed(1) + '%',
           dmgTaken: +((player.damageTaken * 100) / teamStats.dmgTaken).toFixed(1) + '%',
         }
+        const rank = player.ranks.length
+          ? player.ranks.reduce((acc, rank) => {
+              acc[rank.gamemode] = this.getPlayerRank(rank)
+              return acc
+            }, {})
+          : undefined
         return {
           ...this.getPlayerBase(player),
           ...this.getRuneIcons(player.perksSelected, player.perksSecondaryStyle),
+          id: player.id,
           stats,
           percentStats,
+          rank,
         }
       })
       .sort(sortTeamByRole)
@@ -106,18 +114,24 @@ class DetailedMatchSerializer extends MatchSerializer {
     }
   }
 
-  public serializeOneMatch(match: Match): SerializedDetailedMatch {
+  public serializeOneMatch(match: Match): { match: SerializedDetailedMatch; ranksLoaded: boolean } {
     const blueTeam = match.teams.find((team) => team.color === 100)!
     const redTeam = match.teams.find((team) => team.color === 200)!
 
     const bluePlayers: MatchPlayer[] = []
     const redPlayers: MatchPlayer[] = []
 
+    let ranksLoaded = false
+
     for (const p of match.players) {
       p.team === 100 ? bluePlayers.push(p) : redPlayers.push(p)
+
+      if (p.ranks.length) {
+        ranksLoaded = true
+      }
     }
 
-    return {
+    const serializedMatch = {
       blueTeam: this.getTeamDetailed(blueTeam, bluePlayers, match.gameDuration),
       date: match.date,
       matchId: match.id,
@@ -127,6 +141,11 @@ class DetailedMatchSerializer extends MatchSerializer {
       region: match.region,
       season: match.season,
       time: match.gameDuration,
+    }
+
+    return {
+      match: serializedMatch,
+      ranksLoaded,
     }
   }
 }

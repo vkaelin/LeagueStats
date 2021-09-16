@@ -15,3 +15,13 @@ export enum TeamPosition {
   BOTTOM,
   UTILITY,
 }
+
+export interface PlayerRankParsed {
+  player_id: number
+  gamemode: number
+  tier: string
+  rank: number
+  lp: number
+  wins: number
+  losses: number
+}

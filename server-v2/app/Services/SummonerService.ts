@@ -2,6 +2,8 @@ import Jax from './Jax'
 import { SummonerDTO } from 'App/Services/Jax/src/Endpoints/SummonerEndpoint'
 import { LeagueEntryDTO } from './Jax/src/Endpoints/LeagueEndpoint'
 import Summoner from 'App/Models/Summoner'
+import { PlayerRankParsed } from 'App/Parsers/ParsedType'
+import MatchPlayerRank from 'App/Models/MatchPlayerRank'
 
 export interface LeagueEntriesByQueue {
   soloQ?: LeagueEntryByQueue
@@ -15,8 +17,16 @@ export interface LeagueEntryByQueue extends LeagueEntryDTO {
 }
 
 class SummonerService {
-  private uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
-  private leaguesNumbers = { I: 1, II: 2, III: 3, IV: 4 }
+  private readonly uniqueLeagues = ['CHALLENGER', 'GRANDMASTER', 'MASTER']
+  public readonly leaguesNumbers = { I: 1, II: 2, III: 3, IV: 4 }
+
+  public getRankedShortName(rank: PlayerRankParsed | MatchPlayerRank) {
+    return this.uniqueLeagues.includes(rank.tier) ? rank.lp : rank.tier[0] + rank.rank
+  }
+
+  public getWinrate(wins: number, losses: number) {
+    return +((wins * 100) / (wins + losses)).toFixed(1) + '%'
+  }
 
   /**
    * Helper to transform League Data from the Riot API
@@ -29,7 +39,7 @@ class SummonerService {
     const fullRank = this.uniqueLeagues.includes(league.tier)
       ? league.tier
       : `${league.tier} ${league.rank}`
-    const winrate = +((league.wins * 100) / (league.wins + league.losses)).toFixed(1) + '%'
+    const winrate = this.getWinrate(league.wins, league.losses)
     const shortName = this.uniqueLeagues.includes(league.tier)
       ? league.leaguePoints
       : league.tier[0] + this.leaguesNumbers[league.rank]
@@ -70,8 +80,8 @@ class SummonerService {
    * @param account
    * @param region
    */
-  public async getRanked(account: SummonerDTO, region: string): Promise<LeagueEntriesByQueue> {
-    const ranked = await Jax.League.summonerID(account.id, region)
+  public async getRanked(summonerId: string, region: string): Promise<LeagueEntriesByQueue> {
+    const ranked = await Jax.League.summonerID(summonerId, region)
     const result: LeagueEntriesByQueue = {}
 
     if (ranked && ranked.length) {
@@ -80,7 +90,6 @@ class SummonerService {
       result.flex5v5 =
         this.getleagueData(ranked.find((e) => e.queueType === 'RANKED_FLEX_SR')) || undefined
     }
-
     return result
   }
 }

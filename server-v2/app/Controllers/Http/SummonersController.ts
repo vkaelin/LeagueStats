@@ -45,7 +45,7 @@ export default class SummonersController {
       finalJSON.current = currentGame
 
       // RANKED STATS
-      finalJSON.ranked = await SummonerService.getRanked(account, region)
+      finalJSON.ranked = await SummonerService.getRanked(account.id, region)
 
       // RECENT ACTIVITY
       finalJSON.recentActivity = await StatsService.getRecentActivity(account.puuid)
@@ -78,7 +78,6 @@ export default class SummonersController {
 
     finalJSON.matchesDetails = await MatchService.getMatches(region, matchIds, puuid)
 
-    // TODO: STATS
     console.time('STATS')
     finalJSON.stats = await StatsService.getSummonerStats(puuid, season)
     console.timeEnd('STATS')
