@@ -1,4 +1,5 @@
 import MatchPlayer from 'App/Models/MatchPlayer'
+import MatchPlayerRank from 'App/Models/MatchPlayerRank'
 import { PlayerRankParsed, TeamPosition } from 'App/Parsers/ParsedType'
 import CDragonService from 'App/Services/CDragonService'
 import SummonerService from 'App/Services/SummonerService'
@@ -101,7 +102,7 @@ export default abstract class MatchSerializer {
     }
   }
 
-  protected getPlayerRank(rank: PlayerRankParsed) {
+  protected getPlayerRank(rank: PlayerRankParsed | MatchPlayerRank) {
     return {
       tier: rank.tier,
       rank: rank.rank,
