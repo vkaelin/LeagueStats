@@ -20,10 +20,12 @@ class MatchParser {
       gameDuration: Math.round(match.info.gameDuration / 1000),
     })
 
+    const isRemake = match.info.gameDuration < 300
+
     // - 2x MatchTeam : Red and Blue
     for (const team of match.info.teams) {
       let result = team.win ? 'Win' : 'Fail'
-      if (match.info.gameDuration < 300) {
+      if (isRemake) {
         result = 'Remake'
       }
       await parsedMatch.related('teams').create({
@@ -47,10 +49,9 @@ class MatchParser {
           ? player.kills + player.assists
           : +(player.deaths === 0 ? 0 : (player.kills + player.assists) / player.deaths).toFixed(2)
 
-      const teamKills =
-        match.info.teams[0].teamId === player.teamId
-          ? match.info.teams[0].objectives.champion.kills
-          : match.info.teams[1].objectives.champion.kills
+      const team =
+        match.info.teams[0].teamId === player.teamId ? match.info.teams[0] : match.info.teams[1]
+      const teamKills = team.objectives.champion.kills
 
       const kp =
         teamKills === 0 ? 0 : +(((player.kills + player.assists) * 100) / teamKills).toFixed(1)
@@ -87,6 +88,9 @@ class MatchParser {
         summoner_id: player.summonerId,
         summoner_puuid: player.puuid,
         summoner_name: player.summonerName,
+        win: team.win ? 1 : 0,
+        loss: team.win ? 0 : 1,
+        remake: isRemake ? 1 : 0,
         team: player.teamId,
         team_position:
           player.teamPosition.length && queuesWithRole.includes(match.info.queueId)

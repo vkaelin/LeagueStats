@@ -8,7 +8,7 @@ class MatchRepository {
 
   private readonly GLOBAL_FILTERS = `
     match_players.summoner_puuid = :puuid
-    AND match_teams.result != 'Remake'
+    AND match_players.remake = 0
     AND matches.gamemode NOT IN (800, 810, 820, 830, 840, 850, 2000, 2010, 2020)
   `
 
@@ -34,19 +34,19 @@ class MatchRepository {
   public async globalStats(puuid: string) {
     const query = `
     SELECT
-        SUM(assists) as assists,
-        SUM(deaths) as deaths,
-        SUM(kills) as kills,
-        SUM(minions) as minions,
+        SUM(match_players.assists) as assists,
+        SUM(match_players.deaths) as deaths,
+        SUM(match_players.kills) as kills,
+        SUM(match_players.minions) as minions,
         SUM(matches.game_duration) as time,
-        SUM(vision_score) as vision,
+        SUM(match_players.vision_score) as vision,
         COUNT(match_players.id) as count,
-        AVG(kp) as kp,
-        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
-        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+        AVG(match_players.kp) as kp,
+        SUM(match_players.win) as wins,
+        SUM(match_players.loss) as losses
     FROM
         match_players
-        ${this.JOIN_ALL}
+        ${this.JOIN_MATCHES}
     WHERE
         ${this.GLOBAL_FILTERS}
     LIMIT
@@ -83,11 +83,11 @@ class MatchRepository {
     SELECT
         matches.gamemode as id,
         COUNT(match_players.id) as count,
-        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
-        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+        SUM(match_players.win) as wins,
+        SUM(match_players.loss) as losses
     FROM
         match_players
-        ${this.JOIN_ALL}
+        ${this.JOIN_MATCHES}
     WHERE
         ${this.GLOBAL_FILTERS}
     GROUP BY
@@ -104,11 +104,11 @@ class MatchRepository {
     SELECT
         match_players.team_position as role,
         COUNT(match_players.id) as count,
-        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
-        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+        SUM(match_players.win) as wins,
+        SUM(match_players.loss) as losses
     FROM
         match_players
-        ${this.JOIN_ALL}
+        ${this.JOIN_MATCHES}
     WHERE
         ${this.GLOBAL_FILTERS}
         AND match_players.team_position != 0
@@ -123,15 +123,15 @@ class MatchRepository {
     const query = `
     SELECT
         match_players.champion_id as id,
-        SUM(assists) as assists,
-        SUM(deaths) as deaths,
-        SUM(kills) as kills,
+        SUM(match_players.assists) as assists,
+        SUM(match_players.deaths) as deaths,
+        SUM(match_players.kills) as kills,
         COUNT(match_players.id) as count,
-        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
-        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+        SUM(match_players.win) as wins,
+        SUM(match_players.loss) as losses
     FROM
         match_players
-        ${this.JOIN_ALL}
+        ${this.JOIN_MATCHES}
     WHERE
         ${this.GLOBAL_FILTERS}
     GROUP BY
@@ -150,11 +150,11 @@ class MatchRepository {
     SELECT
         match_players.champion_role as id,
         COUNT(match_players.id) as count,
-        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
-        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+        SUM(match_players.win) as wins,
+        SUM(match_players.loss) as losses
     FROM
         match_players
-        ${this.JOIN_ALL}
+        ${this.JOIN_MATCHES}
     WHERE
         ${this.GLOBAL_FILTERS}
     GROUP BY
@@ -171,8 +171,8 @@ class MatchRepository {
     SELECT
         (array_agg(mates.summoner_name ORDER BY mates.match_id DESC))[1] as name,
         COUNT(match_players.id) as count,
-        COUNT(case when match_teams.result = 'Win' then 1 else null end) as wins,
-        COUNT(case when match_teams.result = 'Fail' then 1 else null end) as losses
+        SUM(match_players.win) as wins,
+        SUM(match_players.loss) as losses
     FROM
         match_players
         ${this.JOIN_ALL}
@@ -190,6 +190,59 @@ class MatchRepository {
 
     // Remove the Summoner himself + unique game mates
     return rows.splice(1).filter((row) => row.count > 1)
+  }
+
+  public async records(puuid: string) {
+    const fields = [
+      'match_players.kills',
+      'match_players.deaths',
+      'match_players.assists',
+      'match_players.gold',
+      'matches.game_duration',
+      'match_players.minions',
+      'match_players.kda',
+      'match_players.damage_taken',
+      'match_players.damage_dealt_champions',
+      'match_players.damage_dealt_objectives',
+      'match_players.kp',
+      'match_players.vision_score',
+      'match_players.critical_strike',
+      'match_players.time_spent_living',
+      'match_players.heal',
+      'match_players.turret_kills',
+      'match_players.killing_spree',
+      'match_players.double_kills',
+      'match_players.triple_kills',
+      'match_players.quadra_kills',
+      'match_players.penta_kills',
+    ]
+
+    const query = fields
+      .map((field) => {
+        return `
+      (SELECT
+          '${field}' AS what,
+          ${field} AS amount,
+          match_players.win as result,
+          matches.id,
+          matches.date,
+          matches.gamemode,
+          match_players.champion_id
+      FROM
+          match_players
+          ${this.JOIN_MATCHES}
+      WHERE
+          ${this.GLOBAL_FILTERS}
+      ORDER BY
+          ${field} DESC, matches.id
+      LIMIT 
+          1)
+      `
+      })
+      .join('UNION ALL ')
+
+    const { rows } = await Database.rawQuery(query, { puuid })
+    return rows
   }
 }
 

@@ -1,12 +1,14 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { getCurrentSeason } from 'App/helpers'
 import Summoner from 'App/Models/Summoner'
+import MatchRepository from 'App/Repositories/MatchRepository'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
 import StatsService from 'App/Services/StatsService'
 import SummonerService from 'App/Services/SummonerService'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
 import SummonerOverviewValidator from 'App/Validators/SummonerOverviewValidator'
+import SummonerRecordValidator from 'App/Validators/SummonerRecordValidator'
 
 export default class SummonersController {
   public async basic({ request, response }: HttpContextContract) {
@@ -82,5 +84,17 @@ export default class SummonersController {
 
     console.timeEnd('OVERVIEW_REQUEST')
     return response.json(finalJSON)
+  }
+
+  /**
+   * POST: get records view summoner data
+   * @param ctx
+   */
+  public async records({ request, response }: HttpContextContract) {
+    console.time('recordsRequest')
+    const { puuid, season } = await request.validate(SummonerRecordValidator)
+    const records = await MatchRepository.records(puuid)
+    console.timeEnd('recordsRequest')
+    return response.json(records)
   }
 }

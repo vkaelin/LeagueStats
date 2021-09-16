@@ -13,6 +13,10 @@ export default class MatchPlayers extends BaseSchema {
       table.string('summoner_puuid', 78).notNullable()
       table.string('summoner_name', 16).notNullable()
 
+      table.specificType('win', 'smallint').notNullable()
+      table.specificType('loss', 'smallint').notNullable()
+      table.specificType('remake', 'smallint').notNullable()
+
       table.integer('team').notNullable()
       table.integer('team_position').notNullable()
 
