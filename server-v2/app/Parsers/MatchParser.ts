@@ -36,6 +36,7 @@ class MatchParser {
         dragons: team.objectives.dragon.kills,
         inhibitors: team.objectives.inhibitor.kills,
         riftHeralds: team.objectives.riftHerald.kills,
+        towers: team.objectives.tower.kills,
         bans: team.bans.length ? team.bans.map((ban) => ban.championId) : undefined,
         banOrders: team.bans.length ? team.bans.map((ban) => ban.pickTurn) : undefined,
       })
