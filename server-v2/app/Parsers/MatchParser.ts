@@ -69,15 +69,17 @@ class MatchParser {
 
       // Fix championId bug in older matches
       if (player.championId > 1000) {
-        console.log('CHAMPION ID NOT FOUND: ' + player.championId)
-        console.log('FROM MATCH ' + match.metadata.matchId)
         const championId = Object.keys(CDragonService.champions).find(
           (key) =>
             CDragonService.champions[key].name === player.championName ||
             CDragonService.champions[key].alias === player.championName
         )
+        if (!championId) {
+          console.log(
+            `CHAMPION NOT FOUND AT ALL: ${player.championId} FROM: ${match.metadata.matchId}`
+          )
+        }
         player.championId = championId ? Number(championId) : 1
-        console.log('CHAMPION ID FROM NAME : ' + championId)
       }
 
       const originalChampionData = CDragonService.champions[player.championId]

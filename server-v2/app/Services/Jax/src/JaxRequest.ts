@@ -65,6 +65,7 @@ export default class JaxRequest {
           !this.endpoint.includes('summoner/v4/summoners/by-name') &&
           !this.endpoint.includes('match/v4/matchlists/by-account')
         ) {
+          Logger.error(`URL ${url}: `)
           Logger.error(`JaxRequest Error  ${statusCode}: `, rest)
         }
 

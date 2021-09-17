@@ -7,6 +7,7 @@ import MatchParser from 'App/Parsers/MatchParser'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 import { SerializedMatch } from 'App/Serializers/SerializedTypes'
 import Match from 'App/Models/Match'
+import { notEmpty, tutorialQueues } from 'App/helpers'
 
 class MatchService {
   /**
@@ -105,7 +106,9 @@ class MatchService {
     /* If we have to store some matches in the db */
     if (matchesFromApi.length !== 0) {
       // Transform raw matches data
-      const parsedMatches: any = await MatchParser.parse(matchesFromApi)
+      const parsedMatches: any = await MatchParser.parse(
+        matchesFromApi.filter(notEmpty).filter((m) => !tutorialQueues.includes(m.info.queueId))
+      )
 
       // TODO: Serialize match from DB + put it in Redis + push it in "matches"
       const serializedMatches = BasicMatchSerializer.serialize(parsedMatches, puuid, true)

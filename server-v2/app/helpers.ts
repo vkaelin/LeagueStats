@@ -72,6 +72,11 @@ export const queuesWithRole = [
 ]
 
 /**
+ * League of Legends tutorial queues
+ */
+export const tutorialQueues = [2000, 2010, 2020]
+
+/**
  * League of Legends seasons timestamps
  */
 export const seasons = {

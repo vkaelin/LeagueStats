@@ -35,12 +35,22 @@
               ></div>
               <div class="flex flex-col justify-around ml-2">
                 <div
+                  v-if="data.summonerSpell1"
                   :style="{backgroundImage: `url(${data.summonerSpell1.icon})`}"
                   class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-1000"
                 ></div>
                 <div
+                  v-else
+                  class="w-6 h-6 rounded-md bg-blue-1000"
+                ></div>
+                <div
+                  v-if="data.summonerSpell2"
                   :style="{backgroundImage: `url(${data.summonerSpell2.icon})`}"
                   class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-1000"
+                ></div>
+                <div
+                  v-else
+                  class="w-6 h-6 rounded-md bg-blue-1000"
                 ></div>
               </div>
               <div class="flex flex-col justify-around ml-1">
