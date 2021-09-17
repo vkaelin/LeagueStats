@@ -1,7 +1,9 @@
+import { PlayerRole } from 'App/helpers'
 import MatchPlayer from 'App/Models/MatchPlayer'
 import MatchPlayerRank from 'App/Models/MatchPlayerRank'
 import { PlayerRankParsed, TeamPosition } from 'App/Parsers/ParsedType'
 import CDragonService from 'App/Services/CDragonService'
+import RoleIdentificationService, { RoleComposition } from 'App/Services/RoleIdentificationService'
 import SummonerService from 'App/Services/SummonerService'
 import {
   SerializedBasePlayer,
@@ -111,5 +113,23 @@ export default abstract class MatchSerializer {
       losses: rank.losses,
       shortName: SummonerService.getRankedShortName(rank),
     }
+  }
+
+  /**
+   * Return the 5 roles of a team based on champions
+   * @param team 5 champions + smite from a team
+   */
+  protected getTeamRoles(team: PlayerRole[]): RoleComposition {
+    const teamJunglers = team.filter((p) => p.jungle && !p.support)
+    const jungle = teamJunglers.length === 1 ? teamJunglers[0].champion : undefined
+    const teamSupports = team.filter((p) => p.support && !p.jungle)
+    const support = teamSupports.length === 1 ? teamSupports[0].champion : undefined
+
+    return RoleIdentificationService.getRoles(
+      CDragonService.championRoles,
+      team.map((p) => p.champion),
+      jungle,
+      support
+    )
   }
 }

@@ -6,17 +6,21 @@ import store from '@/store'
 const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
 
 /**
- * Get the url of the of the player runes
+ * Get the url of the of the player primary rune
  * @param {Object} perks : from the API
  */
-export function getPrimaryAndSecondaryRune(perks) {
+export function getPrimarRune(perks) {
   const primaryRune = perks.selected.length ? store.state.cdragon.runes.perks[perks.selected[0]] : null
-  const secondaryRune = store.state.cdragon.runes.perkstyles[perks.secondaryStyle]
+  return primaryRune ? createCDragonAssetUrl(primaryRune.icon) : null
+}
 
-  return {
-    primaryRune: primaryRune ? createCDragonAssetUrl(primaryRune.icon) : null,
-    secondaryRune: secondaryRune ? createCDragonAssetUrl(secondaryRune.icon) : null
-  }
+/**
+ * Get the url of the of the player secondary rune
+ * @param {Object} perks : from the API
+ */
+export function getSecondaryRune(perks) {
+  const secondaryRune = store.state.cdragon.runes.perkstyles[perks.secondaryStyle]
+  return  secondaryRune ? createCDragonAssetUrl(secondaryRune.icon) : null
 }
 
 /**
@@ -26,9 +30,8 @@ export function getPrimaryAndSecondaryRune(perks) {
 export function createMatchData(matches) {
   for (const match of matches) {
     // Runes
-    const runes = getPrimaryAndSecondaryRune(match.perks)
-    match.primaryRune = runes.primaryRune
-    match.secondaryRune = runes.secondaryRune
+    match.primaryRune = getPrimarRune(match.perks)
+    match.secondaryRune = getSecondaryRune(match.perks)
 
     const date = new Date(match.date)
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }

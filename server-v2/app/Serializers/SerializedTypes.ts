@@ -1,3 +1,9 @@
+import {
+  CurrentGameInfoDTO,
+  GameCustomizationObjectDTO,
+} from 'App/Services/Jax/src/Endpoints/SpectatorEndpoint'
+import { LeagueEntriesByQueue } from 'App/Services/SummonerService'
+
 export interface SerializedBasePlayer {
   champion: SerializedMatchChampion
   items: Array<SerializedMatchItem | null>
@@ -177,4 +183,29 @@ export interface SerializedPlayerRank {
   wins: number
   losses: number
   shortName: number | string
+}
+
+/* ============================
+
+  Live Match
+
+============================ */
+export interface SerializedLiveMatch extends Omit<CurrentGameInfoDTO, 'participants'> {
+  participants: SerializedLiveMatchPlayer[]
+}
+
+export interface SerializedLiveMatchPlayer {
+  bot: boolean
+  champion: SerializedMatchChampion
+  championId: number
+  gameCustomizationObjects: GameCustomizationObjectDTO[]
+  perks: SerializedMatchPerks
+  profileIconId: number
+  rank: LeagueEntriesByQueue
+  role?: string
+  spell1Id: number
+  spell2Id: number
+  summonerId: string
+  summonerName: string
+  teamId: number
 }

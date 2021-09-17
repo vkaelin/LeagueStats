@@ -51,6 +51,15 @@ export function getRiotRegion(region: string): RiotRegion {
 }
 
 /**
+ * Interface to help define a player's role
+ */
+export interface PlayerRole {
+  champion: number
+  jungle?: boolean
+  support?: boolean
+}
+
+/**
  * League of Legends queues with defined role for each summoner
  */
 export const queuesWithRole = [

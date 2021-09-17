@@ -3,11 +3,13 @@ import { getCurrentSeason } from 'App/helpers'
 import Summoner from 'App/Models/Summoner'
 import MatchRepository from 'App/Repositories/MatchRepository'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
+import LiveMatchSerializer from 'App/Serializers/LiveMatchSerializer'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
 import StatsService from 'App/Services/StatsService'
 import SummonerService from 'App/Services/SummonerService'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
+import SummonerLiveValidator from 'App/Validators/SummonerLiveValidator'
 import SummonerOverviewValidator from 'App/Validators/SummonerOverviewValidator'
 import SummonerRecordValidator from 'App/Validators/SummonerRecordValidator'
 
@@ -103,5 +105,26 @@ export default class SummonersController {
     })
     console.timeEnd('recordsRequest')
     return response.json(recordsSerialized)
+  }
+
+  /**
+   * POST - Return live match detail
+   * @param ctx
+   */
+  public async liveMatchDetails({ request, response }: HttpContextContract) {
+    console.time('liveMatchDetails')
+    const { id, region } = await request.validate(SummonerLiveValidator)
+
+    // CURRENT GAME
+    const currentGame = await Jax.Spectator.summonerID(id, region)
+
+    if (!currentGame) {
+      return response.json(null)
+    }
+
+    const currentGameSerialized = await LiveMatchSerializer.serializeOneMatch(currentGame, region)
+    console.timeEnd('liveMatchDetails')
+
+    return response.json(currentGameSerialized)
   }
 }

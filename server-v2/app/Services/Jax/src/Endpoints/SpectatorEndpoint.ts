@@ -1,10 +1,9 @@
 // import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
 import RiotRateLimiter from 'riot-ratelimiter'
-import { LeagueEntriesByQueue } from 'App/Services/SummonerService'
 import { JaxConfig } from '../../JaxConfig'
 import JaxRequest from '../JaxRequest'
 
-export interface CurrentGameInfo {
+export interface CurrentGameInfoDTO {
   gameId: number
   gameType: string
   gameStartTime: number
@@ -12,25 +11,25 @@ export interface CurrentGameInfo {
   gameLength: number
   platformId: string
   gameMode: string
-  bannedChampions: BannedChampion[]
+  bannedChampions: BannedChampionDTO[]
   gameQueueConfigId: number
-  observers: Observer
-  participants: CurrentGameParticipant[]
+  observers: ObserverDTO
+  participants: CurrentGameParticipantDTO[]
 }
 
-export interface BannedChampion {
+export interface BannedChampionDTO {
   pickTurn: number
   championId: number
   teamId: number
 }
 
-export interface Observer {
+export interface ObserverDTO {
   encryptionKey: string
 }
 
-export interface CurrentGameParticipant {
+export interface CurrentGameParticipantDTO {
   championId: number
-  perks: Perks
+  perks: PerksDTO
   profileIconId: number
   bot: boolean
   teamId: number
@@ -38,21 +37,16 @@ export interface CurrentGameParticipant {
   summonerId: string
   spell1Id: number
   spell2Id: number
-  gameCustomizationObjects: GameCustomizationObject[]
-  // Custom types from here
-  role?: string
-  runes?: { primaryRune: string; secondaryRune: string } | {}
-  level?: number
-  rank?: LeagueEntriesByQueue
+  gameCustomizationObjects: GameCustomizationObjectDTO[]
 }
 
-export interface Perks {
+export interface PerksDTO {
   perkIds: number[]
   perkStyle: number
   perkSubStyle: number
 }
 
-export interface GameCustomizationObject {
+export interface GameCustomizationObjectDTO {
   category: string
   content: string
 }
@@ -66,7 +60,7 @@ export default class SpectatorEndpoint {
     this.limiter = limiter
   }
 
-  public summonerID(summonerID: string, region: string): Promise<CurrentGameInfo | undefined> {
+  public summonerID(summonerID: string, region: string): Promise<CurrentGameInfoDTO | undefined> {
     return new JaxRequest(
       region,
       this.config,
