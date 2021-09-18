@@ -31,7 +31,7 @@ Route.get('/health', async () => ({ report: await HealthCheck.getReport() }))
 Route.post('/summoner/basic', 'SummonersController.basic')
 Route.post('/summoner/overview', 'SummonersController.overview')
 
-// Route.post('/summoner/champions', 'SummonersController.champions')
+Route.post('/summoner/champions', 'SummonersController.champions')
 Route.post('/summoner/records', 'SummonersController.records')
 Route.post('/summoner/live', 'SummonersController.liveMatchDetails')
 

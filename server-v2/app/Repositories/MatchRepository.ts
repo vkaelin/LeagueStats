@@ -54,28 +54,6 @@ class MatchRepository {
     `
     const { rows } = await Database.rawQuery(query, { puuid })
     return rows[0]
-    // return Database.from('match_players')
-    //   .where('summoner_puuid', puuid)
-    //   .join('matches', 'match_players.match_id', 'matches.id')
-    //   .join('match_teams', (query) => {
-    //     query
-    //       .on('match_teams.match_id', '=', 'match_players.match_id')
-    //       .andOn('match_teams.color', '=', 'match_players.team')
-    //   })
-    //   .sum({
-    //     assists: 'assists',
-    //     deaths: 'deaths',
-    //     kills: 'kills',
-    //     minions: 'minions',
-    //     time: 'matches.game_duration',
-    //     vision: 'vision_score',
-    //     result: 'match_teams.result',
-    //   })
-    //   .count({
-    //     count: 'assists',
-    //   })
-    //   .avg('kp')
-    //   .first()
   }
 
   public async gamemodeStats(puuid: string) {
@@ -161,6 +139,39 @@ class MatchRepository {
         match_players.champion_role
     ORDER BY
         count DESC
+    `
+    const { rows } = await Database.rawQuery(query, { puuid })
+    return rows
+  }
+
+  public async championCompleteStats(puuid: string, queue?: number, season?: number) {
+    const query = `
+    SELECT
+        match_players.champion_id as id,
+        SUM(match_players.assists) as assists,
+        SUM(match_players.deaths) as deaths,
+        SUM(match_players.kills) as kills,
+        COUNT(match_players.id) as count,
+        SUM(match_players.win) as wins,
+        SUM(match_players.loss) as losses,
+        SUM(matches.game_duration) as time,
+        AVG(matches.game_duration)::int as "gameLength",
+        AVG(match_players.minions)::int as minions,
+        AVG(match_players.gold)::int as gold,
+        AVG(match_players.damage_dealt_champions)::int as "dmgChamp",
+        AVG(match_players.damage_taken)::int as "dmgTaken",
+        AVG(match_players.kp) as kp,
+        AVG(match_players.kda) as kda,
+        MAX(matches.date) as date
+    FROM
+        match_players
+        ${this.JOIN_MATCHES}
+    WHERE
+        ${this.GLOBAL_FILTERS}
+    GROUP BY
+        match_players.champion_id
+    ORDER BY
+        count DESC, match_players.champion_id
     `
     const { rows } = await Database.rawQuery(query, { puuid })
     return rows

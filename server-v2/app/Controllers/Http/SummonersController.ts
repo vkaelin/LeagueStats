@@ -9,6 +9,7 @@ import MatchService from 'App/Services/MatchService'
 import StatsService from 'App/Services/StatsService'
 import SummonerService from 'App/Services/SummonerService'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
+import SummonerChampionValidator from 'App/Validators/SummonerChampionValidator'
 import SummonerLiveValidator from 'App/Validators/SummonerLiveValidator'
 import SummonerOverviewValidator from 'App/Validators/SummonerOverviewValidator'
 import SummonerRecordValidator from 'App/Validators/SummonerRecordValidator'
@@ -86,6 +87,24 @@ export default class SummonersController {
 
     console.timeEnd('OVERVIEW_REQUEST')
     return response.json(finalJSON)
+  }
+
+  /**
+   * POST: get champions view summoner data
+   * @param ctx
+   */
+  public async champions({ request, response }: HttpContextContract) {
+    console.time('championsRequest')
+    const { puuid, queue, season } = await request.validate(SummonerChampionValidator)
+    const championStats = await MatchRepository.championCompleteStats(puuid, queue, season)
+    const championStatsSerialized = championStats.map((champion) => {
+      return {
+        ...champion,
+        champion: BasicMatchSerializer.getChampion(champion.id),
+      }
+    })
+    console.timeEnd('championsRequest')
+    return response.json(championStatsSerialized)
   }
 
   /**
