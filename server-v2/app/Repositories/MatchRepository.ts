@@ -154,14 +154,12 @@ class MatchRepository {
         COUNT(match_players.id) as count,
         SUM(match_players.win) as wins,
         SUM(match_players.loss) as losses,
-        SUM(matches.game_duration) as time,
         AVG(matches.game_duration)::int as "gameLength",
         AVG(match_players.minions)::int as minions,
         AVG(match_players.gold)::int as gold,
         AVG(match_players.damage_dealt_champions)::int as "dmgChamp",
         AVG(match_players.damage_taken)::int as "dmgTaken",
         AVG(match_players.kp) as kp,
-        AVG(match_players.kda) as kda,
         MAX(matches.date) as date
     FROM
         match_players
