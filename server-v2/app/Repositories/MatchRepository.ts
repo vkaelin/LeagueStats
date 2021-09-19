@@ -34,9 +34,9 @@ class MatchRepository {
   public async globalStats(puuid: string) {
     const query = `
     SELECT
-        SUM(match_players.assists) as assists,
-        SUM(match_players.deaths) as deaths,
         SUM(match_players.kills) as kills,
+        SUM(match_players.deaths) as deaths,
+        SUM(match_players.assists) as assists,
         SUM(match_players.minions) as minions,
         SUM(matches.game_duration) as time,
         SUM(match_players.vision_score) as vision,
