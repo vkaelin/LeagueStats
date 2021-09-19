@@ -41,8 +41,8 @@ export default class MatchPlayers extends BaseSchema {
       table.specificType('vision_score', 'smallint').notNullable()
       table.integer('gold').notNullable()
 
-      table.specificType('summoner1_id', 'smallint').notNullable()
-      table.specificType('summoner2_id', 'smallint').notNullable()
+      table.integer('summoner1_id').notNullable()
+      table.integer('summoner2_id').notNullable()
 
       table.integer('item0').notNullable()
       table.integer('item1').notNullable()
