@@ -56,7 +56,15 @@ export default class JaxRequest {
     } catch ({ statusCode, ...rest }) {
       this.retries--
 
-      if (statusCode !== 500 && statusCode !== 503 && statusCode !== 504) {
+      console.log('JAX ERROR')
+      console.log(rest?.cause?.code)
+
+      if (
+        statusCode !== 500 &&
+        statusCode !== 503 &&
+        statusCode !== 504 &&
+        rest?.cause?.code !== 'ETIMEDOUT'
+      ) {
         //
         // Don't log 404 when summoner isn't playing or the summoner doesn't exist
         // Or if summoner has no MatchList
@@ -66,7 +74,7 @@ export default class JaxRequest {
           !this.endpoint.includes('match/v4/matchlists/by-account')
         ) {
           Logger.error(`URL ${url}: `)
-          Logger.error(`JaxRequest Error  ${statusCode}: `, rest)
+          // Logger.error(`JaxRequest Error  ${statusCode}: `, rest)
         }
 
         return

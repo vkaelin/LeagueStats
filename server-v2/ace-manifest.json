@@ -1,5 +1,32 @@
 {
   "commands": {
+    "load:v4": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": false
+      },
+      "commandPath": "./commands/LoadV4Matches",
+      "commandName": "load:v4",
+      "description": "Load matches for a given Summoner from the old Match-V4 endpoint",
+      "args": [
+        {
+          "type": "string",
+          "propertyName": "summoner",
+          "name": "summoner",
+          "required": true,
+          "description": "Summoner name to seach"
+        },
+        {
+          "type": "string",
+          "propertyName": "region",
+          "name": "region",
+          "required": true,
+          "description": "League region of the summoner"
+        }
+      ],
+      "aliases": [],
+      "flags": []
+    },
     "dump:rcfile": {
       "settings": {},
       "commandPath": "@adonisjs/core/build/commands/DumpRc",
