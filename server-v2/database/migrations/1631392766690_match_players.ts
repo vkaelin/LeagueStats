@@ -6,19 +6,19 @@ export default class MatchPlayers extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('match_id', 15).notNullable()
+      table.string('match_id', 15).notNullable().index()
 
       table.specificType('participant_id', 'smallint').notNullable()
       table.string('summoner_id', 63).notNullable()
-      table.string('summoner_puuid', 78).notNullable()
+      table.string('summoner_puuid', 78).notNullable().index()
       table.string('summoner_name', 16).notNullable()
 
       table.specificType('win', 'smallint').notNullable()
       table.specificType('loss', 'smallint').notNullable()
       table.specificType('remake', 'smallint').notNullable()
 
-      table.specificType('team', 'smallint').notNullable()
-      table.specificType('team_position', 'smallint').notNullable()
+      table.specificType('team', 'smallint').notNullable().index()
+      table.specificType('team_position', 'smallint').notNullable().index()
 
       table.specificType('kills', 'smallint').unsigned().notNullable()
       table.specificType('deaths', 'smallint').unsigned().notNullable()
@@ -27,7 +27,7 @@ export default class MatchPlayers extends BaseSchema {
       table.float('kp').notNullable()
 
       table.specificType('champ_level', 'smallint').notNullable()
-      table.specificType('champion_id', 'smallint').notNullable()
+      table.specificType('champion_id', 'smallint').notNullable().index()
       table.specificType('champion_role', 'smallint').notNullable()
 
       table.specificType('double_kills', 'smallint').notNullable()
@@ -65,6 +65,10 @@ export default class MatchPlayers extends BaseSchema {
       table.integer('perks_primary_style').notNullable()
       table.integer('perks_secondary_style').notNullable()
       table.specificType('perks_selected', 'INT[]').notNullable()
+    })
+
+    this.schema.alterTable(this.tableName, (table) => {
+      table.unique(['match_id', 'summoner_puuid'])
     })
   }
 

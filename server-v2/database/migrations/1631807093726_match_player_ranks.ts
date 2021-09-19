@@ -7,7 +7,7 @@ export default class MatchPlayerRanks extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      table.integer('player_id').unsigned().notNullable()
+      table.integer('player_id').unsigned().notNullable().index()
 
       table.specificType('gamemode', 'smallint').notNullable()
 

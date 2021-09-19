@@ -6,9 +6,9 @@ export default class MatchTeams extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('match_id', 15)
+      table.string('match_id', 15).index()
 
-      table.specificType('color', 'smallint').notNullable() // 100 ou 200
+      table.specificType('color', 'smallint').notNullable().index() // 100 ou 200
       table.string('result', 6) // Win - Remake - Fail
 
       table.specificType('barons', 'smallint').notNullable()
