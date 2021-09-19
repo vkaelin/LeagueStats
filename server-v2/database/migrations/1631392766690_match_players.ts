@@ -66,10 +66,6 @@ export default class MatchPlayers extends BaseSchema {
       table.integer('perks_secondary_style').notNullable()
       table.specificType('perks_selected', 'INT[]').notNullable()
     })
-
-    this.schema.alterTable(this.tableName, (table) => {
-      table.unique(['match_id', 'summoner_puuid'])
-    })
   }
 
   public async down() {
