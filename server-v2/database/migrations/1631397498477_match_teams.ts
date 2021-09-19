@@ -8,17 +8,17 @@ export default class MatchTeams extends BaseSchema {
       table.increments('id')
       table.string('match_id', 15)
 
-      table.integer('color').notNullable() // 100 ou 200
+      table.specificType('color', 'smallint').notNullable() // 100 ou 200
       table.string('result', 6) // Win - Remake - Fail
 
-      table.integer('barons').notNullable()
-      table.integer('dragons').notNullable()
-      table.integer('inhibitors').notNullable()
-      table.integer('rift_heralds').notNullable()
-      table.integer('towers').notNullable()
+      table.specificType('barons', 'smallint').notNullable()
+      table.specificType('dragons', 'smallint').notNullable()
+      table.specificType('inhibitors', 'smallint').notNullable()
+      table.specificType('rift_heralds', 'smallint').notNullable()
+      table.specificType('towers', 'smallint').notNullable()
 
-      table.specificType('bans', 'INT[]').nullable()
-      table.specificType('ban_orders', 'INT[]').nullable()
+      table.specificType('bans', 'smallint[]').nullable()
+      table.specificType('ban_orders', 'smallint[]').nullable()
     })
   }
 

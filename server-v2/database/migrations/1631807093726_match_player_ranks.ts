@@ -9,12 +9,13 @@ export default class MatchPlayerRanks extends BaseSchema {
 
       table.integer('player_id').unsigned().notNullable()
 
-      table.integer('gamemode').notNullable()
+      table.specificType('gamemode', 'smallint').notNullable()
+
       table.string('tier', 11).notNullable()
-      table.integer('rank').notNullable()
-      table.integer('lp').notNullable()
-      table.integer('wins').notNullable()
-      table.integer('losses').notNullable()
+      table.specificType('rank', 'smallint').notNullable()
+      table.specificType('lp', 'smallint').unsigned().notNullable()
+      table.specificType('wins', 'smallint').unsigned().notNullable()
+      table.specificType('losses', 'smallint').unsigned().notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
