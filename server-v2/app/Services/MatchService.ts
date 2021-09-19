@@ -13,14 +13,15 @@ class MatchService {
   /**
    * Add 100 matches at a time to MatchList until the stopFetching condition is true
    * @param account of the summoner
+   * @param region of the summoner
    * @param stopFetching condition to stop fetching the MatchList
    */
-  private async _fetchMatchListUntil(account: SummonerDTO, stopFetching: any) {
+  private async _fetchMatchListUntil(account: SummonerDTO, region: string, stopFetching: any) {
     let matchList: MatchlistDto = []
     let alreadyIn = false
     let index = 0
     do {
-      let newMatchList = await Jax.Matchlist.puuid(account.puuid, account.region as string, index)
+      let newMatchList = await Jax.Matchlist.puuid(account.puuid, region as string, index)
       // Error while fetching Riot API
       if (!newMatchList) {
         return matchList
@@ -28,10 +29,7 @@ class MatchService {
       matchList = [...matchList, ...newMatchList]
       alreadyIn = newMatchList.length === 0 || stopFetching(newMatchList)
       // If the match is made in another region : we stop fetching
-      if (
-        matchList[matchList.length - 1].split('_')[0].toLowerCase() !==
-        account.region?.toLowerCase()
-      ) {
+      if (matchList[matchList.length - 1].split('_')[0].toLowerCase() !== region.toLowerCase()) {
         alreadyIn = true
       }
       index += 100
@@ -41,15 +39,23 @@ class MatchService {
   /**
    * Update the full MatchList of the summoner
    */
-  public async updateMatchList(account: SummonerDTO, summonerDB: Summoner): Promise<MatchlistDto> {
+  public async updateMatchList(
+    account: SummonerDTO,
+    region: string,
+    summonerDB: Summoner
+  ): Promise<MatchlistDto> {
     console.time('matchList')
 
     const currentMatchList = await summonerDB.related('matchList').query().orderBy('matchId', 'asc')
     const currentMatchListIds = currentMatchList.map((m) => m.matchId)
 
-    const newMatchList = await this._fetchMatchListUntil(account, (newMatchList: MatchlistDto) => {
-      return currentMatchListIds.some((id) => id === newMatchList[newMatchList.length - 1])
-    })
+    const newMatchList = await this._fetchMatchListUntil(
+      account,
+      region,
+      (newMatchList: MatchlistDto) => {
+        return currentMatchListIds.some((id) => id === newMatchList[newMatchList.length - 1])
+      }
+    )
 
     const matchListToSave: MatchlistDto = []
     for (const matchId of newMatchList.reverse()) {

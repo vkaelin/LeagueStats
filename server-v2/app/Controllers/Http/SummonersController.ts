@@ -26,7 +26,6 @@ export default class SummonersController {
       if (!account) {
         return response.json(null)
       }
-      account.region = region
       finalJSON.account = account
 
       // Summoner in DB
@@ -36,7 +35,7 @@ export default class SummonersController {
       finalJSON.account.names = await SummonerService.getAllSummonerNames(account, summonerDB)
 
       // MATCH LIST
-      finalJSON.matchList = await MatchService.updateMatchList(account, summonerDB)
+      finalJSON.matchList = await MatchService.updateMatchList(account, region, summonerDB)
 
       // All seasons the summoner has played
       // TODO: check if there is a way to do that with V5...

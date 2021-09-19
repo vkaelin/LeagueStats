@@ -11,7 +11,6 @@ export interface SummonerDTO {
   id: string
   puuid: string
   summonerLevel: number
-  region?: string
 }
 
 export default class SummonerEndpoint {
@@ -21,6 +20,16 @@ export default class SummonerEndpoint {
   constructor(config: JaxConfig, limiter: RiotRateLimiter) {
     this.config = config
     this.limiter = limiter
+  }
+
+  public accountId(accountId: string, region: string): Promise<SummonerDTO> {
+    return new JaxRequest(
+      region,
+      this.config,
+      `summoner/v4/summoners/by-account/${accountId}`,
+      this.limiter,
+      36000
+    ).execute()
   }
 
   public summonerId(summonerId: string, region: string): Promise<SummonerDTO> {
