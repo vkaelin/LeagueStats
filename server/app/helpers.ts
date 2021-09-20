@@ -128,6 +128,7 @@ export function sortTeamByRole<T extends SortableByRole>(a: T, b: T) {
 // https://stackoverflow.com/a/46700791/9188650
 export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   if (value === null || value === undefined) return false
+  // @ts-ignore
   const testDummy: TValue = value
   return true
 }
