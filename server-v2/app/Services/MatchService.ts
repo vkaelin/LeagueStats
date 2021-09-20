@@ -21,7 +21,7 @@ class MatchService {
     let alreadyIn = false
     let index = 0
     do {
-      let newMatchList = await Jax.Matchlist.puuid(account.puuid, region as string, index)
+      const newMatchList = await Jax.Matchlist.puuid(account.puuid, region, index)
       // Error while fetching Riot API
       if (!newMatchList) {
         return matchList

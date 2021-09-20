@@ -29,8 +29,8 @@ class MatchService {
       index += 100
     } while (!alreadyIn)
 
-    // Remove matches from MatchList made in another region, tutorial games + 3v3 games
-    const tutorialModes = [2000, 2010, 2020, 460, 470, 800, 810, 820]
+    // Remove matches from MatchList made in another region, tutorial games, 3v3 games, Coop vs IA games
+    const tutorialModes = [2000, 2010, 2020, 460, 470, 800, 810, 820, 830, 840, 850]
     matchList = matchList
       .filter((m) => {
         const sameRegion = m.platformId.toLowerCase() === region
