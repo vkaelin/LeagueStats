@@ -5,4 +5,3 @@ coverage
 .DS_STORE
 .env
 tmp
-*.rdb

@@ -1,142 +1,138 @@
 import Jax from './Jax'
-import Logger from '@ioc:Adonis/Core/Logger'
 import { MatchlistDto } from './Jax/src/Endpoints/MatchlistEndpoint'
 import { SummonerDTO } from './Jax/src/Endpoints/SummonerEndpoint'
-import { SummonerModel } from 'App/Models/Summoner'
-import Match, { MatchModel } from 'App/Models/Match'
-import BasicMatchTransformer from 'App/Transformers/BasicMatchTransformer'
+import Summoner from 'App/Models/Summoner'
+import Database from '@ioc:Adonis/Lucid/Database'
+import MatchParser from 'App/Parsers/MatchParser'
+import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
+import { SerializedMatch } from 'App/Serializers/SerializedTypes'
+import Match from 'App/Models/Match'
+import { notEmpty, tutorialQueues } from 'App/helpers'
 
 class MatchService {
   /**
    * Add 100 matches at a time to MatchList until the stopFetching condition is true
    * @param account of the summoner
+   * @param region of the summoner
    * @param stopFetching condition to stop fetching the MatchList
    */
-  private async _fetchMatchListUntil (account: SummonerDTO, stopFetching: any) {
+  private async _fetchMatchListUntil(account: SummonerDTO, region: string, stopFetching: any) {
     let matchList: MatchlistDto = []
     let alreadyIn = false
     let index = 0
     do {
-      let newMatchList = await Jax.Matchlist.puuid(account.puuid, account.region as string, index)
+      const newMatchList = await Jax.Matchlist.puuid(account.puuid, region, index)
       // Error while fetching Riot API
       if (!newMatchList) {
-        // matchList = matchList.map(m => {
-        //   m.season = getSeasonNumber(m.timestamp)
-        //   return m
-        // })
         return matchList
       }
       matchList = [...matchList, ...newMatchList]
       alreadyIn = newMatchList.length === 0 || stopFetching(newMatchList)
       // If the match is made in another region : we stop fetching
-      // if (matchList[matchList.length - 1].platformId.toLowerCase() !== account.region) { // TODO: check if region has changed
-      //   alreadyIn = true
-      // }
+      if (matchList[matchList.length - 1].split('_')[0].toLowerCase() !== region.toLowerCase()) {
+        alreadyIn = true
+      }
       index += 100
     } while (!alreadyIn)
-
-    // Remove matches from MatchList made in another region and tutorial games
-    // const tutorialModes = [2000, 2010, 2020]
-    // matchList = matchList
-    //   .filter(m => {
-    //     const sameRegion = m.platformId.toLowerCase() === account.region
-    //     const notATutorialGame = !tutorialModes.includes(m.queue)
-
-    //     return sameRegion && notATutorialGame
-    //   })
-    //   .map(m => {
-    //     m.seasonMatch = getSeasonNumber(m.timestamp)
-    //     return m
-    //   })
-
     return matchList
   }
   /**
-   * Update the full MatchList of the summoner (min. 4 months)
-   * @param account of the summoner
-   * @param summonerDB summoner in the database
+   * Update the full MatchList of the summoner
    */
-  public async updateMatchList (account: SummonerDTO, summonerDB: SummonerModel) {
+  public async updateMatchList(
+    account: SummonerDTO,
+    region: string,
+    summonerDB: Summoner
+  ): Promise<MatchlistDto> {
     console.time('matchList')
 
-    // Summoner has already been searched : we already have a MatchList and we need to update it
-    if (summonerDB.matchList) {
-      // Get MatchList
-      const matchList = await this._fetchMatchListUntil(account, (newMatchList: MatchlistDto) => {
-        return summonerDB.matchList!.some(m => m === newMatchList[newMatchList.length - 1])
-      })
-      // Update Summoner's MatchList
-      for (const match of matchList.reverse()) {
-        if (!summonerDB.matchList.some(m => m === match)) {
-          summonerDB.matchList.unshift(match)
-        }
+    const currentMatchList = await summonerDB.related('matchList').query().orderBy('matchId', 'asc')
+    const currentMatchListIds = currentMatchList.map((m) => m.matchId)
+
+    const newMatchList = await this._fetchMatchListUntil(
+      account,
+      region,
+      (newMatchList: MatchlistDto) => {
+        return currentMatchListIds.some((id) => id === newMatchList[newMatchList.length - 1])
       }
-    } else { // First search of the Summoner 
-      // const today = Date.now()
-      // Get MatchList
-      const matchList = await this._fetchMatchListUntil(account, (newMatchList: MatchlistDto) => {
-        // return (newMatchList.length !== 100 || today - newMatchList[newMatchList.length - 1].timestamp > 10368000000)
-        return newMatchList.length === 0 // TODO: useless
-      })
-      // Create Summoner's MatchList in Database
-      summonerDB.matchList = matchList
+    )
+
+    const matchListToSave: MatchlistDto = []
+    for (const matchId of newMatchList.reverse()) {
+      if (!currentMatchListIds.some((id) => id === matchId)) {
+        matchListToSave.push(matchId)
+        currentMatchListIds.push(matchId)
+      }
     }
+
+    // If there is new matchIds to save in database
+    if (matchListToSave.length) {
+      await Database.table('summoner_matchlist').multiInsert(
+        matchListToSave.map((id) => ({
+          match_id: id,
+          summoner_puuid: summonerDB.puuid,
+        }))
+      )
+    }
+
     console.timeEnd('matchList')
+    return currentMatchListIds.reverse()
   }
 
   /**
    * Fetch list of matches for a specific Summoner
-   * @param puuid 
-   * @param accountId
-   * @param region 
-   * @param gameIds 
-   * @param summonerDB 
    */
-  public async getMatches (puuid: string, accountId: string, region: string, matchIds: MatchlistDto, summonerDB: SummonerModel) {
+  public async getMatches(
+    region: string,
+    matchIds: string[],
+    puuid: string
+  ): Promise<SerializedMatch[]> {
     console.time('getMatches')
 
-    let matchesDetails: MatchModel[] = []
+    const matches: SerializedMatch[] = []
     const matchesToGetFromRiot: MatchlistDto = []
     for (let i = 0; i < matchIds.length; ++i) {
-      const matchSaved = await Match.findOne({
-        summoner_puuid: puuid,
-        matchId: matchIds[i],
-      })
+      const matchSaved = await Match.query()
+        .where('id', matchIds[i])
+        .preload('teams')
+        .preload('players')
+        .first()
+
       if (matchSaved) {
-        matchesDetails.push(matchSaved)
+        // TODO: Serialize match from DB + put it in Redis + push it in "matches"
+        matches.push(BasicMatchSerializer.serializeOneMatch(matchSaved, puuid))
       } else {
         matchesToGetFromRiot.push(matchIds[i])
       }
     }
 
-    const requests = matchesToGetFromRiot.map(gameId => Jax.Match.get(gameId, region))
-    let matchesFromApi = await Promise.all(requests)
+    const requests = matchesToGetFromRiot.map((gameId) => Jax.Match.get(gameId, region))
+    const matchesFromApi = await Promise.all(requests)
 
     /* If we have to store some matches in the db */
     if (matchesFromApi.length !== 0) {
-      // Try to see why matches are sometimes undefined
-      matchesFromApi.filter(m => {
-        if (m === undefined) {
-          Logger.info(`Match undefined, summoner: ${summonerDB.puuid}`, m)
-        }
-      })
+      // Remove bugged matches from the Riot API + tutorial games
+      const filteredMatches = matchesFromApi
+        .filter(notEmpty)
+        .filter(
+          (m) =>
+            !tutorialQueues.includes(m.info.queueId) &&
+            m.info.teams.length > 0 &&
+            m.info.participants.length > 0
+        )
 
       // Transform raw matches data
-      const transformedMatches = await BasicMatchTransformer.transform(matchesFromApi, { puuid, accountId })
+      const parsedMatches: any = await MatchParser.parse(filteredMatches)
 
-      /* Save all matches from Riot Api in db */
-      for (const match of transformedMatches) {
-        await Match.create(match)
-        match.newMatch = true
-      }
-      matchesDetails = [...matchesDetails, ...transformedMatches]
+      // TODO: Serialize match from DB + put it in Redis + push it in "matches"
+      const serializedMatches = BasicMatchSerializer.serialize(parsedMatches, puuid, true)
+      matches.push(...serializedMatches)
     }
 
-    /* Sort matches */
-    matchesDetails.sort((a, b) => (a.date < b.date) ? 1 : -1)
+    // Todo: check if we need to sort here
+    matches.sort((a, b) => (a.date < b.date ? 1 : -1))
     console.timeEnd('getMatches')
-
-    return matchesDetails
+    return matches
   }
 }
 

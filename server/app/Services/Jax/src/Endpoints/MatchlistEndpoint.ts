@@ -24,11 +24,11 @@ import JaxRequest from '../JaxRequest'
 // }
 
 /**
- * 
+ *
  * ===============================================
  *                      V5
  * ===============================================
- * 
+ *
  */
 
 export type MatchlistDto = string[]
@@ -37,12 +37,12 @@ export default class MatchlistEndpoint {
   private config: JaxConfig
   private limiter: RiotRateLimiter
 
-  constructor (config: JaxConfig, limiter: RiotRateLimiter) {
+  constructor(config: JaxConfig, limiter: RiotRateLimiter) {
     this.config = config
     this.limiter = limiter
   }
 
-  public puuid (puuid: string, region: string, beginIndex = 0, count = 100): Promise<MatchlistDto> {
+  public puuid(puuid: string, region: string, beginIndex = 0, count = 100): Promise<MatchlistDto> {
     return new JaxRequest(
       getRiotRegion(region),
       this.config,

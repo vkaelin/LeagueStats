@@ -1,59 +1,53 @@
 // import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
 import RiotRateLimiter from 'riot-ratelimiter'
-import { LeagueEntriesByQueue } from 'App/Services/SummonerService'
 import { JaxConfig } from '../../JaxConfig'
 import JaxRequest from '../JaxRequest'
 
-export interface CurrentGameInfo {
-  gameId: number,
+export interface CurrentGameInfoDTO {
+  gameId: number
   gameType: string
-  gameStartTime: number,
-  mapId: number,
-  gameLength: number,
-  platformId: string,
-  gameMode: string,
-  bannedChampions: BannedChampion[],
-  gameQueueConfigId: number,
-  observers: Observer,
-  participants: CurrentGameParticipant[],
+  gameStartTime: number
+  mapId: number
+  gameLength: number
+  platformId: string
+  gameMode: string
+  bannedChampions: BannedChampionDTO[]
+  gameQueueConfigId: number
+  observers: ObserverDTO
+  participants: CurrentGameParticipantDTO[]
 }
 
-export interface BannedChampion {
-  pickTurn: number,
-  championId: number,
-  teamId: number,
+export interface BannedChampionDTO {
+  pickTurn: number
+  championId: number
+  teamId: number
 }
 
-export interface Observer {
-  encryptionKey: string,
+export interface ObserverDTO {
+  encryptionKey: string
 }
 
-export interface CurrentGameParticipant {
-  championId: number,
-  perks: Perks,
-  profileIconId: number,
-  bot: boolean,
-  teamId: number,
-  summonerName: string,
-  summonerId: string,
-  spell1Id: number,
-  spell2Id: number,
-  gameCustomizationObjects: GameCustomizationObject[],
-  // Custom types from here
-  role?: string,
-  runes?: { primaryRune: string, secondaryRune: string } | {}
-  level?: number,
-  rank?: LeagueEntriesByQueue
+export interface CurrentGameParticipantDTO {
+  championId: number
+  perks: PerksDTO
+  profileIconId: number
+  bot: boolean
+  teamId: number
+  summonerName: string
+  summonerId: string
+  spell1Id: number
+  spell2Id: number
+  gameCustomizationObjects: GameCustomizationObjectDTO[]
 }
 
-export interface Perks {
+export interface PerksDTO {
   perkIds: number[]
-  perkStyle: number,
+  perkStyle: number
   perkSubStyle: number
 }
 
-export interface GameCustomizationObject {
-  category: string,
+export interface GameCustomizationObjectDTO {
+  category: string
   content: string
 }
 
@@ -61,12 +55,12 @@ export default class SpectatorEndpoint {
   private config: JaxConfig
   private limiter: RiotRateLimiter
 
-  constructor (config: JaxConfig, limiter: RiotRateLimiter) {
+  constructor(config: JaxConfig, limiter: RiotRateLimiter) {
     this.config = config
     this.limiter = limiter
   }
 
-  public summonerID (summonerID: string, region: string) {
+  public summonerID(summonerID: string, region: string): Promise<CurrentGameInfoDTO | undefined> {
     return new JaxRequest(
       region,
       this.config,

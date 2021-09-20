@@ -1,5 +1,3 @@
-import { ParticipantBasic, ParticipantDetails } from './Models/Match'
-
 /**
  * All League of Legends regions used in Riot API
  */
@@ -31,8 +29,10 @@ export enum RiotRegion {
  * @param region : old region
  * @returns new region name
  */
-export function getRiotRegion (region: string): RiotRegion {
-  switch (region as LeagueRegion) { // TODO: remove cast when region is typed to "Region" everywhere instead of string
+export function getRiotRegion(region: string): RiotRegion {
+  switch (
+    region as LeagueRegion // TODO: remove cast when region is typed to "Region" everywhere instead of string
+  ) {
     case LeagueRegion.NORTH_AMERICA:
     case LeagueRegion.BRAZIL:
     case LeagueRegion.LATIN_AMERICA_NORTH:
@@ -51,6 +51,15 @@ export function getRiotRegion (region: string): RiotRegion {
 }
 
 /**
+ * Interface to help define a player's role
+ */
+export interface PlayerRole {
+  champion: number
+  jungle?: boolean
+  support?: boolean
+}
+
+/**
  * League of Legends queues with defined role for each summoner
  */
 export const queuesWithRole = [
@@ -63,8 +72,13 @@ export const queuesWithRole = [
 ]
 
 /**
-* League of Legends seasons timestamps
-*/
+ * League of Legends tutorial queues
+ */
+export const tutorialQueues = [2000, 2010, 2020]
+
+/**
+ * League of Legends seasons timestamps
+ */
 export const seasons = {
   0: 9,
   1578628800000: 10,
@@ -73,16 +87,16 @@ export const seasons = {
 }
 
 /**
-* League of Legends all support item ids
-*/
+ * League of Legends all support item ids
+ */
 export const supportItems = [3850, 3851, 3853, 3854, 3855, 3857, 3858, 3859, 3860, 3862, 3863, 3864]
 
 /**
  * Get season number for a match
- * @param timestamp 
+ * @param timestamp
  */
-export function getSeasonNumber (timestamp: number): number {
-  const arrSeasons = Object.keys(seasons).map(k => Number(k))
+export function getSeasonNumber(timestamp: number): number {
+  const arrSeasons = Object.keys(seasons).map((k) => Number(k))
   arrSeasons.push(timestamp)
   arrSeasons.sort()
   const indexSeason = arrSeasons.indexOf(timestamp) - 1
@@ -92,9 +106,13 @@ export function getSeasonNumber (timestamp: number): number {
 /**
  * Return current League of Legends season number
  */
-export function getCurrentSeason () : number {
+export function getCurrentSeason(): number {
   const lastTimestamp = Object.keys(seasons).pop()!
   return seasons[lastTimestamp]
+}
+
+interface SortableByRole {
+  role: string
 }
 
 /**
@@ -102,7 +120,14 @@ export function getCurrentSeason () : number {
  * @param a first player
  * @param b second player
  */
-export function sortTeamByRole (a: ParticipantBasic | ParticipantDetails, b: ParticipantBasic | ParticipantDetails) {
-  const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+export function sortTeamByRole<T extends SortableByRole>(a: T, b: T) {
+  const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
+}
+
+// https://stackoverflow.com/a/46700791/9188650
+export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  if (value === null || value === undefined) return false
+  const testDummy: TValue = value
+  return true
 }
