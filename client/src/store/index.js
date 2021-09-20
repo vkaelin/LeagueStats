@@ -32,7 +32,7 @@ export default new Vuex.Store({
       'tr': 'tr1',
       'ru': 'ru'
     },
-    roles: ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+    roles: ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
   },
   strict: debug
 })

@@ -1,13 +1,7 @@
 {
-  "extends": [
-    "plugin:adonis/typescriptApp"
-  ],
+  "extends": ["plugin:adonis/typescriptApp", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
-    "max-len": [
-      "error",
-      {
-        "code": 130
-      }
-    ]
+    "prettier/prettier": ["error"]
   }
 }

@@ -8,47 +8,70 @@ export const state = {
 }
 
 export const mutations = {
-  MATCH_LOADING(state, gameId) {
-    const alreadyIn = state.matches.find(m => m.gameId === gameId)
+  MATCH_LOADING(state, matchId) {
+    const alreadyIn = state.matches.find(m => m.matchId === matchId)
     if (!alreadyIn) {
-      state.matches.push({ gameId: gameId, status: 'loading' })
+      state.matches.push({ matchId, status: 'loading' })
     }
   },
-  MATCH_FOUND(state, matchDetails) {
+  MATCH_FOUND(state, {matchDetails, ranksLoaded }) {
     matchDetails.status = 'loaded'
+    matchDetails.ranksLoaded = ranksLoaded
+
+    // Set SoloQ as rank for now
+    if(ranksLoaded) {
+      for (const player of matchDetails.blueTeam.players) {
+        player.rank = player.rank && player.rank[420]
+      }
+      for (const player of matchDetails.redTeam.players) {
+        player.rank = player.rank && player.rank[420]
+      }
+    }
 
     const index = state.matches.findIndex(m => m.gameId === matchDetails.gameId)
     Vue.set(state.matches, index, matchDetails)
   },
-  MATCH_RANKS_FOUND(state, { gameId, blueTeam, redTeam }) {
+  MATCH_RANKS_FOUND(state, { gameId, ranksByPlayer }) {
     const match = state.matches.find(m => m.gameId === gameId)
-    match.blueTeam.players = blueTeam
-    match.redTeam.players = redTeam
+
+    for (const player of match.blueTeam.players) {
+      const ranks = ranksByPlayer[player.id]
+      if(!ranks) continue
+      Vue.set(player, 'rank', ranks[420])
+    }
+
+    for (const player of match.redTeam.players) {
+      const ranks = ranksByPlayer[player.id]
+      if(!ranks) continue
+      Vue.set(player, 'rank', ranks[420]) 
+    }
+
+    match.ranksLoaded = true
   },
 }
 
 export const actions = {
-  async matchDetails({ commit, rootState }, gameId) {
-    commit('MATCH_LOADING', gameId)
-    const region = rootState.regionsList[rootState.settings.region]
-    console.log('MATCH DETAILS STORE', gameId, region)
+  async matchDetails({ commit }, matchId) {
+    commit('MATCH_LOADING', matchId)
+    console.log('MATCH DETAILS STORE', matchId)
 
-    const resp = await axios(({ url: 'match/details', data: { gameId, region }, method: 'POST' })).catch(() => { })
+    const resp = await axios(({ url: 'match/details', data: { matchId }, method: 'POST' })).catch(() => { })
     console.log('--- DETAILS INFOS ---')
     console.log(resp.data)
-    commit('MATCH_FOUND', resp.data.matchDetails)
+    const {matchDetails, ranksLoaded} = resp.data
+    commit('MATCH_FOUND',  {matchDetails, ranksLoaded })
 
     // If the ranks of the players are not yet known
-    if (resp.data.matchDetails.blueTeam.players[0].rank === undefined) {
-      const ranks = await axios(({ url: 'match/details/ranks', data: { gameId, region }, method: 'POST' })).catch(() => { })
+    if (!ranksLoaded) {
+      const ranks = await axios(({ url: 'match/details/ranks', data: { matchId }, method: 'POST' })).catch(() => { })
       if (!ranks) return
       console.log('--- RANK OF MATCH DETAILS ---')
       console.log(ranks.data)
-      commit('MATCH_RANKS_FOUND', { gameId, ...ranks.data })
+      commit('MATCH_RANKS_FOUND', { matchId, ranksByPlayer: ranks.data })
     }
   }
 }
 
 export const getters = {
-  getMatchDetails: state => gameId => state.matches.find(m => m.gameId === gameId),
+  getMatchDetails: state => matchId => state.matches.find(m => m.matchId === matchId),
 }

@@ -3,28 +3,20 @@ import got from 'got/dist/source'
 
 export interface ChampionsPlayRate {
   [champion: string]: {
-    TOP: number,
-    JUNGLE: number,
-    MIDDLE: number,
-    BOTTOM: number,
-    UTILITY: number,
+    TOP: number
+    JUNGLE: number
+    MIDDLE: number
+    BOTTOM: number
+    UTILITY: number
   }
 }
 
-export interface FinalRoleComposition {
-  TOP?: number,
-  JUNGLE?: number,
-  MIDDLE?: number,
-  BOTTOM?: number,
-  SUPPORT?: number,
-}
-
 export interface RoleComposition {
-  TOP?: number,
-  JUNGLE?: number,
-  MIDDLE?: number,
-  BOTTOM?: number,
-  UTILITY?: number,
+  TOP?: number
+  JUNGLE?: number
+  MIDDLE?: number
+  BOTTOM?: number
+  UTILITY?: number
 }
 
 export interface ChampionComposition {
@@ -32,22 +24,22 @@ export interface ChampionComposition {
 }
 
 export interface ApiRoleResponse {
-  data: { [key: string]: ChampionInitialRates };
-  patch: string;
+  data: { [key: string]: ChampionInitialRates }
+  patch: string
 }
 
 export interface ChampionInitialRates {
-  MIDDLE?: RoleRate;
-  UTILITY?: RoleRate;
-  JUNGLE?: RoleRate;
-  TOP?: RoleRate;
-  BOTTOM?: RoleRate;
+  MIDDLE?: RoleRate
+  UTILITY?: RoleRate
+  JUNGLE?: RoleRate
+  TOP?: RoleRate
+  BOTTOM?: RoleRate
 }
 
 export interface RoleRate {
-  playRate: number;
-  winRate: number;
-  banRate: number;
+  playRate: number
+  winRate: number
+  banRate: number
 }
 
 export interface ChampionsRates {
@@ -55,7 +47,7 @@ export interface ChampionsRates {
 }
 
 class RoleIdentificationService {
-  private _getPermutations (array: number[]) {
+  private _getPermutations(array: number[]) {
     const result: number[][] = []
 
     for (let i = 0; i < array.length; i++) {
@@ -72,13 +64,15 @@ class RoleIdentificationService {
     return result
   }
 
-  private _calculateMetric (championPositions: ChampionsRates, bestPositions: RoleComposition) {
-    return Object.entries(bestPositions).reduce((agg, [position, champion]) => {
-      return agg + (championPositions[champion][position] || 0)
-    }, 0) / Object.keys(bestPositions).length
+  private _calculateMetric(championPositions: ChampionsRates, bestPositions: RoleComposition) {
+    return (
+      Object.entries(bestPositions).reduce((agg, [position, champion]) => {
+        return agg + (championPositions[champion][position] || 0)
+      }, 0) / Object.keys(bestPositions).length
+    )
   }
 
-  private _getPositions (
+  private _getPositions(
     championPositions: ChampionsRates,
     composition: number[],
     top?: number,
@@ -89,11 +83,11 @@ class RoleIdentificationService {
   ) {
     // Set the initial guess to be the champion in the composition, order doesn't matter
     let bestPositions: RoleComposition = {
-      'TOP': composition[0],
-      'JUNGLE': composition[1],
-      'MIDDLE': composition[2],
-      'BOTTOM': composition[3],
-      'UTILITY': composition[4],
+      TOP: composition[0],
+      JUNGLE: composition[1],
+      MIDDLE: composition[2],
+      BOTTOM: composition[3],
+      UTILITY: composition[4],
     }
 
     let bestMetric = this._calculateMetric(championPositions, bestPositions)
@@ -102,19 +96,23 @@ class RoleIdentificationService {
 
     // Figure out which champions and positions we need to fill
     const knownChampions = [top, jungle, middle, adc, support].filter(Boolean)
-    const unknownChampions = composition.filter(champ => !knownChampions.includes(champ))
+    const unknownChampions = composition.filter((champ) => !knownChampions.includes(champ))
     const unknownPositions = Object.entries({
-      'TOP': top, 'JUNGLE': jungle, 'MIDDLE': middle, 'BOTTOM': adc, 'UTILITY': support,
+      TOP: top,
+      JUNGLE: jungle,
+      MIDDLE: middle,
+      BOTTOM: adc,
+      UTILITY: support,
     })
-      .filter(pos => !pos[1])
-      .map(pos => pos[0])
+      .filter((pos) => !pos[1])
+      .map((pos) => pos[0])
 
     const testComposition: RoleComposition = {
-      'TOP': top,
-      'JUNGLE': jungle,
-      'MIDDLE': middle,
-      'BOTTOM': adc,
-      'UTILITY': support,
+      TOP: top,
+      JUNGLE: jungle,
+      MIDDLE: middle,
+      BOTTOM: adc,
+      UTILITY: support,
     }
 
     // Iterate over the positions we need to fill and record how well each composition "performs"
@@ -163,7 +161,7 @@ class RoleIdentificationService {
   /**
    * Get the CDN data of the champion playrates by role
    */
-  public async pullData (): Promise<ChampionsPlayRate> {
+  public async pullData(): Promise<ChampionsPlayRate> {
     const url = 'http://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/championrates.json'
 
     // Check if cached
@@ -199,17 +197,17 @@ class RoleIdentificationService {
 
   /**
    * Get roles for the 5 players of a team
-   * @param championPositions 
-   * @param composition 
+   * @param championPositions
+   * @param composition
    * @param jungle
    * @param support
    */
-  public getRoles (
+  public getRoles(
     championPositions: ChampionsRates,
     composition: number[],
     jungle?: number,
     support?: number
-  ): FinalRoleComposition {
+  ): RoleComposition {
     // Set composition champion playrate to 0% if not present in the json data
     for (const compChamp of composition) {
       if (championPositions[compChamp]) {
@@ -239,10 +237,19 @@ class RoleIdentificationService {
     }
 
     while (Object.keys(identified).length < composition.length - 1) {
-      let { bestPositions, bestMetric: metric, secondBestPositions: sbp } =
-        this._getPositions(championPositions, composition,
-          identified.TOP, identified.JUNGLE, identified.MIDDLE, identified.BOTTOM, identified.UTILITY
-        )
+      let {
+        bestPositions,
+        bestMetric: metric,
+        secondBestPositions: sbp,
+      } = this._getPositions(
+        championPositions,
+        composition,
+        identified.TOP,
+        identified.JUNGLE,
+        identified.MIDDLE,
+        identified.BOTTOM,
+        identified.UTILITY
+      )
 
       positions = bestPositions
 
@@ -261,7 +268,11 @@ class RoleIdentificationService {
       // Done! Grab the results.
       const positionsWithMetric = {}
       for (const [position, champion] of Object.entries(positions)) {
-        if (Object.keys(identified).includes(position) || champion === jungle || champion === support) {
+        if (
+          Object.keys(identified).includes(position) ||
+          champion === jungle ||
+          champion === support
+        ) {
           continue
         }
         positionsWithMetric[position] = {
@@ -285,13 +296,7 @@ class RoleIdentificationService {
       identified[best[0]] = best[1]
     }
 
-    // Rename UTILITY to SUPPORT
-    const {
-      UTILITY: SUPPORT,
-      ...rest
-    } = positions
-
-    return { ...rest, SUPPORT }
+    return positions
   }
 }
 

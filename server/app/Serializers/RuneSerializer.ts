@@ -1,7 +1,7 @@
 import { PerkDTO, PerkStyleDTO } from 'App/Services/Jax/src/Endpoints/CDragonEndpoint'
 
-class RuneTransformer {
-  public transformPerks (perks: PerkDTO[]) {
+class RuneSerializer {
+  public serializePerks(perks: PerkDTO[]) {
     return perks.reduce((acc, perk) => {
       acc[perk.id] = {
         name: perk.name,
@@ -12,18 +12,16 @@ class RuneTransformer {
     }, {})
   }
 
-  public transformStyles (styles: PerkStyleDTO[]) {
+  public serializeStyles(styles: PerkStyleDTO[]) {
     return styles.reduce((acc, style) => {
       acc[style.id] = {
         name: style.name,
         icon: style.iconPath,
-        slots: style.slots
-          .filter(s => s.type !== 'kStatMod')
-          .map(s => s.perks),
+        slots: style.slots.filter((s) => s.type !== 'kStatMod').map((s) => s.perks),
       }
       return acc
     }, {})
   }
 }
 
-export default new RuneTransformer()
+export default new RuneSerializer()

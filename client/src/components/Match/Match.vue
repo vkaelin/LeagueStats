@@ -35,12 +35,22 @@
               ></div>
               <div class="flex flex-col justify-around ml-2">
                 <div
-                  :style="{backgroundImage: `url(${data.firstSum})`}"
+                  v-if="data.summonerSpell1"
+                  :style="{backgroundImage: `url(${data.summonerSpell1.icon})`}"
                   class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-1000"
                 ></div>
                 <div
-                  :style="{backgroundImage: `url(${data.secondSum})`}"
+                  v-else
+                  class="w-6 h-6 rounded-md bg-blue-1000"
+                ></div>
+                <div
+                  v-if="data.summonerSpell2"
+                  :style="{backgroundImage: `url(${data.summonerSpell2.icon})`}"
                   class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-1000"
+                ></div>
+                <div
+                  v-else
+                  class="w-6 h-6 rounded-md bg-blue-1000"
                 ></div>
               </div>
               <div class="flex flex-col justify-around ml-1">
@@ -156,7 +166,7 @@
             <svg class="w-5 h-5 text-blue-200">
               <use xlink:href="#stopwatch" />
             </svg>
-            <div class="text-lg font-medium text-teal-400">{{ data.time|secToTime }}</div>
+            <div class="text-lg font-medium text-teal-400">{{ (data.time)|secToTime }}</div>
             <Tooltip>
               <template #trigger>
                 <div class="text-xs font-medium text-white">{{ data.date }}</div>
@@ -175,7 +185,7 @@
         </div>
       </div>
     </Ripple>
-    <DetailedMatch :data="getMatchDetails(data.gameId) || {}" :details-open="showDetails" />
+    <DetailedMatch :data="getMatchDetails(data.matchId) || {}" :details-open="showDetails" />
   </li>
 </template>
 
@@ -223,8 +233,8 @@ export default {
     displayDetails() {
       this.showDetails = !this.showDetails
 
-      if (!this.getMatchDetails(this.data.gameId)) {
-        this.matchDetails(this.data.gameId)
+      if (!this.getMatchDetails(this.data.matchId)) {
+        this.matchDetails(this.data.matchId)
       }
     },
     isSummonerProfile(account_id) {

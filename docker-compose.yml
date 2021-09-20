@@ -1,0 +1,26 @@
+version: "3"
+services:
+  leaguestats-redis:
+    container_name: leaguestats-redis
+    image: redis:6-alpine
+    ports:
+      - '127.0.0.1:6379:6379'
+    volumes:
+      - leaguestats-redisData:/data
+    restart: always
+  leaguestats-postgres:
+    container_name: leaguestats-postgres
+    image: postgres:12-alpine
+    ports:
+      - '127.0.0.1:5432:5432'
+    environment:
+      - POSTGRES_DB=leaguestats
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - leaguestats-postgresData:/var/lib/postgresql/data
+    restart: always
+volumes:
+  leaguestats-redisData:
+  leaguestats-postgresData:

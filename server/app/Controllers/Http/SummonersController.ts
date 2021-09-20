@@ -1,11 +1,13 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { getCurrentSeason } from 'App/helpers'
 import Summoner from 'App/Models/Summoner'
 import MatchRepository from 'App/Repositories/MatchRepository'
+import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
+import LiveMatchSerializer from 'App/Serializers/LiveMatchSerializer'
 import Jax from 'App/Services/Jax'
 import MatchService from 'App/Services/MatchService'
 import StatsService from 'App/Services/StatsService'
 import SummonerService from 'App/Services/SummonerService'
-import LiveMatchTransformer from 'App/Transformers/LiveMatchTransformer'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
 import SummonerChampionValidator from 'App/Validators/SummonerChampionValidator'
 import SummonerLiveValidator from 'App/Validators/SummonerLiveValidator'
@@ -13,21 +15,8 @@ import SummonerOverviewValidator from 'App/Validators/SummonerOverviewValidator'
 import SummonerRecordValidator from 'App/Validators/SummonerRecordValidator'
 
 export default class SummonersController {
-  /**
-   * Get all played seasons for a summoner
-   * @param puuid of the summoner
-   */
-  private async getSeasons (puuid: string): Promise<number[]> {
-    const seasons = await MatchRepository.seasons(puuid)
-    return seasons.length ? seasons.map(s => s._id) : [10]
-  }
-
-  /**
-   * POST: get basic summoner data
-   * @param ctx 
-   */
-  public async basic ({ request, response }: HttpContextContract) {
-    console.time('all')
+  public async basic({ request, response }: HttpContextContract) {
+    console.time('BASIC_REQUEST')
     const { summoner, region } = await request.validate(SummonerBasicValidator)
     const finalJSON: any = {}
 
@@ -37,24 +26,20 @@ export default class SummonersController {
       if (!account) {
         return response.json(null)
       }
-      account.region = region
       finalJSON.account = account
 
       // Summoner in DB
-      let summonerDB = await Summoner.findOne({ puuid: account.puuid })
-      if (!summonerDB) {
-        summonerDB = await Summoner.create({ puuid: account.puuid })
-      }
+      const summonerDB = await Summoner.firstOrCreate({ puuid: account.puuid })
 
       // Summoner names
-      finalJSON.account.names = SummonerService.getAllSummonerNames(account, summonerDB)
+      finalJSON.account.names = await SummonerService.getAllSummonerNames(account, summonerDB)
 
       // MATCH LIST
-      await MatchService.updateMatchList(account, summonerDB)
-      finalJSON.matchList = summonerDB.matchList
+      finalJSON.matchList = await MatchService.updateMatchList(account, region, summonerDB)
 
       // All seasons the summoner has played
-      finalJSON.seasons = await this.getSeasons(account.puuid)
+      // TODO: check if there is a way to do that with V5...
+      finalJSON.seasons = [getCurrentSeason()]
 
       // CURRENT GAME
       const currentGame = await Jax.Spectator.summonerID(account.id, region)
@@ -62,98 +47,102 @@ export default class SummonersController {
       finalJSON.current = currentGame
 
       // RANKED STATS
-      finalJSON.ranked = await SummonerService.getRanked(account, region)
+      finalJSON.ranked = await SummonerService.getRanked(account.id, region)
 
-      // SAVE IN DB
-      await summonerDB.save()
-    } catch (error) {
-      console.log('username not found')
-      console.log(error)
+      // RECENT ACTIVITY
+      finalJSON.recentActivity = await StatsService.getRecentActivity(account.puuid)
+    } catch (e) {
+      console.log(e)
+      console.timeEnd('BASIC_REQUEST')
       return response.json(null)
     }
 
-    console.timeEnd('all')
+    console.timeEnd('BASIC_REQUEST')
     return response.json(finalJSON)
   }
 
-  /**
-   * POST: get overview view summoner data
-   * @param ctx 
-   */
-  public async overview ({ request, response }: HttpContextContract) {
-    console.time('overview')
-    const { puuid, accountId, region, season } = await request.validate(SummonerOverviewValidator)
+  public async overview({ request, response }: HttpContextContract) {
+    console.time('OVERVIEW_REQUEST')
+    const { puuid, region, season } = await request.validate(SummonerOverviewValidator)
     const finalJSON: any = {}
 
     // Summoner in DB
-    let summonerDB = await Summoner.findOne({ puuid: puuid })
-    if (!summonerDB) {
-      summonerDB = await Summoner.create({ puuid: puuid })
-    }
+    const summonerDB = await Summoner.firstOrCreate({ puuid: puuid })
 
     // MATCHES BASIC
-    const gameIds = summonerDB.matchList!.slice(0)
-      .filter(m => {
-        return season ? m.seasonMatch === season : true
-      })
-      .slice(0, 10)
-      .map(({ gameId }) => gameId)
-    finalJSON.matchesDetails = await MatchService.getMatches(puuid, accountId, region, gameIds, summonerDB)
+    const matchlist = await summonerDB
+      .related('matchList')
+      .query()
+      .select('matchId')
+      .orderBy('matchId', 'desc')
+      .limit(10)
+    const matchIds = matchlist.map((m) => m.matchId)
 
-    // STATS
+    finalJSON.matchesDetails = await MatchService.getMatches(region, matchIds, puuid)
+
     console.time('STATS')
     finalJSON.stats = await StatsService.getSummonerStats(puuid, season)
     console.timeEnd('STATS')
 
-    // SAVE IN DB
-    await summonerDB.save()
-
-    console.timeEnd('overview')
+    console.timeEnd('OVERVIEW_REQUEST')
     return response.json(finalJSON)
   }
 
   /**
    * POST: get champions view summoner data
-   * @param ctx 
+   * @param ctx
    */
-  public async champions ({ request, response }: HttpContextContract) {
+  public async champions({ request, response }: HttpContextContract) {
     console.time('championsRequest')
     const { puuid, queue, season } = await request.validate(SummonerChampionValidator)
     const championStats = await MatchRepository.championCompleteStats(puuid, queue, season)
+    const championStatsSerialized = championStats.map((champion) => {
+      return {
+        ...champion,
+        champion: BasicMatchSerializer.getChampion(champion.id),
+      }
+    })
     console.timeEnd('championsRequest')
-    return response.json(championStats)
+    return response.json(championStatsSerialized)
   }
 
   /**
    * POST: get records view summoner data
-   * @param ctx 
+   * @param ctx
    */
-  public async records ({ request, response }: HttpContextContract) {
+  public async records({ request, response }: HttpContextContract) {
     console.time('recordsRequest')
     const { puuid, season } = await request.validate(SummonerRecordValidator)
-    const records = await MatchRepository.records(puuid, season)
+    const records = await MatchRepository.records(puuid)
+    const recordsSerialized = records.map((record) => {
+      return {
+        ...record,
+        what: record.what.split('.')[1],
+        champion: BasicMatchSerializer.getChampion(record.champion_id),
+      }
+    })
     console.timeEnd('recordsRequest')
-    return response.json(records)
+    return response.json(recordsSerialized)
   }
 
   /**
    * POST - Return live match detail
-   * @param ctx 
+   * @param ctx
    */
-  public async liveMatchDetails ({ request, response }: HttpContextContract) {
+  public async liveMatchDetails({ request, response }: HttpContextContract) {
     console.time('liveMatchDetails')
     const { id, region } = await request.validate(SummonerLiveValidator)
 
     // CURRENT GAME
-    let currentGame = await Jax.Spectator.summonerID(id, region)
+    const currentGame = await Jax.Spectator.summonerID(id, region)
 
     if (!currentGame) {
       return response.json(null)
     }
 
-    currentGame = await LiveMatchTransformer.transform(currentGame, { region })
+    const currentGameSerialized = await LiveMatchSerializer.serializeOneMatch(currentGame, region)
     console.timeEnd('liveMatchDetails')
 
-    return response.json(currentGame)
+    return response.json(currentGameSerialized)
   }
 }

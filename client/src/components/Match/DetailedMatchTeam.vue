@@ -91,29 +91,29 @@
                     <div
                       :style="{
                         backgroundImage: `url(${
-                          player.firstSum ? player.firstSum.icon : null
+                          player.summonerSpell1 ? player.summonerSpell1.icon : null
                         })`,
                       }"
-                      :class="{ 'cursor-pointer': player.firstSum }"
+                      :class="{ 'cursor-pointer': player.summonerSpell1 }"
                       class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                     ></div>
                   </template>
-                  <template v-if="player.firstSum" #default>
+                  <template v-if="player.summonerSpell1" #default>
                     <div
                       class="flex max-w-sm p-2 text-xs text-left text-white select-none"
                     >
                       <div
                         :style="{
-                          backgroundImage: `url('${player.firstSum.icon}')`,
+                          backgroundImage: `url('${player.summonerSpell1.icon}')`,
                         }"
                         class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
                       ></div>
                       <div class="ml-2 leading-tight">
                         <div class="text-base leading-none">
-                          {{ player.firstSum.name }}
+                          {{ player.summonerSpell1.name }}
                         </div>
                         <div class="mt-1 font-light text-blue-200">
-                          {{ player.firstSum.description }}
+                          {{ player.summonerSpell1.description }}
                         </div>
                       </div>
                     </div>
@@ -124,29 +124,29 @@
                     <div
                       :style="{
                         backgroundImage: `url(${
-                          player.secondSum ? player.secondSum.icon : null
+                          player.summonerSpell2 ? player.summonerSpell2.icon : null
                         })`,
                       }"
-                      :class="{ 'cursor-pointer': player.secondSum }"
+                      :class="{ 'cursor-pointer': player.summonerSpell2 }"
                       class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                     ></div>
                   </template>
-                  <template v-if="player.secondSum" #default>
+                  <template v-if="player.summonerSpell2" #default>
                     <div
                       class="flex max-w-sm p-2 text-xs text-left text-white select-none"
                     >
                       <div
                         :style="{
-                          backgroundImage: `url('${player.secondSum.icon}')`,
+                          backgroundImage: `url('${player.summonerSpell2.icon}')`,
                         }"
                         class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
                       ></div>
                       <div class="ml-2 leading-tight">
                         <div class="text-base leading-none">
-                          {{ player.secondSum.name }}
+                          {{ player.summonerSpell2.name }}
                         </div>
                         <div class="mt-1 font-light text-blue-200">
-                          {{ player.secondSum.description }}
+                          {{ player.summonerSpell2.description }}
                         </div>
                       </div>
                     </div>
@@ -195,7 +195,7 @@
                 class="flex flex-col items-start justify-center ml-1 leading-none"
               >
                 <router-link
-                  v-if="player.firstSum"
+                  v-if="player.summonerSpell1"
                   :to="{
                     name: 'summoner',
                     params: { region: $route.params.region, name: player.name },
@@ -228,7 +228,7 @@
                   {{ player.rank.shortName }}
                 </div>
               </div>
-              <div v-else-if="player.rank === undefined">
+              <div v-else-if="!ranksLoaded">
                 <DotsLoader width="30px" dot-width="10px" />
               </div>
               <div v-else class="w-5 h-5">
@@ -350,6 +350,10 @@ export default {
       type: Object,
       required: true,
     },
+    ranksLoaded: {
+      type: Boolean,
+      default: false
+    }
   },
 
   computed: {

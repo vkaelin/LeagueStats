@@ -3,7 +3,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/caa8be10-e095-4934-81ef-b662fb73483f/deploy-status)](https://app.netlify.com/sites/leaguestats-gg/deploys)
 <a href="https://discord.gg/RjBzjfk"><img src="https://img.shields.io/badge/Discord-join%20chat-738bd7.svg" alt="LeagueStats.gg official Discord"></a>
 
-
 The goal of [leaguestats.gg](https://leaguestats.gg) is to provide global complete data for all League of Legends summoners.  
 Here is an [example](https://leaguestats.gg/summoner/euw/SammyWinchester) of stats for some summoner.
 
@@ -18,11 +17,15 @@ Here is an [example](https://leaguestats.gg/summoner/euw/SammyWinchester) of sta
 ## Installation
 
 Development environment requirements :
+
 - [Node.js](https://nodejs.org/en/download/) >= 12.0.0
-- [MongoDB](https://www.mongodb.com/download-center/community) >= 4.4
+- [PostgreSQL](https://www.postgresql.org/download/)
 - [Redis](https://redis.io/download)
 
+You can use the `docker-compose.yml` file to quickly setup Postgre and Redis in development.
+
 Setting up your development environment on your local machine :
+
 ```bash
 > git clone https://github.com/vkaelin/LeagueStats.git
 > cd leaguestats/client
@@ -33,11 +36,13 @@ Setting up your development environment on your local machine :
 > cd leaguestats/server
 > npm install
 > cp .env.example .env # edit the values
-> node ace mongodb:migration:run # your MongoDB installation needs to by a Replica Set and not a Standalone
+> node ace migration:run
 ```
 
 ## Useful commands
+
 Running the app :
+
 ```bash
 > cd client
 > npm run dev
@@ -49,6 +54,7 @@ Running the app :
 ```
 
 Deploying the app :
+
 ```bash
 > cd client
 > npm run build
@@ -76,7 +82,6 @@ Share — copy and redistribute the material in any medium or format
 Adapt — remix, transform, and build upon the material
 
 ### Under the following terms:
-
 
 NonCommercial — You may not use the material for commercial purposes.
 

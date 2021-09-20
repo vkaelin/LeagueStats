@@ -11,7 +11,7 @@ export default class CDragonRequest {
   private retries: number
   private sleep: { (ms: number): Promise<void>; <T>(ms: number, value: T): Promise<T> }
 
-  constructor (config: JaxConfig, endpoint: string, cacheTime: number) {
+  constructor(config: JaxConfig, endpoint: string, cacheTime: number) {
     this.config = config
     this.endpoint = endpoint
     this.cacheTime = cacheTime
@@ -26,7 +26,7 @@ export default class CDragonRequest {
   // https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json
   // https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/summoner-spells.json
 
-  public async execute () {
+  public async execute() {
     const url = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/${this.endpoint}`
 
     const requestCached = await Redis.get(url)

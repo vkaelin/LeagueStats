@@ -9,6 +9,7 @@ export const state = {
     currentSeason: null,
     matchList: [],
     ranked: {},
+    recentActivity: [],
     seasons: [],
     status: '',
   },
@@ -24,7 +25,7 @@ export const state = {
     championsLoaded: false
   },
   records: {
-    list: [],
+    list: {},
     recordsLoaded: false
   },
   live: {
@@ -66,18 +67,21 @@ export const mutations = {
     state.overview.matchesLoading = true
   },
   MATCHES_FOUND(state, { newMatches, stats }) {
+    state.basic.recentActivity = stats.recentActivity
     state.overview.matchesLoading = false
     state.overview.matches = [...state.overview.matches, ...newMatches]
-    state.overview.matchIndex += newMatches.length
+    state.overview.matchIndex += 10
     state.overview.stats = stats
     state.champions.championsLoaded = false
     state.records.recordsLoaded = false
   },
   OVERVIEW_FOUND(state, infos) {
+    state.basic.recentActivity = infos.stats.recentActivity
     state.overview.matches = infos.matches
     state.overview.matchIndex = infos.matches.length
     state.overview.stats = infos.stats
     state.overview.loaded = true
+    state.records.recordsLoaded = false
   },
   RECORDS_FOUND(state, { records }) {
     state.records.list = records
@@ -87,6 +91,7 @@ export const mutations = {
     state.basic.account = infos.account
     state.basic.matchList = infos.matchList
     state.basic.ranked = infos.ranked
+    state.basic.recentActivity = infos.recentActivity
     state.basic.seasons = infos.seasons.sort((a, b) => b - a)
     state.basic.status = 'found'
     state.live.match = infos.current
@@ -178,17 +183,15 @@ export const actions = {
   async moreMatches({ commit, getters, rootState }) {
     commit('MATCHES_LOADING')
 
-    const gameIds = getters.filteredMatchList
+    const matchIds = getters.filteredMatchList
       .slice(state.overview.matchIndex, state.overview.matchIndex + 10)
-      .map(({ gameId }) => gameId)
 
     const resp = await axios(({
       url: 'match',
       data: {
         puuid: state.basic.account.puuid,
-        accountId: state.basic.account.accountId,
         region: rootState.regionsList[rootState.settings.region],
-        gameIds
+        matchIds
       },
       method: 'POST'
     })).catch(() => { })
@@ -216,7 +219,7 @@ export const actions = {
     const resp = await axios(({ url: 'summoner/records', data: { puuid: state.basic.account.puuid }, method: 'POST' })).catch(() => { })
     console.log('---RECORDS---')
     console.log(resp.data)
-    const records = resp.data ? createRecordsData(resp.data) : {}
+    const records = resp.data.length ? createRecordsData(resp.data) : {}
 
     commit('RECORDS_FOUND', { records })
   },

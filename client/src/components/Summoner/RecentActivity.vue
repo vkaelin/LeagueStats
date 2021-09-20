@@ -57,20 +57,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Tooltip from '@/components/Common/Tooltip.vue'
 
 export default {
   components: {
     Tooltip,
-  },
-
-  props: {
-    matches: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
   },
 
   data() {
@@ -86,8 +78,14 @@ export default {
     }
   },
 
+  computed: {
+  ...mapState({
+      recentActivity: state => state.summoner.basic.recentActivity
+    }),
+  },
+
   watch: {
-    matches() {
+    recentActivity() {
       this.fillGrid()
     }
   },
@@ -118,16 +116,15 @@ export default {
     },
     fillGrid() {
       // Add all the matches made by the summoner
-      for (const key in this.matches) {
-        const match = this.matches[key]
-        const matchTime = new Date(match.timestamp)
+      for (const match of this.recentActivity) {
+        const matchTime = new Date(match.day)
         const formattedTime = matchTime.toLocaleString(undefined, this.options)
 
         const dayOfTheMatch = this.gridDays.filter(
           e => e.date === formattedTime
         )
         if (dayOfTheMatch.length > 0) {
-          dayOfTheMatch[0].matches++
+          dayOfTheMatch[0].matches = match.count
         }
       }
 

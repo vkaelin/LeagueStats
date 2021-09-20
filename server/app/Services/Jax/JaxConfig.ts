@@ -1,18 +1,18 @@
 import Env from '@ioc:Adonis/Core/Env'
 
 export interface JaxConfig {
-  key: string,
-  region: string,
+  key: string
+  region: string
   requestOptions: JaxConfigRequestOptions
 }
 
 export interface JaxConfigRequestOptions {
-  retriesBeforeAbort: number,
-  delayBeforeRetry: number,
+  retriesBeforeAbort: number
+  delayBeforeRetry: number
 }
 
 export const JAX_CONFIG: JaxConfig = {
-  key: Env.get('API_KEY') as string,
+  key: Env.get('RIOT_API_KEY') as string,
   region: 'euw1',
   requestOptions: {
     retriesBeforeAbort: 3,

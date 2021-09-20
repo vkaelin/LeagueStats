@@ -40,7 +40,7 @@ export function secToTime(seconds) {
  * Sort an array of players by role
  */
 export function sortTeamByRole(a, b) {
-  const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'SUPPORT']
+  const sortingArr = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
   return sortingArr.indexOf(a.role) - sortingArr.indexOf(b.role)
 }
 

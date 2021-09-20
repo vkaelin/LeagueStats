@@ -1,12 +1,11 @@
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema } from '@ioc:Adonis/Core/Validator'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class DetailedMatchValidator {
-  constructor (private ctx: HttpContextContract) {
-  }
+  constructor(protected ctx: HttpContextContract) {}
 
-  /**
-   * Defining a schema to validate the "shape", "type", "formatting" and "integrity" of data.
+  /*
+   * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
    *
    * For example:
    * 1. The username must be of data type string. But then also, it should
@@ -25,19 +24,8 @@ export default class DetailedMatchValidator {
    *    ```
    */
   public schema = schema.create({
-    gameId: schema.number(),
-    region: schema.string(),
+    matchId: schema.string(),
   })
-
-  /**
-   * The `schema` first gets compiled to a reusable function and then that compiled
-   * function validates the data at runtime.
-   *
-   * Since, compiling the schema is an expensive operation, you must always cache it by
-   * defining a unique cache key. The simplest way is to use the current request route
-   * key, which is a combination of the route pattern and HTTP method.
-   */
-  public cacheKey = this.ctx.routeKey
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
@@ -48,6 +36,7 @@ export default class DetailedMatchValidator {
    *   'profile.username.required': 'Username is required',
    *   'scores.*.number': 'Define scores as valid numbers'
    * }
-  */
+   *
+   */
   public messages = {}
 }

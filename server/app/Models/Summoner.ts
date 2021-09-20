@@ -1,21 +1,36 @@
-import { Model } from '@ioc:Mongodb/Model'
-import { MatchReferenceDto } from 'App/Services/Jax/src/Endpoints/MatchlistEndpoint'
+import { DateTime } from 'luxon'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import SummonerMatchlist from './SummonerMatchlist'
+import SummonerName from './SummonerName'
+import MatchPlayer from './MatchPlayer'
 
-export interface SummonerModel {
-  puuid: string,
-  matchList?: MatchReferenceDto[],
-  names?: SummonerNames[]
-}
+export default class Summoner extends BaseModel {
+  public static selfAssignPrimaryKey = true
 
-interface SummonerNames {
-  name: string,
-  date: Date
-}
-
-export default class Summoner extends Model implements SummonerModel {
-  public static collectionName = 'summoners'
-
+  @column({ isPrimary: true })
   public puuid: string
-  public matchList?: MatchReferenceDto[]
-  public names?: SummonerNames[]
+
+  @column.dateTime({ autoCreate: true })
+  public createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  public updatedAt: DateTime
+
+  @hasMany(() => SummonerMatchlist, {
+    localKey: 'puuid',
+    foreignKey: 'summonerPuuid',
+  })
+  public matchList: HasMany<typeof SummonerMatchlist>
+
+  @hasMany(() => MatchPlayer, {
+    localKey: 'puuid',
+    foreignKey: 'summonerPuuid',
+  })
+  public matches: HasMany<typeof MatchPlayer>
+
+  @hasMany(() => SummonerName, {
+    localKey: 'puuid',
+    foreignKey: 'summonerPuuid',
+  })
+  public names: HasMany<typeof SummonerName>
 }

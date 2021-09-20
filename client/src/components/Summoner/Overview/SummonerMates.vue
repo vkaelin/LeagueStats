@@ -19,7 +19,7 @@
         <ul class="mt-1 text-gray-100">
           <li
             v-for="mate in mates.slice(0, maxMates)"
-            :key="mate._id"
+            :key="mate.name"
             class="flex items-center justify-between"
           >
             <router-link

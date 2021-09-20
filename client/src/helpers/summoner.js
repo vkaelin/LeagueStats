@@ -1,8 +1,27 @@
-import { secToTime, timeDifference } from '@/helpers/functions.js'
+import { createCDragonAssetUrl, secToTime, timeDifference } from '@/helpers/functions.js'
 import { maps, gameModes } from '@/data/data.js'
 import summonerSpells from '@/data/summonerSpells.json'
+import store from '@/store'
 
 const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
+
+/**
+ * Get the url of the of the player primary rune
+ * @param {Object} perks : from the API
+ */
+export function getPrimarRune(perks) {
+  const primaryRune = perks.selected.length ? store.state.cdragon.runes.perks[perks.selected[0]] : null
+  return primaryRune ? createCDragonAssetUrl(primaryRune.icon) : null
+}
+
+/**
+ * Get the url of the of the player secondary rune
+ * @param {Object} perks : from the API
+ */
+export function getSecondaryRune(perks) {
+  const secondaryRune = store.state.cdragon.runes.perkstyles[perks.secondaryStyle]
+  return  secondaryRune ? createCDragonAssetUrl(secondaryRune.icon) : null
+}
 
 /**
  * Return all the infos about a list of matches built with the Riot API data
@@ -10,8 +29,9 @@ const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
  */
 export function createMatchData(matches) {
   for (const match of matches) {
-    match.firstSum = getSummonerLink(match.firstSum)
-    match.secondSum = getSummonerLink(match.secondSum)
+    // Runes
+    match.primaryRune = getPrimarRune(match.perks)
+    match.secondaryRune = getSecondaryRune(match.perks)
 
     const date = new Date(match.date)
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
@@ -62,21 +82,22 @@ export function createBasicSummonerData(RiotData) {
 
 /**
  * Return the formatted records of a summoner
- * @param {Object} records : raw records from the database stats
+ * @param {Object} recordsDto : raw records from the database stats
  */
-export function createRecordsData(records) {
-  records.maxTime.time = secToTime(records.maxTime.time)
-  records.maxGold.gold = records.maxGold.gold.toLocaleString()
-  records.maxDmgTaken.dmgTaken = records.maxDmgTaken.dmgTaken.toLocaleString()
-  records.maxDmgChamp.dmgChamp = records.maxDmgChamp.dmgChamp.toLocaleString()
-  records.maxDmgObj.dmgObj = records.maxDmgObj.dmgObj.toLocaleString()
-  records.maxKp.kp = `${records.maxKp.kp}%`
+export function createRecordsData(recordsDto) {
+  const records = recordsDto.reduce((acc, record) => {
+    acc[record.what] = record
+    return acc
+  }, {})
 
-  // New record fields
-  if (records.maxLiving) {
-    records.maxLiving.longestLiving = secToTime(records.maxLiving.longestLiving)
-    records.maxHeal.heal = records.maxHeal.heal.toLocaleString()
-  }
+  records.game_duration.amount = secToTime(records.game_duration.amount)
+  records.gold.amount =  records.gold.amount.toLocaleString()
+  records.damage_taken.amount = records.damage_taken.amount.toLocaleString()
+  records.damage_dealt_champions.amount = records.damage_dealt_champions.amount.toLocaleString()
+  records.damage_dealt_objectives.amount = records.damage_dealt_objectives.amount.toLocaleString()
+  records.kp.amount = `${records.kp.amount}%`
+  records.time_spent_living.amount = secToTime(records.time_spent_living.amount)
+  records.heal.amount = records.heal.amount.toLocaleString()
 
   return records
 }

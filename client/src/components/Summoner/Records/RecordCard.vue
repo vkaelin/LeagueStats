@@ -5,7 +5,7 @@
     :style="{
       backgroundImage:
         `${hover ? gradientHover : gradient},
-         url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${record.champion.id}/${record.champion.id}000.jpg')`
+         url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${record.champion_id}/${record.champion_id}000.jpg')`
     }"
     :class="borderColor"
     class="relative w-full p-4 mx-2 mt-6 leading-none bg-center bg-cover border rounded-lg record-card"
@@ -21,18 +21,18 @@
       <span :class="textColor" class="ml-0">{{ title }}</span>
     </div>
     <img
-      :src="`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${record.champion.id}.png`"
+      :src="`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${record.champion_id}.png`"
       :class="[{'opacity-0 scale-125': hover}, borderColor]"
       class="block w-16 h-16 mx-auto mt-10 transition duration-500 ease-in transform border-2 rounded-full"
       alt="Champion Played"
     />
-    <div :style="{textShadow: `-2px 1px 6px ${color}`}" class="mt-6 text-4xl">{{ record[property] }}</div>
+    <div :style="{textShadow: `-2px 1px 6px ${color}`}" class="mt-6 text-4xl">{{ record.amount }}</div>
 
     <div class="text-sm">
       <div class="mt-6">
         <span
-          :class="record.result === 'Win' ? 'text-green-400' : 'text-red-400'"
-        >{{ record.result === 'Win' ? 'Won' : 'Lost' }}</span>
+          :class="record.result ? 'text-green-400' : 'text-red-400'"
+        >{{ record.result ? 'Won' : 'Lost' }}</span>
         <span class="ml-1 font-semibold">{{ timeDifference(record.date) }}</span>
       </div>
       <div class="mt-2 text-gray-500">
@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="mt-6 text-xs font-light text-right text-gray-200 opacity-25">
-      <span v-if="hover">match {{ record.gameId }}</span>
+      <span v-if="hover">{{ record.id }}</span>
       <span v-else>{{ gameModes[record.gamemode].name }}</span>
     </div>
   </div>
@@ -62,10 +62,6 @@ export default {
       required: true
     },
     textColor: {
-      type: String,
-      required: true
-    },
-    property: {
       type: String,
       required: true
     },

@@ -1,6 +1,6 @@
 <template>
   <div key="records">
-    <template v-if="!recordsLoaded || (recordsLoaded && records.maxKda)">
+    <template v-if="!recordsLoaded || (recordsLoaded && records.assists)">
       <div
         class="relative pl-6 text-2xl text-blue-200 border-b-2 border-blue-800 category blue-900"
       >Basics</div>
@@ -10,48 +10,42 @@
             color="#63b3ed"
             text-color="text-blue-400"
             border-color="border-blue-400"
-            property="kda"
-            :record="records.maxKda"
+            :record="records.kda"
             title="KDA"
           />
           <RecordCard
             color="#68D391"
             text-color="text-green-400"
             border-color="border-green-400"
-            property="kills"
-            :record="records.maxKills"
+            :record="records.kills"
             title="Kills"
           />
           <RecordCard
             color="#9F7AEA"
             text-color="text-purple-500"
             border-color="border-purple-500"
-            property="assists"
-            :record="records.maxAssists"
+            :record="records.assists"
             title="Assists"
           />
           <RecordCard
             color="#F56565"
             text-color="text-red-500"
             border-color="border-red-500"
-            property="deaths"
-            :record="records.maxDeaths"
+            :record="records.deaths"
             title="Deaths"
           />
           <RecordCard
             color="#D69E2E"
             text-color="text-yellow-600"
             border-color="border-yellow-600"
-            property="gold"
-            :record="records.maxGold"
+            :record="records.gold"
             title="Gold earned"
           />
           <RecordCard
             color="#81E6D9"
             text-color="text-teal-300"
             border-color="border-teal-300"
-            property="minions"
-            :record="records.maxMinions"
+            :record="records.minions"
             title="Minions killed"
           />
         </template>
@@ -81,24 +75,21 @@
             color="#FC8181"
             text-color="text-red-400"
             border-color="border-red-400"
-            property="dmgChamp"
-            :record="records.maxDmgChamp"
+            :record="records.damage_dealt_champions"
             title="Damage champions"
           />
           <RecordCard
             color="#D69E2E"
             text-color="text-yellow-400"
             border-color="border-yellow-400"
-            property="dmgObj"
-            :record="records.maxDmgObj"
+            :record="records.damage_dealt_objectives"
             title="Damage objectives"
           />
           <RecordCard
             color="#FC8181"
             text-color="text-red-400"
             border-color="border-red-400"
-            property="dmgTaken"
-            :record="records.maxDmgTaken"
+            :record="records.damage_taken"
             title="Damage taken"
           />
           <RecordCard
@@ -106,24 +97,21 @@
             color="#D69E2E"
             text-color="text-yellow-400"
             border-color="border-yellow-400"
-            property="towers"
-            :record="records.maxTowers"
+            :record="records.turret_kills"
             title="Towers"
           />
           <RecordCard
             color="#68D391"
             text-color="text-green-400"
             border-color="border-green-400"
-            property="kp"
-            :record="records.maxKp"
+            :record="records.kp"
             title="Kill participation"
           />
           <RecordCard
             color="#D69E2E"
             text-color="text-yellow-400"
             border-color="border-yellow-400"
-            property="vision"
-            :record="records.maxVision"
+            :record="records.vision_score"
             title="Vision score"
           />
         </template>
@@ -153,35 +141,28 @@
             color="#4299E1"
             text-color="text-blue-500"
             border-color="border-blue-500"
-            property="time"
-            :record="records.maxTime"
+            :record="records.game_duration"
             title="Longest game"
           />
           <RecordCard
-            v-if="records.maxLiving"
             color="#4299E1"
             text-color="text-blue-500"
             border-color="border-blue-500"
-            property="longestLiving"
-            :record="records.maxLiving"
+            :record="records.time_spent_living"
             title="Longest living"
           />
           <RecordCard
-            v-if="records.maxCriticalStrike"
             color="#D69E2E"
             text-color="text-yellow-400"
             border-color="border-yellow-400"
-            property="criticalStrike"
-            :record="records.maxCriticalStrike"
+            :record="records.critical_strike"
             title="Critical Strike"
           />
           <RecordCard
-            v-if="records.maxHeal"
             color="#68D391"
             text-color="text-green-400"
             border-color="border-green-400"
-            property="heal"
-            :record="records.maxHeal"
+            :record="records.heal"
             title="Heal"
           />
         </template>
@@ -204,47 +185,42 @@
           </div>
         </template>
       </div>
-      <div v-if="records.maxDouble" class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Multi kills</div>
-      <div v-if="records.maxDouble" class="flex flex-wrap -mx-2">
+      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Multi kills</div>
+      <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
             color="#FEFCBF"
             text-color="text-yellow-200"
             border-color="border-yellow-200"
-            property="doubleKills"
-            :record="records.maxDouble"
+            :record="records.double_kills"
             title="Double kills"
           />
           <RecordCard
             color="#F6E05E"
             text-color="text-yellow-400"
             border-color="border-yellow-400"
-            property="tripleKills"
-            :record="records.maxTriple"
+            :record="records.triple_kills"
             title="Triple kills"
           />
           <RecordCard
             color="#D69E2E"
             text-color="text-yellow-600"
             border-color="border-yellow-600"
-            property="quadraKills"
-            :record="records.maxQuadra"
+            :record="records.quadra_kills"
             title="Quadra kills"
           />
           <RecordCard
             color="#F56565"
             text-color="text-red-500"
             border-color="border-red-500"
-            property="pentaKills"
-            :record="records.maxPenta"
+            :record="records.penta_kills"
             title="Penta kills"
           />
           <RecordCard
             color="#63b3ed"
             text-color="text-blue-400"
             border-color="border-blue-400"
-            property="killingSpree"
-            :record="records.maxKillingSpree"
+            :record="records.killing_spree"
             title="Killing Spree"
           />
         </template>
@@ -268,7 +244,7 @@
         </template>
       </div>
     </template>
-    <template v-if="recordsLoaded && !records.maxKda">
+    <template v-if="recordsLoaded && !records.assists">
       <div class="flex flex-col items-center mt-4">
         <div>No records have been found.</div>
         <div>😕</div>

@@ -59,6 +59,8 @@ export default {
 
   created() {
     this.fetchData()
+
+    this.getRunes()
   },
 
   methods: {
@@ -67,6 +69,7 @@ export default {
         this.liveMatchRequest()
       }
     },
+    ...mapActions('cdragon', ['getRunes']),
     ...mapActions('summoner', ['liveMatchRequest']),
   },
 
