@@ -56,6 +56,7 @@ class MatchV4Parser {
   public async parseOneMatch(match: V4MatchDto) {
     // Parse + store in database
     const matchId = this.createMatchId(match.gameId, match.platformId)
+    console.log(matchId)
 
     if (match.participants.length !== 10) {
       console.log(`Match not saved because < 10 players. Gamemode: ${match.queueId}`)
@@ -222,11 +223,6 @@ class MatchV4Parser {
         banOrders: team.bans.length ? team.bans.map((ban) => ban.pickTurn) : undefined,
       })
     }
-
-    // Load Match relations
-    await parsedMatch.load((loader) => {
-      loader.load('teams').load('players')
-    })
     return parsedMatch
   }
 
