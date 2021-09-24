@@ -54,9 +54,7 @@ export default class SummonersController {
       console.timeEnd('ranked')
 
       // RECENT ACTIVITY
-      console.time('RecentActivity')
       finalJSON.recentActivity = await StatsService.getRecentActivity(account.puuid)
-      console.timeEnd('RecentActivity')
     } catch (e) {
       console.log(e)
       console.timeEnd('BASIC_REQUEST')
