@@ -42,15 +42,21 @@ export default class SummonersController {
       finalJSON.seasons = [getCurrentSeason()]
 
       // CURRENT GAME
+      console.time('playing')
       const currentGame = await Jax.Spectator.summonerID(account.id, region)
       finalJSON.playing = !!currentGame
       finalJSON.current = currentGame
+      console.timeEnd('playing')
 
       // RANKED STATS
+      console.time('ranked')
       finalJSON.ranked = await SummonerService.getRanked(account.id, region)
+      console.timeEnd('ranked')
 
       // RECENT ACTIVITY
+      console.time('RecentActivity')
       finalJSON.recentActivity = await StatsService.getRecentActivity(account.puuid)
+      console.timeEnd('RecentActivity')
     } catch (e) {
       console.log(e)
       console.timeEnd('BASIC_REQUEST')
