@@ -5,7 +5,10 @@ import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 
 class StatsService {
   public async getRecentActivity(puuid: string) {
-    return MatchRepository.recentActivity(puuid)
+    console.time('RecentActivity')
+    const recentActivity = await MatchRepository.recentActivity(puuid)
+    console.timeEnd('RecentActivity')
+    return recentActivity
   }
   public async getSummonerStats(puuid: string, season?: number) {
     console.time('GLOBAL')

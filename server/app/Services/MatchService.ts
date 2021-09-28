@@ -21,6 +21,7 @@ class MatchService {
     let alreadyIn = false
     let index = 0
     do {
+      console.log('--> CALL TO RIOT MATCHLIST')
       const newMatchList = await Jax.Matchlist.puuid(account.puuid, region, index)
       // Error while fetching Riot API
       if (!newMatchList) {
@@ -49,6 +50,7 @@ class MatchService {
     const currentMatchList = await summonerDB.related('matchList').query().orderBy('matchId', 'asc')
     const currentMatchListIds = currentMatchList.map((m) => m.matchId)
 
+    console.time('RiotMatchList')
     const newMatchList = await this._fetchMatchListUntil(
       account,
       region,
@@ -56,6 +58,7 @@ class MatchService {
         return currentMatchListIds.some((id) => id === newMatchList[newMatchList.length - 1])
       }
     )
+    console.timeEnd('RiotMatchList')
 
     const matchListToSave: MatchlistDto = []
     for (const matchId of newMatchList.reverse()) {
