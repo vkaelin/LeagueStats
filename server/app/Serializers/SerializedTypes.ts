@@ -199,7 +199,7 @@ export interface SerializedLiveMatchPlayer {
   champion: SerializedMatchChampion
   championId: number
   gameCustomizationObjects: GameCustomizationObjectDTO[]
-  perks: SerializedMatchPerks
+  perks?: SerializedMatchPerks
   profileIconId: number
   rank: LeagueEntriesByQueue
   role?: string

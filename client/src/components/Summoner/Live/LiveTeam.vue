@@ -25,6 +25,7 @@
           <td class="py-1 pl-2 rounded-l-lg">
             <div class="flex items-center">
               <div
+                v-if="player.perks"
                 @click="selectRunes(player)"
                 :class="{ 'cursor-pointer': player.perks }"
                 class="flex flex-col items-center runes"
@@ -38,6 +39,7 @@
                   class="w-3 h-3 mt-1 bg-center bg-cover"
                 ></div>
               </div>
+              <div v-else class="w-6"></div>
               <div
                 :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${player.championId}.png')`}"
                 :class="borderChampion(player.summonerId)"

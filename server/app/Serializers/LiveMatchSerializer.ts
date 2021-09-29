@@ -49,16 +49,21 @@ class LiveMatchSerializer extends MatchSerializer {
         const roles = player.teamId === 100 ? blueRoles : redRoles
         role = Object.entries(roles).find(([, champion]) => player.championId === champion)![0]
       }
+
+      const perks = player.perks
+        ? {
+            primaryStyle: player.perks.perkStyle,
+            secondaryStyle: player.perks.perkSubStyle,
+            selected: player.perks.perkIds,
+          }
+        : undefined
+
       return {
         ...player,
         role,
         rank: ranks[index],
         champion: this.getChampion(player.championId),
-        perks: {
-          primaryStyle: player.perks.perkStyle,
-          secondaryStyle: player.perks.perkSubStyle,
-          selected: player.perks.perkIds,
-        },
+        perks,
       }
     })
 
