@@ -22,6 +22,7 @@ class MatchRepository {
         ${this.JOIN_MATCHES}
     WHERE
         match_players.summoner_puuid = :puuid
+        AND to_timestamp(matches.date/1000)::date > (CURRENT_DATE - INTERVAL '105 days')
     GROUP BY
         day
     ORDER BY
