@@ -25,7 +25,7 @@ class MatchParser {
       gameDuration,
     })
 
-    const isRemake = gameDuration < 300_000
+    const isRemake = gameDuration < 300
 
     // - 2x MatchTeam : Red and Blue
     for (const team of match.info.teams) {
