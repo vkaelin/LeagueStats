@@ -7,6 +7,11 @@ import { ChampionRoles, TeamPosition } from './ParsedType'
 class MatchParser {
   public async parseOneMatch(match: MatchDto) {
     // Parse + store in database
+    const gameDuration =
+      match.info.gameDuration > 100_000
+        ? Math.round(match.info.gameDuration / 1000)
+        : match.info.gameDuration * 1000
+
     // - 1x Match
     const parsedMatch = await Match.create({
       id: match.metadata.matchId,
@@ -17,10 +22,10 @@ class MatchParser {
       region: match.info.platformId.toLowerCase(),
       result: match.info.teams[0].win ? match.info.teams[0].teamId : match.info.teams[1].teamId,
       season: getSeasonNumber(match.info.gameCreation),
-      gameDuration: Math.round(match.info.gameDuration / 1000),
+      gameDuration,
     })
 
-    const isRemake = match.info.gameDuration < 300000
+    const isRemake = gameDuration < 300_000
 
     // - 2x MatchTeam : Red and Blue
     for (const team of match.info.teams) {
