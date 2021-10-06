@@ -10,7 +10,7 @@ class MatchParser {
     const gameDuration =
       match.info.gameDuration > 100_000
         ? Math.round(match.info.gameDuration / 1000)
-        : match.info.gameDuration * 1000
+        : match.info.gameDuration
 
     // - 1x Match
     const parsedMatch = await Match.create({
