@@ -75,6 +75,15 @@ export const mutations = {
     state.champions.championsLoaded = false
     state.records.recordsLoaded = false
   },
+  MATCHES_FOUND50(state, { newMatches, stats }) {
+    state.basic.recentActivity = stats.recentActivity
+    state.overview.matchesLoading = false
+    state.overview.matches = [...state.overview.matches, ...newMatches]
+    state.overview.matchIndex += 50
+    state.overview.stats = stats
+    state.champions.championsLoaded = false
+    state.records.recordsLoaded = false
+  },
   OVERVIEW_FOUND(state, infos) {
     state.basic.recentActivity = infos.stats.recentActivity
     state.overview.matches = infos.matches
@@ -200,6 +209,26 @@ export const actions = {
     const newMatches = createMatchData(resp.data.matches)
     commit('MATCHES_FOUND', { newMatches, stats: resp.data.stats })
   },
+  async more50Matches({ commit, getters, rootState }) {
+    commit('MATCHES_LOADING')
+
+    const matchIds = getters.filteredMatchList
+      .slice(state.overview.matchIndex, state.overview.matchIndex + 50)
+
+    const resp = await axios(({
+      url: 'match',
+      data: {
+        puuid: state.basic.account.puuid,
+        region: rootState.regionsList[rootState.settings.region],
+        matchIds
+      },
+      method: 'POST'
+    })).catch(() => { })
+    console.log('---MATCHES INFOS---')
+    console.log(resp.data)
+    const newMatches = createMatchData(resp.data.matches)
+    commit('MATCHES_FOUND50', { newMatches, stats: resp.data.stats })
+  },
   async overviewRequest({ commit, rootState }) {
     const resp = await axios(({
       url: 'summoner/overview',
@@ -238,6 +267,9 @@ export const getters = {
   },
   matchesLoading: state => state.overview.matchesLoading,
   moreMatchesToFetch: (state, getters) => {
+    return state.overview.matchIndex < getters.filteredMatchList.length
+  },
+  more50MatchesToFetch: (state, getters) => {
     return state.overview.matchIndex < getters.filteredMatchList.length
   },
   overviewLoaded: state => state.overview.loaded,

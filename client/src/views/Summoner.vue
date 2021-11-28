@@ -33,6 +33,12 @@
           :loading="matchesLoading"
           btn-class="block px-4 py-2 mx-auto mt-4 font-semibold bg-blue-800 rounded-md shadow-lg hover:bg-blue-1000"
         >More matches</LoadingButton>
+        <LoadingButton
+          v-if="more50MatchesToFetch"
+          @clicked="more50Matches"
+          :loading="matchesLoading"
+          btn-class="block px-4 py-2 mx-auto mt-4 font-semibold bg-blue-800 rounded-md shadow-lg hover:bg-blue-1000"
+        >More 50 matches</LoadingButton>
       </div>
       <div v-else>
         <div class="flex justify-center">
@@ -78,7 +84,7 @@ export default {
       current: state => state.summoner.live.match,
       overview: state => state.summoner.overview,
     }),
-    ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'overviewLoaded', 'summonerFound'])
+    ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'more50MatchesToFetch', 'overviewLoaded', 'summonerFound'])
   },
 
   watch: {
@@ -107,7 +113,7 @@ export default {
       }
     },
     ...mapActions('cdragon', ['getRunes']),
-    ...mapActions('summoner', ['moreMatches', 'overviewRequest', 'sliceOverviewMatches']),
+    ...mapActions('summoner', ['moreMatches', 'more50Matches', 'overviewRequest', 'sliceOverviewMatches']),
   },
 
   metaInfo() {
