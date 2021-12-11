@@ -59,11 +59,11 @@
               </div>
               <div class="flex flex-col ml-2">
                 <div
-                  :style="{backgroundImage: `url(${getSummonerLink(player.spell1Id)})`}"
+                  :style="{backgroundImage: `url(${player.summonerSpell1.icon})`}"
                   class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
                 ></div>
                 <div
-                  :style="{backgroundImage: `url(${getSummonerLink(player.spell2Id)})`}"
+                  :style="{backgroundImage: `url(${player.summonerSpell2.icon})`}"
                   class="w-4 h-4 mt-1 bg-center bg-cover rounded-md bg-blue-1000"
                 ></div>
               </div>
@@ -191,7 +191,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { getSummonerLink, getPrimarRune, getSecondaryRune } from '@/helpers/summoner.js'
+import { getPrimarRune, getSecondaryRune } from '@/helpers/summoner.js'
 import { ContentLoader } from 'vue-content-loader'
 
 export default {
@@ -274,7 +274,6 @@ export default {
         return
       this.displayOrHideRunes(player.perks)
     },
-    getSummonerLink,
     getPrimarRune,
     getSecondaryRune,
      ...mapActions('cdragon', ['displayOrHideRunes']),

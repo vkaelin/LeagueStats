@@ -1,6 +1,5 @@
 import { createCDragonAssetUrl, secToTime, timeDifference } from '@/helpers/functions.js'
 import { maps, gameModes } from '@/data/data.js'
-import summonerSpells from '@/data/summonerSpells.json'
 import store from '@/store'
 
 const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
@@ -116,14 +115,4 @@ function getLeagueData(leagueData, leagueName) {
  */
 export function getRankImg(leagueData) {
   return `https://res.cloudinary.com/kln/image/upload/v1571671133/ranks/${leagueData.tier}_${leaguesNumbers[leagueData.rank]}.png`
-}
-
-export function getSummonerLink(id) {
-  if (id === 0) return null
-  
-  const spell = summonerSpells.find((s) => s.id === id)
-  if (!spell) return null
-
-  const spellName = spell.iconPath.split('/assets/')[1].toLowerCase()
-  return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${spellName}`
 }

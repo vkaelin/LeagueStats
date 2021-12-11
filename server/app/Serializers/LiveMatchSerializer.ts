@@ -64,6 +64,8 @@ class LiveMatchSerializer extends MatchSerializer {
         rank: ranks[index],
         champion: this.getChampion(player.championId),
         perks,
+        summonerSpell1: this.getSummonerSpell(player.spell1Id),
+        summonerSpell2: this.getSummonerSpell(player.spell2Id),
       }
     })
 
