@@ -120,6 +120,10 @@ export function getRankImg(leagueData) {
 
 export function getSummonerLink(id) {
   if (id === 0) return null
-  const spellName = summonerSpells.find(s => s.id === id).iconPath.split('/assets/')[1].toLowerCase()
+  
+  const spell = summonerSpells.find((s) => s.id === id)
+  if (!spell) return null
+
+  const spellName = spell.iconPath.split('/assets/')[1].toLowerCase()
   return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${spellName}`
 }

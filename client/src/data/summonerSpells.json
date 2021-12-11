@@ -305,9 +305,16 @@
     "description": "",
     "summonerLevel": 1,
     "cooldown": 0,
-    "gameModes": [
-    "ULTBOOK"
-    ],
+    "gameModes": ["ULTBOOK"],
     "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_Empty.png"
+  },
+  {
+    "id": 55,
+    "name": "Placeholder and Attack-Smite",
+    "description": "This slot will be replaced by another champion's ultimate and you will gain Attack-Smite. There will be 30 seconds to select an ultimate. Be prepared!",
+    "summonerLevel": 1,
+    "cooldown": 0,
+    "gameModes": ["ULTBOOK"],
+    "iconPath": "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_EmptySmite.png"
   }
 ]
