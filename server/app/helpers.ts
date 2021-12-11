@@ -69,6 +69,7 @@ export const queuesWithRole = [
   430, // Blind,
   440, // Flex
   700, // Clash
+  1400, // Ultimate Spellbook
 ]
 
 /**
@@ -90,6 +91,12 @@ export const seasons = {
  * League of Legends all support item ids
  */
 export const supportItems = [3850, 3851, 3853, 3854, 3855, 3857, 3858, 3859, 3860, 3862, 3863, 3864]
+
+/**
+ * League of Legends summoner spell Smite ids
+ * Note: 55 is for Ultimate Spellbook gamemode
+ */
+export const smiteIds = [11, 55]
 
 /**
  * Get season number for a match

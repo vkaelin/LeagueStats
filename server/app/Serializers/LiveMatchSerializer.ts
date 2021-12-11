@@ -1,4 +1,4 @@
-import { PlayerRole, queuesWithRole } from 'App/helpers'
+import { PlayerRole, queuesWithRole, smiteIds } from 'App/helpers'
 import CDragonService from 'App/Services/CDragonService'
 import { CurrentGameInfoDTO } from 'App/Services/Jax/src/Endpoints/SpectatorEndpoint'
 import { RoleComposition } from 'App/Services/RoleIdentificationService'
@@ -25,7 +25,7 @@ class LiveMatchSerializer extends MatchSerializer {
       liveMatch.participants.map((p) => {
         const playerRole = {
           champion: p.championId,
-          jungle: p.spell1Id === 11 || p.spell2Id === 11,
+          jungle: smiteIds.includes(p.spell1Id) || smiteIds.includes(p.spell2Id),
         }
         p.teamId === 100 ? blueTeam.push(playerRole) : redTeam.push(playerRole)
       })
