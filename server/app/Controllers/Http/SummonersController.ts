@@ -15,6 +15,19 @@ import SummonerOverviewValidator from 'App/Validators/SummonerOverviewValidator'
 import SummonerRecordValidator from 'App/Validators/SummonerRecordValidator'
 
 export default class SummonersController {
+  /**
+   * Get all played seasons for a summoner
+   * @param puuid of the summoner
+   */
+  private async getSeasons(puuid: string): Promise<number[]> {
+    const seasons = await MatchRepository.seasons(puuid)
+    return seasons.length ? seasons.map((s) => s.season) : [getCurrentSeason()]
+  }
+
+  /**
+   * POST: get basic summoner data
+   * @param ctx
+   */
   public async basic({ request, response }: HttpContextContract) {
     console.time('BASIC_REQUEST')
     const { summoner, region } = await request.validate(SummonerBasicValidator)
@@ -39,7 +52,7 @@ export default class SummonersController {
 
       // All seasons the summoner has played
       // TODO: check if there is a way to do that with V5...
-      finalJSON.seasons = [getCurrentSeason()]
+      finalJSON.seasons = await this.getSeasons(account.puuid)
 
       // CURRENT GAME
       console.time('playing')
@@ -65,6 +78,10 @@ export default class SummonersController {
     return response.json(finalJSON)
   }
 
+  /**
+   * POST: get overview view summoner data
+   * @param ctx
+   */
   public async overview({ request, response }: HttpContextContract) {
     console.time('OVERVIEW_REQUEST')
     const { puuid, region, season } = await request.validate(SummonerOverviewValidator)
@@ -74,12 +91,13 @@ export default class SummonersController {
     const summonerDB = await Summoner.firstOrCreate({ puuid: puuid })
 
     // MATCHES BASIC
-    const matchlist = await summonerDB
-      .related('matchList')
-      .query()
-      .select('matchId')
-      .orderBy('matchId', 'desc')
-      .limit(10)
+    const matchListQuery = summonerDB.related('matchList').query().select('matchId')
+    if (season) {
+      matchListQuery
+        .join('matches', 'summoner_matchlist.match_id', 'matches.id')
+        .where('matches.season', season)
+    }
+    const matchlist = await matchListQuery.orderBy('matchId', 'desc').limit(10)
     const matchIds = matchlist.map((m) => m.matchId)
 
     finalJSON.matchesDetails = await MatchService.getMatches(region, matchIds, puuid)
@@ -117,7 +135,7 @@ export default class SummonersController {
   public async records({ request, response }: HttpContextContract) {
     console.time('recordsRequest')
     const { puuid, season } = await request.validate(SummonerRecordValidator)
-    const records = await MatchRepository.records(puuid)
+    const records = await MatchRepository.records(puuid, season)
     const recordsSerialized = records.map((record) => {
       return {
         ...record,

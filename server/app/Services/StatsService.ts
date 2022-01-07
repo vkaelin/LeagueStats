@@ -1,6 +1,6 @@
 import { sortTeamByRole } from 'App/helpers'
 import { ChampionRoles, TeamPosition } from 'App/Parsers/ParsedType'
-import MatchRepository from 'App/Repositories/MatchRepository'
+import MatchRepository, { SelectFilters } from 'App/Repositories/MatchRepository'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 
 class StatsService {
@@ -11,14 +11,17 @@ class StatsService {
     return recentActivity
   }
   public async getSummonerStats(puuid: string, season?: number) {
+    const filters: SelectFilters = { puuid }
+    if (season) filters.season = season
+
     console.time('GLOBAL')
-    const globalStats = await MatchRepository.globalStats(puuid)
+    const globalStats = await MatchRepository.globalStats(filters)
     console.timeEnd('GLOBAL')
     console.time('GAMEMODE')
-    const gamemodeStats = await MatchRepository.gamemodeStats(puuid)
+    const gamemodeStats = await MatchRepository.gamemodeStats(filters)
     console.timeEnd('GAMEMODE')
     console.time('ROLE')
-    const roleStats = await MatchRepository.roleStats(puuid)
+    const roleStats = await MatchRepository.roleStats(filters)
     // Check if all roles are in the array
     const roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
     for (const role of roles) {
@@ -36,19 +39,19 @@ class StatsService {
     }
     console.timeEnd('ROLE')
     console.time('CHAMPION')
-    const championStats = await MatchRepository.championStats(puuid, 5)
+    const championStats = await MatchRepository.championStats({ ...filters, limit: 5 })
     for (const champ of championStats) {
       champ.champion = BasicMatchSerializer.getChampion(champ.id)
     }
     console.timeEnd('CHAMPION')
     console.time('CHAMPION-CLASS')
-    const championClassStats = await MatchRepository.championClassStats(puuid)
+    const championClassStats = await MatchRepository.championClassStats(filters)
     for (const champ of championClassStats) {
       champ.id = ChampionRoles[champ.id]
     }
     console.timeEnd('CHAMPION-CLASS')
     console.time('MATES')
-    const mates = await MatchRepository.mates(puuid)
+    const mates = await MatchRepository.mates(filters)
     console.timeEnd('MATES')
 
     console.time('RECENT_ACTIVITY')

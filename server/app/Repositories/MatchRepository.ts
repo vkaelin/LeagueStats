@@ -1,16 +1,44 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 
+export interface SelectFilters {
+  puuid: string
+  season?: number
+  limit?: number
+  queue?: number
+}
+
 class MatchRepository {
   private readonly JOIN_MATCHES = 'INNER JOIN matches ON matches.id = match_players.match_id'
   private readonly JOIN_TEAMS =
     'INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color'
   private readonly JOIN_ALL = `${this.JOIN_MATCHES} ${this.JOIN_TEAMS}`
 
-  private readonly GLOBAL_FILTERS = `
+  private globalFilters(filters: SelectFilters) {
+    let query = `
     match_players.summoner_puuid = :puuid
     AND match_players.remake = 0
     AND matches.gamemode NOT IN (800, 810, 820, 830, 840, 850, 2000, 2010, 2020)
-  `
+    `
+
+    if (filters.season) query += ' AND matches.season = :season '
+    if (filters.queue) query += ' AND matches.gamemode = :queue '
+
+    return query
+  }
+
+  public async seasons(puuid: string) {
+    const query = `
+    SELECT DISTINCT
+        matches.season
+    FROM
+        match_players
+        ${this.JOIN_MATCHES}
+    WHERE
+        match_players.summoner_puuid = :puuid
+    `
+    const { rows } = await Database.rawQuery(query, { puuid })
+    return rows
+  }
 
   public async recentActivity(puuid: string) {
     const query = `
@@ -32,7 +60,7 @@ class MatchRepository {
     return rows
   }
 
-  public async globalStats(puuid: string) {
+  public async globalStats(filters: SelectFilters) {
     const query = `
     SELECT
         SUM(match_players.kills) as kills,
@@ -49,15 +77,16 @@ class MatchRepository {
         match_players
         ${this.JOIN_MATCHES}
     WHERE
-        ${this.GLOBAL_FILTERS}
+        ${this.globalFilters(filters)}
     LIMIT
         1
     `
-    const { rows } = await Database.rawQuery(query, { puuid })
+
+    const { rows } = await Database.rawQuery(query, filters as any)
     return rows[0]
   }
 
-  public async gamemodeStats(puuid: string) {
+  public async gamemodeStats(filters: SelectFilters) {
     const query = `
     SELECT
         matches.gamemode as id,
@@ -68,17 +97,18 @@ class MatchRepository {
         match_players
         ${this.JOIN_MATCHES}
     WHERE
-        ${this.GLOBAL_FILTERS}
+        ${this.globalFilters(filters)}
     GROUP BY
         matches.gamemode
     ORDER BY
         count DESC
     `
-    const { rows } = await Database.rawQuery(query, { puuid })
+
+    const { rows } = await Database.rawQuery(query, filters as any)
     return rows
   }
 
-  public async roleStats(puuid: string) {
+  public async roleStats(filters: SelectFilters) {
     const query = `
     SELECT
         match_players.team_position as role,
@@ -89,16 +119,17 @@ class MatchRepository {
         match_players
         ${this.JOIN_MATCHES}
     WHERE
-        ${this.GLOBAL_FILTERS}
+        ${this.globalFilters(filters)}
         AND match_players.team_position != 0
     GROUP BY
         role
     `
-    const { rows } = await Database.rawQuery(query, { puuid })
+
+    const { rows } = await Database.rawQuery(query, filters as any)
     return rows
   }
 
-  public async championStats(puuid: string, limit: number) {
+  public async championStats(filters: SelectFilters) {
     const query = `
     SELECT
         match_players.champion_id as id,
@@ -112,7 +143,7 @@ class MatchRepository {
         match_players
         ${this.JOIN_MATCHES}
     WHERE
-        ${this.GLOBAL_FILTERS}
+        ${this.globalFilters(filters)}
     GROUP BY
         match_players.champion_id
     ORDER BY
@@ -120,11 +151,12 @@ class MatchRepository {
     LIMIT
       :limit
     `
-    const { rows } = await Database.rawQuery(query, { puuid, limit })
+
+    const { rows } = await Database.rawQuery(query, filters as any)
     return rows
   }
 
-  public async championClassStats(puuid: string) {
+  public async championClassStats(filters: SelectFilters) {
     const query = `
     SELECT
         match_players.champion_role as id,
@@ -135,17 +167,49 @@ class MatchRepository {
         match_players
         ${this.JOIN_MATCHES}
     WHERE
-        ${this.GLOBAL_FILTERS}
+        ${this.globalFilters(filters)}
     GROUP BY
         match_players.champion_role
     ORDER BY
         count DESC
     `
-    const { rows } = await Database.rawQuery(query, { puuid })
+
+    const { rows } = await Database.rawQuery(query, filters as any)
     return rows
   }
 
+  public async mates(filters: SelectFilters) {
+    const query = `
+    SELECT
+        (array_agg(mates.summoner_name ORDER BY mates.match_id DESC))[1] as name,
+        COUNT(match_players.id) as count,
+        SUM(match_players.win) as wins,
+        SUM(match_players.loss) as losses
+    FROM
+        match_players
+        ${this.JOIN_ALL}
+        INNER JOIN match_players as mates ON match_players.match_id = mates.match_id AND match_players.team = mates.team
+    WHERE
+        ${this.globalFilters(filters)}
+    GROUP BY
+        mates.summoner_puuid
+    ORDER BY
+        count DESC, wins DESC
+    LIMIT
+        15
+    `
+
+    const { rows } = await Database.rawQuery(query, filters as any)
+
+    // Remove the Summoner himself + unique game mates
+    return rows.splice(1).filter((row) => row.count > 1)
+  }
+
   public async championCompleteStats(puuid: string, queue?: number, season?: number) {
+    const filters: SelectFilters = { puuid }
+    if (queue) filters.queue = queue
+    if (season) filters.season = season
+
     const query = `
     SELECT
         match_players.champion_id as id,
@@ -166,43 +230,21 @@ class MatchRepository {
         match_players
         ${this.JOIN_MATCHES}
     WHERE
-        ${this.GLOBAL_FILTERS}
+        ${this.globalFilters(filters)}
     GROUP BY
         match_players.champion_id
     ORDER BY
         count DESC, match_players.champion_id
     `
-    const { rows } = await Database.rawQuery(query, { puuid })
+
+    const { rows } = await Database.rawQuery(query, filters as any)
     return rows
   }
 
-  public async mates(puuid: string) {
-    const query = `
-    SELECT
-        (array_agg(mates.summoner_name ORDER BY mates.match_id DESC))[1] as name,
-        COUNT(match_players.id) as count,
-        SUM(match_players.win) as wins,
-        SUM(match_players.loss) as losses
-    FROM
-        match_players
-        ${this.JOIN_ALL}
-        INNER JOIN match_players as mates ON match_players.match_id = mates.match_id AND match_players.team = mates.team
-    WHERE
-        ${this.GLOBAL_FILTERS}
-    GROUP BY
-        mates.summoner_puuid
-    ORDER BY
-        count DESC, wins DESC
-    LIMIT
-        15
-    `
-    const { rows } = await Database.rawQuery(query, { puuid })
+  public async records(puuid: string, season?: number) {
+    const filters: SelectFilters = { puuid }
+    if (season) filters.season = season
 
-    // Remove the Summoner himself + unique game mates
-    return rows.splice(1).filter((row) => row.count > 1)
-  }
-
-  public async records(puuid: string) {
     const fields = [
       'match_players.kills',
       'match_players.deaths',
@@ -242,7 +284,7 @@ class MatchRepository {
           match_players
           ${this.JOIN_MATCHES}
       WHERE
-          ${this.GLOBAL_FILTERS}
+          ${this.globalFilters(filters)}
       ORDER BY
           ${field} DESC, matches.id
       LIMIT 
@@ -251,7 +293,7 @@ class MatchRepository {
       })
       .join('UNION ALL ')
 
-    const { rows } = await Database.rawQuery(query, { puuid })
+    const { rows } = await Database.rawQuery(query, filters as any)
     return rows
   }
 }
