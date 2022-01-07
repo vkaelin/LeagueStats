@@ -34,7 +34,9 @@ class MatchPlayerRankParser {
       .filter(notEmpty)
 
     // Store ranks in DB
-    await Database.table('match_player_ranks').multiInsert(parsedRanks)
+    if (parsedRanks.length) {
+      await Database.table('match_player_ranks').multiInsert(parsedRanks)
+    }
 
     return parsedRanks
   }
