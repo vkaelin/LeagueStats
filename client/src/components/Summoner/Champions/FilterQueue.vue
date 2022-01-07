@@ -36,12 +36,12 @@ export default {
 
   created() {
     // Show all queues when loading the page
-    this.queue = -1
+    this.queue = 0
   },
 
   destroyed() {
     // Reload all champions stats for next user visit of the champions tab
-    if (this.queue !== -1)
+    if (this.queue !== 0)
       this.championsNotLoaded()
   },
 

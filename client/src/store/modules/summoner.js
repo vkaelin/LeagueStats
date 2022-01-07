@@ -11,6 +11,7 @@ export const state = {
     ranked: {},
     recentActivity: [],
     seasons: [],
+    gamemodes: [],
     status: '',
   },
   overview: {
@@ -93,6 +94,7 @@ export const mutations = {
     state.basic.ranked = infos.ranked
     state.basic.recentActivity = infos.recentActivity
     state.basic.seasons = infos.seasons.sort((a, b) => b - a)
+    state.basic.gamemodes = infos.gamemodes
     state.basic.status = 'found'
     state.live.match = infos.current
     state.live.playing = infos.playing

@@ -26,6 +26,20 @@ class MatchRepository {
     return query
   }
 
+  public async gamemodes(puuid: string) {
+    const query = `
+    SELECT DISTINCT
+        matches.gamemode
+    FROM
+        match_players
+        ${this.JOIN_MATCHES}
+    WHERE
+        match_players.summoner_puuid = :puuid
+    `
+    const { rows } = await Database.rawQuery(query, { puuid })
+    return rows
+  }
+
   public async seasons(puuid: string) {
     const query = `
     SELECT DISTINCT

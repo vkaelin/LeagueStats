@@ -51,8 +51,10 @@ export default class SummonersController {
       finalJSON.matchList = await MatchService.updateMatchList(account, region, summonerDB)
 
       // All seasons the summoner has played
-      // TODO: check if there is a way to do that with V5...
       finalJSON.seasons = await this.getSeasons(account.puuid)
+
+      // All gamemodes the summoner has played
+      finalJSON.gamemodes = (await MatchRepository.gamemodes(account.puuid)).map((g) => g.gamemode)
 
       // CURRENT GAME
       console.time('playing')

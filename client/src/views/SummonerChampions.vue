@@ -44,7 +44,7 @@ export default {
       const queues = Object.keys(gameModes)
         .filter(gameMode =>
           gameModes[gameMode].type !== 'Bot' &&
-          this.matchList.find(match => match.queue === Number(gameMode))
+          this.gamemodes.includes(Number(gameMode))
         )
         .reduce((obj, key) => {
           return {
@@ -52,13 +52,13 @@ export default {
             [key]: gameModes[key]
           }
         }, {})
-      return { '-1': { type: 'Normal', name: 'All queues' }, ...queues }
+      return { '0': { type: 'Normal', name: 'All queues' }, ...queues }
     },
     ...mapGetters('summoner', ['summonerFound']),
     ...mapState({
       champions: state => state.summoner.champions.list,
       championsLoaded: state => state.summoner.champions.championsLoaded,
-      matchList: state => state.summoner.basic.matchList
+      gamemodes: state => state.summoner.basic.gamemodes
     })
   },
 
@@ -83,7 +83,7 @@ export default {
     },
     filterByQueue(queue) {
       queue = Number(queue)
-      this.queue = queue === -1 ? null : queue
+      this.queue = queue === 0 ? null : queue
       this.championsRequest(this.queue)
     },
     updateSearch(search) {
