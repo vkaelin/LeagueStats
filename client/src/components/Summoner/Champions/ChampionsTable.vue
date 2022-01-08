@@ -234,11 +234,8 @@ export default {
     champions() {
       this.updateChampionsList()
     },
-
-    onlyMostPlayed() {
-      // Re-apply the current sorting
-      this.order *= -1
-      this.sortBy(this.sortProps)
+    championsToDisplay() {
+      this.reApplySorts()
     }
   },
 
@@ -270,17 +267,26 @@ export default {
       }
 
       this.championsToDisplay.sort((a, b) => {
-        const aProp = props.split('.').reduce((p, c) => p && p[c] || null, a)
-        const bProp = props.split('.').reduce((p, c) => p && p[c] || null, b)
-        let order = aProp > bProp ? this.order : this.order * -1
+        const aProp = props.split('.').reduce((p, c) => p && p[c], a)
+        const bProp = props.split('.').reduce((p, c) => p && p[c], b)
+        let order = typeof aProp === 'string' ? aProp.localeCompare(bProp) : aProp - bProp
+
+        if (this.order == -1)
+            order *= -1
 
         // Revert order for rank and champion name
         if (props === 'index' || props === 'champion.name') {
           order *= -1
         }
-        return order
+
+        // Second sort by champion name
+        return order || a.champion.name.localeCompare(b.champion.name)
       })
       this.sortProps = props
+    },
+    reApplySorts() {
+      this.order *= -1
+      this.sortBy(this.sortProps)
     },
     sortedClasses(props) {
       return {
