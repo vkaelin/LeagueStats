@@ -233,6 +233,12 @@ export default {
   watch: {
     champions() {
       this.updateChampionsList()
+    },
+
+    onlyMostPlayed() {
+      // Re-apply the current sorting
+      this.order *= -1
+      this.sortBy(this.sortProps)
     }
   },
 
