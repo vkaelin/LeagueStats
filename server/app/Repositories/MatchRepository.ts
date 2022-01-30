@@ -77,16 +77,16 @@ class MatchRepository {
   public async globalStats(filters: SelectFilters) {
     const query = `
     SELECT
-        SUM(match_players.kills) as kills,
-        SUM(match_players.deaths) as deaths,
-        SUM(match_players.assists) as assists,
-        SUM(match_players.minions) as minions,
-        SUM(matches.game_duration) as time,
-        SUM(match_players.vision_score) as vision,
+        COALESCE(SUM(match_players.kills), 0) as kills,
+        COALESCE(SUM(match_players.deaths), 0) as deaths,
+        COALESCE(SUM(match_players.assists), 0) as assists,
+        COALESCE(SUM(match_players.minions), 0) as minions,
+        COALESCE(SUM(matches.game_duration), 0) as time,
+        COALESCE(SUM(match_players.vision_score), 0) as vision,
         COUNT(match_players.id) as count,
-        AVG(match_players.kp) as kp,
-        SUM(match_players.win) as wins,
-        SUM(match_players.loss) as losses
+        COALESCE(AVG(match_players.kp), 0) as kp,
+        COALESCE(SUM(match_players.win), 0) as wins,
+        COALESCE(SUM(match_players.loss), 0) as losses
     FROM
         match_players
         ${this.JOIN_MATCHES}

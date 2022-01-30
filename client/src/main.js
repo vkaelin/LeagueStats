@@ -29,6 +29,8 @@ Vue.filter('kilo', (value) => {
 })
 
 Vue.filter('secToTime', (sec, dotNotation = false) => {
+  if (isNaN(sec)) return 0
+
   const min = Math.floor(sec / 60)
   let newSec = Math.floor(sec - min * 60)
   newSec = newSec < 10 ? '0' + newSec : newSec
@@ -41,6 +43,8 @@ Vue.filter('percent', (value) => {
 })
 
 Vue.filter('round', (value, decimals = 2) => {
+  if (isNaN(value)) return 0
+
   return parseFloat(value.toFixed(decimals))
 })
 
