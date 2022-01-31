@@ -87,7 +87,9 @@ export const mutations = {
   OVERVIEW_FOUND(state, infos) {
     state.basic.recentActivity = infos.stats.recentActivity
     state.overview.matches = infos.matches
-    state.overview.lastMatchId = infos.matches[infos.matches.length - 1].matchId
+    if (infos.matches.length > 0) {
+      state.overview.lastMatchId = infos.matches[infos.matches.length - 1].matchId
+    }
     state.overview.stats = infos.stats
     state.overview.loaded = true
     state.records.recordsLoaded = false
