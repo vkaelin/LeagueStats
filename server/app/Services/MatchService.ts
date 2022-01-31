@@ -8,6 +8,7 @@ import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 import { SerializedMatch } from 'App/Serializers/SerializedTypes'
 import Match from 'App/Models/Match'
 import { notEmpty, tutorialQueues } from 'App/helpers'
+import SummonerMatchlist from 'App/Models/SummonerMatchlist'
 
 class MatchService {
   /**
@@ -80,6 +81,25 @@ class MatchService {
 
     console.timeEnd('matchList')
     return currentMatchListIds.reverse()
+  }
+
+  /**
+   * Get the list of matchIds from the next matches to fetch for a specific Summoner
+   */
+  public async getMatchIdsToFetch(lastMatchId: string, puuid: string, season?: number) {
+    const matchListQuery = SummonerMatchlist.query()
+      .select('matchId')
+      .where('summoner_puuid', puuid)
+      .andWhere('match_id', '<', lastMatchId)
+
+    if (season) {
+      matchListQuery
+        .join('matches', 'summoner_matchlist.match_id', 'matches.id')
+        .where('matches.season', season)
+    }
+
+    const matchlist = await matchListQuery.orderBy('matchId', 'desc').limit(10)
+    return matchlist.map((m) => m.matchId)
   }
 
   /**

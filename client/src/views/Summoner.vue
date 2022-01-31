@@ -28,7 +28,7 @@
           />
         </ul>
         <LoadingButton
-          v-if="moreMatchesToFetch"
+          v-if="overview.moreMatchesToFetch"
           @clicked="moreMatches"
           :loading="matchesLoading"
           btn-class="block px-4 py-2 mx-auto mt-4 font-semibold bg-blue-800 rounded-md shadow-lg hover:bg-blue-1000"
@@ -78,7 +78,7 @@ export default {
       current: state => state.summoner.live.match,
       overview: state => state.summoner.overview,
     }),
-    ...mapGetters('summoner', ['matchesLoading', 'moreMatchesToFetch', 'overviewLoaded', 'summonerFound'])
+    ...mapGetters('summoner', ['matchesLoading', 'overviewLoaded', 'summonerFound'])
   },
 
   watch: {

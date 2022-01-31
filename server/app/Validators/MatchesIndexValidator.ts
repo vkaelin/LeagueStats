@@ -26,7 +26,7 @@ export default class MatchesIndexValidator {
   public schema = schema.create({
     puuid: schema.string(),
     region: schema.string(),
-    matchIds: schema.array().members(schema.string()),
+    lastMatchId: schema.string(),
     season: schema.number.optional(),
   })
 

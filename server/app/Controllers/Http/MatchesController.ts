@@ -3,6 +3,7 @@ import Match from 'App/Models/Match'
 import MatchPlayerRankParser from 'App/Parsers/MatchPlayerRankParser'
 import DetailedMatchSerializer from 'App/Serializers/DetailedMatchSerializer'
 import MatchPlayerRankSerializer from 'App/Serializers/MatchPlayerRankSerializer'
+import { SerializedMatch } from 'App/Serializers/SerializedTypes'
 import MatchService from 'App/Services/MatchService'
 import StatsService from 'App/Services/StatsService'
 import DetailedMatchValidator from 'App/Validators/DetailedMatchValidator'
@@ -14,8 +15,13 @@ export default class MatchesController {
    * @param ctx
    */
   public async index({ request, response }: HttpContextContract) {
-    const { puuid, region, matchIds, season } = await request.validate(MatchesIndexValidator)
-    const matches = await MatchService.getMatches(region, matchIds, puuid)
+    const { puuid, region, lastMatchId, season } = await request.validate(MatchesIndexValidator)
+    const matchIds = await MatchService.getMatchIdsToFetch(lastMatchId, puuid, season)
+    let matches: SerializedMatch[] = []
+
+    if (matchIds.length > 0) {
+      matches = await MatchService.getMatches(region, matchIds, puuid)
+    }
 
     const stats = await StatsService.getSummonerStats(puuid, season)
     return response.json({
