@@ -17,7 +17,6 @@ export const state = {
   overview: {
     NB_LOAD_GAMES: 10,
     matches: [],
-    lastMatchId: null,
     stats: {},
     loaded: false,
     matchesLoading: false,
@@ -57,9 +56,6 @@ export const mutations = {
   },
   KEEP_LAST_X_MATCHES(state, number) {
     state.overview.matches = state.overview.matches.slice(0, number)
-    if (state.overview.matches.length > 0) {
-      state.overview.lastMatchId = state.overview.matches[state.overview.matches.length - 1].matchId
-    }
   },
   LIVE_FOUND(state, { live }) {
     state.live.match = live
@@ -78,7 +74,6 @@ export const mutations = {
     if (newMatches.length > 0) {
       state.basic.recentActivity = stats.recentActivity
       state.overview.matches = [...state.overview.matches, ...newMatches]
-      state.overview.lastMatchId = newMatches[newMatches.length - 1].matchId
       state.overview.stats = stats
       state.champions.championsLoaded = false
       state.records.recordsLoaded = false
@@ -89,9 +84,6 @@ export const mutations = {
   OVERVIEW_FOUND(state, infos) {
     state.basic.recentActivity = infos.stats.recentActivity
     state.overview.matches = infos.matches
-    if (infos.matches.length > 0) {
-      state.overview.lastMatchId = infos.matches[infos.matches.length - 1].matchId
-    }
     state.overview.stats = infos.stats
     state.overview.loaded = true
     state.records.recordsLoaded = false
@@ -197,12 +189,16 @@ export const actions = {
   },
   async moreMatches({ commit, rootState }) {
     commit('MATCHES_LOADING')
+
+    if (!state.overview.matches.length) return
+    const lastMatchId = state.overview.matches[state.overview.matches.length - 1].matchId
+
     const resp = await axios(({
       url: 'match',
       data: {
         puuid: state.basic.account.puuid,
         region: rootState.regionsList[rootState.settings.region],
-        lastMatchId: state.overview.lastMatchId
+        lastMatchId
       },
       method: 'POST'
     })).catch(() => { })
