@@ -57,7 +57,9 @@ export const mutations = {
   },
   KEEP_LAST_X_MATCHES(state, number) {
     state.overview.matches = state.overview.matches.slice(0, number)
-    state.overview.lastMatchId = state.overview.matches[state.overview.matches.length - 1].matchId
+    if (state.overview.matches.length > 0) {
+      state.overview.lastMatchId = state.overview.matches[state.overview.matches.length - 1].matchId
+    }
   },
   LIVE_FOUND(state, { live }) {
     state.live.match = live

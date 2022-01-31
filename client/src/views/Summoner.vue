@@ -102,7 +102,7 @@ export default {
         this.overviewRequest()
       }
       // Keep only the 10 last matches when summoner enters overview page
-      else if (this.overviewLoaded && this.summonerFound && this.overview.matches.length !== 10) {
+      else if (this.overviewLoaded && this.summonerFound && this.overview.matches.length > 10) {
         this.sliceOverviewMatches(10)
       }
     },
