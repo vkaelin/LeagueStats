@@ -89,19 +89,7 @@ export default class SummonersController {
     const { puuid, region, season } = await request.validate(SummonerOverviewValidator)
     const finalJSON: any = {}
 
-    // Summoner in DB
-    const summonerDB = await Summoner.firstOrCreate({ puuid: puuid })
-
-    // MATCHES BASIC
-    const matchListQuery = summonerDB.related('matchList').query().select('matchId')
-    if (season) {
-      matchListQuery
-        .join('matches', 'summoner_matchlist.match_id', 'matches.id')
-        .where('matches.season', season)
-    }
-    const matchlist = await matchListQuery.orderBy('matchId', 'desc').limit(10)
-    const matchIds = matchlist.map((m) => m.matchId)
-
+    const matchIds = await MatchRepository.getNextMatchIds({ puuid, season })
     finalJSON.matchesDetails = await MatchService.getMatches(region, matchIds, puuid)
 
     console.time('STATS')

@@ -1,10 +1,12 @@
 import Database from '@ioc:Adonis/Lucid/Database'
+import SummonerMatchlist from 'App/Models/SummonerMatchlist'
 
 export interface SelectFilters {
   puuid: string
   season?: number
   limit?: number
   queue?: number
+  lastMatchId?: string
 }
 
 class MatchRepository {
@@ -24,6 +26,30 @@ class MatchRepository {
     if (filters.queue) query += ' AND matches.gamemode = :queue '
 
     return query
+  }
+
+  /**
+   * Get the list of matchIds from the next matches to fetch for a specific Summoner
+   */
+  public async getNextMatchIds(filters: SelectFilters) {
+    const matchListQuery = SummonerMatchlist.query()
+      .select('matchId')
+      .where('summoner_puuid', filters.puuid)
+
+    if (filters.lastMatchId) {
+      matchListQuery.andWhere('match_id', '<', filters.lastMatchId)
+    }
+
+    if (filters.season) {
+      matchListQuery
+        .join('matches', 'summoner_matchlist.match_id', 'matches.id')
+        .where('matches.season', filters.season)
+    }
+
+    const limit = filters.limit ?? 10
+
+    const matchlist = await matchListQuery.orderBy('matchId', 'desc').limit(limit)
+    return matchlist.map((m) => m.matchId)
   }
 
   public async gamemodes(puuid: string) {

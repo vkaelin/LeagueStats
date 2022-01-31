@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Match from 'App/Models/Match'
 import MatchPlayerRankParser from 'App/Parsers/MatchPlayerRankParser'
+import MatchRepository from 'App/Repositories/MatchRepository'
 import DetailedMatchSerializer from 'App/Serializers/DetailedMatchSerializer'
 import MatchPlayerRankSerializer from 'App/Serializers/MatchPlayerRankSerializer'
 import { SerializedMatch } from 'App/Serializers/SerializedTypes'
@@ -16,7 +17,7 @@ export default class MatchesController {
    */
   public async index({ request, response }: HttpContextContract) {
     const { puuid, region, lastMatchId, season } = await request.validate(MatchesIndexValidator)
-    const matchIds = await MatchService.getMatchIdsToFetch(lastMatchId, puuid, season)
+    const matchIds = await MatchRepository.getNextMatchIds({ lastMatchId, puuid, season })
     let matches: SerializedMatch[] = []
 
     if (matchIds.length > 0) {
