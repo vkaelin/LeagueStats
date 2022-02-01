@@ -8,11 +8,7 @@ Here is an [example](https://leaguestats.gg/summoner/euw/SammyWinchester) of sta
 
 ![Screenshot](https://res.cloudinary.com/kln/image/upload/v1615669773/repository-preview-leaguestats.jpg)
 
-<p>
-  <a href="https://www.digitalocean.com/">
-    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/PoweredByDO/DO_Powered_by_Badge_blue.svg" width="201px">
-  </a>
-</p>
+[![DigitalOcean Hosting](https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg)](https://www.digitalocean.com/?refcode=4f4a6c382133&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
 
 ## Installation
 
