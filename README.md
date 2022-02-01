@@ -4,7 +4,7 @@
 <a href="https://discord.gg/RjBzjfk"><img src="https://img.shields.io/badge/Discord-join%20chat-738bd7.svg" alt="LeagueStats.gg official Discord"></a>
 
 The goal of [leaguestats.gg](https://leaguestats.gg) is to provide global complete data for all League of Legends summoners.  
-Here is an [example](https://leaguestats.gg/summoner/euw/SammyWinchester) of stats for some summoner.
+Here is an [example](https://leaguestats.gg/summoner/euw/KCRekkles) of stats for some summoner.
 
 ![Screenshot](https://res.cloudinary.com/kln/image/upload/v1615669773/repository-preview-leaguestats.jpg)
 
