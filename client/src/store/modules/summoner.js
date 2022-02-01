@@ -7,7 +7,6 @@ export const state = {
   basic: {
     account: {},
     currentSeason: null,
-    matchList: [],
     ranked: {},
     recentActivity: [],
     seasons: [],
@@ -95,7 +94,6 @@ export const mutations = {
   },
   SUMMONER_FOUND(state, infos) {
     state.basic.account = infos.account
-    state.basic.matchList = infos.matchList
     state.basic.ranked = infos.ranked
     state.basic.recentActivity = infos.recentActivity
     state.basic.seasons = infos.seasons.sort((a, b) => b - a)

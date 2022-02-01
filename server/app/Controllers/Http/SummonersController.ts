@@ -48,7 +48,7 @@ export default class SummonersController {
       finalJSON.account.names = await SummonerService.getAllSummonerNames(account, summonerDB)
 
       // MATCH LIST
-      finalJSON.matchList = await MatchService.updateMatchList(account, region, summonerDB)
+      await MatchService.updateMatchList(account, region, summonerDB)
 
       // All seasons the summoner has played
       finalJSON.seasons = await this.getSeasons(account.puuid)

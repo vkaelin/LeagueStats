@@ -23,8 +23,8 @@ export function getSecondaryRune(perks) {
 }
 
 /**
- * Return all the infos about a list of matches built with the Riot API data
- * @param {Object} RiotData : all data from the Riot API
+ * Return all the infos about a list of matches built with the api data
+ * @param {Object} matches : all data from the api matches endpoint
  */
 export function createMatchData(matches) {
   for (const match of matches) {
@@ -43,29 +43,29 @@ export function createMatchData(matches) {
     if (!match.gamemode) {
       match.gamemode = { name: 'Unknown gamemode' }
     }
-  } // end loop matches
+  }
 
   return matches
 }
 
 /**
- * Return the basic infos about a summoner built with the Riot API data
- * @param {Object} RiotData : all data from the Riot API
+ * Return the formatted basic info for a summoner
+ * @param {Object} summonerBasic : all data from the api basic endpoint
  */
-export function createBasicSummonerData(RiotData) {
+export function createBasicSummonerData(summonerBasic) {
   // Ranked Stats
-  RiotData.ranked.soloQ = getLeagueData(RiotData.ranked.soloQ, 'Solo/Duo')
-  if (!RiotData.ranked.soloQ) delete RiotData.ranked.soloQ
+  summonerBasic.ranked.soloQ = getLeagueData(summonerBasic.ranked.soloQ, 'Solo/Duo')
+  if (!summonerBasic.ranked.soloQ) delete summonerBasic.ranked.soloQ
 
-  RiotData.ranked.flex5v5 = getLeagueData(RiotData.ranked.flex5v5, 'Flex 5vs5')
-  if (!RiotData.ranked.flex5v5) delete RiotData.ranked.flex5v5
+  summonerBasic.ranked.flex5v5 = getLeagueData(summonerBasic.ranked.flex5v5, 'Flex 5vs5')
+  if (!summonerBasic.ranked.flex5v5) delete summonerBasic.ranked.flex5v5
 
-  RiotData.ranked.flex3v3 = getLeagueData(RiotData.ranked.flex3v3, 'Flex 3vs3')
-  if (!RiotData.ranked.flex3v3) delete RiotData.ranked.flex3v3
+  summonerBasic.ranked.flex3v3 = getLeagueData(summonerBasic.ranked.flex3v3, 'Flex 3vs3')
+  if (!summonerBasic.ranked.flex3v3) delete summonerBasic.ranked.flex3v3
 
   // If Summoner is Unranked
-  if (Object.entries(RiotData.ranked).length === 0) {
-    RiotData.ranked.soloQ = {
+  if (Object.entries(summonerBasic.ranked).length === 0) {
+    summonerBasic.ranked.soloQ = {
       fullRank: 'Unranked',
       rankImgLink: 'https://res.cloudinary.com/kln/image/upload/v1571671133/ranks/unranked.png',
       leaguePoints: 0,
@@ -76,7 +76,7 @@ export function createBasicSummonerData(RiotData) {
     }
   }
 
-  return RiotData
+  return summonerBasic
 }
 
 /**
@@ -101,6 +101,11 @@ export function createRecordsData(recordsDto) {
   return records
 }
 
+/**
+ * Add rank img and ranked data
+ * @param {Object} leagueData 
+ * @param {String} leagueName 
+ */
 function getLeagueData(leagueData, leagueName) {
   if (!leagueData) return null
 
