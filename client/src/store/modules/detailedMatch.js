@@ -19,7 +19,7 @@ export const mutations = {
     matchDetails.ranksLoaded = ranksLoaded
 
     // Set SoloQ as rank for now
-    if(ranksLoaded) {
+    if (ranksLoaded) {
       for (const player of matchDetails.blueTeam.players) {
         player.rank = player.rank && player.rank[420]
       }
@@ -28,21 +28,21 @@ export const mutations = {
       }
     }
 
-    const index = state.matches.findIndex(m => m.gameId === matchDetails.gameId)
+    const index = state.matches.findIndex(m => m.matchId === matchDetails.matchId)
     Vue.set(state.matches, index, matchDetails)
   },
-  MATCH_RANKS_FOUND(state, { gameId, ranksByPlayer }) {
-    const match = state.matches.find(m => m.gameId === gameId)
+  MATCH_RANKS_FOUND(state, { matchId, ranksByPlayer }) {
+    const match = state.matches.find(m => m.matchId === matchId)
 
     for (const player of match.blueTeam.players) {
       const ranks = ranksByPlayer[player.id]
-      if(!ranks) continue
+      if (!ranks) continue
       Vue.set(player, 'rank', ranks[420])
     }
 
     for (const player of match.redTeam.players) {
       const ranks = ranksByPlayer[player.id]
-      if(!ranks) continue
+      if (!ranks) continue
       Vue.set(player, 'rank', ranks[420]) 
     }
 
