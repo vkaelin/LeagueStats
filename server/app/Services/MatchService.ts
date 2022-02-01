@@ -1,28 +1,33 @@
 import Jax from './Jax'
 import { MatchlistDto } from './Jax/src/Endpoints/MatchlistEndpoint'
-import { SummonerDTO } from './Jax/src/Endpoints/SummonerEndpoint'
-import Summoner from 'App/Models/Summoner'
 import Database from '@ioc:Adonis/Lucid/Database'
 import MatchParser from 'App/Parsers/MatchParser'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 import { SerializedMatch } from 'App/Serializers/SerializedTypes'
 import Match from 'App/Models/Match'
 import { notEmpty, tutorialQueues } from 'App/helpers'
+import SummonerMatchlist from 'App/Models/SummonerMatchlist'
+
+export enum MatchListMode {
+  FIRSTIME = 'firstTime',
+  UPDATE = 'update',
+  LIGHT = 'light',
+}
 
 class MatchService {
   /**
    * Add 100 matches at a time to MatchList until the stopFetching condition is true
-   * @param account of the summoner
+   * @param puuid of the summoner
    * @param region of the summoner
    * @param stopFetching condition to stop fetching the MatchList
    */
-  private async _fetchMatchListUntil(account: SummonerDTO, region: string, stopFetching: any) {
+  private async _fetchMatchListUntil(puuid: string, region: string, stopFetching: any) {
     let matchList: MatchlistDto = []
     let alreadyIn = false
     let index = 0
     do {
       console.log('--> CALL TO RIOT MATCHLIST')
-      const newMatchList = await Jax.Matchlist.puuid(account.puuid, region, index)
+      const newMatchList = await Jax.Matchlist.puuid(puuid, region, index)
       // Error while fetching Riot API
       if (!newMatchList) {
         return matchList
@@ -37,27 +42,37 @@ class MatchService {
     } while (!alreadyIn)
     return matchList
   }
+
   /**
-   * Update the full MatchList of the summoner
+   * Update the MatchList of the summoner
    */
   public async updateMatchList(
-    account: SummonerDTO,
+    puuid: string,
     region: string,
-    summonerDB: Summoner
+    fetchMode: MatchListMode
   ): Promise<MatchlistDto> {
     console.time('matchList')
 
-    const currentMatchList = await summonerDB.related('matchList').query().orderBy('matchId', 'asc')
+    const currentMatchList = await SummonerMatchlist.query()
+      .where('summoner_puuid', puuid)
+      .orderBy('matchId', 'asc')
     const currentMatchListIds = currentMatchList.map((m) => m.matchId)
 
-    console.time('RiotMatchList')
-    const newMatchList = await this._fetchMatchListUntil(
-      account,
-      region,
-      (newMatchList: MatchlistDto) => {
-        return currentMatchListIds.some((id) => id === newMatchList[newMatchList.length - 1])
+    // Condition to stop fetching the matchlist
+    function stopFetching(newMatchList: MatchlistDto) {
+      switch (fetchMode) {
+        case MatchListMode.FIRSTIME:
+          return false
+        case MatchListMode.UPDATE:
+          return currentMatchListIds.some((id) => id === newMatchList[newMatchList.length - 1])
+        case MatchListMode.LIGHT:
+        default:
+          return true
       }
-    )
+    }
+
+    console.time('RiotMatchList')
+    const newMatchList = await this._fetchMatchListUntil(puuid, region, stopFetching)
     console.timeEnd('RiotMatchList')
 
     const matchListToSave: MatchlistDto = []
@@ -73,7 +88,7 @@ class MatchService {
       await Database.table('summoner_matchlist').multiInsert(
         matchListToSave.map((id) => ({
           match_id: id,
-          summoner_puuid: summonerDB.puuid,
+          summoner_puuid: puuid,
         }))
       )
     }

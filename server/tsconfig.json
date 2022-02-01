@@ -29,7 +29,8 @@
       "@adonisjs/core",
       "@adonisjs/repl",
       "@adonisjs/lucid",
-      "@adonisjs/redis"
+      "@adonisjs/redis",
+      "@rocketseat/adonis-bull"
     ]
   }
 }

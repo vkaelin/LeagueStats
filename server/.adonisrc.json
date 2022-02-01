@@ -4,7 +4,8 @@
     "./commands",
     "@adonisjs/core/build/commands/index.js",
     "@adonisjs/repl/build/commands",
-    "@adonisjs/lucid/build/commands"
+    "@adonisjs/lucid/build/commands",
+    "@rocketseat/adonis-bull/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -23,13 +24,15 @@
         "repl",
         "web"
       ]
-    }
+    },
+    "./start/bull"
   ],
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
     "@adonisjs/lucid",
-    "@adonisjs/redis"
+    "@adonisjs/redis",
+    "@rocketseat/adonis-bull"
   ],
   "aceProviders": [
     "@adonisjs/repl"

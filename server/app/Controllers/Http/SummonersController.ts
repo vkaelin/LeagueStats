@@ -1,11 +1,13 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Bull from '@ioc:Rocketseat/Bull'
 import { getCurrentSeason } from 'App/helpers'
+import FetchMatchList from 'App/Jobs/FetchMatchList'
 import Summoner from 'App/Models/Summoner'
 import MatchRepository from 'App/Repositories/MatchRepository'
 import BasicMatchSerializer from 'App/Serializers/BasicMatchSerializer'
 import LiveMatchSerializer from 'App/Serializers/LiveMatchSerializer'
 import Jax from 'App/Services/Jax'
-import MatchService from 'App/Services/MatchService'
+import MatchService, { MatchListMode } from 'App/Services/MatchService'
 import StatsService from 'App/Services/StatsService'
 import SummonerService from 'App/Services/SummonerService'
 import SummonerBasicValidator from 'App/Validators/SummonerBasicValidator'
@@ -47,8 +49,12 @@ export default class SummonersController {
       // Summoner names
       finalJSON.account.names = await SummonerService.getAllSummonerNames(account, summonerDB)
 
-      // MATCH LIST
-      await MatchService.updateMatchList(account, region, summonerDB)
+      // Only last 100 matchIds in matchlist
+      await MatchService.updateMatchList(account.puuid, region, MatchListMode.LIGHT)
+
+      // Add job in 1sec to load entire matchlist in DB (in background)
+      const matchListMode = summonerDB.$isLocal ? MatchListMode.FIRSTIME : MatchListMode.UPDATE
+      Bull.schedule(new FetchMatchList().key, { puuid: account.puuid, region, matchListMode }, 1000)
 
       // All seasons the summoner has played
       finalJSON.seasons = await this.getSeasons(account.puuid)
@@ -58,9 +64,8 @@ export default class SummonersController {
 
       // CURRENT GAME
       console.time('playing')
-      const currentGame = await Jax.Spectator.summonerID(account.id, region)
-      finalJSON.playing = !!currentGame
-      finalJSON.current = currentGame
+      finalJSON.current = await Jax.Spectator.summonerID(account.id, region)
+      finalJSON.playing = !!finalJSON.current
       console.timeEnd('playing')
 
       // RANKED STATS
