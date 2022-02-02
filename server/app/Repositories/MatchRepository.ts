@@ -309,29 +309,43 @@ class MatchRepository {
       'match_players.penta_kills',
     ]
 
-    const query = fields
-      .map((field) => {
-        return `
+    const query =
+      `
+    WITH base as (
+        SELECT 
+            ${fields.join()},
+            match_players.win as result,
+            matches.id,
+            matches.date,
+            matches.gamemode,
+            match_players.champion_id
+        FROM
+            match_players
+            ${this.JOIN_MATCHES}
+        WHERE
+            ${this.globalFilters(filters)}
+    )
+    ` +
+      fields
+        .map(
+          (field) => `
       (SELECT
           '${field}' AS what,
-          ${field} AS amount,
-          match_players.win as result,
-          matches.id,
-          matches.date,
-          matches.gamemode,
-          match_players.champion_id
+          ${field.split('.').pop()} AS amount,
+          result,
+          id,
+          date,
+          gamemode,
+          champion_id
       FROM
-          match_players
-          ${this.JOIN_MATCHES}
-      WHERE
-          ${this.globalFilters(filters)}
+          base
       ORDER BY
-          ${field} DESC, matches.id
-      LIMIT 
+          2 DESC, id
+      LIMIT
           1)
       `
-      })
-      .join('UNION ALL ')
+        )
+        .join(' UNION ALL ')
 
     const { rows } = await Database.rawQuery(query, filters as any)
     return rows
