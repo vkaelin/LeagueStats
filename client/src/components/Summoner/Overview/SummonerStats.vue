@@ -92,13 +92,13 @@
           class="flex items-center justify-between px-4 py-1 leading-tight"
         >
           <div class="w-1/4 text-left capitalize">{{ name }}</div>
-          <div class="w-1/4">{{ stat }}</div>
+          <div class="w-1/4">{{ stat|kilo(false) }}</div>
           <div class="w-1/4">{{ stat / (stats.global.time / 60)|round }}</div>
           <div class="w-1/4">{{ stat / stats.global.count|round }}</div>
         </li>
         <li class="flex items-center justify-between px-4 py-1 leading-tight bg-blue-760">
           <div class="w-1/4 text-left whitespace-no-wrap">Time</div>
-          <div class="w-1/4">{{ (stats.global.time / 3600).toFixed(1) + 'h' }}</div>
+          <div class="w-1/4">{{ stats.global.time|secToHours }}</div>
           <div class="w-1/4"></div>
           <div class="w-1/4">{{ (stats.global.time / stats.global.count)|secToTime(true) }}</div>
         </li>

@@ -26,8 +26,8 @@ Vue.filter('capitalize', (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
 })
 
-Vue.filter('kilo', (value) => {
-  return `${+(value / 1000).toFixed(1)}k`
+Vue.filter('kilo', (value, shortFormat = true) => {
+  return value > 1000 || shortFormat ? `${+(value / 1000).toFixed(1)}k` : value
 })
 
 Vue.filter('secToTime', (sec, dotNotation = false) => {
@@ -43,10 +43,24 @@ Vue.filter('secToTime', (sec, dotNotation = false) => {
 Vue.filter('secToHours', (sec) => {
   if (isNaN(sec)) return 0
 
-  const h = Math.floor(sec / 3600)
-  const m = Math.floor((sec % 3600) / 60)
+  const result = []
+  const d = Math.floor(sec / (3600 * 24))
+  const h = Math.floor(sec % (3600 * 24) / 3600)
+  const m = Math.floor(sec % 3600 / 60)
 
-  return h ? `${h}h ${m}m` : `${m}m`
+  if (d > 0) {
+    result.push(d + ' days')
+  } else {
+    if (h > 0) {
+      result.push(h + 'h')
+    }
+  
+    if (m > 0) {
+      result.push(m + 'm')
+    }
+  }
+
+  return result.join(' ')
 })
 
 Vue.filter('percent', (value) => {
