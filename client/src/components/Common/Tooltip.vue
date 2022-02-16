@@ -13,14 +13,16 @@
     </div>
 
     <!-- tooltip content -->
-    <div
-      v-show="isOpen"
-      ref="content"
-      class="bg-blue-1000 fixed z-50 py-2 rounded-md shadow"
-      :style="{ ...position }"
-    >
-      <slot></slot>
-    </div>
+    <portal v-if="isOpen" to="tooltip-destination">
+      <div
+        v-show="isOpen"
+        ref="content"
+        class="bg-blue-1000 fixed z-50 py-2 rounded-md shadow"
+        :style="{ ...position }"
+      >
+        <slot></slot>
+      </div>
+    </portal>
   </div>
 </template>
  

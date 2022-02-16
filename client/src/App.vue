@@ -3,6 +3,7 @@
     <SVGContainer />
     <NotificationsContainer />
     <RunesContainer />
+    <portal-target name="tooltip-destination" />
     <component :is="layout">
       <router-view />
     </component>

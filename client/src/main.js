@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueAxios from './plugins/axios'
 import VueMeta from 'vue-meta'
 import { VuePlausible } from 'vue-plausible'
+import PortalVue from 'portal-vue'
 
 
 import '@/assets/css/main.css'
@@ -19,6 +20,7 @@ Vue.use(VuePlausible, {
 })
 Vue.$plausible.enableAutoPageviews()
 Vue.use(VueMeta)
+Vue.use(PortalVue)
 
 Vue.filter('capitalize', (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
