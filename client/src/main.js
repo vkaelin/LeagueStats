@@ -40,6 +40,15 @@ Vue.filter('secToTime', (sec, dotNotation = false) => {
   return dotNotation ? `${min}:${newSec}` : `${min}m${newSec}s`
 })
 
+Vue.filter('secToHours', (sec) => {
+  if (isNaN(sec)) return 0
+
+  const h = Math.floor(sec / 3600)
+  const m = Math.floor((sec % 3600) / 60)
+
+  return h ? `${h}h ${m}m` : `${m}m`
+})
+
 Vue.filter('percent', (value) => {
   return `${+value.toFixed(1)}%`
 })

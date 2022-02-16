@@ -84,7 +84,9 @@ class MatchRepository {
     const query = `
     SELECT
         to_timestamp(matches.date/1000)::date as day,
-        COUNT(match_players.id) as count
+        SUM(matches.game_duration) as time,
+        COALESCE(SUM(match_players.win), 0) as wins,
+        COALESCE(SUM(match_players.loss), 0) as losses
     FROM
         match_players
         ${this.JOIN_MATCHES}

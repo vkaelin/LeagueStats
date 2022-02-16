@@ -41,11 +41,25 @@
                 />
               </template>
               <template #default>
-                <div class="px-2 text-xs text-center text-white">
-                  <div>{{ day.date }}</div>
+                <div class="px-2 text-xs text-center text-blue-200 leading-5">
                   <div>
-                    <span class="font-bold text-teal-400">{{ day.matches }}</span> game(s)
+                    <span class="text-white font-semibold">{{ day.date }}</span>
+                    <span>: </span>
+                    <span class="font-bold text-teal-400">{{ day.matches }}</span>
+                    <span> {{ day.matches > 1 ? 'games' : 'game' }}</span>
                   </div>
+                  <template v-if="day.matches > 0">
+                    <div>
+                      <span>time played: </span>
+                      <span class="font-semibold text-white">{{ day.time|secToHours }}</span>
+                    </div>
+                    <div>
+                      <span>record: </span>
+                      <span class="font-bold text-green-400">{{ day.wins }}</span>
+                      <span> - </span> 
+                      <span class="font-bold text-red-400">{{ day.losses }}</span>
+                    </div>
+                  </template>
                 </div>
               </template>
             </Tooltip>
@@ -106,7 +120,10 @@ export default {
 
         this.gridDays.push({
           date: formattedDay,
+          time: 0,
           matches: 0,
+          wins: 0,
+          losses: 0,
           day: day.toLocaleString('en', { weekday: 'long' }).substring(0, 2),
           month: day.toLocaleString('en', { month: 'long' }).substring(0, 3)
         })
@@ -124,7 +141,10 @@ export default {
           e => e.date === formattedTime
         )
         if (dayOfTheMatch.length > 0) {
-          dayOfTheMatch[0].matches = match.count
+          dayOfTheMatch[0].time = match.time
+          dayOfTheMatch[0].matches = match.wins + match.losses
+          dayOfTheMatch[0].wins = match.wins
+          dayOfTheMatch[0].losses = match.losses
         }
       }
 
