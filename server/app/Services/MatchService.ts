@@ -136,7 +136,8 @@ class MatchService {
           (m) =>
             !tutorialQueues.includes(m.info.queueId) &&
             m.info.teams.length > 0 &&
-            m.info.participants.length > 0
+            m.info.participants.length > 0 &&
+            m.info.gameMode !== 'PRACTICETOOL'
         )
 
       // Transform raw matches data

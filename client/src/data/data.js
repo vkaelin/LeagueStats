@@ -1,6 +1,10 @@
 export const maps = { 10: 'The Twisted Treeline', 11: "Summoner's Rift", 12: 'Howling Abyss' }
 
 export const gameModes = {
+  0: {
+    type: 'Custom',
+    name: 'Custom Game'
+  },
   900: {
     type: 'Normal',
     name: 'URF',
