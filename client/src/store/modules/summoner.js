@@ -78,7 +78,7 @@ export const mutations = {
       state.records.recordsLoaded = false
     }
 
-    state.overview.moreMatchesToFetch = newMatches.length >= state.overview.NB_LOAD_GAMES - 1
+    state.overview.moreMatchesToFetch = newMatches.length > 0
   },
   OVERVIEW_FOUND(state, infos) {
     state.basic.recentActivity = infos.stats.recentActivity
@@ -86,7 +86,7 @@ export const mutations = {
     state.overview.stats = infos.stats
     state.overview.loaded = true
     state.records.recordsLoaded = false
-    state.overview.moreMatchesToFetch = infos.matches.length >= state.overview.NB_LOAD_GAMES - 1
+    state.overview.moreMatchesToFetch = infos.matches.length > 0
   },
   RECORDS_FOUND(state, { records }) {
     state.records.list = records
