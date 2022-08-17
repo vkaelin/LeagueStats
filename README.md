@@ -20,6 +20,12 @@ Development environment requirements :
 
 You can use the `docker-compose.yml` file to quickly setup Postgre and Redis in development.
 
+Setting up the docker container:
+
+```bash
+> docker-compose up --build -d
+```
+
 Setting up your development environment on your local machine :
 
 ```bash
@@ -34,6 +40,24 @@ Setting up your development environment on your local machine :
 > cp .env.example .env # edit the values
 > node ace migration:run
 ```
+
+### Env Values
+
+Before running the migrations, you need to add some details to the server .env:
+
+1. To generate the APP_KEY run ```node ace generate:key```, copy and paste the value on the respective .env variable;
+
+2. Set the database variables PG_USER, PG_PASSWORD and PG_DB_NAME. If you are using docker,
+you can set as below:
+
+```
+PG_USER=root
+PG_PASSWORD=root
+PG_DB_NAME=leaguestats
+```
+
+3. For the application run properly, you need and Riot API Key and set it to the RIOT_API_KEY .env variable. To know more, take a look to their documentation on [this link](https://developer.riotgames.com/).
+
 
 ## Useful commands
 
