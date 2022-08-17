@@ -56,7 +56,7 @@ PG_PASSWORD=root
 PG_DB_NAME=leaguestats
 ```
 
-3. For the application run properly, you need and Riot API Key and set it to the RIOT_API_KEY .env variable. To know more, take a look to their documentation on [this link](https://developer.riotgames.com/).
+3. For the application work properly, you need a Riot API Key to set it on RIOT_API_KEY .env variable. To know more, take a look to their documentation on [this link](https://developer.riotgames.com/).
 
 
 ## Useful commands
