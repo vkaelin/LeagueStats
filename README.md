@@ -37,7 +37,7 @@ Setting up your development environment on your local machine :
 
 > cd leaguestats/server
 > npm install
-> cp .env.example .env # edit the values
+> cp .env.example .env # edit the values (see below for more info)
 > node ace migration:run
 ```
 
@@ -45,10 +45,10 @@ Setting up your development environment on your local machine :
 
 Before running the migrations, you need to add some details to the server .env:
 
-1. To generate the APP_KEY run ```node ace generate:key```, copy and paste the value on the respective .env variable;
+1. To generate the APP_KEY run `node ace generate:key`, copy and paste the value on the respective .env variable;
 
 2. Set the database variables PG_USER, PG_PASSWORD and PG_DB_NAME. If you are using docker,
-you can set as below:
+   you can set as below:
 
 ```
 PG_USER=root
@@ -57,7 +57,6 @@ PG_DB_NAME=leaguestats
 ```
 
 3. For the application work properly, you need a Riot API Key to set it on RIOT_API_KEY .env variable. To know more, take a look to their documentation on [this link](https://developer.riotgames.com/).
-
 
 ## Useful commands
 
