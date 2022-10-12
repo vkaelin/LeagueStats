@@ -80,6 +80,10 @@ export const gameModes = {
   1400: {
     type: 'Normal',
     name: 'Ultimate Spellbook'
+  },
+  1900: {
+    type: 'Normal',
+    name: 'URF',
   }
 }
 
