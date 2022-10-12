@@ -22,6 +22,7 @@ export enum RiotRegion {
   AMERICAS = 'americas',
   ASIA = 'asia',
   EUROPE = 'europe',
+  SEA = 'sea',
 }
 
 /**
@@ -37,8 +38,9 @@ export function getRiotRegion(region: string): RiotRegion {
     case LeagueRegion.BRAZIL:
     case LeagueRegion.LATIN_AMERICA_NORTH:
     case LeagueRegion.LATIN_AMERICA_SOUTH:
-    case LeagueRegion.OCEANIA:
       return RiotRegion.AMERICAS
+    case LeagueRegion.OCEANIA:
+      return RiotRegion.SEA
     case LeagueRegion.KOREA:
     case LeagueRegion.JAPAN:
       return RiotRegion.ASIA
