@@ -7,7 +7,7 @@ export const gameModes = {
   },
   900: {
     type: 'Normal',
-    name: 'URF',
+    name: 'ARURF',
   },
   450: {
     type: 'Normal',
