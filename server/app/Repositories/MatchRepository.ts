@@ -11,9 +11,6 @@ export interface SelectFilters {
 
 class MatchRepository {
   private readonly JOIN_MATCHES = 'INNER JOIN matches ON matches.id = match_players.match_id'
-  private readonly JOIN_TEAMS =
-    'INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color'
-  private readonly JOIN_ALL = `${this.JOIN_MATCHES} ${this.JOIN_TEAMS}`
 
   private globalFilters(filters: SelectFilters) {
     let query = `
@@ -229,7 +226,7 @@ class MatchRepository {
         SUM(match_players.loss) as losses
     FROM
         match_players
-        ${this.JOIN_ALL}
+        ${this.JOIN_MATCHES}
         INNER JOIN match_players as mates ON match_players.match_id = mates.match_id AND match_players.team = mates.team
     WHERE
         ${this.globalFilters(filters)}
@@ -314,7 +311,7 @@ class MatchRepository {
     const query =
       `
     WITH base as (
-        SELECT 
+        SELECT
             ${fields.join()},
             match_players.win as result,
             matches.id,
