@@ -29,7 +29,7 @@ class MatchService {
       console.log('--> CALL TO RIOT MATCHLIST')
       const newMatchList = await Jax.Matchlist.puuid(puuid, region, index)
       // Error while fetching Riot API
-      if (!newMatchList) {
+      if (!newMatchList || !newMatchList.length) {
         return matchList
       }
       matchList = [...matchList, ...newMatchList]

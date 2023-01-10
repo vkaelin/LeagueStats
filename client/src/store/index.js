@@ -30,7 +30,12 @@ export default new Vuex.Store({
       'na': 'na1',
       'oce': 'oc1',
       'tr': 'tr1',
-      'ru': 'ru'
+      'ru': 'ru',
+      'ph': 'ph2',
+      'sg': 'sg2',
+      'th': 'th2',
+      'tw': 'tw2',
+      'vn': 'vn2',
     },
     roles: ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
   },

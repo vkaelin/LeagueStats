@@ -13,6 +13,11 @@ export enum LeagueRegion {
   RUSSIA = 'ru',
   TURKEY = 'tr1',
   JAPAN = 'jp1',
+  PHILIPPINES = 'ph2',
+  SINGAPORE = 'sg2',
+  THAILAND = 'th2',
+  TAIWAN = 'tw2',
+  VIETNAM = 'vn2',
 }
 
 /**
@@ -40,6 +45,11 @@ export function getRiotRegion(region: string): RiotRegion {
     case LeagueRegion.LATIN_AMERICA_SOUTH:
       return RiotRegion.AMERICAS
     case LeagueRegion.OCEANIA:
+    case LeagueRegion.PHILIPPINES:
+    case LeagueRegion.SINGAPORE:
+    case LeagueRegion.THAILAND:
+    case LeagueRegion.TAIWAN:
+    case LeagueRegion.VIETNAM:
       return RiotRegion.SEA
     case LeagueRegion.KOREA:
     case LeagueRegion.JAPAN:

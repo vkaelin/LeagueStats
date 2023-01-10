@@ -73,7 +73,12 @@ export default {
         'NA',
         'OCE',
         'TR',
-        'RU'
+        'RU',
+        'PH',
+        'SG',
+        'TH',
+        'TW',
+        'VN',
       ],
     }
   },
