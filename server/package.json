@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@adonisjs/core": "^5.3.4",
-    "@adonisjs/lucid": "^16.0.2",
+    "@adonisjs/lucid": "^18.3.0",
     "@adonisjs/redis": "^7.0.9",
     "@adonisjs/repl": "^3.1.6",
     "@rocketseat/adonis-bull": "^1.0.4",
