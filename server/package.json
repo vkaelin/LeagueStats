@@ -29,7 +29,7 @@
     "@adonisjs/redis": "^7.0.9",
     "@adonisjs/repl": "^3.1.6",
     "@rocketseat/adonis-bull": "^1.0.4",
-    "got": "^11.8.5",
+    "got": "^12.5.3",
     "luxon": "^2.0.2",
     "pg": "^8.7.1",
     "proxy-addr": "^2.0.7",
