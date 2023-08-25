@@ -56,9 +56,6 @@ export default class JaxRequest {
     } catch ({ statusCode, ...rest }) {
       this.retries--
 
-      console.log('JAX ERROR')
-      console.log(rest?.cause?.code)
-
       if (
         statusCode !== 500 &&
         statusCode !== 503 &&
@@ -74,6 +71,8 @@ export default class JaxRequest {
           !this.endpoint.includes('match/v4/matchlists/by-account')
         ) {
           Logger.error(`URL ${url}: `)
+          console.log('JAX ERROR')
+          console.log(rest?.cause?.code)
           // Logger.error(`JaxRequest Error  ${statusCode}: `, rest)
         }
 

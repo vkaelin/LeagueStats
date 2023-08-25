@@ -41,6 +41,10 @@ export const gameModes = {
     type: 'Ranked',
     name: 'CLASH',
   },
+  720: {
+    type: 'Ranked',
+    name: 'CLASH ARAM',
+  },
   800: {
     type: 'Bot',
     name: '3vs3 Co-op vs. AI (Intermediate)',

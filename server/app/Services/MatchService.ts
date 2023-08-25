@@ -130,15 +130,14 @@ class MatchService {
     /* If we have to store some matches in the db */
     if (matchesFromApi.length !== 0) {
       // Remove bugged matches from the Riot API + tutorial games
-      const filteredMatches = matchesFromApi
-        .filter(notEmpty)
-        .filter(
-          (m) =>
-            !tutorialQueues.includes(m.info.queueId) &&
-            m.info.teams.length > 0 &&
-            m.info.participants.length > 0 &&
-            m.info.gameMode !== 'PRACTICETOOL'
-        )
+      const filteredMatches = matchesFromApi.filter(notEmpty).filter(
+        (m) =>
+          !tutorialQueues.includes(m.info.queueId) &&
+          m.info.teams.length > 0 &&
+          m.info.participants.length > 0 &&
+          m.info.gameMode !== 'PRACTICETOOL' &&
+          m.info.gameMode !== 'CHERRY' // Arena mode
+      )
 
       // Transform raw matches data
       const parsedMatches: any = await MatchParser.parse(filteredMatches)
