@@ -2,8 +2,6 @@ import { createCDragonAssetUrl, secToTime, timeDifference } from '@/helpers/func
 import { maps, gameModes } from '@/data/data.js'
 import store from '@/store'
 
-const leaguesNumbers = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4 }
-
 /**
  * Get the url of the of the player primary rune
  * @param {Object} perks : from the API
@@ -67,7 +65,7 @@ export function createBasicSummonerData(summonerBasic) {
   if (Object.entries(summonerBasic.ranked).length === 0) {
     summonerBasic.ranked.soloQ = {
       fullRank: 'Unranked',
-      rankImgLink: 'https://res.cloudinary.com/kln/image/upload/v1571671133/ranks/unranked.png',
+      rankImgLink: 'https://res.cloudinary.com/kln/image/upload/v1693310423/unranked.png',
       leaguePoints: 0,
       wins: 0,
       losses: 0,
@@ -109,15 +107,7 @@ export function createRecordsData(recordsDto) {
 function getLeagueData(leagueData, leagueName) {
   if (!leagueData) return null
 
-  leagueData.rankImgLink = getRankImg(leagueData)
+  leagueData.rankImgLink = `https://res.cloudinary.com/kln/image/upload/v1693310423/${leagueData.tier}.png`
   leagueData.name = leagueName
   return leagueData
-}
-
-/**
- *  Return the link of the rank image
- * @param leagueData : stats in soloQ of the player
- */
-export function getRankImg(leagueData) {
-  return `https://res.cloudinary.com/kln/image/upload/v1571671133/ranks/${leagueData.tier}_${leaguesNumbers[leagueData.rank]}.png`
 }
