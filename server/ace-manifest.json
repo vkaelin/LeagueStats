@@ -38,19 +38,66 @@
     },
     "list:routes": {
       "settings": {
-        "loadApp": true
+        "loadApp": true,
+        "stayAlive": true
       },
-      "commandPath": "@adonisjs/core/build/commands/ListRoutes",
+      "commandPath": "@adonisjs/core/build/commands/ListRoutes/index",
       "commandName": "list:routes",
       "description": "List application routes",
       "args": [],
       "aliases": [],
       "flags": [
         {
+          "name": "verbose",
+          "propertyName": "verbose",
+          "type": "boolean",
+          "description": "Display more information"
+        },
+        {
+          "name": "reverse",
+          "propertyName": "reverse",
+          "type": "boolean",
+          "alias": "r",
+          "description": "Reverse routes display"
+        },
+        {
+          "name": "methods",
+          "propertyName": "methodsFilter",
+          "type": "array",
+          "alias": "m",
+          "description": "Filter routes by method"
+        },
+        {
+          "name": "patterns",
+          "propertyName": "patternsFilter",
+          "type": "array",
+          "alias": "p",
+          "description": "Filter routes by the route pattern"
+        },
+        {
+          "name": "names",
+          "propertyName": "namesFilter",
+          "type": "array",
+          "alias": "n",
+          "description": "Filter routes by route name"
+        },
+        {
           "name": "json",
           "propertyName": "json",
           "type": "boolean",
           "description": "Output as JSON"
+        },
+        {
+          "name": "table",
+          "propertyName": "table",
+          "type": "boolean",
+          "description": "Output as Table"
+        },
+        {
+          "name": "max-width",
+          "propertyName": "maxWidth",
+          "type": "number",
+          "description": "Specify maximum rendering width. Ignored for JSON Output"
         }
       ]
     },
@@ -82,7 +129,7 @@
       },
       "commandPath": "@adonisjs/lucid/build/commands/DbSeed",
       "commandName": "db:seed",
-      "description": "Execute database seeder files",
+      "description": "Execute database seeders",
       "args": [],
       "aliases": [],
       "flags": [
@@ -106,11 +153,81 @@
           "type": "array",
           "description": "Define a custom set of seeders files names to run",
           "alias": "f"
+        },
+        {
+          "name": "compact-output",
+          "propertyName": "compactOutput",
+          "type": "boolean",
+          "description": "A compact single-line output"
+        }
+      ]
+    },
+    "db:wipe": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/DbWipe",
+      "commandName": "db:wipe",
+      "description": "Drop all tables, views and types in database",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "drop-views",
+          "propertyName": "dropViews",
+          "type": "boolean",
+          "description": "Drop all views"
+        },
+        {
+          "name": "drop-types",
+          "propertyName": "dropTypes",
+          "type": "boolean",
+          "description": "Drop all custom types (Postgres only)"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force command to run in production"
+        }
+      ]
+    },
+    "db:truncate": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/DbTruncate",
+      "commandName": "db:truncate",
+      "description": "Truncate all tables in database",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force command to run in production"
         }
       ]
     },
     "make:model": {
-      "settings": {},
+      "settings": {
+        "loadApp": true
+      },
       "commandPath": "@adonisjs/lucid/build/commands/MakeModel",
       "commandName": "make:model",
       "description": "Make a new Lucid model",
@@ -138,6 +255,13 @@
           "type": "boolean",
           "alias": "c",
           "description": "Generate the controller for the model"
+        },
+        {
+          "name": "factory",
+          "propertyName": "factory",
+          "type": "boolean",
+          "alias": "f",
+          "description": "Generate a factory for the model"
         }
       ]
     },
@@ -202,13 +326,44 @@
       "aliases": [],
       "flags": []
     },
+    "make:factory": {
+      "settings": {},
+      "commandPath": "@adonisjs/lucid/build/commands/MakeFactory",
+      "commandName": "make:factory",
+      "description": "Make a new factory",
+      "args": [
+        {
+          "type": "string",
+          "propertyName": "model",
+          "name": "model",
+          "required": true,
+          "description": "The name of the model"
+        }
+      ],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "model-path",
+          "propertyName": "modelPath",
+          "type": "string",
+          "description": "The path to the model"
+        },
+        {
+          "name": "exact",
+          "propertyName": "exact",
+          "type": "boolean",
+          "description": "Create the factory with the exact name as provided",
+          "alias": "e"
+        }
+      ]
+    },
     "migration:run": {
       "settings": {
         "loadApp": true
       },
       "commandPath": "@adonisjs/lucid/build/commands/Migration/Run",
       "commandName": "migration:run",
-      "description": "Run pending migrations",
+      "description": "Migrate database by running pending migrations",
       "args": [],
       "aliases": [],
       "flags": [
@@ -229,7 +384,19 @@
           "name": "dry-run",
           "propertyName": "dryRun",
           "type": "boolean",
-          "description": "Print SQL queries, instead of running the migrations"
+          "description": "Do not run actual queries. Instead view the SQL output"
+        },
+        {
+          "name": "compact-output",
+          "propertyName": "compactOutput",
+          "type": "boolean",
+          "description": "A compact single-line output"
+        },
+        {
+          "name": "disable-locks",
+          "propertyName": "disableLocks",
+          "type": "boolean",
+          "description": "Disable locks acquired to run migrations safely"
         }
       ]
     },
@@ -239,7 +406,7 @@
       },
       "commandPath": "@adonisjs/lucid/build/commands/Migration/Rollback",
       "commandName": "migration:rollback",
-      "description": "Rollback migrations to a given batch number",
+      "description": "Rollback migrations to a specific batch number",
       "args": [],
       "aliases": [],
       "flags": [
@@ -260,13 +427,25 @@
           "name": "dry-run",
           "propertyName": "dryRun",
           "type": "boolean",
-          "description": "Print SQL queries, instead of running the migrations"
+          "description": "Do not run actual queries. Instead view the SQL output"
         },
         {
           "name": "batch",
           "propertyName": "batch",
           "type": "number",
           "description": "Define custom batch number for rollback. Use 0 to rollback to initial state"
+        },
+        {
+          "name": "compact-output",
+          "propertyName": "compactOutput",
+          "type": "boolean",
+          "description": "A compact single-line output"
+        },
+        {
+          "name": "disable-locks",
+          "propertyName": "disableLocks",
+          "type": "boolean",
+          "description": "Disable locks acquired to run migrations safely"
         }
       ]
     },
@@ -276,7 +455,7 @@
       },
       "commandPath": "@adonisjs/lucid/build/commands/Migration/Status",
       "commandName": "migration:status",
-      "description": "Check migrations current status.",
+      "description": "View migrations status",
       "args": [],
       "aliases": [],
       "flags": [
@@ -286,6 +465,135 @@
           "type": "string",
           "description": "Define a custom database connection",
           "alias": "c"
+        }
+      ]
+    },
+    "migration:reset": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/Migration/Reset",
+      "commandName": "migration:reset",
+      "description": "Rollback all migrations",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force command to run in production"
+        },
+        {
+          "name": "dry-run",
+          "propertyName": "dryRun",
+          "type": "boolean",
+          "description": "Do not run actual queries. Instead view the SQL output"
+        },
+        {
+          "name": "disable-locks",
+          "propertyName": "disableLocks",
+          "type": "boolean",
+          "description": "Disable locks acquired to run migrations safely"
+        }
+      ]
+    },
+    "migration:refresh": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/Migration/Refresh",
+      "commandName": "migration:refresh",
+      "description": "Rollback and migrate database",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force command to run in production"
+        },
+        {
+          "name": "dry-run",
+          "propertyName": "dryRun",
+          "type": "boolean",
+          "description": "Do not run actual queries. Instead view the SQL output"
+        },
+        {
+          "name": "seed",
+          "propertyName": "seed",
+          "type": "boolean",
+          "description": "Run seeders"
+        },
+        {
+          "name": "disable-locks",
+          "propertyName": "disableLocks",
+          "type": "boolean",
+          "description": "Disable locks acquired to run migrations safely"
+        }
+      ]
+    },
+    "migration:fresh": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/Migration/Fresh",
+      "commandName": "migration:fresh",
+      "description": "Drop all tables and re-migrate the database",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force command to run in production"
+        },
+        {
+          "name": "seed",
+          "propertyName": "seed",
+          "type": "boolean",
+          "description": "Run seeders"
+        },
+        {
+          "name": "drop-views",
+          "propertyName": "dropViews",
+          "type": "boolean",
+          "description": "Drop all views"
+        },
+        {
+          "name": "drop-types",
+          "propertyName": "dropTypes",
+          "type": "boolean",
+          "description": "Drop all custom types (Postgres only)"
+        },
+        {
+          "name": "disable-locks",
+          "propertyName": "disableLocks",
+          "type": "boolean",
+          "description": "Disable locks acquired to run migrations safely"
         }
       ]
     },
