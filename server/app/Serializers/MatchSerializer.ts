@@ -66,6 +66,7 @@ export default abstract class MatchSerializer {
         name: item.name,
         description: item.description,
         price: item.priceTotal,
+        isMythic: item.description.includes('rarityMythic'),
       })
     }
     return items

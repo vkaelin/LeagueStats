@@ -58,6 +58,7 @@ export interface SerializedMatchItem {
   image: string
   name: string
   price: number
+  isMythic: boolean
 }
 
 export interface SerializedMatchPerks {

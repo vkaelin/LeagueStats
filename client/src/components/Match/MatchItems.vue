@@ -72,7 +72,7 @@ export default {
 
   methods: {
     isMythic(item) {
-      return item && item.image.includes('t4')
+      return item && item.isMythic
     },
     itemLink(item) {
       if (!item) {
