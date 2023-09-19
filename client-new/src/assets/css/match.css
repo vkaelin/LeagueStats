@@ -1,0 +1,52 @@
+/* purgecss start ignore */
+.Win {
+  background-image: linear-gradient(
+    90deg,
+    rgba(1, 97, 28, 0.3) 0%,
+    rgba(44, 82, 130, 0) 45%
+  );
+}
+
+.Fail {
+  background-image: linear-gradient(
+    90deg,
+    rgba(140, 0, 0, 0.3) 0%,
+    rgba(44, 82, 130, 0) 45%
+  );
+}
+
+.Remake {
+  background-image: linear-gradient(
+    90deg,
+    rgba(233, 169, 75, 0.3) 0%,
+    rgba(44, 82, 130, 0) 45%
+  );
+}
+
+.ban::after {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  width: calc(100% + 1px);
+  height: 2px;
+  transform: rotate(-45deg);
+}
+
+.ban-blue::after {
+  background: #38b2ac;
+}
+
+.ban-red::after {
+  background: #f56565;
+}
+
+.ban-img {
+  filter: grayscale(100%);
+}
+
+.ban-order {
+  left: -7px;
+  top: -5px;
+}
+/* purgecss end ignore */

@@ -1,0 +1,88 @@
+/* purgecss start ignore */
+
+/* Fade transitions */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 2s;
+}
+
+.fade-fast-enter-active, .fade-fast-leave-active {
+  transition: opacity .3s;
+}
+
+.fade-fast-enter, .fade-fast-leave-to,
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+/* Slide fade transition (match details) */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.4s;
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(400px);
+  opacity: 0;
+}
+
+/* Tab transition */
+.tab-enter-active {
+  @apply transition duration-500 ease-in-out;
+}
+
+.tab-enter, .tab-enter-leave-to {
+  @apply opacity-0;
+}
+
+.tab-enter-to, .tab-enter-leave {
+  @apply opacity-100;
+}
+
+/* Scale-fade transition */
+.scale-fade-enter-active {
+  @apply transition-all duration-75 ease-out transform;
+}
+
+.scale-fade-leave-active {
+  @apply transition-all duration-75 ease-in transform;
+}
+
+.scale-fade-enter,
+.scale-fade-leave-to {
+  @apply scale-90 opacity-0;
+}
+
+.scale-fade-enter-to,
+.scale-fade-leave {
+  @apply scale-100 opacity-100;
+}
+
+/* Grow transition (ripples) */
+.grow-enter-active,
+.grow-enter-to-active {
+  transition: all 1500ms ease-out;
+}
+
+.grow-leave-active,
+.grow-leave-to-active {
+  transition: all 700ms ease-out;
+}
+
+.grow-enter {
+  transform: scale(0);
+  opacity: 1;
+}
+
+.grow-enter-to,
+.grow-leave {
+  transform: scale(4);
+  opacity: 1;
+}
+
+.grow-leave-to {
+  transform: scale(4);
+  opacity: 0;
+}
+
+/* purgecss end ignore */

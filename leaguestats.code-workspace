@@ -3,6 +3,9 @@
     {
       "path": "client"
     },
+	{
+      "path": "client-new"
+    },
     {
       "path": "server"
     }
