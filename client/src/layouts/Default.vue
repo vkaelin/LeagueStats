@@ -2,7 +2,7 @@
   <div class="flex flex-col min-h-screen overflow-hidden bg-blue-900">
     <LazyBackground
       image-source="/img/bg-homepage-1.jpg"
-      image-class="absolute z-0 w-full h-200"
+      image-class="absolute z-0 w-full h-[50rem]"
       more-backgrounds="linear-gradient(180deg, rgba(42, 67, 101, 0) 0%, #2A4365 50%),"
       transition-name="fade"
     ></LazyBackground>
@@ -12,7 +12,7 @@
       class="fixed left-0 right-0 z-20 px-4 text-teal-100 transition-colors duration-100 ease-in-out border-b-2 header"
       style="border-color: rgba(144, 205, 244, 0.4)"
     >
-      <div class="flex items-center justify-between py-2 -mb-2px">
+      <div class="flex items-center justify-between py-2 -mb-0.5">
         <div class="flex flex-1">
           <router-link to="/">
             <img class="block h-10" src="/img/Logo.svg" alt="LeagueStats logo" />

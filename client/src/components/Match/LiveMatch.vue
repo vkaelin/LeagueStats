@@ -68,7 +68,7 @@
       }"
       class="flex items-center pl-6 pr-4 -ml-2 text-base text-blue-200 cursor-pointer live-game-link bg-gradient-x hover:bg-blue-800 hover:text-blue-100"
     >
-      <div class="-mt-2px">more</div>
+      <div class="-mt-0.5">more</div>
       <svg class="w-4 h-4 ml-1 transition-transform duration-200 ease-in-out transform">
         <use xlink:href="#arrow-right" />
       </svg>
@@ -102,9 +102,7 @@ export default {
 }
 
 .vs {
-  text-shadow:
-    3px 2px 0px rgba(49, 130, 206, 0.8),
-    -3px 2px 0px rgba(229, 62, 62, 0.8);
+  text-shadow: 3px 2px 0px rgba(49, 130, 206, 0.8), -3px 2px 0px rgba(229, 62, 62, 0.8);
 }
 
 .live-game-link:hover svg {

@@ -49,7 +49,7 @@
                 <div
                   v-if="player.role && player.role !== 'NONE'"
                   :class="borderChampion(player.summonerId)"
-                  class="absolute border rounded-full p-2px bg-blue-1000"
+                  class="absolute border rounded-full p-0.5 bg-blue-1000"
                   style="bottom: -5px; right: -5px"
                 >
                   <div
@@ -94,7 +94,7 @@
                   <svg class="w-5 h-5">
                     <use :xlink:href="`#rank-${player.rank.soloQ.tier.toLowerCase()}`" />
                   </svg>
-                  <div class="text-xs font-semibold text-blue-300 mt-2px">
+                  <div class="text-xs font-semibold text-blue-300 mt-0.5">
                     {{ player.rank.soloQ.shortName }}
                   </div>
                 </div>
@@ -117,7 +117,7 @@
                   <svg class="w-5 h-5">
                     <use :xlink:href="`#rank-${player.rank.flex5v5.tier.toLowerCase()}`" />
                   </svg>
-                  <div class="text-xs font-semibold text-blue-300 mt-2px">
+                  <div class="text-xs font-semibold text-blue-300 mt-0.5">
                     {{ player.rank.flex5v5.shortName }}
                   </div>
                 </div>

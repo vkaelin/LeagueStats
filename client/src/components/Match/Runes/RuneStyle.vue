@@ -49,7 +49,7 @@
             </Tooltip>
           </ul>
         </div>
-        <div v-if="primary && index == 0" class="w-full mt-4 bg-gray-500 bg-opacity-25 h-2px"></div>
+        <div v-if="primary && index == 0" class="w-full mt-4 bg-gray-500 bg-opacity-25 h-0.5"></div>
       </div>
 
       <div v-if="!primary">

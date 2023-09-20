@@ -140,13 +140,13 @@
                   params: { region: $route.params.region, name: ally.name },
                 }"
                 :class="isSummonerProfile(ally.account_id)"
-                class="w-16 overflow-hidden text-xs font-medium text-right whitespace-no-wrap hover:text-white text-overflow"
+                class="w-16 overflow-hidden text-xs font-medium text-right whitespace-nowrap hover:text-white text-overflow"
                 >{{ ally.name }}</router-link
               >
               <div
                 v-else
                 :class="isSummonerProfile(ally.account_id)"
-                class="w-16 overflow-hidden text-xs font-medium text-right whitespace-no-wrap text-overflow"
+                class="w-16 overflow-hidden text-xs font-medium text-right whitespace-nowrap text-overflow"
               >
                 {{ ally.name }}
               </div>
@@ -174,12 +174,12 @@
                   name: 'summoner',
                   params: { region: $route.params.region, name: data.enemyTeam[index].name },
                 }"
-                class="w-16 ml-1 overflow-hidden text-xs font-medium text-left text-blue-200 whitespace-no-wrap hover:text-white text-overflow"
+                class="w-16 ml-1 overflow-hidden text-xs font-medium text-left text-blue-200 whitespace-nowrap hover:text-white text-overflow"
                 >{{ data.enemyTeam[index].name }}</router-link
               >
               <div
                 v-else
-                class="w-16 ml-1 overflow-hidden text-xs font-medium text-left text-blue-200 whitespace-no-wrap text-overflow"
+                class="w-16 ml-1 overflow-hidden text-xs font-medium text-left text-blue-200 whitespace-nowrap text-overflow"
               >
                 {{ data.enemyTeam[index].name }}
               </div>

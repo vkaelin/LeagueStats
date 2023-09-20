@@ -64,7 +64,7 @@
             <div class="text-xs text-purple-400">{{ champion.count }}</div>
             <div
               :style="{ width: widthBar(champion.count, mostPlayed) }"
-              class="h-1 bg-purple-400 rounded-full mt-2px"
+              class="h-1 bg-purple-400 rounded-full mt-0.5"
             ></div>
           </div>
           <div class="w-winrate">
@@ -73,7 +73,7 @@
             </div>
             <div
               :style="{ width: widthBar(champion.wins, champion.count) }"
-              class="h-1 bg-green-400 rounded-full mt-2px"
+              class="h-1 bg-green-400 rounded-full mt-0.5"
             ></div>
           </div>
           <div class="w-kda">
@@ -84,7 +84,7 @@
               :style="{
                 width: widthBar(kda(champion.kills, champion.deaths, champion.assists), bestKda),
               }"
-              class="h-1 bg-blue-400 rounded-full mt-2px"
+              class="h-1 bg-blue-400 rounded-full mt-0.5"
             ></div>
           </div>
         </li>

@@ -9,7 +9,7 @@
         >
           <div class="relative p-1 bg-blue-900 rounded-full w-11 h-11">
             <div
-              class="h-full bg-center bg-cover mt-2px"
+              class="h-full bg-center bg-cover mt-0.5"
               :style="{ backgroundImage: `url(${selectedLeague.rankImgLink})` }"
             ></div>
           </div>

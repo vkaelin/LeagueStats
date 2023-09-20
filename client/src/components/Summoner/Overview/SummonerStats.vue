@@ -98,19 +98,19 @@
           <div class="w-1/4">{{ (stat / stats.global.count) | round }}</div>
         </li>
         <li class="flex items-center justify-between px-4 py-1 leading-tight bg-blue-760">
-          <div class="w-1/4 text-left whitespace-no-wrap">Time</div>
+          <div class="w-1/4 text-left whitespace-nowrap">Time</div>
           <div class="w-1/4">{{ stats.global.time | secToHours }}</div>
           <div class="w-1/4"></div>
           <div class="w-1/4">{{ (stats.global.time / stats.global.count) | secToTime(true) }}</div>
         </li>
         <li class="flex items-center justify-between px-4 py-1 leading-tight">
-          <div class="w-1/4 text-left whitespace-no-wrap">KDA</div>
+          <div class="w-1/4 text-left whitespace-nowrap">KDA</div>
           <div class="w-1/4">
             {{ ((stats.global.kills + stats.global.assists) / stats.global.deaths) | round }}
           </div>
         </li>
         <li class="flex items-center justify-between px-4 py-1 leading-tight bg-blue-760">
-          <div class="w-1/4 text-left whitespace-no-wrap">Kill participation</div>
+          <div class="w-1/4 text-left whitespace-nowrap">Kill participation</div>
           <div class="w-1/4">{{ stats.global.kp | percent }}</div>
         </li>
       </ul>

@@ -21,7 +21,7 @@
               <svg class="items-center w-4 h-4">
                 <use xlink:href="#award" />
               </svg>
-              <span class="ml-2px">VICTORY</span>
+              <span class="ml-0.5">VICTORY</span>
             </div>
           </div>
         </th>
@@ -144,7 +144,7 @@
                   <div
                     @click="selectRunes(player)"
                     :class="{ 'cursor-pointer': player.perks }"
-                    class="flex flex-col justify-around cursor-pointer ml-2px"
+                    class="flex flex-col justify-around cursor-pointer ml-0.5"
                   >
                     <div
                       :style="[
@@ -185,12 +185,12 @@
                   :class="{
                     'font-semibold text-yellow-400': account.id === player.summonerId,
                   }"
-                  class="overflow-hidden text-xs text-left text-white whitespace-no-wrap w-22 text-overflow hover:text-blue-200"
+                  class="overflow-hidden text-xs text-left text-white whitespace-nowrap w-[5.5rem] text-overflow hover:text-blue-200"
                   >{{ player.name }}</router-link
                 >
                 <div
                   v-else
-                  class="overflow-hidden text-xs text-left text-white whitespace-no-wrap w-22 text-overflow"
+                  class="overflow-hidden text-xs text-left text-white whitespace-nowrap w-[5.5rem] text-overflow"
                 >
                   {{ player.name }}
                 </div>

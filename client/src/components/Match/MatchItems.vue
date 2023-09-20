@@ -6,7 +6,7 @@
           <div
             :style="{ backgroundImage: itemLink(item) }"
             :class="[
-              oneRow ? 'ml-2px w-6 h-6' : 'ml-1 w-8 h-8',
+              oneRow ? 'ml-0.5 w-6 h-6' : 'ml-1 w-8 h-8',
               { 'cursor-pointer': item !== null },
             ]"
             class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000"

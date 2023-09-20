@@ -61,7 +61,7 @@
         </td>
         <td :style="bgColor(champion, 'kda')" class="px-2 py-3 text-sm text-white">
           <div>{{ champion.kda | round }}</div>
-          <div class="mt-1 text-blue-200 whitespace-no-wrap text-xxs">
+          <div class="mt-1 text-blue-200 whitespace-nowrap text-xxs">
             {{ (champion.kills / champion.count) | round(1) }}
             /
             {{ (champion.deaths / champion.count) | round(1) }}
