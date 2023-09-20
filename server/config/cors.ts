@@ -49,7 +49,7 @@ const corsConfig: CorsConfig = {
       return true
     }
 
-    if (origin.includes('leaguestats.gg')) {
+    if (origin.includes('leaguestats.gg') || origin.includes('leaguestats-gg.netlify.app')) {
       return true
     }
 
