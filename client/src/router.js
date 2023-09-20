@@ -12,46 +12,46 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: import.meta.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'home',
       component: Home,
       meta: {
-        layout: 'Home'
-      }
+        layout: 'Home',
+      },
     },
     {
       path: '/summoner/:region/:name',
       name: 'summoner',
       component: Summoner,
       meta: {
-        season: true
-      }
+        season: true,
+      },
     },
     {
       path: '/summoner/:region/:name/champions',
       name: 'summonerChampions',
       component: SummonerChampions,
       meta: {
-        season: true
-      }
+        season: true,
+      },
     },
     {
       path: '/summoner/:region/:name/records',
       name: 'summonerRecords',
       component: SummonerRecords,
       meta: {
-        season: true
-      }
+        season: true,
+      },
     },
     {
       path: '/summoner/:region/:name/live',
       name: 'summonerLive',
-      component: SummonerLive
+      component: SummonerLive,
     },
-  ]
+  ],
 })
 
 router.beforeEach((to, from, next) => {

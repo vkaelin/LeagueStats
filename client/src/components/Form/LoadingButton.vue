@@ -1,7 +1,7 @@
 <template>
   <button
     @click="btnClicked"
-    :class="[btnClass, {'loading': loading}, {'pr-12': loading}]"
+    :class="[btnClass, { loading: loading }, { 'pr-12': loading }]"
     :disabled="loading"
     class="relative select-none"
     type="button"
@@ -30,20 +30,20 @@ export default {
     btnClass: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     loading: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
 
   methods: {
     btnClicked() {
       this.$emit('clicked')
-    }
-  }
+    },
+  },
 }
 </script>
 

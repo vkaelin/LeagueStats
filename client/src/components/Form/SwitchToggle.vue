@@ -8,10 +8,11 @@
       type="radio"
     />
     <label
-      :class="{'selected-label': selected}"
+      :class="{ 'selected-label': selected }"
       for="toggle-on"
       class="inline-block py-1 border-t-2 border-b-2 border-l-2 border-r border-teal-500 rounded-l-full cursor-pointer"
-    >{{ leftLabel }}</label>
+      >{{ leftLabel }}</label
+    >
     <input
       v-model="selected"
       id="toggle-off"
@@ -20,10 +21,11 @@
       type="radio"
     />
     <label
-      :class="{'selected-label': !selected}"
+      :class="{ 'selected-label': !selected }"
       for="toggle-off"
       class="inline-block py-1 border-t-2 border-b-2 border-l border-r-2 border-teal-500 rounded-r-full cursor-pointer"
-    >{{ rightLabel }}</label>
+      >{{ rightLabel }}</label
+    >
     <div
       :class="selected ? 'left-checked' : 'right-checked'"
       class="absolute inset-0 w-1/2 bg-teal-500 selector"
@@ -45,7 +47,7 @@ export default {
     value: {
       type: Boolean,
       required: true,
-    }
+    },
   },
   computed: {
     selected: {
@@ -54,7 +56,7 @@ export default {
       },
       set(value) {
         this.$emit('updateValue', value)
-      }
+      },
     },
   },
 }
@@ -73,7 +75,8 @@ export default {
 
 .selector {
   z-index: -1;
-  transition: left 200ms cubic-bezier(0.77, 0, 0.175, 1),
+  transition:
+    left 200ms cubic-bezier(0.77, 0, 0.175, 1),
     border-radius 200ms cubic-bezier(0.77, 0, 0.175, 1);
 }
 

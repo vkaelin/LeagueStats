@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen overflow-hidden bg-blue-900">
     <LazyBackground
-      :image-source="require('@/assets/img/bg-homepage-1.jpg')"
+      image-source="/img/bg-homepage-1.jpg"
       image-class="absolute z-0 w-full h-200"
       more-backgrounds="linear-gradient(180deg, rgba(42, 67, 101, 0) 0%, #2A4365 50%),"
       transition-name="fade"
@@ -10,12 +10,12 @@
     <header
       :class="bgHeader ? 'header-scrolled' : 'bg-transparent'"
       class="fixed left-0 right-0 z-20 px-4 text-teal-100 transition-colors duration-100 ease-in-out border-b-2 header"
-      style="border-color: rgba(144, 205, 244, 0.4);"
+      style="border-color: rgba(144, 205, 244, 0.4)"
     >
       <div class="flex items-center justify-between py-2 -mb-2px">
         <div class="flex flex-1">
           <router-link to="/">
-            <img class="block h-10" src="@/assets/img/Logo.svg" alt="LeagueStats logo" />
+            <img class="block h-10" src="/img/Logo.svg" alt="LeagueStats logo" />
           </router-link>
         </div>
 
@@ -70,7 +70,9 @@
                           v-for="name in basic.account.names.slice(0, -1)"
                           :key="name.date"
                           class="text-teal-400"
-                        >{{ name.name }}</li>
+                        >
+                          {{ name.name }}
+                        </li>
                       </ul>
                     </div>
                   </template>
@@ -85,7 +87,7 @@
                 <div
                   v-if="false"
                   class="inline-flex items-center px-2 py-1 mt-2 ml-4 leading-tight border border-teal-500 rounded"
-                  style="background: rgba(40, 94, 97, 0.35);"
+                  style="background: rgba(40, 94, 97, 0.35)"
                 >
                   <svg class="w-4 h-4 text-teal-600">
                     <use xlink:href="#star" />
@@ -94,15 +96,19 @@
                 </div>
               </div>
               <div class="flex mt-2">
-                <div :class="{'playing': playing}" class="relative w-24 h-24">
+                <div :class="{ playing: playing }" class="relative w-24 h-24">
                   <div
-                    :class="{'border-2': !playing}"
+                    :class="{ 'border-2': !playing }"
                     class="relative z-10 w-24 h-24 bg-center bg-cover border-teal-400 rounded-full bg-blue-1000"
-                    :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${basic.account.profileIconId}.jpg')`}"
+                    :style="{
+                      backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${basic.account.profileIconId}.jpg')`,
+                    }"
                   >
                     <div
                       class="absolute bottom-0 left-0 flex items-center justify-center w-8 h-8 text-xs font-extrabold text-teal-500 bg-blue-900 border-2 border-teal-400 rounded-full"
-                    >{{ basic.account.summonerLevel }}</div>
+                    >
+                      {{ basic.account.summonerLevel }}
+                    </div>
                   </div>
                 </div>
 
@@ -121,29 +127,45 @@
             <!-- NAVIGATION -->
             <div class="pb-2">
               <router-link
-                :to="{ name: 'summoner', params: { region: $route.params.region, name: $route.params.name }}"
+                :to="{
+                  name: 'summoner',
+                  params: { region: $route.params.region, name: $route.params.name },
+                }"
                 :class="isRouteActive('summoner')"
                 class="pb-2 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
-              >Overview</router-link>
+                >Overview</router-link
+              >
               <router-link
-                :to="{ name: 'summonerChampions', params: { region: $route.params.region, name: $route.params.name }}"
+                :to="{
+                  name: 'summonerChampions',
+                  params: { region: $route.params.region, name: $route.params.name },
+                }"
                 :class="isRouteActive('summonerChampions')"
                 class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
-              >Champions</router-link>
+                >Champions</router-link
+              >
               <router-link
-                :to="{ name: 'summonerRecords', params: { region: $route.params.region, name: $route.params.name }}"
+                :to="{
+                  name: 'summonerRecords',
+                  params: { region: $route.params.region, name: $route.params.name },
+                }"
                 :class="isRouteActive('summonerRecords')"
                 class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
-              >Records</router-link>
+                >Records</router-link
+              >
               <router-link
-                :to="{ name: 'summonerLive', params: { region: $route.params.region, name: $route.params.name }}"
+                :to="{
+                  name: 'summonerLive',
+                  params: { region: $route.params.region, name: $route.params.name },
+                }"
                 :class="isRouteActive('summonerLive')"
                 class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
                 exact
-              >Live game</router-link>
+                >Live game</router-link
+              >
             </div>
 
             <!-- Select Season -->
@@ -193,12 +215,12 @@ export default {
     SearchForm,
     HeaderLoader,
     SummonerRanked,
-    Tooltip
+    Tooltip,
   },
 
   data() {
     return {
-      bgHeader: false
+      bgHeader: false,
     }
   },
 
@@ -207,17 +229,22 @@ export default {
       return this.summonerFound && this.overviewLoaded ? 'tab' : 'none'
     },
     ...mapState({
-      basic: state => state.summoner.basic
+      basic: (state) => state.summoner.basic,
     }),
-    ...mapGetters('summoner', ['playing', 'overviewLoaded', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
+    ...mapGetters('summoner', [
+      'playing',
+      'overviewLoaded',
+      'summonerFound',
+      'summonerNotFound',
+      'summonerLoading',
+    ]),
   },
 
   watch: {
     $route(to, from) {
-      if (from.params.region === to.params.region && from.params.name === to.params.name)
-        return
+      if (from.params.region === to.params.region && from.params.name === to.params.name) return
       this.apiCall()
-    }
+    },
   },
 
   created() {
@@ -239,11 +266,11 @@ export default {
     },
     isRouteActive(currentRoute) {
       return {
-        'router-link-active': this.$route.name === currentRoute
+        'router-link-active': this.$route.name === currentRoute,
       }
     },
     redirect(summoner, region) {
-      this.$router.push(`/summoner/${region}/${summoner}`).catch(() => { })
+      this.$router.push(`/summoner/${region}/${summoner}`).catch(() => {})
     },
     ...mapActions('settings', ['updateSettings']),
     ...mapActions('summoner', ['basicRequest']),
@@ -251,9 +278,11 @@ export default {
 
   metaInfo() {
     return {
-      titleTemplate: this.summonerFound ? `${this.basic.account.name} | LeagueStats.gg %s` : 'LeagueStats.gg %s',
+      titleTemplate: this.summonerFound
+        ? `${this.basic.account.name} | LeagueStats.gg %s`
+        : 'LeagueStats.gg %s',
     }
-  }
+  },
 }
 </script>
 
@@ -290,7 +319,7 @@ export default {
 
 .playing::before,
 .playing::after {
-  content: "";
+  content: '';
   position: absolute;
   height: 100px;
   width: 100px;
@@ -303,11 +332,7 @@ export default {
 
 .playing::after {
   z-index: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0) 30%,
-    rgb(36, 232, 204) 100%
-  );
+  background: linear-gradient(to top, rgba(0, 0, 0, 0) 30%, rgb(36, 232, 204) 100%);
   animation: 0.75s linear 0s infinite normal none running rotate;
 }
 

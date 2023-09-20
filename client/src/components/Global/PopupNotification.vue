@@ -3,7 +3,7 @@
     <div
       :class="{
         'bg-red-500': notification.type === 'error',
-        'bg-green-500': notification.type === 'success'
+        'bg-green-500': notification.type === 'success',
       }"
       class="relative p-6 pr-10 mt-2 text-white rounded-lg shadow-md"
       style="min-width: 240px"
@@ -42,13 +42,13 @@ export default {
   props: {
     notification: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
 
   data() {
     return {
-      timeout: null
+      timeout: null,
     }
   },
 
@@ -63,7 +63,7 @@ export default {
     deleteNotification() {
       this.remove(this.notification)
     },
-    ...mapActions('notification', ['remove'])
-  }
+    ...mapActions('notification', ['remove']),
+  },
 }
 </script>

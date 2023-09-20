@@ -52,30 +52,34 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
+      required: true,
     },
     detailsOpen: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
     allyTeam() {
-      return this.data.blueTeam.players.some(p => p.summonerId === this.account.id) ? this.data.blueTeam : this.data.redTeam
+      return this.data.blueTeam.players.some((p) => p.summonerId === this.account.id)
+        ? this.data.blueTeam
+        : this.data.redTeam
     },
     enemyTeam() {
-      return this.data.blueTeam.players.some(p => p.summonerId === this.account.id) ? this.data.redTeam : this.data.blueTeam
+      return this.data.blueTeam.players.some((p) => p.summonerId === this.account.id)
+        ? this.data.redTeam
+        : this.data.blueTeam
     },
     ...mapState({
-      account: state => state.summoner.basic.account,
-      percentSettings: state => state.settings.percent
+      account: (state) => state.summoner.basic.account,
+      percentSettings: (state) => state.settings.percent,
     }),
   },
 
   methods: {
     ...mapActions('settings', ['updatePercent']),
-  }
+  },
 }
 </script>
 

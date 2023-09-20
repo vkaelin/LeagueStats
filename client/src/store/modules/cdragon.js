@@ -28,14 +28,18 @@ export const actions = {
     commit('DISPLAY_HIDE_RUNES', selectedRunes)
   },
   async getRunes({ commit, getters }) {
-    if (getters.runesLoaded) { return }
+    if (getters.runesLoaded) {
+      return
+    }
 
-    const { data } = await axios.get('cdragon/runes').catch((e) => { console.log(e) })
+    const { data } = await axios.get('cdragon/runes').catch((e) => {
+      console.log(e)
+    })
     console.log(data)
     commit('SET_RUNES', data)
   },
 }
 
 export const getters = {
-  runesLoaded: state => state.runes,
+  runesLoaded: (state) => state.runes,
 }

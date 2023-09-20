@@ -3,7 +3,9 @@
     <template v-if="!recordsLoaded || (recordsLoaded && records.assists)">
       <div
         class="relative pl-6 text-2xl text-blue-200 border-b-2 border-blue-800 category blue-900"
-      >Basics</div>
+      >
+        Basics
+      </div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
@@ -53,7 +55,7 @@
           <div
             v-for="index in 6"
             :key="index"
-            style="width: 176px; height: 294px;"
+            style="width: 176px; height: 294px"
             class="mx-2 mt-6"
           >
             <content-loader
@@ -68,7 +70,11 @@
           </div>
         </template>
       </div>
-      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900 category">Game impact</div>
+      <div
+        class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900 category"
+      >
+        Game impact
+      </div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
@@ -119,7 +125,7 @@
           <div
             v-for="index in 6"
             :key="index"
-            style="width: 176px; height: 294px;"
+            style="width: 176px; height: 294px"
             class="mx-2 mt-6"
           >
             <content-loader
@@ -134,7 +140,9 @@
           </div>
         </template>
       </div>
-      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Miscellaneous</div>
+      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">
+        Miscellaneous
+      </div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
@@ -170,7 +178,7 @@
           <div
             v-for="index in 4"
             :key="index"
-            style="width: 176px; height: 294px;"
+            style="width: 176px; height: 294px"
             class="mx-2 mt-6"
           >
             <content-loader
@@ -185,7 +193,9 @@
           </div>
         </template>
       </div>
-      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Multi kills</div>
+      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">
+        Multi kills
+      </div>
       <div class="flex flex-wrap -mx-2">
         <template v-if="recordsLoaded">
           <RecordCard
@@ -228,7 +238,7 @@
           <div
             v-for="index in 5"
             :key="index"
-            style="width: 176px; height: 294px;"
+            style="width: 176px; height: 294px"
             class="mx-2 mt-6"
           >
             <content-loader
@@ -267,9 +277,9 @@ export default {
   computed: {
     ...mapGetters('summoner', ['summonerFound']),
     ...mapState({
-      records: state => state.summoner.records.list,
-      recordsLoaded: state => state.summoner.records.recordsLoaded,
-    })
+      records: (state) => state.summoner.records.list,
+      recordsLoaded: (state) => state.summoner.records.recordsLoaded,
+    }),
   },
 
   watch: {
@@ -278,7 +288,7 @@ export default {
     },
     summonerFound() {
       this.fetchData()
-    }
+    },
   },
 
   created() {
@@ -298,14 +308,14 @@ export default {
     return {
       title: 'Summoner Records',
     }
-  }
+  },
 }
 </script>
 
 <style scoped>
 .category:before {
   @apply w-2 h-2 bg-blue-200 absolute block left-0 ml-1;
-  content: "";
+  content: '';
   top: 35%;
   transform: rotate(45deg);
 }

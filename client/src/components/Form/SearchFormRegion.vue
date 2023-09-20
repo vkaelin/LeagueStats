@@ -52,12 +52,12 @@ export default {
   props: {
     dropdown: {
       type: Boolean,
-      default: false
+      default: false,
     },
     homepage: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
@@ -87,7 +87,7 @@ export default {
     dropdownClasses() {
       return {
         'offsetDropDown mr-4 rounded': !this.homepage,
-        'offsetDropDownXl rounded-b': this.homepage
+        'offsetDropDownXl rounded-b': this.homepage,
       }
     },
     selectRegionClasses() {
@@ -99,7 +99,7 @@ export default {
       }
     },
     ...mapState({
-      selectedRegion: state => state.settings.region
+      selectedRegion: (state) => state.settings.region,
     }),
   },
 
@@ -107,7 +107,7 @@ export default {
     classRegions(index) {
       return {
         'rounded-t': index === 0,
-        'rounded-b': index === this.regions.length - 1
+        'rounded-b': index === this.regions.length - 1,
       }
     },
     selectRegion(region) {
@@ -118,7 +118,7 @@ export default {
       this.$emit('toggle')
     },
     ...mapActions('settings', ['updateSettings']),
-  }
+  },
 }
 </script>
 

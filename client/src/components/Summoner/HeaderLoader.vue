@@ -1,7 +1,7 @@
 <template>
   <div class="pb-2 text-white">
     <div class="flex justify-between">
-      <div style="width: 520px; height: 239px;">
+      <div style="width: 520px; height: 239px">
         <content-loader
           :height="239"
           :width="520"
@@ -23,7 +23,7 @@
         </content-loader>
       </div>
 
-      <div class="rounded-lg bg-blue-850" style="width: 347px; height: 215px;">
+      <div class="rounded-lg bg-blue-850" style="width: 347px; height: 215px">
         <content-loader
           :height="215"
           :width="347"
@@ -157,7 +157,7 @@ import { ContentLoader } from 'vue-content-loader'
 
 export default {
   components: {
-    ContentLoader
-  }
+    ContentLoader,
+  },
 }
 </script>

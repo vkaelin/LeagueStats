@@ -35,14 +35,14 @@ export default {
   props: {
     value: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   methods: {
     change(e) {
       this.$emit('input', e.target.checked)
-    }
-  }
+    },
+  },
 }
 </script>

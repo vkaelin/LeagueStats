@@ -1,7 +1,7 @@
 <template>
   <div class="relative overflow-hidden bg-blue-900">
     <LazyBackground
-      :image-source="require('@/assets/img/bg-homepage-1.jpg')"
+      image-source="/img/bg-homepage-1.jpg"
       image-class="absolute inset-0 bg-center"
       transition-name="fade"
     ></LazyBackground>
@@ -16,15 +16,17 @@
       </div>
 
       <div class="relative flex flex-col items-center w-full max-w-lg">
-        <img class="absolute logo" src="@/assets/img/Logo.svg" alt="logo" />
+        <img class="absolute logo" src="/img/Logo.svg" alt="logo" />
         <SearchForm @formSubmit="redirect" :homepage="true" />
       </div>
 
       <p
         class="absolute bottom-0 pb-4 leading-tight text-center text-blue-300 horizontal-center text-xxs"
       >
-        LeagueStats.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties.
-        <br />Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+        LeagueStats.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of
+        Riot Games or anyone officially involved in producing or managing Riot Games properties.
+        <br />Riot Games, and all associated properties are trademarks or registered trademarks of
+        Riot Games, Inc.
       </p>
     </div>
   </div>
@@ -37,7 +39,7 @@ import SearchForm from '@/components/Form/SearchForm.vue'
 export default {
   components: {
     LazyBackground,
-    SearchForm
+    SearchForm,
   },
 
   methods: {
@@ -50,7 +52,7 @@ export default {
     return {
       title: 'LeagueStats.gg',
     }
-  }
+  },
 }
 </script>
 
@@ -60,7 +62,7 @@ export default {
 }
 
 .line::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 4.5rem;
   height: 0.5rem;

@@ -4,7 +4,7 @@
       <Tooltip
         v-for="ban in team.bans"
         :key="'ban-' + ban.pickTurn"
-        :class="{'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1}"
+        :class="{ 'ml-2': ban.pickTurn !== 6 && ban.pickTurn !== 1 }"
         class="inline-block"
       >
         <template #trigger>
@@ -13,13 +13,15 @@
             class="relative border-2 rounded-full cursor-pointer ban"
           >
             <div
-              :style="[ban.champion.id ? {backgroundImage: `url('${ban.champion.icon}')`} : '']"
+              :style="[ban.champion.id ? { backgroundImage: `url('${ban.champion.icon}')` } : '']"
               class="w-6 h-6 bg-center bg-cover rounded-full ban-img bg-blue-1000"
             ></div>
             <div
               :class="[textLightColor, bgColor]"
               class="absolute flex items-center justify-center w-4 h-4 text-xs font-bold rounded-full ban-order"
-            >{{ ban.pickTurn }}</div>
+            >
+              {{ ban.pickTurn }}
+            </div>
           </div>
         </template>
         <template #default>
@@ -34,24 +36,21 @@
       class="flex mt-2 leading-tight"
     >
       <div>
-        <div
-          :class="textColor"
-          class="text-sm font-medium"
-        >{{ `${team.teamStats.kills}/${team.teamStats.deaths}/${team.teamStats.assists}` }}</div>
+        <div :class="textColor" class="text-sm font-medium">
+          {{ `${team.teamStats.kills}/${team.teamStats.deaths}/${team.teamStats.assists}` }}
+        </div>
         <div class="text-xs text-white">K / D / A</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'">
-        <div
-          :class="textColor"
-          class="text-sm font-medium"
-        >{{ +(team.teamStats.gold / 1000).toFixed(1) + 'k' }}</div>
+        <div :class="textColor" class="text-sm font-medium">
+          {{ +(team.teamStats.gold / 1000).toFixed(1) + 'k' }}
+        </div>
         <div class="text-xs text-white">Gold</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'">
-        <div
-          :class="textColor"
-          class="text-sm font-medium"
-        >{{ +(team.teamStats.dmgChamp / 1000).toFixed(1) + 'k' }}</div>
+        <div :class="textColor" class="text-sm font-medium">
+          {{ +(team.teamStats.dmgChamp / 1000).toFixed(1) + 'k' }}
+        </div>
         <div class="text-xs text-white">Dmg</div>
       </div>
       <div :class="allyTeam ? 'ml-3' : 'mr-3'" class="flex flex-col justify-end">
@@ -83,12 +82,12 @@ export default {
   props: {
     team: {
       type: Object,
-      required: true
+      required: true,
     },
     allyTeam: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   computed: {
@@ -100,7 +99,7 @@ export default {
     },
     bgColor() {
       return this.allyTeam ? 'bg-teal-500' : 'bg-red-500'
-    }
-  }
+    },
+  },
 }
 </script>

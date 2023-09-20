@@ -23,15 +23,15 @@ export default {
 
   data() {
     return {
-      championName: ''
+      championName: '',
     }
   },
 
   methods: {
     search() {
       this.$emit('search-champions', this.championName)
-    }
-  }
+    },
+  },
 }
 </script>
 

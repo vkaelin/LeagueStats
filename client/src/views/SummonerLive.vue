@@ -4,11 +4,15 @@
       <div v-if="liveLoaded" class="flex items-center justify-end -mt-4 text-base text-blue-200">
         <div>{{ gamemode.type }} {{ gamemode.name }}</div>
         <div class="mx-2">-</div>
-        <div :class="{'w-12': displayStartTime !== 'Not started yet'}">{{ displayStartTime }}</div>
+        <div :class="{ 'w-12': displayStartTime !== 'Not started yet' }">
+          {{ displayStartTime }}
+        </div>
         <button
           @click="liveMatchRequest"
           class="px-3 py-1 ml-4 text-blue-100 bg-blue-800 rounded-md shadow-md hover:bg-blue-760"
-        >Reload</button>
+        >
+          Reload
+        </button>
       </div>
       <div v-else class="h-4"></div>
 
@@ -23,7 +27,9 @@
           <button
             @click="liveMatchRequest"
             class="px-3 py-1 my-4 text-sm text-blue-100 bg-blue-800 rounded-md shadow-md hover:bg-blue-760"
-          >Reload</button>
+          >
+            Reload
+          </button>
         </div>
       </div>
     </div>
@@ -45,16 +51,16 @@ export default {
   computed: {
     ...mapGetters('summoner', ['summonerLoading', 'summonerFound']),
     ...mapState({
-      live: state => state.summoner.live.match,
-      liveLoaded: state => state.summoner.live.liveLoaded,
-      playing: state => state.summoner.live.playing,
-    })
+      live: (state) => state.summoner.live.match,
+      liveLoaded: (state) => state.summoner.live.liveLoaded,
+      playing: (state) => state.summoner.live.playing,
+    }),
   },
 
   watch: {
     summonerFound() {
       this.fetchData()
-    }
+    },
   },
 
   created() {
@@ -77,6 +83,6 @@ export default {
     return {
       title: 'Summoner Live Game',
     }
-  }
+  },
 }
 </script>

@@ -7,12 +7,7 @@
       class="block w-full px-4 pr-8 bg-transparent rounded-md appearance-none cursor-pointer focus:outline-none group-hover:text-white"
     >
       <option :value="null" class="bg-blue-800">All seasons</option>
-      <option
-        v-for="(s, index) in sortedSeasons"
-        :key="index"
-        :value="s"
-        class="bg-blue-800"
-      >
+      <option v-for="(s, index) in sortedSeasons" :key="index" :value="s" class="bg-blue-800">
         <template v-if="Number.isInteger(s)">Season {{ s }}</template>
         <!-- Preseason numbers are stored in this format: 10.5 for Preseason 11 -->
         <template v-else>Preseason {{ s + 0.5 }}</template>
@@ -34,7 +29,7 @@ import { mapActions, mapState } from 'vuex'
 export default {
   data() {
     return {
-      season: null
+      season: null,
     }
   },
 
@@ -43,8 +38,8 @@ export default {
       return [...this.seasons].sort((a, b) => b - a)
     },
     ...mapState({
-      currentseason: state => state.summoner.basic.currentSeason,
-      seasons: state => state.summoner.basic.seasons,
+      currentseason: (state) => state.summoner.basic.currentSeason,
+      seasons: (state) => state.summoner.basic.seasons,
     }),
   },
 
@@ -56,7 +51,7 @@ export default {
     filterSeason() {
       this.updateSeason(this.season)
     },
-    ...mapActions('summoner', ['updateSeason'])
-  }
+    ...mapActions('summoner', ['updateSeason']),
+  },
 }
 </script>

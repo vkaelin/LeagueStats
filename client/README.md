@@ -1,29 +1,37 @@
 # LeagueStats Frontend
 
 ## Project setup
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compile and hot-reload for development
+
 ```
-npm run serve
+npm run dev
 ```
 
-### Compiles and minifies for production
+### Compile and minify for production
+
 ```
 npm run build
 ```
 
-### Run your tests
+### Test the production build locally
+
 ```
-npm run test
+npm run preview
 ```
 
-### Lints and fixes files
+### Lint files
+
 ```
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Format files
+
+```
+npm run format
+```

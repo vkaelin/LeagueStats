@@ -51,12 +51,12 @@
                   <template v-if="day.matches > 0">
                     <div>
                       <span>time played: </span>
-                      <span class="font-semibold text-white">{{ day.time|secToHours }}</span>
+                      <span class="font-semibold text-white">{{ day.time | secToHours }}</span>
                     </div>
                     <div>
                       <span>record: </span>
                       <span class="font-bold text-green-400">{{ day.wins }}</span>
-                      <span> - </span> 
+                      <span> - </span>
                       <span class="font-bold text-red-400">{{ day.losses }}</span>
                     </div>
                   </template>
@@ -87,21 +87,21 @@ export default {
       options: {
         year: 'numeric',
         month: '2-digit',
-        day: 'numeric'
-      }
+        day: 'numeric',
+      },
     }
   },
 
   computed: {
-  ...mapState({
-      recentActivity: state => state.summoner.basic.recentActivity
+    ...mapState({
+      recentActivity: (state) => state.summoner.basic.recentActivity,
     }),
   },
 
   watch: {
     recentActivity() {
       this.fillGrid()
-    }
+    },
   },
 
   created() {
@@ -125,7 +125,7 @@ export default {
           wins: 0,
           losses: 0,
           day: day.toLocaleString('en', { weekday: 'long' }).substring(0, 2),
-          month: day.toLocaleString('en', { month: 'long' }).substring(0, 3)
+          month: day.toLocaleString('en', { month: 'long' }).substring(0, 3),
         })
       }
 
@@ -137,9 +137,7 @@ export default {
         const matchTime = new Date(match.day)
         const formattedTime = matchTime.toLocaleString(undefined, this.options)
 
-        const dayOfTheMatch = this.gridDays.filter(
-          e => e.date === formattedTime
-        )
+        const dayOfTheMatch = this.gridDays.filter((e) => e.date === formattedTime)
         if (dayOfTheMatch.length > 0) {
           dayOfTheMatch[0].time = match.time
           dayOfTheMatch[0].matches = match.wins + match.losses
@@ -149,7 +147,7 @@ export default {
       }
 
       // Get the index of the first Monday
-      this.indexFirstMonday = this.gridDays.findIndex(d => d.day === 'Mo')
+      this.indexFirstMonday = this.gridDays.findIndex((d) => d.day === 'Mo')
     },
     getCaseColor(nbMatches) {
       /* TODO: change this */
@@ -168,7 +166,7 @@ export default {
       if (index % 7 !== 0) {
         return 'mt-1'
       }
-    }
-  }
+    },
+  },
 }
 </script>

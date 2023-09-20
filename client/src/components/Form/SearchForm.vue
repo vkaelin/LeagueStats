@@ -1,13 +1,13 @@
 <template>
   <form
     @submit.prevent="formSubmit"
-    :class="{'max-w-lg': !homepage}"
+    :class="{ 'max-w-lg': !homepage }"
     class="flex self-start w-full h-full text-lg text-teal-100"
   >
     <div
       v-if="open"
       @click="open = false"
-      :style="{opacity: homepage ? 0 : 0.9}"
+      :style="{ opacity: homepage ? 0 : 0.9 }"
       class="fixed inset-0 z-20 bg-gray-900"
     ></div>
     <div class="relative w-full">
@@ -76,14 +76,14 @@ import SearchFormRegion from '@/components/Form/SearchFormRegion.vue'
 export default {
   components: {
     SearchFormDropdown,
-    SearchFormRegion
+    SearchFormRegion,
   },
 
   props: {
     homepage: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
@@ -96,7 +96,7 @@ export default {
 
   computed: {
     ...mapState({
-      selectedRegion: state => state.settings.region
+      selectedRegion: (state) => state.settings.region,
     }),
   },
 
@@ -113,7 +113,7 @@ export default {
       this.summoner = newRoute.params.name
       this.dropdown = false
       this.open = false
-    }
+    },
   },
 
   created() {
@@ -162,7 +162,7 @@ export default {
 
       const inner = document.createElement('div')
       outer.appendChild(inner)
-      const scrollbarWidth = (outer.offsetWidth - inner.offsetWidth)
+      const scrollbarWidth = outer.offsetWidth - inner.offsetWidth
 
       outer.parentNode.removeChild(outer)
 
@@ -181,7 +181,7 @@ export default {
     windowBlur() {
       this.open = false
     },
-  }
+  },
 }
 </script>
 
