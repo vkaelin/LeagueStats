@@ -1,5 +1,5 @@
 <template>
-  <div :style="{width: width}" class="text-center spinner">
+  <div :style="{ width: width }" class="text-center spinner">
     <div :style="dotStyle" class="inline-block rounded-full bounce1"></div>
     <div :style="dotStyle" class="inline-block rounded-full bounce2"></div>
     <div :style="dotStyle" class="inline-block rounded-full bounce3"></div>
@@ -11,16 +11,16 @@ export default {
   props: {
     color: {
       type: String,
-      default: '#90cdf4'
+      default: '#90cdf4',
     },
     dotWidth: {
       type: String,
-      default: '18px'
+      default: '18px',
     },
     width: {
       type: String,
-      default: '70px'
-    }
+      default: '70px',
+    },
   },
 
   computed: {
@@ -28,10 +28,10 @@ export default {
       return {
         backgroundColor: this.color,
         height: this.dotWidth,
-        width: this.dotWidth
+        width: this.dotWidth,
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

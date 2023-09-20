@@ -2,10 +2,12 @@
   <footer class="pt-20 pb-4 text-blue-200">
     <p
       class="absolute leading-tight text-center pointer-events-none horizontal-center text-xxs"
-      style="color: #5d80af;"
+      style="color: #5d80af"
     >
-      LeagueStats.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties.
-      <br />Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+      LeagueStats.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot
+      Games or anyone officially involved in producing or managing Riot Games properties.
+      <br />Riot Games, and all associated properties are trademarks or registered trademarks of
+      Riot Games, Inc.
     </p>
     <div class="flex items-center justify-between px-6">
       <p>

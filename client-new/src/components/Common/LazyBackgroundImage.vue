@@ -14,34 +14,34 @@ export default {
   props: {
     imageSource: {
       type: String,
-      required: true
+      required: true,
     },
     imageClass: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     backgroundSize: {
       type: String,
       required: false,
-      default: 'cover'
+      default: 'cover',
     },
     moreBackgrounds: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     transitionName: {
       type: String,
       required: false,
-      default: ''
-    }
+      default: '',
+    },
   },
 
   data() {
     return {
       imageState: 'loading',
-      asyncImage: new Image()
+      asyncImage: new Image(),
     }
   },
 
@@ -51,7 +51,7 @@ export default {
         return `background-image: ${this.moreBackgrounds} url(${this.asyncImage.src}); background-size: ${this.backgroundSize}`
       }
       return ''
-    }
+    },
   },
 
   mounted() {
@@ -68,7 +68,7 @@ export default {
     },
     imageOnLoad() {
       this.imageState = 'loaded'
-    }
-  }
+    },
+  },
 }
 </script>

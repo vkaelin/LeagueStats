@@ -1,7 +1,7 @@
 <template>
   <router-link
     @click.native="close"
-    :to="{ name: 'summoner', params: { region: player.region, name: player.name }}"
+    :to="{ name: 'summoner', params: { region: player.region, name: player.name } }"
     :title="player.name"
     :class="selected ? 'bg-blue-760' : 'bg-blue-900'"
     class="flex items-center justify-between w-full px-4 py-3 mt-1 text-blue-200 rounded-md shadow-md cursor-pointer select-none bypass-click"
@@ -17,10 +17,14 @@
       <div class="w-20">
         <div
           class="inline-flex px-2 py-1 ml-6 text-xs font-semibold text-white uppercase bg-blue-800 rounded"
-        >{{ player.region }}</div>
+        >
+          {{ player.region }}
+        </div>
       </div>
       <div
-        :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${player.icon}.jpg')`}"
+        :style="{
+          backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${player.icon}.jpg')`,
+        }"
         class="w-6 h-6 ml-2 bg-center bg-cover rounded-full"
       ></div>
       <div class="ml-2 text-base">{{ player.name }}</div>
@@ -62,8 +66,8 @@ export default {
     },
     selected: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   methods: {
@@ -80,7 +84,7 @@ export default {
     favoriteClick() {
       this.updateFavorite(this.player)
     },
-    ...mapActions('settings', ['removeRecentSearch', 'updateFavorite'])
+    ...mapActions('settings', ['removeRecentSearch', 'updateFavorite']),
   },
 }
 </script>

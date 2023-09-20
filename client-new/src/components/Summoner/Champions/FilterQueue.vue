@@ -4,9 +4,11 @@
       v-model="queue"
       @change="filterQueue"
       class="block w-full px-4 py-2 pr-8 font-semibold capitalize bg-blue-800 rounded-md appearance-none cursor-pointer hover:bg-blue-700 focus:outline-none"
-      style="width: 144px;"
+      style="width: 144px"
     >
-      <option v-for="(key) in Object.keys(choices)" :key="key" :value="key">{{ choices[key].name }}</option>
+      <option v-for="key in Object.keys(choices)" :key="key" :value="key">
+        {{ choices[key].name }}
+      </option>
     </select>
     <div
       class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none"
@@ -25,12 +27,12 @@ export default {
   props: {
     choices: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      queue: ''
+      queue: '',
     }
   },
 
@@ -41,8 +43,7 @@ export default {
 
   destroyed() {
     // Reload all champions stats for next user visit of the champions tab
-    if (this.queue !== 0)
-      this.championsNotLoaded()
+    if (this.queue !== 0) this.championsNotLoaded()
   },
 
   methods: {
@@ -50,6 +51,6 @@ export default {
       this.$emit('filter-queue', this.queue)
     },
     ...mapActions('summoner', ['championsNotLoaded']),
-  }
+  },
 }
 </script>

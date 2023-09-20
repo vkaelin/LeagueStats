@@ -10,10 +10,9 @@
       >
         <th class="py-5 w-players">
           <div class="flex justify-between">
-            <span
-              :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
-              class="pl-2"
-            >{{ allyTeam ? "Ally" : "Enemy" }} Team</span>
+            <span :class="allyTeam ? 'text-teal-400' : 'text-red-400'" class="pl-2"
+              >{{ allyTeam ? 'Ally' : 'Enemy' }} Team</span
+            >
             <div
               v-if="data.result === 'Win'"
               :class="allyTeam ? 'text-teal-400' : 'text-red-400'"
@@ -30,10 +29,10 @@
         <th class="px-2 py-5 text-sm font-medium w-kda">D</th>
         <th class="px-2 py-5 text-sm font-medium w-kda">A</th>
         <th class="px-2 py-5 text-sm font-medium w-minions">
-          {{ statsFormat === "stats" ? "Cs" : "Cs/m" }}
+          {{ statsFormat === 'stats' ? 'Cs' : 'Cs/m' }}
         </th>
         <th class="px-2 py-5 text-sm font-medium w-vision">
-          {{ statsFormat === "stats" ? "Vs" : "Vs/m" }}
+          {{ statsFormat === 'stats' ? 'Vs' : 'Vs/m' }}
         </th>
         <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">Gold</th>
         <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">
@@ -51,10 +50,7 @@
         <th class="px-2 py-5 text-sm font-medium w-gold-dmg-kp">KP</th>
       </tr>
     </thead>
-    <tbody
-      :class="{ 'border-b border-blue-700': allyTeam }"
-      class="leading-none"
-    >
+    <tbody :class="{ 'border-b border-blue-700': allyTeam }" class="leading-none">
       <tr v-for="(player, index) in data.players" :key="player.name + index">
         <td class="py-2 border-r border-blue-700">
           <div class="flex justify-between px-1">
@@ -73,11 +69,7 @@
                 class="relative w-8 h-8 ml-2 bg-center bg-cover rounded-full bg-blue-1000"
               >
                 <div
-                  :class="
-                    allyTeam
-                      ? 'bg-teal-500 text-teal-100'
-                      : 'bg-red-500 text-red-100'
-                  "
+                  :class="allyTeam ? 'bg-teal-500 text-teal-100' : 'bg-red-500 text-red-100'"
                   class="absolute bottom-0 flex items-center justify-center w-4 h-4 rounded-full level-position text-xxs"
                 >
                   <span>{{ player.level }}</span>
@@ -97,9 +89,7 @@
                     ></div>
                   </template>
                   <template v-if="player.summonerSpell1" #default>
-                    <div
-                      class="flex max-w-sm p-2 text-xs text-left text-white select-none"
-                    >
+                    <div class="flex max-w-sm p-2 text-xs text-left text-white select-none">
                       <div
                         :style="{
                           backgroundImage: `url('${player.summonerSpell1.icon}')`,
@@ -130,9 +120,7 @@
                     ></div>
                   </template>
                   <template v-if="player.summonerSpell2" #default>
-                    <div
-                      class="flex max-w-sm p-2 text-xs text-left text-white select-none"
-                    >
+                    <div class="flex max-w-sm p-2 text-xs text-left text-white select-none">
                       <div
                         :style="{
                           backgroundImage: `url('${player.summonerSpell2.icon}')`,
@@ -162,8 +150,8 @@
                       :style="[
                         player.primaryRune
                           ? {
-                            background: `url(${player.primaryRune}) center/cover`,
-                          }
+                              background: `url(${player.primaryRune}) center/cover`,
+                            }
                           : '',
                       ]"
                       class="w-4 h-4 rounded-md bg-blue-1000"
@@ -172,8 +160,8 @@
                       :style="[
                         player.secondaryRune
                           ? {
-                            background: `url(${player.secondaryRune}) center/cover`,
-                          }
+                              background: `url(${player.secondaryRune}) center/cover`,
+                            }
                           : '',
                       ]"
                       class="w-4 h-4 rounded-md bg-blue-1000"
@@ -181,17 +169,13 @@
                   </div>
                 </template>
                 <template v-if="player.perks" #default>
-                  <div
-                    class="px-2 text-sm leading-relaxed text-center text-white select-none"
-                  >
+                  <div class="px-2 text-sm leading-relaxed text-center text-white select-none">
                     <p>Click to display</p>
                     <p class="font-bold text-teal-400">full runes</p>
                   </div>
                 </template>
               </Tooltip>
-              <div
-                class="flex flex-col items-start justify-center ml-1 leading-none"
-              >
+              <div class="flex flex-col items-start justify-center ml-1 leading-none">
                 <router-link
                   v-if="player.summonerSpell1"
                   :to="{
@@ -199,11 +183,11 @@
                     params: { region: $route.params.region, name: player.name },
                   }"
                   :class="{
-                    'font-semibold text-yellow-400':
-                      account.id === player.summonerId,
+                    'font-semibold text-yellow-400': account.id === player.summonerId,
                   }"
                   class="overflow-hidden text-xs text-left text-white whitespace-no-wrap w-22 text-overflow hover:text-blue-200"
-                >{{ player.name }}</router-link>
+                  >{{ player.name }}</router-link
+                >
                 <div
                   v-else
                   class="overflow-hidden text-xs text-left text-white whitespace-no-wrap w-22 text-overflow"
@@ -218,9 +202,7 @@
             <div class="flex items-center">
               <div v-if="player.rank">
                 <svg class="w-5 h-5 ml-auto">
-                  <use
-                    :xlink:href="`#rank-${player.rank.tier.toLowerCase()}`"
-                  />
+                  <use :xlink:href="`#rank-${player.rank.tier.toLowerCase()}`" />
                 </svg>
                 <div class="text-blue-300 text-xxs">
                   {{ player.rank.shortName }}
@@ -350,8 +332,8 @@ export default {
     },
     ranksLoaded: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   computed: {
@@ -367,18 +349,14 @@ export default {
   methods: {
     bgColor(player, stats) {
       const value = parseFloat(player.stats[stats])
-      const biggestValue = Math.max(
-        ...this.allPlayers.map((p) => parseFloat(p.stats[stats])),
-        0
-      )
+      const biggestValue = Math.max(...this.allPlayers.map((p) => parseFloat(p.stats[stats])), 0)
       const opacity = (value / biggestValue).toFixed(2)
       const biggestValueStyle = {}
       if (value === biggestValue && value !== 0) {
         biggestValueStyle.boxShadow = 'rgba(181, 160, 122, 0.5) 0px 0px 10px'
         biggestValueStyle.border = '2px solid'
         biggestValueStyle.borderImageSlice = '1'
-        biggestValueStyle.borderImageSource =
-          'linear-gradient(to top, #edb457, #f9e9ce)'
+        biggestValueStyle.borderImageSource = 'linear-gradient(to top, #edb457, #f9e9ce)'
         biggestValueStyle.borderCollapse = 'separate'
       }
 
@@ -431,19 +409,18 @@ export default {
 }
 
 .heading-row th:first-child:before {
-  content: "";
+  content: '';
   position: absolute;
   z-index: -10;
   top: 0;
   left: 0;
   height: 67px;
   width: 884px;
-  background-image: var(--bg-img),
-    linear-gradient(#2a4365 0%, #2b4c77 55%, #235a93 100%);
+  background-image: var(--bg-img), linear-gradient(#2a4365 0%, #2b4c77 55%, #235a93 100%);
 }
 
 .heading-row th:first-child:after {
-  content: "";
+  content: '';
   position: absolute;
   right: -1px;
   top: 0;

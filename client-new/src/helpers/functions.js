@@ -1,6 +1,6 @@
 /**
  *  Return the relative time betweeen a chosen moment and the current time
- * @param previous : time we want to get difference 
+ * @param previous : time we want to get difference
  */
 export function timeDifference(previous) {
   const current = new Date()
@@ -26,13 +26,13 @@ export function timeDifference(previous) {
 
 /**
  * Convert seconds to a readable string
- * @param {Number} seconds 
+ * @param {Number} seconds
  */
 export function secToTime(seconds) {
   const min = Math.floor(seconds / 60)
   let newSec = Math.floor(seconds - min * 60)
   newSec = newSec < 10 ? '0' + newSec : newSec
-  
+
   return `${min}:${newSec}`
 }
 
@@ -46,7 +46,7 @@ export function sortTeamByRole(a, b) {
 
 /**
  *  Give the full CDragon image path from the iconPath field
- * @param {String} iconPath 
+ * @param {String} iconPath
  */
 export function createCDragonAssetUrl(iconPath) {
   const name = iconPath.split('/assets/')[1].toLowerCase()

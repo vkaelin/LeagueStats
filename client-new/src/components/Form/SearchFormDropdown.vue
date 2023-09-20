@@ -35,10 +35,10 @@
           </div>
         </div>
         <div
-          :style="{maxHeight: homepage ? '300px' : '480px'}"
+          :style="{ maxHeight: homepage ? '300px' : '480px' }"
           class="px-3 pb-6 overflow-y-auto light-scrollbar"
         >
-          <div :class="{'mt-4': !homepage}">
+          <div :class="{ 'mt-4': !homepage }">
             <div v-if="recentSearches.length" class="text-base text-blue-100">Recent</div>
             <div v-else-if="favorites.length === 0" class="flex items-center space-x-2">
               <svg class="w-4 h-4 text-blue-100">
@@ -69,14 +69,14 @@
                 <SearchFormDropdownPlayer
                   @close="close"
                   @mousemove.native="onHover(1)"
-                  :player="{name: 'KC Rekkles', icon: 7, region: 'euw'}"
+                  :player="{ name: 'KC Rekkles', icon: 7, region: 'euw' }"
                   :selected="selected === 1"
                   :favorites-list="false"
                 />
               </template>
             </div>
           </div>
-          <div v-if="favorites.length" :class="{'mt-4': recentSearches.length}">
+          <div v-if="favorites.length" :class="{ 'mt-4': recentSearches.length }">
             <div class="text-base text-blue-100">Favorites</div>
             <div
               ref="favorites"
@@ -106,7 +106,9 @@
             <span>to select</span>
           </div>
           <div class="space-x-2">
-            <span class="text-xs font-medium text-blue-700 bg-blue-100 rounded-md key">&darr; &uarr;</span>
+            <span class="text-xs font-medium text-blue-700 bg-blue-100 rounded-md key"
+              >&darr; &uarr;</span
+            >
             <span>to navigate</span>
           </div>
           <div class="space-x-2">
@@ -137,16 +139,16 @@ export default {
   props: {
     dropdown: {
       type: Boolean,
-      default: false
+      default: false,
     },
     homepage: {
       type: Boolean,
-      default: false
+      default: false,
     },
     value: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
 
   data() {
@@ -166,7 +168,7 @@ export default {
     recentSearchesSliced() {
       return this.recentSearches.slice(0, 4)
     },
-    ...mapState('settings', ['favorites', 'recentSearches'])
+    ...mapState('settings', ['favorites', 'recentSearches']),
   },
 
   created() {
@@ -206,9 +208,12 @@ export default {
       }
 
       // Click outside to close region dropdown
-      if (this.$refs['region-dropdown'] &&
+      if (
+        this.$refs['region-dropdown'] &&
         e.target !== this.$refs['region-dropdown'] &&
-        !this.$refs['region-dropdown'].contains(e.target) && this.dropdown) {
+        !this.$refs['region-dropdown'].contains(e.target) &&
+        this.dropdown
+      ) {
         this.toggle()
       }
 
@@ -226,17 +231,18 @@ export default {
         }
       }
 
-      if (this.bypassKeys.includes(e.key) ||
-        (e.key === 'k' && (e.ctrlKey || e.metaKey))) {
+      if (this.bypassKeys.includes(e.key) || (e.key === 'k' && (e.ctrlKey || e.metaKey))) {
         return
       }
       const input = document.querySelector('.summoner-input')
       input.focus()
     },
     onArrow() {
-      const scrollIntoBlock = this.selected === 1 ? 'end' : (this.selected >= 7 ? 'start' : 'nearest')
+      const scrollIntoBlock = this.selected === 1 ? 'end' : this.selected >= 7 ? 'start' : 'nearest'
       if (this.selected > this.recentSearchesCount) {
-        this.$refs.favorites.children[this.selected - this.recentSearchesCount - 1].scrollIntoView({ block: scrollIntoBlock })
+        this.$refs.favorites.children[this.selected - this.recentSearchesCount - 1].scrollIntoView({
+          block: scrollIntoBlock,
+        })
       } else {
         this.$refs.searches.children[this.selected - 1].scrollIntoView({ block: scrollIntoBlock })
       }
@@ -263,20 +269,22 @@ export default {
         return
       }
       const player = this.allPlayers[this.selected - 1]
-      this.$router.push(`/summoner/${player.region}/${player.name}`).catch(() => { })
+      this.$router.push(`/summoner/${player.region}/${player.name}`).catch(() => {})
       this.close()
     },
     toggle() {
       this.$emit('toggle')
     },
-  }
+  },
 }
 </script>
 
 <style scoped>
 .key {
   padding: 0.2rem 0.45rem;
-  box-shadow: 0 2px 0 0 #3182ce, 0 5px 3px 0 rgba(0, 0, 0, 0.1),
+  box-shadow:
+    0 2px 0 0 #3182ce,
+    0 5px 3px 0 rgba(0, 0, 0, 0.1),
     0 5px 2px 0 rgba(0, 0, 0, 0.06);
 }
 </style>

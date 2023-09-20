@@ -16,38 +16,24 @@
     </div>
 
     <div class="mt-24 space-y-4">
-      <div
-        v-for="(category, index) in slots"
-        :key="`secondary-category-${index}`"
-        class=""
-      >
+      <div v-for="(category, index) in slots" :key="`secondary-category-${index}`" class="">
         <div class="flex space-x-4">
           <ul v-for="runeId in category" :key="`slot-${runeId}`">
             <Tooltip>
               <template #trigger>
                 <li
                   :style="{
-                    backgroundImage: `url('${createCDragonAssetUrl(
-                      runes.perks[runeId].icon
-                    )}')`,
+                    backgroundImage: `url('${createCDragonAssetUrl(runes.perks[runeId].icon)}')`,
                   }"
-                  :class="
-                    selectedRunes.selected.includes(runeId)
-                      ? 'used-rune'
-                      : 'not-used-rune'
-                  "
+                  :class="selectedRunes.selected.includes(runeId) ? 'used-rune' : 'not-used-rune'"
                   class="w-12 h-12 bg-center bg-cover border-2 border-gray-700 rounded-full cursor-pointer"
                 ></li>
               </template>
               <template #default>
-                <div
-                  class="flex max-w-md p-2 text-sm text-left text-white select-none"
-                >
+                <div class="flex max-w-md p-2 text-sm text-left text-white select-none">
                   <div
                     :style="{
-                      backgroundImage: `url('${createCDragonAssetUrl(
-                        runes.perks[runeId].icon
-                      )}')`,
+                      backgroundImage: `url('${createCDragonAssetUrl(runes.perks[runeId].icon)}')`,
                     }"
                     class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
                   ></div>
@@ -63,45 +49,30 @@
             </Tooltip>
           </ul>
         </div>
-        <div
-          v-if="primary && index == 0"
-          class="w-full mt-4 bg-gray-500 bg-opacity-25 h-2px"
-        ></div>
+        <div v-if="primary && index == 0" class="w-full mt-4 bg-gray-500 bg-opacity-25 h-2px"></div>
       </div>
 
       <div v-if="!primary">
         <div class="mt-8 space-y-4">
-          <div
-            v-for="(row, index) in kStats"
-            :key="`row-${index}`"
-            class="flex px-3 space-x-8"
-          >
+          <div v-for="(row, index) in kStats" :key="`row-${index}`" class="flex px-3 space-x-8">
             <ul v-for="(kStat, i) in row" :key="`${kStat}-${i}`">
               <Tooltip>
                 <template #trigger>
                   <li
                     :style="{
-                      backgroundImage: `url('${createCDragonAssetUrl(
-                        runes.perks[kStat].icon
-                      )}')`,
+                      backgroundImage: `url('${createCDragonAssetUrl(runes.perks[kStat].icon)}')`,
                     }"
                     :class="
-                      selectedRunes.selected[index + 6] === kStat
-                        ? 'used-rune'
-                        : 'not-used-rune'
+                      selectedRunes.selected[index + 6] === kStat ? 'used-rune' : 'not-used-rune'
                     "
                     class="w-8 h-8 bg-gray-900 bg-center bg-cover border-2 border-gray-700 rounded-full cursor-pointer"
                   ></li>
                 </template>
                 <template #default>
-                  <div
-                    class="flex max-w-md p-2 text-sm text-left text-white select-none"
-                  >
+                  <div class="flex max-w-md p-2 text-sm text-left text-white select-none">
                     <div
                       :style="{
-                        backgroundImage: `url('${createCDragonAssetUrl(
-                          runes.perks[kStat].icon
-                        )}')`,
+                        backgroundImage: `url('${createCDragonAssetUrl(runes.perks[kStat].icon)}')`,
                       }"
                       class="flex-shrink-0 w-8 h-8 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
                     ></div>
@@ -136,12 +107,12 @@ export default {
   props: {
     primary: {
       type: Boolean,
-      default: false
+      default: false,
     },
     runeStyle: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
@@ -149,10 +120,10 @@ export default {
       return this.primary ? this.runeStyle.slots : this.runeStyle.slots.slice(1)
     },
     ...mapState({
-      kStats: state => state.cdragon.kStats,
-      runes: state => state.cdragon.runes,
-      runesOpen: state => state.cdragon.runesOpen,
-      selectedRunes: state => state.cdragon.selectedRunes
+      kStats: (state) => state.cdragon.kStats,
+      runes: (state) => state.cdragon.runes,
+      runesOpen: (state) => state.cdragon.runesOpen,
+      selectedRunes: (state) => state.cdragon.selectedRunes,
     }),
   },
 
@@ -166,7 +137,7 @@ export default {
       return `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-collections/global/default/perks/images/${lower}/icon-${lower[0]}.png`
     },
     createCDragonAssetUrl,
-  }
+  },
 }
 </script>
 

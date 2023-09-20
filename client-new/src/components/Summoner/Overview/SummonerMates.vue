@@ -2,11 +2,11 @@
   <div class="mt-4 bg-blue-800 rounded-lg">
     <div class="pb-2">
       <div class="flex items-center justify-center py-4 text-blue-200 rounded-t-lg heading">
-        <svg class="w-5 h-5" style="transform: rotate(-5deg);">
+        <svg class="w-5 h-5" style="transform: rotate(-5deg)">
           <use xlink:href="#people" />
         </svg>
         <span class="mx-4 text-lg font-semibold uppercase">FRIENDS</span>
-        <svg class="w-5 h-5" style="transform: rotate(5deg);">
+        <svg class="w-5 h-5" style="transform: rotate(5deg)">
           <use xlink:href="#people" />
         </svg>
       </div>
@@ -23,9 +23,10 @@
             class="flex items-center justify-between"
           >
             <router-link
-              :to="{ name: 'summoner', params: { region: $route.params.region, name: mate.name }}"
+              :to="{ name: 'summoner', params: { region: $route.params.region, name: mate.name } }"
               class="w-2/4 truncate hover:text-teal-200"
-            >{{ mate.name }}</router-link>
+              >{{ mate.name }}</router-link
+            >
             <div class="w-1/4">{{ mate.wins }} / {{ mate.losses }}</div>
             <div class="w-1/4">
               <Tooltip>
@@ -33,7 +34,7 @@
                   <div class="h-2 bg-blue-900 rounded-full cursor-pointer">
                     <div
                       :class="getWinrateColor(mate.wins, mate.count)"
-                      :style="{width: `${winrate(mate.wins, mate.count)}%`}"
+                      :style="{ width: `${winrate(mate.wins, mate.count)}%` }"
                       class="h-full rounded-full"
                     ></div>
                   </div>
@@ -45,7 +46,8 @@
                       <span
                         :class="getWinrateColor(mate.wins, mate.count, false)"
                         class="font-bold"
-                      >{{ winrate(mate.wins, mate.count)|percent }}</span>
+                        >{{ winrate(mate.wins, mate.count) | percent }}</span
+                      >
                     </div>
                   </div>
                 </template>
@@ -73,7 +75,7 @@ export default {
 
   data() {
     return {
-      maxMates: 15
+      maxMates: 15,
     }
   },
 
@@ -82,7 +84,7 @@ export default {
       return this.mates.length > 0
     },
     ...mapState({
-      mates: state => state.summoner.overview.stats.mates
+      mates: (state) => state.summoner.overview.stats.mates,
     }),
   },
 
@@ -99,8 +101,8 @@ export default {
       return background ? 'bg-teal-200' : 'text-teal-200'
     },
     winrate(wins, count) {
-      return wins * 100 / count
-    }
-  }
+      return (wins * 100) / count
+    },
+  },
 }
 </script>

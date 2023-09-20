@@ -39,8 +39,8 @@ Vue.filter('secToHours', (sec) => {
 
   const result = []
   const d = Math.floor(sec / (3600 * 24))
-  const h = Math.floor(sec % (3600 * 24) / 3600)
-  const m = Math.floor(sec % 3600 / 60)
+  const h = Math.floor((sec % (3600 * 24)) / 3600)
+  const m = Math.floor((sec % 3600) / 60)
 
   if (d > 0) {
     result.push(d + ' days')
@@ -48,7 +48,7 @@ Vue.filter('secToHours', (sec) => {
     if (h > 0) {
       result.push(h + 'h')
     }
-  
+
     if (m > 0) {
       result.push(m + 'm')
     }
@@ -70,5 +70,5 @@ Vue.filter('round', (value, decimals = 2) => {
 new Vue({
   router,
   store,
-  render: h => h(App),
+  render: (h) => h(App),
 }).$mount('#app')

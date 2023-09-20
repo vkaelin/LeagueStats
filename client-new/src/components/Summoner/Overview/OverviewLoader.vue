@@ -1,7 +1,7 @@
 <template>
   <div class="flex mt-3 text-center">
     <div class="w-3/12">
-      <div class="rounded-lg bg-blue-850" style="width: 300px; height: 339px;">
+      <div class="rounded-lg bg-blue-850" style="width: 300px; height: 339px">
         <content-loader
           :height="339"
           :width="300"
@@ -41,7 +41,7 @@
           <rect x="246" y="308" rx="3" ry="3" width="42" height="16" />
         </content-loader>
       </div>
-      <div class="mt-4 rounded-lg bg-blue-850" style="width: 300px; height: 828px;">
+      <div class="mt-4 rounded-lg bg-blue-850" style="width: 300px; height: 828px">
         <content-loader
           :height="828"
           :width="300"
@@ -133,7 +133,7 @@
         </content-loader>
       </div>
 
-      <div class="mt-4 rounded-lg bg-blue-850" style="width: 300px; height: 384px;">
+      <div class="mt-4 rounded-lg bg-blue-850" style="width: 300px; height: 384px">
         <content-loader
           :height="384"
           :width="300"
@@ -191,9 +191,9 @@
       <div
         v-for="index in 10"
         :key="index"
-        :class="{'mt-4': index !== 1}"
+        :class="{ 'mt-4': index !== 1 }"
         class="ml-4 rounded-lg bg-blue-850"
-        style="width: 884px; height: 144px;"
+        style="width: 884px; height: 144px"
       >
         <content-loader
           :height="144"
@@ -242,7 +242,7 @@
           <rect x="803" y="90" rx="3" ry="3" width="59" height="14" />
         </content-loader>
       </div>
-      <div class="mx-auto mt-4" style="width: 135px; height: 40px;">
+      <div class="mx-auto mt-4" style="width: 135px; height: 40px">
         <content-loader
           :height="40"
           :width="135"
@@ -262,7 +262,7 @@ import { ContentLoader } from 'vue-content-loader'
 
 export default {
   components: {
-    ContentLoader
-  }
+    ContentLoader,
+  },
 }
 </script>

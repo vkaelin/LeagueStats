@@ -2,7 +2,7 @@
   <div
     :style="{ width: size, height: size, margin }"
     class="relative"
-    style="transform: rotateZ(45deg);"
+    style="transform: rotateZ(45deg)"
   >
     <div class="relative float-left w-1/2 cube-1 cube h-1/2"></div>
     <div class="relative float-left w-1/2 cube-2 cube h-1/2"></div>
@@ -16,17 +16,17 @@ export default {
   props: {
     color: {
       type: String,
-      default: '#bee3f8'
+      default: '#bee3f8',
     },
     size: {
       type: String,
-      default: '30px'
+      default: '30px',
     },
     margin: {
       type: String,
-      default: '0 auto'
-    }
-  }
+      default: '0 auto',
+    },
+  },
 }
 </script>
 
@@ -36,7 +36,7 @@ export default {
 }
 
 .cube:before {
-  content: "";
+  content: '';
   @apply absolute top-0 left-0 w-full h-full bg-blue-300;
   animation: cubeAngle 2.4s infinite linear both;
   transform-origin: 100% 100%;

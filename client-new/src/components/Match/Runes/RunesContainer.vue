@@ -1,9 +1,6 @@
 <template>
   <transition leave-active-class="duration-300">
-    <div
-      v-show="runesOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center"
-    >
+    <div v-show="runesOpen" class="fixed inset-0 z-50 flex items-center justify-center">
       <transition
         enter-active-class="transition duration-300 ease-out"
         enter-class="transform opacity-0"
@@ -12,11 +9,7 @@
         leave-class="transform opacity-100"
         leave-to-class="transform opacity-0"
       >
-        <div
-          v-if="runesOpen"
-          @click="close"
-          class="fixed inset-0 bg-gray-900 bg-opacity-75"
-        ></div>
+        <div v-if="runesOpen" @click="close" class="fixed inset-0 bg-gray-900 bg-opacity-75"></div>
       </transition>
 
       <transition
@@ -74,9 +67,9 @@ export default {
       return this.runes.perkstyles[this.selectedRunes.secondaryStyle]
     },
     ...mapState({
-      runes: state => state.cdragon.runes,
-      runesOpen: state => state.cdragon.runesOpen,
-      selectedRunes: state => state.cdragon.selectedRunes
+      runes: (state) => state.cdragon.runes,
+      runesOpen: (state) => state.cdragon.runesOpen,
+      selectedRunes: (state) => state.cdragon.selectedRunes,
     }),
   },
 
@@ -98,7 +91,7 @@ export default {
       }
     },
     createCDragonAssetUrl,
-    ...mapActions('cdragon', ['displayOrHideRunes'])
-  }
+    ...mapActions('cdragon', ['displayOrHideRunes']),
+  },
 }
 </script>

@@ -14,7 +14,7 @@
           left: ripple.left,
           width: ripple.width,
           height: ripple.height,
-          background: color
+          background: color,
         }"
       ></div>
     </transition-group>
@@ -27,8 +27,8 @@ export default {
   props: {
     color: {
       type: String,
-      default: 'rgba(255, 255, 255, 0.3)'
-    }
+      default: 'rgba(255, 255, 255, 0.3)',
+    },
   },
 
   data() {
@@ -61,17 +61,17 @@ export default {
         height: `${this.rippleWidth}px`,
         left: `${e.clientX - left - this.halfRippleWidth}px`,
         top: `${e.clientY - top - this.halfRippleWidth}px`,
-        id: rippleId
+        id: rippleId,
       })
 
       // Remove ripple
       setTimeout(() => {
-        this.ripples = this.ripples.filter(r => r.id !== rippleId)
+        this.ripples = this.ripples.filter((r) => r.id !== rippleId)
       }, 400)
     },
     purgeRipples() {
       this.ripples = []
-    }
-  }
+    },
+  },
 }
 </script>

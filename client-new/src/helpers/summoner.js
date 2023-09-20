@@ -7,7 +7,9 @@ import store from '@/store'
  * @param {Object} perks : from the API
  */
 export function getPrimarRune(perks) {
-  const primaryRune = perks.selected.length ? store.state.cdragon.runes.perks[perks.selected[0]] : null
+  const primaryRune = perks.selected.length
+    ? store.state.cdragon.runes.perks[perks.selected[0]]
+    : null
   return primaryRune ? createCDragonAssetUrl(primaryRune.icon) : null
 }
 
@@ -17,7 +19,7 @@ export function getPrimarRune(perks) {
  */
 export function getSecondaryRune(perks) {
   const secondaryRune = store.state.cdragon.runes.perkstyles[perks.secondaryStyle]
-  return  secondaryRune ? createCDragonAssetUrl(secondaryRune.icon) : null
+  return secondaryRune ? createCDragonAssetUrl(secondaryRune.icon) : null
 }
 
 /**
@@ -33,7 +35,10 @@ export function createMatchData(matches) {
     const date = new Date(match.date)
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
     const timeOptions = { hour12: false, hour: '2-digit', minute: '2-digit' }
-    match.fullDate = { date: date.toLocaleString(undefined, dateOptions), time: date.toLocaleString(undefined, timeOptions) }
+    match.fullDate = {
+      date: date.toLocaleString(undefined, dateOptions),
+      time: date.toLocaleString(undefined, timeOptions),
+    }
     match.date = timeDifference(match.date)
 
     match.map = maps[match.map]
@@ -70,7 +75,7 @@ export function createBasicSummonerData(summonerBasic) {
       wins: 0,
       losses: 0,
       winrate: '0%',
-      name: 'Solo/Duo'
+      name: 'Solo/Duo',
     }
   }
 
@@ -88,7 +93,7 @@ export function createRecordsData(recordsDto) {
   }, {})
 
   records.game_duration.amount = secToTime(records.game_duration.amount)
-  records.gold.amount =  records.gold.amount.toLocaleString()
+  records.gold.amount = records.gold.amount.toLocaleString()
   records.damage_taken.amount = records.damage_taken.amount.toLocaleString()
   records.damage_dealt_champions.amount = records.damage_dealt_champions.amount.toLocaleString()
   records.damage_dealt_objectives.amount = records.damage_dealt_objectives.amount.toLocaleString()
@@ -101,8 +106,8 @@ export function createRecordsData(recordsDto) {
 
 /**
  * Add rank img and ranked data
- * @param {Object} leagueData 
- * @param {String} leagueName 
+ * @param {Object} leagueData
+ * @param {String} leagueName
  */
 function getLeagueData(leagueData, leagueName) {
   if (!leagueData) return null

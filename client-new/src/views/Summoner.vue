@@ -32,7 +32,8 @@
           @clicked="moreMatches"
           :loading="matchesLoading"
           btn-class="block px-4 py-2 mx-auto mt-4 font-semibold bg-blue-800 rounded-md shadow-lg hover:bg-blue-1000"
-        >More matches</LoadingButton>
+          >More matches</LoadingButton
+        >
       </div>
       <div v-else>
         <div class="flex justify-center">
@@ -48,7 +49,6 @@
     <OverviewLoader />
   </div>
 </template>
-
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
@@ -70,15 +70,15 @@ export default {
     SummonerChampions,
     SummonerMates,
     SummonerStats,
-    VueStickySidebar
+    VueStickySidebar,
   },
 
   computed: {
     ...mapState({
-      current: state => state.summoner.live.match,
-      overview: state => state.summoner.overview,
+      current: (state) => state.summoner.live.match,
+      overview: (state) => state.summoner.overview,
     }),
-    ...mapGetters('summoner', ['matchesLoading', 'overviewLoaded', 'summonerFound'])
+    ...mapGetters('summoner', ['matchesLoading', 'overviewLoaded', 'summonerFound']),
   },
 
   watch: {
@@ -87,7 +87,7 @@ export default {
     },
     summonerFound() {
       this.fetchData()
-    }
+    },
   },
 
   created() {
@@ -114,7 +114,7 @@ export default {
     return {
       title: 'Summoner Overview',
     }
-  }
+  },
 }
 </script>
 

@@ -1,16 +1,20 @@
 /* purgecss start ignore */
 
 /* Fade transitions */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 2s;
 }
 
-.fade-fast-enter-active, .fade-fast-leave-active {
-  transition: opacity .3s;
+.fade-fast-enter-active,
+.fade-fast-leave-active {
+  transition: opacity 0.3s;
 }
 
-.fade-fast-enter, .fade-fast-leave-to,
-.fade-enter, .fade-leave-to {
+.fade-fast-enter,
+.fade-fast-leave-to,
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 
@@ -31,11 +35,13 @@
   @apply transition duration-500 ease-in-out;
 }
 
-.tab-enter, .tab-enter-leave-to {
+.tab-enter,
+.tab-enter-leave-to {
   @apply opacity-0;
 }
 
-.tab-enter-to, .tab-enter-leave {
+.tab-enter-to,
+.tab-enter-leave {
   @apply opacity-100;
 }
 

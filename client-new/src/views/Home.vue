@@ -23,8 +23,10 @@
       <p
         class="absolute bottom-0 pb-4 leading-tight text-center text-blue-300 horizontal-center text-xxs"
       >
-        LeagueStats.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties.
-        <br />Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+        LeagueStats.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of
+        Riot Games or anyone officially involved in producing or managing Riot Games properties.
+        <br />Riot Games, and all associated properties are trademarks or registered trademarks of
+        Riot Games, Inc.
       </p>
     </div>
   </div>
@@ -37,7 +39,7 @@ import SearchForm from '@/components/Form/SearchForm.vue'
 export default {
   components: {
     LazyBackground,
-    SearchForm
+    SearchForm,
   },
 
   methods: {
@@ -50,7 +52,7 @@ export default {
     return {
       title: 'LeagueStats.gg',
     }
-  }
+  },
 }
 </script>
 
@@ -60,7 +62,7 @@ export default {
 }
 
 .line::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 4.5rem;
   height: 0.5rem;
