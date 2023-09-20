@@ -1,19 +1,16 @@
 {
-	"folders": [
+  "folders": [
     {
       "path": "client"
-    },
-	{
-      "path": "client-new"
     },
     {
       "path": "server"
     }
   ],
-   "settings": {
+  "settings": {
     "editor.tabSize": 2,
     "vetur.validation.style": false,
-    "headwind.prependCustomClasses": false,
+    "headwind.prependCustomClasses": false
   },
   "extensions": {
     "recommendations": [
@@ -21,7 +18,7 @@
       "dbaeumer.vscode-eslint",
       "stylelint.vscode-stylelint",
       "heybourn.headwind",
-      "bradlc.vscode-tailwindcss",
+      "bradlc.vscode-tailwindcss"
     ]
   }
 }

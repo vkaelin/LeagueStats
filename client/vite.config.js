@@ -1,12 +1,12 @@
 import path from 'path'
-import eslint from 'vite-plugin-eslint'
+// import eslint from 'vite-plugin-eslint'
 import vue from '@vitejs/plugin-vue2'
 
 export default {
   esbuild: {
     drop: ['console', 'debugger'],
   },
-  plugins: [eslint(), vue()],
+  plugins: [vue()],
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, 'src')}/`,
