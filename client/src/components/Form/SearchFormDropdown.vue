@@ -69,7 +69,7 @@
                 <SearchFormDropdownPlayer
                   @close="close"
                   @mousemove.native="onHover(1)"
-                  :player="{ name: 'KC Rekkles', icon: 7, region: 'euw' }"
+                  :player="{ name: 'KC NEXT ADKING', icon: 29, region: 'euw' }"
                   :selected="selected === 1"
                   :favorites-list="false"
                 />
