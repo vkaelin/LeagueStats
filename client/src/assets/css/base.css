@@ -71,3 +71,18 @@ button:focus {
 .input-color {
   background: rgba(23, 49, 79, 0.6);
 }
+
+/* Checkbox */
+.form-checkbox {
+  @apply w-6 h-6 border-blue-800 text-blue-1000 rounded-md;
+  background: rgba(23, 49, 79, 0.6);
+}
+
+.form-checkbox:focus {
+  @apply bg-blue-1000 border-blue-700 outline-none;
+  box-shadow: none;
+}
+
+.form-checkbox:checked {
+  @apply bg-blue-1000 border-transparent;
+}
