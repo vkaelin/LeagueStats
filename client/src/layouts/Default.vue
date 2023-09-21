@@ -248,7 +248,9 @@ export default {
   },
 
   created() {
-    this.apiCall()
+    if (this.$route.params.region) {
+      this.apiCall()
+    }
     window.addEventListener('scroll', this.handleScroll)
   },
 
