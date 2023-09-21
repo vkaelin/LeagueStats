@@ -10,30 +10,30 @@
         <template #trigger>
           <div
             :class="[allyTeam ? 'ban-blue border-teal-500' : 'ban-red border-red-500']"
-            class="relative border-2 rounded-full cursor-pointer ban"
+            class="ban relative cursor-pointer rounded-full border-2"
           >
             <div
               :style="[ban.champion.id ? { backgroundImage: `url('${ban.champion.icon}')` } : '']"
-              class="w-6 h-6 bg-center bg-cover rounded-full ban-img bg-blue-1000"
+              class="ban-img h-6 w-6 rounded-full bg-blue-1000 bg-cover bg-center"
             ></div>
             <div
               :class="[textLightColor, bgColor]"
-              class="absolute flex items-center justify-center w-4 h-4 text-xs font-bold rounded-full ban-order"
+              class="ban-order absolute flex h-4 w-4 items-center justify-center rounded-full text-xs font-bold"
             >
               {{ ban.pickTurn }}
             </div>
           </div>
         </template>
         <template #default>
-          <div class="px-2 text-xs leading-tight text-center text-white select-none">
+          <div class="select-none px-2 text-center text-xs leading-tight text-white">
             <div>{{ ban.champion.id ? ban.champion.name : 'No ban' }}</div>
           </div>
         </template>
       </Tooltip>
     </div>
     <div
-      :class="allyTeam ? 'text-left' : 'text-right flex-row-reverse'"
-      class="flex mt-2 leading-tight"
+      :class="allyTeam ? 'text-left' : 'flex-row-reverse text-right'"
+      class="mt-2 flex leading-tight"
     >
       <div>
         <div :class="textColor" class="text-sm font-medium">

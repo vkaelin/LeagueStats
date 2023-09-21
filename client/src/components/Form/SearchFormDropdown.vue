@@ -1,13 +1,13 @@
 <template>
   <div
     :class="homepage ? 'mt-2' : 'mt-1'"
-    class="absolute z-30 w-full bg-blue-800 rounded-lg shadow-md"
+    class="absolute z-30 w-full rounded-lg bg-blue-800 shadow-md"
   >
     <div class="shadow">
       <div class="pt-3">
-        <div v-if="!homepage" class="relative px-3 bypass-click">
-          <button class="absolute w-12 h-full text-blue-200 hover:text-white" type="submit">
-            <svg class="absolute w-4 h-4 vertical-center horizontal-center">
+        <div v-if="!homepage" class="bypass-click relative px-3">
+          <button class="absolute h-full w-12 text-blue-200 hover:text-white" type="submit">
+            <svg class="vertical-center horizontal-center absolute h-4 w-4">
               <use xlink:href="#search" />
             </svg>
           </button>
@@ -15,7 +15,7 @@
             ref="input"
             @input="$emit('input', $event.target.value)"
             :value="value"
-            class="w-full py-2 pl-12 pr-32 placeholder-blue-200 placeholder-opacity-75 bg-blue-700 border border-blue-500 rounded-md outline-none focus:bg-blue-760 summoner-input"
+            class="summoner-input w-full rounded-md border border-blue-500 bg-blue-700 py-2 pl-12 pr-32 placeholder-blue-200 placeholder-opacity-75 outline-none focus:bg-blue-760"
             type="text"
             placeholder="Search summoner"
             spellcheck="false"
@@ -23,10 +23,10 @@
           <button
             v-if="!homepage && value.length"
             @click="$emit('input', '')"
-            class="absolute right-0 flex items-center justify-center p-1 mr-24 text-blue-200 rounded-full vertical-center hover:text-white"
+            class="vertical-center absolute right-0 mr-24 flex items-center justify-center rounded-full p-1 text-blue-200 hover:text-white"
             type="button"
           >
-            <svg class="w-4 h-4">
+            <svg class="h-4 w-4">
               <use xlink:href="#times" />
             </svg>
           </button>
@@ -36,12 +36,12 @@
         </div>
         <div
           :style="{ maxHeight: homepage ? '300px' : '480px' }"
-          class="px-3 pb-6 overflow-y-auto light-scrollbar"
+          class="light-scrollbar overflow-y-auto px-3 pb-6"
         >
           <div :class="{ 'mt-4': !homepage }">
             <div v-if="recentSearches.length" class="text-base text-blue-100">Recent</div>
             <div v-else-if="favorites.length === 0" class="flex items-center space-x-2">
-              <svg class="w-4 h-4 text-blue-100">
+              <svg class="h-4 w-4 text-blue-100">
                 <use xlink:href="#info" />
               </svg>
               <div class="text-base text-blue-100">Summoner example</div>
@@ -99,24 +99,24 @@
           </div>
         </div>
       </div>
-      <div class="px-4 py-4 bg-blue-1000 rounded-b-md">
-        <div class="flex items-center justify-between select-none text-xxs">
+      <div class="rounded-b-md bg-blue-1000 px-4 py-4">
+        <div class="flex select-none items-center justify-between text-xxs">
           <div class="space-x-2">
-            <span class="text-xs font-medium text-blue-700 bg-blue-100 rounded-md key">Enter</span>
+            <span class="key rounded-md bg-blue-100 text-xs font-medium text-blue-700">Enter</span>
             <span>to select</span>
           </div>
           <div class="space-x-2">
-            <span class="text-xs font-medium text-blue-700 bg-blue-100 rounded-md key"
+            <span class="key rounded-md bg-blue-100 text-xs font-medium text-blue-700"
               >&darr; &uarr;</span
             >
             <span>to navigate</span>
           </div>
           <div class="space-x-2">
-            <span class="text-xs font-medium text-blue-700 bg-blue-100 rounded-md key">Escape</span>
+            <span class="key rounded-md bg-blue-100 text-xs font-medium text-blue-700">Escape</span>
             <span>to close</span>
           </div>
           <div class="space-x-2">
-            <span class="text-xs font-medium text-blue-700 bg-blue-100 rounded-md key">CTRL K</span>
+            <span class="key rounded-md bg-blue-100 text-xs font-medium text-blue-700">CTRL K</span>
             <span>to open</span>
           </div>
         </div>
@@ -282,6 +282,9 @@ export default {
 <style scoped>
 .key {
   padding: 0.2rem 0.45rem;
-  box-shadow: 0 2px 0 0 #3182ce, 0 5px 3px 0 rgba(0, 0, 0, 0.1), 0 5px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 2px 0 0 #3182ce,
+    0 5px 3px 0 rgba(0, 0, 0, 0.1),
+    0 5px 2px 0 rgba(0, 0, 0, 0.06);
 }
 </style>

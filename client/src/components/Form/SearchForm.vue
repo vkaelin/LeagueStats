@@ -2,7 +2,7 @@
   <form
     @submit.prevent="formSubmit"
     :class="{ 'max-w-lg': !homepage }"
-    class="flex self-start w-full h-full text-lg text-teal-100"
+    class="flex h-full w-full self-start text-lg text-teal-100"
   >
     <div
       v-if="open"
@@ -17,7 +17,7 @@
         v-model="summoner"
         @focus="open = true"
         :class="dropdown ? 'bg-blue-1000' : 'input-color'"
-        class="relative z-30 w-full py-4 pl-6 pr-32 font-bold placeholder-teal-100 placeholder-opacity-75 rounded-lg outline-none focus:bg-blue-1000 summoner-input bypass-click"
+        class="summoner-input bypass-click relative z-30 w-full rounded-lg py-4 pl-6 pr-32 font-bold placeholder-teal-100 placeholder-opacity-75 outline-none focus:bg-blue-1000"
         spellcheck="false"
         type="text"
         placeholder="Search summoner"
@@ -25,21 +25,21 @@
       <button
         v-if="homepage"
         ref="submit"
-        class="absolute right-0 z-40 w-12 h-full hover:text-teal-200"
+        class="absolute right-0 z-40 h-full w-12 hover:text-teal-200"
         type="submit"
       >
-        <svg class="absolute w-4 h-4 vertical-center horizontal-center">
+        <svg class="vertical-center horizontal-center absolute h-4 w-4">
           <use xlink:href="#search" />
         </svg>
       </button>
       <button
         v-if="!homepage"
         @click="open = true"
-        class="w-full h-10 px-4 -mt-px text-base font-light text-left text-blue-200 rounded-md bg-blue-1000"
+        class="-mt-px h-10 w-full rounded-md bg-blue-1000 px-4 text-left text-base font-light text-blue-200"
         type="button"
       >
         <div class="flex items-center space-x-3">
-          <svg class="w-4 h-4">
+          <svg class="h-4 w-4">
             <use xlink:href="#search" />
           </svg>
           <span>Search summoner (Press "/" to focus)</span>

@@ -3,7 +3,7 @@
     <select
       v-model="queue"
       @change="filterQueue"
-      class="block w-full px-4 py-2 pr-8 font-semibold capitalize bg-blue-800 rounded-md appearance-none cursor-pointer hover:bg-blue-700 focus:outline-none"
+      class="block w-full cursor-pointer appearance-none rounded-md bg-blue-800 px-4 py-2 pr-8 font-semibold capitalize hover:bg-blue-700 focus:outline-none"
       style="width: 144px"
     >
       <option v-for="key in Object.keys(choices)" :key="key" :value="key">
@@ -11,9 +11,9 @@
       </option>
     </select>
     <div
-      class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none"
+      class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
     >
-      <svg class="w-5 h-5 text-white">
+      <svg class="h-5 w-5 text-white">
         <use xlink:href="#chevron-down" />
       </svg>
     </div>

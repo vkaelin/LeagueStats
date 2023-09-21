@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div v-if="data.status === 'loaded' && detailsOpen" class="bg-blue-800 rounded-b-lg">
+    <div v-if="data.status === 'loaded' && detailsOpen" class="rounded-b-lg bg-blue-800">
       <DetailedMatchTeam
         :data="allyTeam"
         :all-players="[...allyTeam.players, ...enemyTeam.players]"
@@ -28,7 +28,7 @@
       />
     </div>
     <div v-else-if="data.status === 'loading' && detailsOpen">
-      <div class="py-5 bg-blue-800 rounded-b-lg">
+      <div class="rounded-b-lg bg-blue-800 py-5">
         <CubeLoader />
       </div>
     </div>

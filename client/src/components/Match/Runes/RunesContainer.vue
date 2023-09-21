@@ -22,7 +22,7 @@
       >
         <div
           v-if="runesOpen"
-          class="relative overflow-hidden bg-gray-900 rounded-md shadow-lg"
+          class="relative overflow-hidden rounded-md bg-gray-900 shadow-lg"
           style="width: 800px; height: 500px"
         >
           <LazyBackground
@@ -33,7 +33,7 @@
             style="filter: blur(2px)"
           >
           </LazyBackground>
-          <div class="relative flex items-start h-full px-4 py-2">
+          <div class="relative flex h-full items-start px-4 py-2">
             <div class="w-1/2">
               <RuneStyle :primary="true" :rune-style="primaryStyle" />
             </div>

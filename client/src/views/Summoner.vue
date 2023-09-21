@@ -2,12 +2,12 @@
   <div
     v-if="overviewLoaded"
     key="overview"
-    class="relative flex items-start justify-between mt-3 text-center vue-sticky-container"
+    class="vue-sticky-container relative mt-3 flex items-start justify-between text-center"
   >
     <VueStickySidebar
       :top-spacing="48"
       :bottom-spacing="123"
-      class="z-40 sidebar"
+      class="sidebar z-40"
       container-selector=".vue-sticky-container"
     >
       <SummonerChampions />
@@ -37,7 +37,7 @@
       </div>
       <div v-else>
         <div class="flex justify-center">
-          <div class="px-4 py-3 text-lg font-bold text-center text-blue-100 rounded-lg bg-gradient">
+          <div class="bg-gradient rounded-lg px-4 py-3 text-center text-lg font-bold text-blue-100">
             <div>No matches found.</div>
             <div>😕</div>
           </div>

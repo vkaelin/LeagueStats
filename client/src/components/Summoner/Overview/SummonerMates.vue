@@ -1,17 +1,17 @@
 <template>
-  <div class="mt-4 bg-blue-800 rounded-lg">
+  <div class="mt-4 rounded-lg bg-blue-800">
     <div class="pb-2">
-      <div class="flex items-center justify-center py-4 text-blue-200 rounded-t-lg heading">
-        <svg class="w-5 h-5" style="transform: rotate(-5deg)">
+      <div class="heading flex items-center justify-center rounded-t-lg py-4 text-blue-200">
+        <svg class="h-5 w-5" style="transform: rotate(-5deg)">
           <use xlink:href="#people" />
         </svg>
         <span class="mx-4 text-lg font-semibold uppercase">FRIENDS</span>
-        <svg class="w-5 h-5" style="transform: rotate(5deg)">
+        <svg class="h-5 w-5" style="transform: rotate(5deg)">
           <use xlink:href="#people" />
         </svg>
       </div>
-      <div v-if="hasMates" class="px-4 py-2 text-sm text-left">
-        <div class="flex items-baseline text-xs font-semibold text-blue-300 uppercase">
+      <div v-if="hasMates" class="px-4 py-2 text-left text-sm">
+        <div class="flex items-baseline text-xs font-semibold uppercase text-blue-300">
           <div class="w-2/4 text-base text-blue-400">Summoner</div>
           <div class="w-1/4">Record</div>
           <div class="w-1/4">Winrate</div>
@@ -31,7 +31,7 @@
             <div class="w-1/4">
               <Tooltip>
                 <template #trigger>
-                  <div class="h-2 bg-blue-900 rounded-full cursor-pointer">
+                  <div class="h-2 cursor-pointer rounded-full bg-blue-900">
                     <div
                       :class="getWinrateColor(mate.wins, mate.count)"
                       :style="{ width: `${winrate(mate.wins, mate.count)}%` }"
@@ -40,7 +40,7 @@
                   </div>
                 </template>
                 <template #default>
-                  <div class="px-2 text-xs text-center text-white">
+                  <div class="px-2 text-center text-xs text-white">
                     <div>Winrate</div>
                     <div>
                       <span

@@ -7,18 +7,18 @@
     type="button"
   >
     <slot>Send</slot>
-    <span class="spinner absolute opacity-0 left-auto">
+    <span class="spinner absolute left-auto opacity-0">
       <span
-        class="inline-block absolute right-0 w-4 h-4 opacity-100 border-[3px] border-white rounded-full"
+        class="absolute right-0 inline-block h-4 w-4 rounded-full border-[3px] border-white opacity-100"
       ></span>
       <span
-        class="inline-block absolute right-0 w-4 h-4 opacity-100 border-[3px] border-white rounded-full"
+        class="absolute right-0 inline-block h-4 w-4 rounded-full border-[3px] border-white opacity-100"
       ></span>
       <span
-        class="inline-block absolute right-0 w-4 h-4 opacity-100 border-[3px] border-white rounded-full"
+        class="absolute right-0 inline-block h-4 w-4 rounded-full border-[3px] border-white opacity-100"
       ></span>
       <span
-        class="inline-block absolute right-0 w-4 h-4 opacity-100 border-[3px] border-white rounded-full"
+        class="absolute right-0 inline-block h-4 w-4 rounded-full border-[3px] border-white opacity-100"
       ></span>
     </span>
   </button>

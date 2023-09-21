@@ -1,14 +1,14 @@
 <template>
-  <div ref="container" @mousedown="addRipple" class="relative overflow-hidden cursor-pointer">
+  <div ref="container" @mousedown="addRipple" class="relative cursor-pointer overflow-hidden">
     <transition-group
-      class="absolute top-0 left-0 w-full h-full pointer-events-none"
+      class="pointer-events-none absolute left-0 top-0 h-full w-full"
       name="grow"
       tag="div"
     >
       <div
         v-for="ripple in ripples"
         :key="ripple.id"
-        class="absolute w-full h-full rounded-full opacity-0 pointer-events-none"
+        class="pointer-events-none absolute h-full w-full rounded-full opacity-0"
         :style="{
           top: ripple.top,
           left: ripple.left,

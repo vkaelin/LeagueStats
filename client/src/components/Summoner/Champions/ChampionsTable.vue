@@ -1,11 +1,11 @@
 <template>
-  <table class="w-full leading-none text-center bg-blue-800 rounded-lg table-fixed">
+  <table class="w-full table-fixed rounded-lg bg-blue-800 text-center leading-none">
     <thead>
-      <tr class="text-sm rounded-t-lg select-none heading">
+      <tr class="heading select-none rounded-t-lg text-sm">
         <th
           @click="sortBy('index')"
           :class="sortedClasses('index')"
-          class="relative px-2 py-4 font-normal rounded-tl-lg cursor-pointer hover:bg-blue-700"
+          class="relative cursor-pointer rounded-tl-lg px-2 py-4 font-normal hover:bg-blue-700"
         >
           rank
         </th>
@@ -22,7 +22,7 @@
             },
             sortedClasses(heading.props),
           ]"
-          class="relative px-2 py-4 font-normal cursor-pointer hover:bg-blue-700"
+          class="relative cursor-pointer px-2 py-4 font-normal hover:bg-blue-700"
         ></th>
       </tr>
     </thead>
@@ -34,15 +34,15 @@
       >
         <td
           :class="{ 'rounded-bl-lg': index === championsToDisplay.length - 1 }"
-          class="relative px-2 py-3 text-sm text-white bg-blue-800 border-t-table"
+          class="border-t-table relative bg-blue-800 px-2 py-3 text-sm text-white"
         >
           {{ champion.index + 1 }}
         </td>
-        <td class="relative px-2 py-3 text-sm text-white bg-blue-800 border-t-table">
+        <td class="border-t-table relative bg-blue-800 px-2 py-3 text-sm text-white">
           <div class="flex items-center">
             <div
               :style="{ backgroundImage: `url('${champion.champion.icon}')` }"
-              class="flex-shrink-0 w-6 h-6 bg-center bg-cover rounded-full bg-blue-1000"
+              class="h-6 w-6 flex-shrink-0 rounded-full bg-blue-1000 bg-cover bg-center"
             ></div>
             <div class="ml-2">{{ champion.champion.name }}</div>
           </div>
@@ -61,7 +61,7 @@
         </td>
         <td :style="bgColor(champion, 'kda')" class="px-2 py-3 text-sm text-white">
           <div>{{ champion.kda | round }}</div>
-          <div class="mt-1 text-blue-200 whitespace-nowrap text-xxs">
+          <div class="mt-1 whitespace-nowrap text-xxs text-blue-200">
             {{ (champion.kills / champion.count) | round(1) }}
             /
             {{ (champion.deaths / champion.count) | round(1) }}

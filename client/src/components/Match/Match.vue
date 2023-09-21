@@ -8,19 +8,19 @@
         showDetails ? 'rounded-t-lg' : 'rounded-lg',
         { 'mt-4': indexMatch !== 0 },
       ]"
-      class="relative text-base text-white bg-blue-800 cursor-pointer match hover:shadow-xl"
+      class="match relative cursor-pointer bg-blue-800 text-base text-white hover:shadow-xl"
     >
       <div class="relative flex flex-wrap px-5 py-3">
         <div
           v-if="data.newMatch"
-          class="absolute top-0 right-0 px-2 rounded-full new-match text-xxs"
+          class="new-match absolute right-0 top-0 rounded-full px-2 text-xxs"
           style="margin: 0.35rem 0.35rem 0 0; background-color: rgba(99, 179, 237, 0.2)"
         >
           New
         </div>
-        <div class="w-4/12 text-left first">
+        <div class="first w-4/12 text-left">
           <div>
-            <div class="h-6 text-lg font-extrabold leading-none text-teal-500 uppercase">
+            <div class="h-6 text-lg font-extrabold uppercase leading-none text-teal-500">
               {{ data.champion.name }}
             </div>
 
@@ -29,36 +29,36 @@
                 <div
                   v-if="data.role !== 'NONE'"
                   :style="{ backgroundImage: `url(${'/img/roles/' + data.role + '.png'})` }"
-                  class="w-10 h-10 bg-center bg-cover"
+                  class="h-10 w-10 bg-cover bg-center"
                 ></div>
-                <div class="w-10 text-xs font-extrabold text-center text-teal-500">
+                <div class="w-10 text-center text-xs font-extrabold text-teal-500">
                   LVL {{ data.level }}
                 </div>
               </div>
               <div
                 :style="{ backgroundImage: `url('${data.champion.icon}')` }"
-                class="w-16 h-16 ml-2 rounded-lg crop-champion bg-blue-1000"
+                class="crop-champion ml-2 h-16 w-16 rounded-lg bg-blue-1000"
               ></div>
-              <div class="flex flex-col justify-around ml-2">
+              <div class="ml-2 flex flex-col justify-around">
                 <div
                   v-if="data.summonerSpell1"
                   :style="{ backgroundImage: `url(${data.summonerSpell1.icon})` }"
-                  class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-1000"
+                  class="h-6 w-6 rounded-md bg-blue-1000 bg-cover bg-center"
                 ></div>
-                <div v-else class="w-6 h-6 rounded-md bg-blue-1000"></div>
+                <div v-else class="h-6 w-6 rounded-md bg-blue-1000"></div>
                 <div
                   v-if="data.summonerSpell2"
                   :style="{ backgroundImage: `url(${data.summonerSpell2.icon})` }"
-                  class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-1000"
+                  class="h-6 w-6 rounded-md bg-blue-1000 bg-cover bg-center"
                 ></div>
-                <div v-else class="w-6 h-6 rounded-md bg-blue-1000"></div>
+                <div v-else class="h-6 w-6 rounded-md bg-blue-1000"></div>
               </div>
-              <div class="flex flex-col justify-around ml-1">
+              <div class="ml-1 flex flex-col justify-around">
                 <div
                   :style="[
                     data.primaryRune ? { background: `url(${data.primaryRune}) center/cover` } : '',
                   ]"
-                  class="w-6 h-6 rounded-md bg-blue-1000"
+                  class="h-6 w-6 rounded-md bg-blue-1000"
                 ></div>
                 <div
                   :style="[
@@ -66,10 +66,10 @@
                       ? { background: `url(${data.secondaryRune}) center/cover` }
                       : '',
                   ]"
-                  class="w-6 h-6 rounded-md bg-blue-1000"
+                  class="h-6 w-6 rounded-md bg-blue-1000"
                 ></div>
               </div>
-              <div class="flex flex-col items-center justify-center mx-auto leading-none">
+              <div class="mx-auto flex flex-col items-center justify-center leading-none">
                 <div class="text-xl font-extrabold text-teal-500">
                   <span class>{{ data.stats.kills }}</span>
                   <span class>/</span>
@@ -84,14 +84,14 @@
             </div>
 
             <div
-              class="relative z-30 flex items-end h-6 text-sm font-extrabold leading-none text-white"
+              class="relative z-30 flex h-6 items-end text-sm font-extrabold leading-none text-white"
             >
               {{ data.gamemode.name }}
             </div>
           </div>
         </div>
 
-        <div class="flex items-center w-3/12 py-6 second">
+        <div class="second flex w-3/12 items-center py-6">
           <MatchItems :items="data.items" />
 
           <div class="relative z-30 ml-4 leading-none">
@@ -108,29 +108,29 @@
               <svg style="width: 15px; height: 15px">
                 <use xlink:href="#gold" />
               </svg>
-              <div class="ml-1 text-sm font-bold gold">{{ data.stats.gold | kilo }}</div>
+              <div class="gold ml-1 text-sm font-bold">{{ data.stats.gold | kilo }}</div>
             </div>
             <div class="flex items-center">
               <svg style="width: 15px; height: 15px">
                 <use xlink:href="#damage" />
               </svg>
-              <div class="ml-1 text-sm font-bold damage">{{ data.stats.dmgChamp | kilo }}</div>
+              <div class="damage ml-1 text-sm font-bold">{{ data.stats.dmgChamp | kilo }}</div>
             </div>
             <div class="flex items-center">
               <svg style="width: 15px; height: 15px">
                 <use xlink:href="#kill-participation" />
               </svg>
-              <div class="ml-1 text-sm font-bold kp">{{ data.stats.kp | percent }}</div>
+              <div class="kp ml-1 text-sm font-bold">{{ data.stats.kp | percent }}</div>
             </div>
           </div>
         </div>
 
-        <div class="flex items-center w-5/12 py-1 third">
+        <div class="third flex w-5/12 items-center py-1">
           <div v-if="data.allyTeam.length > 1">
             <div
               v-for="(ally, index) in data.allyTeam"
               :key="'player-' + index"
-              class="flex items-center ml-4 leading-none"
+              class="ml-4 flex items-center leading-none"
             >
               <router-link
                 v-if="ally.account_id !== '0' && account.accountId !== ally.account_id"
@@ -140,32 +140,32 @@
                   params: { region: $route.params.region, name: ally.name },
                 }"
                 :class="isSummonerProfile(ally.account_id)"
-                class="w-16 overflow-hidden text-xs font-medium text-right whitespace-nowrap hover:text-white text-overflow"
+                class="text-overflow w-16 overflow-hidden whitespace-nowrap text-right text-xs font-medium hover:text-white"
                 >{{ ally.name }}</router-link
               >
               <div
                 v-else
                 :class="isSummonerProfile(ally.account_id)"
-                class="w-16 overflow-hidden text-xs font-medium text-right whitespace-nowrap text-overflow"
+                class="text-overflow w-16 overflow-hidden whitespace-nowrap text-right text-xs font-medium"
               >
                 {{ ally.name }}
               </div>
               <div
                 :class="index !== 0 ? '-mt-1' : ''"
                 :style="{ backgroundImage: `url('${ally.champion.icon}')` }"
-                class="w-6 h-6 ml-1 overflow-hidden bg-center bg-cover rounded-full bg-blue-1000"
+                class="ml-1 h-6 w-6 overflow-hidden rounded-full bg-blue-1000 bg-cover bg-center"
               ></div>
               <div
                 :style="{
                   backgroundImage:
                     data.role !== 'NONE' ? `url(${'/img/roles/' + roles[index] + '.png'})` : null,
                 }"
-                class="w-4 h-4 mx-2 bg-center bg-cover"
+                class="mx-2 h-4 w-4 bg-cover bg-center"
               ></div>
               <div
                 :class="index !== 0 ? '-mt-1' : ''"
                 :style="{ backgroundImage: `url('${data.enemyTeam[index].champion.icon}')` }"
-                class="w-6 h-6 bg-center bg-cover rounded-full bg-blue-1000"
+                class="h-6 w-6 rounded-full bg-blue-1000 bg-cover bg-center"
               ></div>
               <router-link
                 v-if="data.enemyTeam[index].account_id !== '0'"
@@ -174,19 +174,19 @@
                   name: 'summoner',
                   params: { region: $route.params.region, name: data.enemyTeam[index].name },
                 }"
-                class="w-16 ml-1 overflow-hidden text-xs font-medium text-left text-blue-200 whitespace-nowrap hover:text-white text-overflow"
+                class="text-overflow ml-1 w-16 overflow-hidden whitespace-nowrap text-left text-xs font-medium text-blue-200 hover:text-white"
                 >{{ data.enemyTeam[index].name }}</router-link
               >
               <div
                 v-else
-                class="w-16 ml-1 overflow-hidden text-xs font-medium text-left text-blue-200 whitespace-nowrap text-overflow"
+                class="text-overflow ml-1 w-16 overflow-hidden whitespace-nowrap text-left text-xs font-medium text-blue-200"
               >
                 {{ data.enemyTeam[index].name }}
               </div>
             </div>
           </div>
-          <div class="flex flex-col items-center justify-center ml-auto">
-            <svg class="w-5 h-5 text-blue-200">
+          <div class="ml-auto flex flex-col items-center justify-center">
+            <svg class="h-5 w-5 text-blue-200">
               <use xlink:href="#stopwatch" />
             </svg>
             <div class="text-lg font-medium text-teal-400">{{ data.time | secToTime }}</div>
@@ -195,8 +195,8 @@
                 <div class="text-xs font-medium text-white">{{ data.date }}</div>
               </template>
               <template #default>
-                <div class="px-2 text-xs leading-tight text-center text-white select-none">
-                  <svg class="w-4 h-4 mx-auto text-teal-400">
+                <div class="select-none px-2 text-center text-xs leading-tight text-white">
+                  <svg class="mx-auto h-4 w-4 text-teal-400">
                     <use xlink:href="#time" />
                   </svg>
                   <div class="mt-1">{{ data.fullDate.date }}</div>

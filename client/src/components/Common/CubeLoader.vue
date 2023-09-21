@@ -4,10 +4,10 @@
     class="relative"
     style="transform: rotateZ(45deg)"
   >
-    <div class="relative float-left w-1/2 cube-1 cube h-1/2"></div>
-    <div class="relative float-left w-1/2 cube-2 cube h-1/2"></div>
-    <div class="relative float-left w-1/2 cube-4 cube h-1/2"></div>
-    <div class="relative float-left w-1/2 cube-3 cube h-1/2"></div>
+    <div class="cube-1 cube relative float-left h-1/2 w-1/2"></div>
+    <div class="cube-2 cube relative float-left h-1/2 w-1/2"></div>
+    <div class="cube-4 cube relative float-left h-1/2 w-1/2"></div>
+    <div class="cube-3 cube relative float-left h-1/2 w-1/2"></div>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
 
 .cube:before {
   content: '';
-  @apply absolute top-0 left-0 w-full h-full bg-blue-300;
+  @apply absolute left-0 top-0 h-full w-full bg-blue-300;
   animation: cubeAngle 2.4s infinite linear both;
   transform-origin: 100% 100%;
 }

@@ -4,14 +4,14 @@
       :style="{
         backgroundImage: `url('${createCategoryBorderUrl(runeStyle.name)}')`,
       }"
-      class="flex items-center justify-center w-24 h-24 bg-cover"
+      class="flex h-24 w-24 items-center justify-center bg-cover"
     >
       <div
         :style="{
           backgroundImage: `url('${createCategoryUrl(runeStyle.name)}')`,
         }"
         style="filter: brightness(1.2)"
-        class="w-56 h-56 mt-4 bg-center bg-no-repeat bg-contain"
+        class="mt-4 h-56 w-56 bg-contain bg-center bg-no-repeat"
       ></div>
     </div>
 
@@ -26,22 +26,22 @@
                     backgroundImage: `url('${createCDragonAssetUrl(runes.perks[runeId].icon)}')`,
                   }"
                   :class="selectedRunes.selected.includes(runeId) ? 'used-rune' : 'not-used-rune'"
-                  class="w-12 h-12 bg-center bg-cover border-2 border-gray-700 rounded-full cursor-pointer"
+                  class="h-12 w-12 cursor-pointer rounded-full border-2 border-gray-700 bg-cover bg-center"
                 ></li>
               </template>
               <template #default>
-                <div class="flex max-w-md p-2 text-sm text-left text-white select-none">
+                <div class="flex max-w-md select-none p-2 text-left text-sm text-white">
                   <div
                     :style="{
                       backgroundImage: `url('${createCDragonAssetUrl(runes.perks[runeId].icon)}')`,
                     }"
-                    class="flex-shrink-0 w-12 h-12 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
+                    class="ml-1 h-12 w-12 flex-shrink-0 rounded-md bg-blue-1000 bg-cover bg-center"
                   ></div>
                   <div class="ml-2 leading-none">
                     <div class="text-base">{{ runes.perks[runeId].name }}</div>
                     <div
                       v-html="runes.perks[runeId].desc"
-                      class="mt-3 font-light leading-tight text-blue-200 rune-description"
+                      class="rune-description mt-3 font-light leading-tight text-blue-200"
                     ></div>
                   </div>
                 </div>
@@ -49,12 +49,12 @@
             </Tooltip>
           </ul>
         </div>
-        <div v-if="primary && index == 0" class="w-full mt-4 bg-gray-500 bg-opacity-25 h-0.5"></div>
+        <div v-if="primary && index == 0" class="mt-4 h-0.5 w-full bg-gray-500 bg-opacity-25"></div>
       </div>
 
       <div v-if="!primary">
         <div class="mt-8 space-y-4">
-          <div v-for="(row, index) in kStats" :key="`row-${index}`" class="flex px-3 space-x-8">
+          <div v-for="(row, index) in kStats" :key="`row-${index}`" class="flex space-x-8 px-3">
             <ul v-for="(kStat, i) in row" :key="`${kStat}-${i}`">
               <Tooltip>
                 <template #trigger>
@@ -65,22 +65,22 @@
                     :class="
                       selectedRunes.selected[index + 6] === kStat ? 'used-rune' : 'not-used-rune'
                     "
-                    class="w-8 h-8 bg-gray-900 bg-center bg-cover border-2 border-gray-700 rounded-full cursor-pointer"
+                    class="h-8 w-8 cursor-pointer rounded-full border-2 border-gray-700 bg-gray-900 bg-cover bg-center"
                   ></li>
                 </template>
                 <template #default>
-                  <div class="flex max-w-md p-2 text-sm text-left text-white select-none">
+                  <div class="flex max-w-md select-none p-2 text-left text-sm text-white">
                     <div
                       :style="{
                         backgroundImage: `url('${createCDragonAssetUrl(runes.perks[kStat].icon)}')`,
                       }"
-                      class="flex-shrink-0 w-8 h-8 ml-1 bg-center bg-cover rounded-md bg-blue-1000"
+                      class="ml-1 h-8 w-8 flex-shrink-0 rounded-md bg-blue-1000 bg-cover bg-center"
                     ></div>
                     <div class="ml-2 leading-none">
                       <div class="text-base">{{ runes.perks[kStat].name }}</div>
                       <div
                         v-html="runes.perks[kStat].desc"
-                        class="mt-3 font-light leading-tight text-blue-200 rune-description"
+                        class="rune-description mt-3 font-light leading-tight text-blue-200"
                       ></div>
                     </div>
                   </div>

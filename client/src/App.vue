@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="min-h-screen font-sans antialiased bg-blue-900">
+  <div id="app" class="min-h-screen bg-blue-900 font-sans antialiased">
     <SVGContainer />
     <NotificationsContainer />
     <RunesContainer />

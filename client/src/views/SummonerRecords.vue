@@ -2,11 +2,11 @@
   <div key="records">
     <template v-if="!recordsLoaded || (recordsLoaded && records.assists)">
       <div
-        class="relative pl-6 text-2xl text-blue-200 border-b-2 border-blue-800 category blue-900"
+        class="category blue-900 relative border-b-2 border-blue-800 pl-6 text-2xl text-blue-200"
       >
         Basics
       </div>
-      <div class="flex flex-wrap -mx-2">
+      <div class="-mx-2 flex flex-wrap">
         <template v-if="recordsLoaded">
           <RecordCard
             color="#63b3ed"
@@ -71,11 +71,11 @@
         </template>
       </div>
       <div
-        class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900 category"
+        class="blue-900 category relative mt-3 border-b-2 border-blue-800 pl-6 text-2xl text-blue-200"
       >
         Game impact
       </div>
-      <div class="flex flex-wrap -mx-2">
+      <div class="-mx-2 flex flex-wrap">
         <template v-if="recordsLoaded">
           <RecordCard
             color="#FC8181"
@@ -140,10 +140,10 @@
           </div>
         </template>
       </div>
-      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">
+      <div class="category relative mt-3 border-b-2 border-blue-800 pl-6 text-2xl text-blue-200">
         Miscellaneous
       </div>
-      <div class="flex flex-wrap -mx-2">
+      <div class="-mx-2 flex flex-wrap">
         <template v-if="recordsLoaded">
           <RecordCard
             color="#4299E1"
@@ -193,10 +193,10 @@
           </div>
         </template>
       </div>
-      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">
+      <div class="category relative mt-3 border-b-2 border-blue-800 pl-6 text-2xl text-blue-200">
         Multi kills
       </div>
-      <div class="flex flex-wrap -mx-2">
+      <div class="-mx-2 flex flex-wrap">
         <template v-if="recordsLoaded">
           <RecordCard
             color="#FEFCBF"
@@ -255,7 +255,7 @@
       </div>
     </template>
     <template v-if="recordsLoaded && !records.assists">
-      <div class="flex flex-col items-center mt-4">
+      <div class="mt-4 flex flex-col items-center">
         <div>No records have been found.</div>
         <div>😕</div>
       </div>
@@ -314,7 +314,7 @@ export default {
 
 <style scoped>
 .category:before {
-  @apply w-2 h-2 bg-blue-200 absolute block left-0 ml-1;
+  @apply absolute left-0 ml-1 block h-2 w-2 bg-blue-200;
   content: '';
   top: 35%;
   transform: rotate(45deg);

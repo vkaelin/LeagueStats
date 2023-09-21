@@ -21,11 +21,11 @@
 }
 
 ::selection {
-  @apply text-white bg-blue-1000;
+  @apply bg-blue-1000 text-white;
 }
 
 ::-moz-selection {
-  @apply text-white bg-blue-1000;
+  @apply bg-blue-1000 text-white;
 }
 
 .min-w-1200 {
@@ -74,15 +74,15 @@ button:focus {
 
 /* Checkbox */
 .form-checkbox {
-  @apply w-6 h-6 border-blue-800 text-blue-1000 rounded-md;
+  @apply h-6 w-6 rounded-md border-blue-800 text-blue-1000;
   background: rgba(23, 49, 79, 0.6);
 }
 
 .form-checkbox:focus {
-  @apply bg-blue-1000 border-blue-700 outline-none;
+  @apply border-blue-700 bg-blue-1000 outline-none;
   box-shadow: none;
 }
 
 .form-checkbox:checked {
-  @apply bg-blue-1000 border-transparent;
+  @apply border-transparent bg-blue-1000;
 }

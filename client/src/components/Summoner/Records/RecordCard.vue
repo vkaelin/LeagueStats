@@ -9,7 +9,7 @@
          }/${record.champion_id}000.jpg')`,
     }"
     :class="borderColor"
-    class="relative w-full p-4 mx-2 mt-6 leading-none bg-center bg-cover border rounded-lg record-card"
+    class="record-card relative mx-2 mt-6 w-full rounded-lg border bg-cover bg-center p-4 leading-none"
   >
     <div
       :class="[
@@ -17,14 +17,14 @@
         title.length > 15 ? 'text-sm' : 'text-base',
       ]"
       :style="{ borderColor: hover ? color : 'transparent' }"
-      class="absolute top-0 left-0 px-3 py-2 mt-2 ml-2 font-medium leading-4 transition-colors duration-500 ease-in-out border border-transparent rounded-md"
+      class="absolute left-0 top-0 ml-2 mt-2 rounded-md border border-transparent px-3 py-2 font-medium leading-4 transition-colors duration-500 ease-in-out"
     >
       <span :class="textColor" class="ml-0">{{ title }}</span>
     </div>
     <img
       :src="`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${record.champion_id}.png`"
-      :class="[{ 'opacity-0 scale-125': hover }, borderColor]"
-      class="block w-16 h-16 mx-auto mt-10 transition duration-500 ease-in transform border-2 rounded-full"
+      :class="[{ 'scale-125 opacity-0': hover }, borderColor]"
+      class="mx-auto mt-10 block h-16 w-16 transform rounded-full border-2 transition duration-500 ease-in"
       alt="Champion Played"
     />
     <div :style="{ textShadow: `-2px 1px 6px ${color}` }" class="mt-6 text-4xl">
@@ -43,7 +43,7 @@
         <span class="font-semibold text-white">{{ record.champion.name }}</span>
       </div>
     </div>
-    <div class="mt-6 text-xs font-light text-right text-gray-200 opacity-25">
+    <div class="mt-6 text-right text-xs font-light text-gray-200 opacity-25">
       <span v-if="hover">{{ record.id }}</span>
       <span v-else>{{ gameModes[record.gamemode].name }}</span>
     </div>

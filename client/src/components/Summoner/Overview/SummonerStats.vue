@@ -1,27 +1,27 @@
 <template>
-  <div v-if="stats.global" class="mt-4 bg-blue-800 rounded-lg">
-    <div class="relative flex justify-center py-4 text-blue-200 rounded-t-lg heading">
-      <svg class="w-6 h-6">
+  <div v-if="stats.global" class="mt-4 rounded-lg bg-blue-800">
+    <div class="heading relative flex justify-center rounded-t-lg py-4 text-blue-200">
+      <svg class="h-6 w-6">
         <use xlink:href="#graph" />
       </svg>
       <span class="mx-4 text-lg font-semibold uppercase">STATS</span>
-      <svg class="w-6 h-6" style="transform: scaleX(-1)">
+      <svg class="h-6 w-6" style="transform: scaleX(-1)">
         <use xlink:href="#graph" />
       </svg>
-      <div class="absolute top-0 right-0 mt-3 mr-2">
+      <div class="absolute right-0 top-0 mr-2 mt-3">
         <Tooltip>
           <template #trigger>
-            <svg class="w-4 h-4 cursor-pointer">
+            <svg class="h-4 w-4 cursor-pointer">
               <use xlink:href="#info" />
             </svg>
           </template>
           <template #default>
-            <div class="px-2 text-sm text-center text-white select-none">
+            <div class="select-none px-2 text-center text-sm text-white">
               <div>Stats based on</div>
               <div>
                 <span class="font-bold text-teal-400">{{ stats.global.count }}</span> matches
               </div>
-              <div class="mt-2 text-xs italic font-normal leading-tight text-blue-100">
+              <div class="mt-2 text-xs font-normal italic leading-tight text-blue-100">
                 Load more matches
                 <br />to have better results.
               </div>
@@ -30,15 +30,15 @@
         </Tooltip>
       </div>
     </div>
-    <div class="flex items-center py-2 mt-2">
+    <div class="mt-2 flex items-center py-2">
       <div
         v-for="(role, index) in stats.role"
         :key="index"
-        class="flex flex-col items-center w-1/5"
+        class="flex w-1/5 flex-col items-center"
       >
         <Tooltip>
           <template #trigger>
-            <div class="flex flex-col justify-end w-2 h-12 bg-blue-900 rounded-full cursor-pointer">
+            <div class="flex h-12 w-2 cursor-pointer flex-col justify-end rounded-full bg-blue-900">
               <div
                 :style="{
                   height: (((role.count * 3) / mostPlayedRole) * role.wins) / role.count + 'rem',
@@ -56,7 +56,7 @@
             </div>
           </template>
           <template #default>
-            <div class="px-2 text-sm text-center text-white select-none">
+            <div class="select-none px-2 text-center text-sm text-white">
               <div>{{ role.role | capitalize }}</div>
               <span :class="winLossColor(role.wins, role.losses).win" class="font-bold">{{
                 role.wins
@@ -73,14 +73,14 @@
         </Tooltip>
         <div
           :style="{ backgroundImage: `url(${'/img/roles/' + role.role + '.png'})` }"
-          class="w-4 h-4 mt-1 bg-center bg-cover"
+          class="mt-1 h-4 w-4 bg-cover bg-center"
         ></div>
         <div class="text-xs text-blue-200">{{ role.count }}</div>
       </div>
     </div>
-    <div class="py-2 text-sm text-center">
-      <div class="flex items-baseline px-4 text-xs font-semibold text-blue-300 uppercase">
-        <div class="w-1/4 text-base text-left text-blue-400">Stat</div>
+    <div class="py-2 text-center text-sm">
+      <div class="flex items-baseline px-4 text-xs font-semibold uppercase text-blue-300">
+        <div class="w-1/4 text-left text-base text-blue-400">Stat</div>
         <div class="w-1/4">Total</div>
         <div class="w-1/4">Per min</div>
         <div class="w-1/4">Avg</div>
@@ -97,26 +97,26 @@
           <div class="w-1/4">{{ (stat / (stats.global.time / 60)) | round }}</div>
           <div class="w-1/4">{{ (stat / stats.global.count) | round }}</div>
         </li>
-        <li class="flex items-center justify-between px-4 py-1 leading-tight bg-blue-760">
-          <div class="w-1/4 text-left whitespace-nowrap">Time</div>
+        <li class="flex items-center justify-between bg-blue-760 px-4 py-1 leading-tight">
+          <div class="w-1/4 whitespace-nowrap text-left">Time</div>
           <div class="w-1/4">{{ stats.global.time | secToHours }}</div>
           <div class="w-1/4"></div>
           <div class="w-1/4">{{ (stats.global.time / stats.global.count) | secToTime(true) }}</div>
         </li>
         <li class="flex items-center justify-between px-4 py-1 leading-tight">
-          <div class="w-1/4 text-left whitespace-nowrap">KDA</div>
+          <div class="w-1/4 whitespace-nowrap text-left">KDA</div>
           <div class="w-1/4">
             {{ ((stats.global.kills + stats.global.assists) / stats.global.deaths) | round }}
           </div>
         </li>
-        <li class="flex items-center justify-between px-4 py-1 leading-tight bg-blue-760">
-          <div class="w-1/4 text-left whitespace-nowrap">Kill participation</div>
+        <li class="flex items-center justify-between bg-blue-760 px-4 py-1 leading-tight">
+          <div class="w-1/4 whitespace-nowrap text-left">Kill participation</div>
           <div class="w-1/4">{{ stats.global.kp | percent }}</div>
         </li>
       </ul>
       <template v-if="leagueStatsByType('Ranked').length">
-        <div class="flex items-baseline px-4 mt-3 text-xs font-semibold text-blue-300 uppercase">
-          <div class="w-5/12 text-base text-left text-blue-400">Ranked</div>
+        <div class="mt-3 flex items-baseline px-4 text-xs font-semibold uppercase text-blue-300">
+          <div class="w-5/12 text-left text-base text-blue-400">Ranked</div>
           <div class="w-3/12">Winrate</div>
           <div class="w-4/12">Record</div>
         </div>
@@ -144,8 +144,8 @@
         </ul>
       </template>
       <template v-if="leagueStatsByType('Normal').length">
-        <div class="flex items-baseline px-4 mt-3 text-xs font-semibold text-blue-300 uppercase">
-          <div class="w-5/12 text-base text-left text-blue-400">Normal</div>
+        <div class="mt-3 flex items-baseline px-4 text-xs font-semibold uppercase text-blue-300">
+          <div class="w-5/12 text-left text-base text-blue-400">Normal</div>
           <div class="w-3/12">Winrate</div>
           <div class="w-4/12">Record</div>
         </div>
@@ -173,8 +173,8 @@
         </ul>
       </template>
 
-      <div class="flex items-baseline px-4 mt-3 text-xs font-semibold text-blue-300 uppercase">
-        <div class="w-5/12 text-base text-left text-blue-400">Class</div>
+      <div class="mt-3 flex items-baseline px-4 text-xs font-semibold uppercase text-blue-300">
+        <div class="w-5/12 text-left text-base text-blue-400">Class</div>
         <div class="w-3/12">Winrate</div>
         <div class="w-4/12">Record</div>
       </div>

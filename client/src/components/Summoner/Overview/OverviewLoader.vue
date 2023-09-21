@@ -1,5 +1,5 @@
 <template>
-  <div class="flex mt-3 text-center">
+  <div class="mt-3 flex text-center">
     <div class="w-3/12">
       <div class="rounded-lg bg-blue-850" style="width: 300px; height: 339px">
         <content-loader
