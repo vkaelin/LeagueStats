@@ -4,7 +4,7 @@
 <a href="https://discord.gg/RjBzjfk"><img src="https://img.shields.io/badge/Discord-join%20chat-738bd7.svg" alt="LeagueStats.gg official Discord"></a>
 
 The goal of [leaguestats.gg](https://leaguestats.gg) is to provide global complete data for all League of Legends summoners.  
-Here is an [example](https://leaguestats.gg/summoner/euw/KCRekkles) of stats for some summoner.
+Here is an [example](https://leaguestats.gg/summoner/euw/KCNEXTADKING) of stats for some summoner.
 
 ![Screenshot](https://res.cloudinary.com/kln/image/upload/v1615669773/repository-preview-leaguestats.jpg)
 
@@ -14,11 +14,11 @@ Here is an [example](https://leaguestats.gg/summoner/euw/KCRekkles) of stats for
 
 Development environment requirements :
 
-- [Node.js](https://nodejs.org/en/download/) >= 12.0.0
+- [Node.js](https://nodejs.org/en/download/) >= 18.0.0
 - [PostgreSQL](https://www.postgresql.org/download/)
 - [Redis](https://redis.io/download)
 
-You can use the `docker-compose.yml` file to quickly setup Postgre and Redis in development.
+You can use the `docker-compose.yml` file to quickly setup PostgreSQL and Redis in development.
 
 Setting up the docker container:
 
@@ -77,6 +77,7 @@ Deploying the app :
 ```bash
 > cd client
 > npm run build
+> npm run preview # to test the build locally
 
 # And
 

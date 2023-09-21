@@ -1,27 +1,31 @@
 <template>
   <router-link
     @click.native="close"
-    :to="{ name: 'summoner', params: { region: player.region, name: player.name }}"
+    :to="{ name: 'summoner', params: { region: player.region, name: player.name } }"
     :title="player.name"
     :class="selected ? 'bg-blue-760' : 'bg-blue-900'"
-    class="flex items-center justify-between w-full px-4 py-3 mt-1 text-blue-200 rounded-md shadow-md cursor-pointer select-none bypass-click"
+    class="bypass-click mt-1 flex w-full cursor-pointer select-none items-center justify-between rounded-md px-4 py-3 text-blue-200 shadow-md"
     role="option"
   >
     <div class="flex items-center">
-      <svg v-if="favoritesList" class="w-5 h-5 text-yellow-400">
+      <svg v-if="favoritesList" class="h-5 w-5 text-yellow-400">
         <use xlink:href="#star-outline" />
       </svg>
-      <svg v-else class="w-5 h-5">
+      <svg v-else class="h-5 w-5">
         <use xlink:href="#time" />
       </svg>
       <div class="w-20">
         <div
-          class="inline-flex px-2 py-1 ml-6 text-xs font-semibold text-white uppercase bg-blue-800 rounded"
-        >{{ player.region }}</div>
+          class="ml-6 inline-flex rounded bg-blue-800 px-2 py-1 text-xs font-semibold uppercase text-white"
+        >
+          {{ player.region }}
+        </div>
       </div>
       <div
-        :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${player.icon}.jpg')`}"
-        class="w-6 h-6 ml-2 bg-center bg-cover rounded-full"
+        :style="{
+          backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${player.icon}.jpg')`,
+        }"
+        class="ml-2 h-6 w-6 rounded-full bg-cover bg-center"
       ></div>
       <div class="ml-2 text-base">{{ player.name }}</div>
     </div>
@@ -29,17 +33,17 @@
       <button
         v-if="!favoritesList"
         @click.prevent="favoriteClick"
-        class="flex items-center justify-center p-2 rounded-full hover:text-yellow-400 hover:bg-blue-700"
+        class="flex items-center justify-center rounded-full p-2 hover:bg-blue-700 hover:text-yellow-400"
       >
-        <svg class="w-4 h-4">
+        <svg class="h-4 w-4">
           <use xlink:href="#star" />
         </svg>
       </button>
       <button
         @click.prevent="closeClick"
-        class="p-2 rounded-full cursor-pointerhover:text-white hover:bg-blue-700"
+        class="cursor-pointerhover:text-white rounded-full p-2 hover:bg-blue-700"
       >
-        <svg class="w-4 h-4">
+        <svg class="h-4 w-4">
           <use xlink:href="#times" />
         </svg>
       </button>
@@ -62,8 +66,8 @@ export default {
     },
     selected: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   methods: {
@@ -80,7 +84,7 @@ export default {
     favoriteClick() {
       this.updateFavorite(this.player)
     },
-    ...mapActions('settings', ['removeRecentSearch', 'updateFavorite'])
+    ...mapActions('settings', ['removeRecentSearch', 'updateFavorite']),
   },
 }
 </script>

@@ -1,20 +1,20 @@
 <template>
-  <div ref="container" @mousedown="addRipple" class="relative overflow-hidden cursor-pointer">
+  <div ref="container" @mousedown="addRipple" class="relative cursor-pointer overflow-hidden">
     <transition-group
-      class="absolute top-0 left-0 w-full h-full pointer-events-none"
+      class="pointer-events-none absolute left-0 top-0 h-full w-full"
       name="grow"
       tag="div"
     >
       <div
         v-for="ripple in ripples"
         :key="ripple.id"
-        class="absolute w-full h-full rounded-full opacity-0 pointer-events-none"
+        class="pointer-events-none absolute h-full w-full rounded-full opacity-0"
         :style="{
           top: ripple.top,
           left: ripple.left,
           width: ripple.width,
           height: ripple.height,
-          background: color
+          background: color,
         }"
       ></div>
     </transition-group>
@@ -27,8 +27,8 @@ export default {
   props: {
     color: {
       type: String,
-      default: 'rgba(255, 255, 255, 0.3)'
-    }
+      default: 'rgba(255, 255, 255, 0.3)',
+    },
   },
 
   data() {
@@ -61,17 +61,17 @@ export default {
         height: `${this.rippleWidth}px`,
         left: `${e.clientX - left - this.halfRippleWidth}px`,
         top: `${e.clientY - top - this.halfRippleWidth}px`,
-        id: rippleId
+        id: rippleId,
       })
 
       // Remove ripple
       setTimeout(() => {
-        this.ripples = this.ripples.filter(r => r.id !== rippleId)
+        this.ripples = this.ripples.filter((r) => r.id !== rippleId)
       }, 400)
     },
     purgeRipples() {
       this.ripples = []
-    }
-  }
+    },
+  },
 }
 </script>

@@ -12,7 +12,7 @@
         <label for="onlyMostPlayed" class="cursor-pointer select-none">Only most played</label>
       </template>
       <template #default>
-        <div class="px-2 text-xs text-center text-white">
+        <div class="px-2 text-center text-xs text-white">
           Hide champions with less than
           <br />
           <span class="font-bold text-teal-400">1% playrate</span>
@@ -35,14 +35,14 @@ export default {
   props: {
     value: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   methods: {
     change(e) {
       this.$emit('input', e.target.checked)
-    }
-  }
+    },
+  },
 }
 </script>

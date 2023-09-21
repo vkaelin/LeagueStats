@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div v-if="data.status === 'loaded' && detailsOpen" class="bg-blue-800 rounded-b-lg">
+    <div v-if="data.status === 'loaded' && detailsOpen" class="rounded-b-lg bg-blue-800">
       <DetailedMatchTeam
         :data="allyTeam"
         :all-players="[...allyTeam.players, ...enemyTeam.players]"
@@ -28,7 +28,7 @@
       />
     </div>
     <div v-else-if="data.status === 'loading' && detailsOpen">
-      <div class="py-5 bg-blue-800 rounded-b-lg">
+      <div class="rounded-b-lg bg-blue-800 py-5">
         <CubeLoader />
       </div>
     </div>
@@ -52,30 +52,34 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
+      required: true,
     },
     detailsOpen: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
     allyTeam() {
-      return this.data.blueTeam.players.some(p => p.summonerId === this.account.id) ? this.data.blueTeam : this.data.redTeam
+      return this.data.blueTeam.players.some((p) => p.summonerId === this.account.id)
+        ? this.data.blueTeam
+        : this.data.redTeam
     },
     enemyTeam() {
-      return this.data.blueTeam.players.some(p => p.summonerId === this.account.id) ? this.data.redTeam : this.data.blueTeam
+      return this.data.blueTeam.players.some((p) => p.summonerId === this.account.id)
+        ? this.data.redTeam
+        : this.data.blueTeam
     },
     ...mapState({
-      account: state => state.summoner.basic.account,
-      percentSettings: state => state.settings.percent
+      account: (state) => state.summoner.basic.account,
+      percentSettings: (state) => state.settings.percent,
     }),
   },
 
   methods: {
     ...mapActions('settings', ['updatePercent']),
-  }
+  },
 }
 </script>
 

@@ -2,15 +2,15 @@
   <div>
     <div
       :class="[homepage ? 'mr-12' : 'mr-4']"
-      class="absolute right-0 z-30 flex items-center h-full vertical-center"
+      class="vertical-center absolute right-0 z-30 flex h-full items-center"
     >
       <div
         @click="toggle"
         :class="[selectRegionClasses]"
-        class="flex items-center transition duration-150 ease-in-out border-2 border-transparent rounded cursor-pointer hover:text-white"
+        class="flex cursor-pointer items-center rounded border-2 border-transparent transition duration-150 ease-in-out hover:text-white"
       >
-        <span class="font-bold uppercase select-none selected">{{ selectedRegion }}</span>
-        <svg class="w-4 h-4 ml-1 -mr-1">
+        <span class="selected select-none font-bold uppercase">{{ selectedRegion }}</span>
+        <svg class="-mr-1 ml-1 h-4 w-4">
           <use xlink:href="#caret-down" />
         </svg>
       </div>
@@ -19,18 +19,18 @@
       <div
         v-show="dropdown"
         :class="[dropdownClasses]"
-        class="absolute right-0 z-30 text-white shadow cursor-pointer"
+        class="absolute right-0 z-30 cursor-pointer text-white shadow"
       >
         <div
           v-for="(region, index) in regions"
           :key="region"
           @click="selectRegion(region)"
           :class="classRegions(index)"
-          class="relative py-1 pl-5 pr-2 text-xs text-right select-none bg-blue-1000 hover:bg-blue-800"
+          class="relative select-none bg-blue-1000 py-1 pl-5 pr-2 text-right text-xs hover:bg-blue-800"
         >
           <svg
             v-if="region.toLowerCase() === selectedRegion"
-            class="absolute w-3 h-3 fill-current vertical-center offsetIcon"
+            class="vertical-center offsetIcon absolute h-3 w-3 fill-current"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
           >
@@ -52,12 +52,12 @@ export default {
   props: {
     dropdown: {
       type: Boolean,
-      default: false
+      default: false,
     },
     homepage: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
@@ -87,7 +87,7 @@ export default {
     dropdownClasses() {
       return {
         'offsetDropDown mr-4 rounded': !this.homepage,
-        'offsetDropDownXl rounded-b': this.homepage
+        'offsetDropDownXl rounded-b': this.homepage,
       }
     },
     selectRegionClasses() {
@@ -99,7 +99,7 @@ export default {
       }
     },
     ...mapState({
-      selectedRegion: state => state.settings.region
+      selectedRegion: (state) => state.settings.region,
     }),
   },
 
@@ -107,7 +107,7 @@ export default {
     classRegions(index) {
       return {
         'rounded-t': index === 0,
-        'rounded-b': index === this.regions.length - 1
+        'rounded-b': index === this.regions.length - 1,
       }
     },
     selectRegion(region) {
@@ -118,7 +118,7 @@ export default {
       this.$emit('toggle')
     },
     ...mapActions('settings', ['updateSettings']),
-  }
+  },
 }
 </script>
 

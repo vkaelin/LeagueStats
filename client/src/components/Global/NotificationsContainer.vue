@@ -14,11 +14,11 @@ import { mapState } from 'vuex'
 
 export default {
   components: {
-    PopupNotification
+    PopupNotification,
   },
 
   computed: {
-    ...mapState('notification', ['notifications'])
-  }
+    ...mapState('notification', ['notifications']),
+  },
 }
 </script>

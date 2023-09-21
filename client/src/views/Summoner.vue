@@ -2,12 +2,12 @@
   <div
     v-if="overviewLoaded"
     key="overview"
-    class="relative flex items-start justify-between mt-3 text-center vue-sticky-container"
+    class="vue-sticky-container relative mt-3 flex items-start justify-between text-center"
   >
     <VueStickySidebar
       :top-spacing="48"
       :bottom-spacing="123"
-      class="z-40 sidebar"
+      class="sidebar z-40"
       container-selector=".vue-sticky-container"
     >
       <SummonerChampions />
@@ -32,11 +32,12 @@
           @clicked="moreMatches"
           :loading="matchesLoading"
           btn-class="block px-4 py-2 mx-auto mt-4 font-semibold bg-blue-800 rounded-md shadow-lg hover:bg-blue-1000"
-        >More matches</LoadingButton>
+          >More matches</LoadingButton
+        >
       </div>
       <div v-else>
         <div class="flex justify-center">
-          <div class="px-4 py-3 text-lg font-bold text-center text-blue-100 rounded-lg bg-gradient">
+          <div class="bg-gradient rounded-lg px-4 py-3 text-center text-lg font-bold text-blue-100">
             <div>No matches found.</div>
             <div>😕</div>
           </div>
@@ -48,7 +49,6 @@
     <OverviewLoader />
   </div>
 </template>
-
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
@@ -70,15 +70,15 @@ export default {
     SummonerChampions,
     SummonerMates,
     SummonerStats,
-    VueStickySidebar
+    VueStickySidebar,
   },
 
   computed: {
     ...mapState({
-      current: state => state.summoner.live.match,
-      overview: state => state.summoner.overview,
+      current: (state) => state.summoner.live.match,
+      overview: (state) => state.summoner.overview,
     }),
-    ...mapGetters('summoner', ['matchesLoading', 'overviewLoaded', 'summonerFound'])
+    ...mapGetters('summoner', ['matchesLoading', 'overviewLoaded', 'summonerFound']),
   },
 
   watch: {
@@ -87,7 +87,7 @@ export default {
     },
     summonerFound() {
       this.fetchData()
-    }
+    },
   },
 
   created() {
@@ -114,7 +114,7 @@ export default {
     return {
       title: 'Summoner Overview',
     }
-  }
+  },
 }
 </script>
 

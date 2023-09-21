@@ -2,56 +2,50 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import { axios } from './plugins/axios'
 
-import Home from '@/views/Home.vue'
-import Summoner from '@/views/Summoner.vue'
-import SummonerChampions from '@/views/SummonerChampions.vue'
-import SummonerLive from '@/views/SummonerLive.vue'
-import SummonerRecords from '@/views/SummonerRecords.vue'
-
 Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: import.meta.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home,
+      component: () => import('@/views/Home.vue'),
       meta: {
-        layout: 'Home'
-      }
+        layout: 'Home',
+      },
     },
     {
       path: '/summoner/:region/:name',
       name: 'summoner',
-      component: Summoner,
+      component: () => import('@/views/Summoner.vue'),
       meta: {
-        season: true
-      }
+        season: true,
+      },
     },
     {
       path: '/summoner/:region/:name/champions',
       name: 'summonerChampions',
-      component: SummonerChampions,
+      component: () => import('@/views/SummonerChampions.vue'),
       meta: {
-        season: true
-      }
+        season: true,
+      },
     },
     {
       path: '/summoner/:region/:name/records',
       name: 'summonerRecords',
-      component: SummonerRecords,
+      component: () => import('@/views/SummonerRecords.vue'),
       meta: {
-        season: true
-      }
+        season: true,
+      },
     },
     {
       path: '/summoner/:region/:name/live',
       name: 'summonerLive',
-      component: SummonerLive
+      component: () => import('@/views/SummonerLive.vue'),
     },
-  ]
+  ],
 })
 
 router.beforeEach((to, from, next) => {

@@ -3,7 +3,7 @@ export const maps = { 10: 'The Twisted Treeline', 11: "Summoner's Rift", 12: 'Ho
 export const gameModes = {
   0: {
     type: 'Custom',
-    name: 'Custom Game'
+    name: 'Custom Game',
   },
   900: {
     type: 'Normal',
@@ -75,20 +75,20 @@ export const gameModes = {
   },
   1020: {
     type: 'Normal',
-    name: 'One for All'
+    name: 'One for All',
   },
   1300: {
     type: 'Normal',
-    name: 'Nexus Blitz'
+    name: 'Nexus Blitz',
   },
   1400: {
     type: 'Normal',
-    name: 'Ultimate Spellbook'
+    name: 'Ultimate Spellbook',
   },
   1900: {
     type: 'Normal',
     name: 'URF',
-  }
+  },
 }
 
 /* ========= OLD 5 COLORS ========= */

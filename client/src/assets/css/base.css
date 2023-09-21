@@ -2,12 +2,12 @@
 
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px
+  height: 8px;
 }
 
 ::-webkit-scrollbar,
 ::-webkit-scrollbar-track {
-  background: rgba(23, 49, 79, .6);
+  background: rgba(23, 49, 79, 0.6);
 }
 
 .light-scrollbar::-webkit-scrollbar,
@@ -16,20 +16,20 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(194, 217, 254, .6);
-  border-radius: 8px
+  background-color: rgba(194, 217, 254, 0.6);
+  border-radius: 8px;
 }
 
 ::selection {
-  @apply text-white bg-blue-1000;
+  @apply bg-blue-1000 text-white;
 }
 
 ::-moz-selection {
-  @apply text-white bg-blue-1000;
+  @apply bg-blue-1000 text-white;
 }
 
 .min-w-1200 {
-  min-width: 1200px;;
+  min-width: 1200px;
 }
 
 .page-wrapper {
@@ -52,11 +52,11 @@ button:focus {
 }
 
 .bg-gradient {
-  background: linear-gradient(180deg, #2C5282 0%, rgba(44, 82, 130, 0) 100%);
+  background: linear-gradient(180deg, #2c5282 0%, rgba(44, 82, 130, 0) 100%);
 }
 
 .bg-gradient-x {
-  background: linear-gradient(270deg, rgba(44,82,130,1) 0%, rgba(44,82,130,0) 100%);
+  background: linear-gradient(270deg, rgba(44, 82, 130, 1) 0%, rgba(44, 82, 130, 0) 100%);
 }
 
 .text-overflow {
@@ -64,14 +64,25 @@ button:focus {
 }
 
 .heading {
-  background: linear-gradient(
-    to top,
-    rgb(34, 92, 155) 0%,
-    rgb(34, 92, 135) 100%
-  );
+  background: linear-gradient(to top, rgb(34, 92, 155) 0%, rgb(34, 92, 135) 100%);
   box-shadow: rgba(235, 248, 255, 0.1) 0px -1px inset;
 }
 
 .input-color {
   background: rgba(23, 49, 79, 0.6);
+}
+
+/* Checkbox */
+.form-checkbox {
+  @apply h-6 w-6 rounded-md border-blue-800 text-blue-1000;
+  background: rgba(23, 49, 79, 0.6);
+}
+
+.form-checkbox:focus {
+  @apply border-blue-700 bg-blue-1000 outline-none;
+  box-shadow: none;
+}
+
+.form-checkbox:checked {
+  @apply border-transparent bg-blue-1000;
 }

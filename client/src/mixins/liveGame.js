@@ -5,7 +5,7 @@ import { mapState } from 'vuex'
 export const liveGame = {
   data() {
     return {
-      gameLength: 0
+      gameLength: 0,
     }
   },
 
@@ -14,7 +14,9 @@ export const liveGame = {
       if (!this.current || !this.current.participants) {
         return []
       }
-      return this.current.participants.filter(p => p.teamId === this.teamColor).sort(this.sortTeamByRole)
+      return this.current.participants
+        .filter((p) => p.teamId === this.teamColor)
+        .sort(this.sortTeamByRole)
     },
     displayStartTime() {
       if (this.current.gameStartTime === 0) {
@@ -26,11 +28,15 @@ export const liveGame = {
       if (!this.current || !this.current.participants) {
         return []
       }
-      return this.current.participants.filter(p => p.teamId !== this.teamColor).sort(this.sortTeamByRole)
+      return this.current.participants
+        .filter((p) => p.teamId !== this.teamColor)
+        .sort(this.sortTeamByRole)
     },
     gamemode() {
       if (this.current.participants) {
-        return this.current.gameType === 'CUSTOM_GAME' ? { type: '', name: 'Custom Game' } : gameModes[this.current.gameQueueConfigId]
+        return this.current.gameType === 'CUSTOM_GAME'
+          ? { type: '', name: 'Custom Game' }
+          : gameModes[this.current.gameQueueConfigId]
       } else {
         return { type: '', name: '' }
       }
@@ -39,12 +45,12 @@ export const liveGame = {
       return this.current ? this.current.gameStartTime : 0
     },
     teamColor() {
-      return this.current.participants.find(p => p.summonerId === this.account.id).teamId
+      return this.current.participants.find((p) => p.summonerId === this.account.id).teamId
     },
     ...mapState({
-      account: state => state.summoner.basic.account,
-      current: state => state.summoner.live.match,
-    })
+      account: (state) => state.summoner.basic.account,
+      current: (state) => state.summoner.live.match,
+    }),
   },
 
   created() {
@@ -58,17 +64,17 @@ export const liveGame = {
   watch: {
     gameStartTime() {
       this.updateGameLength()
-    }
+    },
   },
 
   methods: {
     updateGameLength() {
       if (this.gameStartTime === 0) {
-        return this.gameLength = 0
+        return (this.gameLength = 0)
       }
 
       this.gameLength = (new Date() - new Date(this.gameStartTime)) / 1000
     },
-    sortTeamByRole
-  }
+    sortTeamByRole,
+  },
 }

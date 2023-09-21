@@ -1,32 +1,34 @@
 <template>
-  <div class="relative z-10 text-sm leading-tight text-teal-400 select-none switch">
+  <div class="switch relative z-10 select-none text-sm leading-tight text-teal-400">
     <input
       v-model="selected"
       id="toggle-on"
-      class="hidden toggle toggle-left"
+      class="toggle toggle-left hidden"
       :value="true"
       type="radio"
     />
     <label
-      :class="{'selected-label': selected}"
+      :class="{ 'selected-label': selected }"
       for="toggle-on"
-      class="inline-block py-1 border-t-2 border-b-2 border-l-2 border-r border-teal-500 rounded-l-full cursor-pointer"
-    >{{ leftLabel }}</label>
+      class="inline-block cursor-pointer rounded-l-full border-b-2 border-l-2 border-r border-t-2 border-teal-500 py-1"
+      >{{ leftLabel }}</label
+    >
     <input
       v-model="selected"
       id="toggle-off"
-      class="hidden toggle toggle-right"
+      class="toggle toggle-right hidden"
       :value="false"
       type="radio"
     />
     <label
-      :class="{'selected-label': !selected}"
+      :class="{ 'selected-label': !selected }"
       for="toggle-off"
-      class="inline-block py-1 border-t-2 border-b-2 border-l border-r-2 border-teal-500 rounded-r-full cursor-pointer"
-    >{{ rightLabel }}</label>
+      class="inline-block cursor-pointer rounded-r-full border-b-2 border-l border-r-2 border-t-2 border-teal-500 py-1"
+      >{{ rightLabel }}</label
+    >
     <div
       :class="selected ? 'left-checked' : 'right-checked'"
-      class="absolute inset-0 w-1/2 bg-teal-500 selector"
+      class="selector absolute inset-0 w-1/2 bg-teal-500"
     ></div>
   </div>
 </template>
@@ -45,7 +47,7 @@ export default {
     value: {
       type: Boolean,
       required: true,
-    }
+    },
   },
   computed: {
     selected: {
@@ -54,7 +56,7 @@ export default {
       },
       set(value) {
         this.$emit('updateValue', value)
-      }
+      },
     },
   },
 }
@@ -73,7 +75,8 @@ export default {
 
 .selector {
   z-index: -1;
-  transition: left 200ms cubic-bezier(0.77, 0, 0.175, 1),
+  transition:
+    left 200ms cubic-bezier(0.77, 0, 0.175, 1),
     border-radius 200ms cubic-bezier(0.77, 0, 0.175, 1);
 }
 

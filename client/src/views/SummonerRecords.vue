@@ -2,9 +2,11 @@
   <div key="records">
     <template v-if="!recordsLoaded || (recordsLoaded && records.assists)">
       <div
-        class="relative pl-6 text-2xl text-blue-200 border-b-2 border-blue-800 category blue-900"
-      >Basics</div>
-      <div class="flex flex-wrap -mx-2">
+        class="category blue-900 relative border-b-2 border-blue-800 pl-6 text-2xl text-blue-200"
+      >
+        Basics
+      </div>
+      <div class="-mx-2 flex flex-wrap">
         <template v-if="recordsLoaded">
           <RecordCard
             color="#63b3ed"
@@ -53,7 +55,7 @@
           <div
             v-for="index in 6"
             :key="index"
-            style="width: 176px; height: 294px;"
+            style="width: 176px; height: 294px"
             class="mx-2 mt-6"
           >
             <content-loader
@@ -68,8 +70,12 @@
           </div>
         </template>
       </div>
-      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 blue-900 category">Game impact</div>
-      <div class="flex flex-wrap -mx-2">
+      <div
+        class="blue-900 category relative mt-3 border-b-2 border-blue-800 pl-6 text-2xl text-blue-200"
+      >
+        Game impact
+      </div>
+      <div class="-mx-2 flex flex-wrap">
         <template v-if="recordsLoaded">
           <RecordCard
             color="#FC8181"
@@ -119,7 +125,7 @@
           <div
             v-for="index in 6"
             :key="index"
-            style="width: 176px; height: 294px;"
+            style="width: 176px; height: 294px"
             class="mx-2 mt-6"
           >
             <content-loader
@@ -134,8 +140,10 @@
           </div>
         </template>
       </div>
-      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Miscellaneous</div>
-      <div class="flex flex-wrap -mx-2">
+      <div class="category relative mt-3 border-b-2 border-blue-800 pl-6 text-2xl text-blue-200">
+        Miscellaneous
+      </div>
+      <div class="-mx-2 flex flex-wrap">
         <template v-if="recordsLoaded">
           <RecordCard
             color="#4299E1"
@@ -170,7 +178,7 @@
           <div
             v-for="index in 4"
             :key="index"
-            style="width: 176px; height: 294px;"
+            style="width: 176px; height: 294px"
             class="mx-2 mt-6"
           >
             <content-loader
@@ -185,8 +193,10 @@
           </div>
         </template>
       </div>
-      <div class="relative pl-6 mt-3 text-2xl text-blue-200 border-b-2 border-blue-800 category">Multi kills</div>
-      <div class="flex flex-wrap -mx-2">
+      <div class="category relative mt-3 border-b-2 border-blue-800 pl-6 text-2xl text-blue-200">
+        Multi kills
+      </div>
+      <div class="-mx-2 flex flex-wrap">
         <template v-if="recordsLoaded">
           <RecordCard
             color="#FEFCBF"
@@ -228,7 +238,7 @@
           <div
             v-for="index in 5"
             :key="index"
-            style="width: 176px; height: 294px;"
+            style="width: 176px; height: 294px"
             class="mx-2 mt-6"
           >
             <content-loader
@@ -245,7 +255,7 @@
       </div>
     </template>
     <template v-if="recordsLoaded && !records.assists">
-      <div class="flex flex-col items-center mt-4">
+      <div class="mt-4 flex flex-col items-center">
         <div>No records have been found.</div>
         <div>😕</div>
       </div>
@@ -267,9 +277,9 @@ export default {
   computed: {
     ...mapGetters('summoner', ['summonerFound']),
     ...mapState({
-      records: state => state.summoner.records.list,
-      recordsLoaded: state => state.summoner.records.recordsLoaded,
-    })
+      records: (state) => state.summoner.records.list,
+      recordsLoaded: (state) => state.summoner.records.recordsLoaded,
+    }),
   },
 
   watch: {
@@ -278,7 +288,7 @@ export default {
     },
     summonerFound() {
       this.fetchData()
-    }
+    },
   },
 
   created() {
@@ -298,14 +308,14 @@ export default {
     return {
       title: 'Summoner Records',
     }
-  }
+  },
 }
 </script>
 
 <style scoped>
 .category:before {
-  @apply w-2 h-2 bg-blue-200 absolute block left-0 ml-1;
-  content: "";
+  @apply absolute left-0 ml-1 block h-2 w-2 bg-blue-200;
+  content: '';
   top: 35%;
   transform: rotate(45deg);
 }

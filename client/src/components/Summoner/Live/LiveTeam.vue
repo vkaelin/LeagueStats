@@ -1,18 +1,17 @@
 <template>
-  <div class="px-5 py-4 mt-2 bg-blue-800 rounded-lg">
+  <div class="mt-2 rounded-lg bg-blue-800 px-5 py-4">
     <table
-      class="w-full leading-none text-center table-fixed"
-      style="border-collapse:separate; border-spacing:0 0.5rem;"
+      class="w-full table-fixed text-center leading-none"
+      style="border-collapse: separate; border-spacing: 0 0.5rem"
     >
       <thead>
         <tr class="text-left">
-          <th
-            :class="[ally ? 'text-teal-400 ' : 'text-red-400 ']"
-            class="font-semibold w-team"
-          >{{ ally ? 'Ally' : 'Enemy' }} Team</th>
-          <th class="text-sm font-normal text-blue-200 w-ranked">SoloQ Stats</th>
-          <th class="text-sm font-normal text-blue-200 w-ranked">Flex Stats</th>
-          <th class="px-2 text-sm font-normal text-right text-blue-200 w-bans">Bans</th>
+          <th :class="[ally ? 'text-teal-400 ' : 'text-red-400 ']" class="w-team font-semibold">
+            {{ ally ? 'Ally' : 'Enemy' }} Team
+          </th>
+          <th class="w-ranked text-sm font-normal text-blue-200">SoloQ Stats</th>
+          <th class="w-ranked text-sm font-normal text-blue-200">Flex Stats</th>
+          <th class="w-bans px-2 text-right text-sm font-normal text-blue-200">Bans</th>
         </tr>
       </thead>
       <tbody v-if="liveLoaded">
@@ -20,64 +19,70 @@
           v-for="(player, index) in team"
           :key="player.summonerId"
           :style="getCSSVars(player.championId)"
-          class="relative live-team-row"
+          class="live-team-row relative"
         >
-          <td class="py-1 pl-2 rounded-l-lg">
+          <td class="rounded-l-lg py-1 pl-2">
             <div class="flex items-center">
               <div
                 v-if="player.perks"
                 @click="selectRunes(player)"
                 :class="{ 'cursor-pointer': player.perks }"
-                class="flex flex-col items-center runes"
+                class="runes flex flex-col items-center"
               >
                 <div
-                  :style="{backgroundImage: `url('${getPrimarRune(player.perks)}')`}"
-                  class="w-6 h-6 bg-center bg-cover"
+                  :style="{ backgroundImage: `url('${getPrimarRune(player.perks)}')` }"
+                  class="h-6 w-6 bg-cover bg-center"
                 ></div>
                 <div
-                  :style="{backgroundImage: `url('${getSecondaryRune(player.perks)}')`}"
-                  class="w-3 h-3 mt-1 bg-center bg-cover"
+                  :style="{ backgroundImage: `url('${getSecondaryRune(player.perks)}')` }"
+                  class="mt-1 h-3 w-3 bg-cover bg-center"
                 ></div>
               </div>
               <div v-else class="w-6"></div>
               <div
-                :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${player.championId}.png')`}"
+                :style="{
+                  backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${player.championId}.png')`,
+                }"
                 :class="borderChampion(player.summonerId)"
-                class="relative w-12 h-12 ml-2 bg-center bg-cover border-2 rounded-full bg-blue-1000"
+                class="relative ml-2 h-12 w-12 rounded-full border-2 bg-blue-1000 bg-cover bg-center"
               >
                 <div
                   v-if="player.role && player.role !== 'NONE'"
                   :class="borderChampion(player.summonerId)"
-                  class="absolute border rounded-full p-2px bg-blue-1000"
-                  style="bottom: -5px; right: -5px;"
+                  class="absolute rounded-full border bg-blue-1000 p-0.5"
+                  style="bottom: -5px; right: -5px"
                 >
                   <div
-                    :style="{backgroundImage: `url(${require('@/assets/img/roles/' + player.role + '.png')})`}"
-                    class="w-4 h-4 bg-center bg-cover"
+                    :style="{ backgroundImage: `url(${'/img/roles/' + player.role + '.png'})` }"
+                    class="h-4 w-4 bg-cover bg-center"
                   ></div>
                 </div>
               </div>
-              <div class="flex flex-col ml-2">
+              <div class="ml-2 flex flex-col">
                 <div
-                  :style="{backgroundImage: `url(${player.summonerSpell1.icon})`}"
-                  class="w-4 h-4 bg-center bg-cover rounded-md bg-blue-1000"
+                  :style="{ backgroundImage: `url(${player.summonerSpell1.icon})` }"
+                  class="h-4 w-4 rounded-md bg-blue-1000 bg-cover bg-center"
                 ></div>
                 <div
-                  :style="{backgroundImage: `url(${player.summonerSpell2.icon})`}"
-                  class="w-4 h-4 mt-1 bg-center bg-cover rounded-md bg-blue-1000"
+                  :style="{ backgroundImage: `url(${player.summonerSpell2.icon})` }"
+                  class="mt-1 h-4 w-4 rounded-md bg-blue-1000 bg-cover bg-center"
                 ></div>
               </div>
-              <div class="ml-3 text-sm leading-tight text-left">
+              <div class="ml-3 text-left text-sm leading-tight">
                 <router-link
                   v-if="!player.bot"
-                  :to="{ name: 'summoner', params: { region: $route.params.region, name: player.summonerName }}"
-                  :class="[player.summonerId === account.id ? 'text-yellow-500' : 'hover:text-blue-200']"
+                  :to="{
+                    name: 'summoner',
+                    params: { region: $route.params.region, name: player.summonerName },
+                  }"
+                  :class="[
+                    player.summonerId === account.id ? 'text-yellow-500' : 'hover:text-blue-200',
+                  ]"
                   class="font-semibold"
-                >{{ player.summonerName }}</router-link>
-                <div
-                  :class="[ally ? 'text-teal-300 ' : 'text-red-400 ']"
-                  class="text-xs"
-                >{{ player.champion.name }}
+                  >{{ player.summonerName }}</router-link
+                >
+                <div :class="[ally ? 'text-teal-300 ' : 'text-red-400 ']" class="text-xs">
+                  {{ player.champion.name }}
                 </div>
               </div>
             </div>
@@ -86,21 +91,21 @@
             <div class="px-2">
               <div v-if="player.rank.soloQ" class="flex items-center">
                 <div class="inline-block text-center">
-                  <svg class="w-5 h-5">
+                  <svg class="h-5 w-5">
                     <use :xlink:href="`#rank-${player.rank.soloQ.tier.toLowerCase()}`" />
                   </svg>
-                  <div
-                    class="text-xs font-semibold text-blue-300 mt-2px"
-                  >{{ player.rank.soloQ.shortName }}</div>
+                  <div class="mt-0.5 text-xs font-semibold text-blue-300">
+                    {{ player.rank.soloQ.shortName }}
+                  </div>
                 </div>
                 <div class="ml-5 text-center">
                   <div class="font-semibold">{{ player.rank.soloQ.winrate }}</div>
-                  <div
-                    class="mt-1 text-xs text-blue-300"
-                  >{{ player.rank.soloQ.wins + player.rank.soloQ.losses }} games</div>
+                  <div class="mt-1 text-xs text-blue-300">
+                    {{ player.rank.soloQ.wins + player.rank.soloQ.losses }} games
+                  </div>
                 </div>
               </div>
-              <div v-else class="w-5 h-5">
+              <div v-else class="h-5 w-5">
                 <div class="-mt-1 text-2xl text-blue-300">-</div>
               </div>
             </div>
@@ -109,46 +114,52 @@
             <div class="px-2">
               <div v-if="player.rank.flex5v5" class="flex items-center">
                 <div class="inline-block text-center">
-                  <svg class="w-5 h-5">
+                  <svg class="h-5 w-5">
                     <use :xlink:href="`#rank-${player.rank.flex5v5.tier.toLowerCase()}`" />
                   </svg>
-                  <div
-                    class="text-xs font-semibold text-blue-300 mt-2px"
-                  >{{ player.rank.flex5v5.shortName }}</div>
+                  <div class="mt-0.5 text-xs font-semibold text-blue-300">
+                    {{ player.rank.flex5v5.shortName }}
+                  </div>
                 </div>
                 <div class="ml-5 text-center">
                   <div class="font-semibold">{{ player.rank.flex5v5.winrate }}</div>
-                  <div
-                    class="mt-1 text-xs text-blue-300"
-                  >{{ player.rank.flex5v5.wins + player.rank.flex5v5.losses }} games</div>
+                  <div class="mt-1 text-xs text-blue-300">
+                    {{ player.rank.flex5v5.wins + player.rank.flex5v5.losses }} games
+                  </div>
                 </div>
               </div>
-              <div v-else class="w-5 h-5">
+              <div v-else class="h-5 w-5">
                 <div class="-mt-1 text-2xl text-blue-300">-</div>
               </div>
             </div>
           </td>
-          <td class="py-1 text-right rounded-r-lg">
+          <td class="rounded-r-lg py-1 text-right">
             <div class="inline-block px-2">
               <div
                 v-if="live.bannedChampions.length"
                 :class="[ally ? 'ban-blue border-teal-500' : 'ban-red border-red-500']"
-                class="relative border-2 rounded-full ban"
+                class="ban relative rounded-full border-2"
               >
                 <div
                   :style="[
-                    banChamp(index, player.teamId) ? 
-                      {backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${banChamp(index, player.teamId).championId}.png')`}
-                      : ''
+                    banChamp(index, player.teamId)
+                      ? {
+                          backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${
+                            banChamp(index, player.teamId).championId
+                          }.png')`,
+                        }
+                      : '',
                   ]"
-                  class="w-6 h-6 bg-center bg-cover rounded-full ban-img bg-blue-1000"
+                  class="ban-img h-6 w-6 rounded-full bg-blue-1000 bg-cover bg-center"
                 ></div>
                 <div
-                  :class="[ally ? 'text-teal-100 bg-teal-500' : 'text-red-100 bg-red-500']"
-                  class="absolute flex items-center justify-center w-4 h-4 text-xs font-bold rounded-full ban-order"
-                >{{ banChamp(index, player.teamId).pickTurn }}</div>
+                  :class="[ally ? 'bg-teal-500 text-teal-100' : 'bg-red-500 text-red-100']"
+                  class="ban-order absolute flex h-4 w-4 items-center justify-center rounded-full text-xs font-bold"
+                >
+                  {{ banChamp(index, player.teamId).pickTurn }}
+                </div>
               </div>
-              <div v-else class="w-5 h-5 text-left">
+              <div v-else class="h-5 w-5 text-left">
                 <div class="text-2xl text-blue-300">-</div>
               </div>
             </div>
@@ -202,7 +213,7 @@ export default {
   props: {
     team: {
       type: Array,
-      required: true
+      required: true,
     },
     ally: {
       type: Boolean,
@@ -211,19 +222,19 @@ export default {
     gamemode: {
       type: String,
       default: '',
-    }
+    },
   },
 
   data() {
     return {
       clashGameBanOrder: {
         100: [1, 3, 5, 8, 10],
-        200: [2, 4, 6, 7, 9]
+        200: [2, 4, 6, 7, 9],
       },
       customGameBanOrder: {
         100: [1, 3, 5, 2, 4],
-        200: [2, 4, 6, 1, 3]
-      }
+        200: [2, 4, 6, 1, 3],
+      },
     }
   },
 
@@ -235,10 +246,10 @@ export default {
       return this.gamemode === 'Custom Game'
     },
     ...mapState({
-      account: state => state.summoner.basic.account,
-      live: state => state.summoner.live.match,
-      liveLoaded: state => state.summoner.live.liveLoaded,
-    })
+      account: (state) => state.summoner.basic.account,
+      live: (state) => state.summoner.live.match,
+      liveLoaded: (state) => state.summoner.live.liveLoaded,
+    }),
   },
 
   methods: {
@@ -254,7 +265,7 @@ export default {
         toFind = this.customGameBanOrder[teamId][index]
       }
 
-      return this.live.bannedChampions.find(b => b.pickTurn === toFind && b.teamId === teamId)
+      return this.live.bannedChampions.find((b) => b.pickTurn === toFind && b.teamId === teamId)
     },
     borderChampion(id) {
       if (id === this.account.id) {
@@ -270,14 +281,13 @@ export default {
       }
     },
     selectRunes(player) {
-      if(!player.perks)
-        return
-      this.displayOrHideRunes(player.perks)
+      if (!player.perks) return
+      this.displayRunes(player.perks)
     },
     getPrimarRune,
     getSecondaryRune,
-     ...mapActions('cdragon', ['displayOrHideRunes']),
-  }
+    ...mapActions('cdragon', ['displayRunes']),
+  },
 }
 </script>
 
@@ -299,7 +309,7 @@ export default {
 }
 
 .live-team-row td:first-child:before {
-  content: "";
+  content: '';
   position: absolute;
   z-index: -10;
   top: 0;

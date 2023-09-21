@@ -54,7 +54,11 @@ export default class SummonersController {
 
       // Add job in 1sec to load entire matchlist in DB (in background)
       const matchListMode = summonerDB.$isLocal ? MatchListMode.FIRSTIME : MatchListMode.UPDATE
-      Bull.schedule(new FetchMatchList().key, { puuid: account.puuid, region, matchListMode }, 1000)
+      Bull.schedule(
+        new FetchMatchList().key,
+        { puuid: account.puuid, region, mode: matchListMode },
+        1000
+      )
 
       // All seasons the summoner has played
       finalJSON.seasons = await this.getSeasons(account.puuid)

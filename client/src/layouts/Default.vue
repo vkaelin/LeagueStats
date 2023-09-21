@@ -1,21 +1,21 @@
 <template>
-  <div class="flex flex-col min-h-screen overflow-hidden bg-blue-900">
+  <div class="flex min-h-screen flex-col overflow-hidden bg-blue-900">
     <LazyBackground
-      :image-source="require('@/assets/img/bg-homepage-1.jpg')"
-      image-class="absolute z-0 w-full h-200"
+      image-source="/img/bg-homepage-1.jpg"
+      image-class="absolute z-0 w-full h-[50rem]"
       more-backgrounds="linear-gradient(180deg, rgba(42, 67, 101, 0) 0%, #2A4365 50%),"
       transition-name="fade"
     ></LazyBackground>
 
     <header
       :class="bgHeader ? 'header-scrolled' : 'bg-transparent'"
-      class="fixed left-0 right-0 z-20 px-4 text-teal-100 transition-colors duration-100 ease-in-out border-b-2 header"
-      style="border-color: rgba(144, 205, 244, 0.4);"
+      class="header fixed left-0 right-0 z-20 border-b-2 px-4 text-teal-100 transition-colors duration-100 ease-in-out"
+      style="border-color: rgba(144, 205, 244, 0.4)"
     >
-      <div class="flex items-center justify-between py-2 -mb-2px">
+      <div class="-mb-0.5 flex items-center justify-between py-2">
         <div class="flex flex-1">
           <router-link to="/">
-            <img class="block h-10" src="@/assets/img/Logo.svg" alt="LeagueStats logo" />
+            <img class="block h-10" src="/img/Logo.svg" alt="LeagueStats logo" />
           </router-link>
         </div>
 
@@ -23,7 +23,7 @@
 
         <div class="flex-1">
           <div class="flex items-center justify-end">
-            <a class="relative text-sm discord" href="https://discord.gg/RjBzjfk" target="_blank">
+            <a class="discord relative text-sm" href="https://discord.gg/RjBzjfk" target="_blank">
               <svg
                 class="absolute fill-current"
                 xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@
       </div>
     </header>
 
-    <div class="relative z-10 flex-grow mx-auto mt-20 text-white page-wrapper">
+    <div class="page-wrapper relative z-10 mx-auto mt-20 flex-grow text-white">
       <template v-if="summonerLoading || summonerFound">
         <template v-if="summonerLoading">
           <HeaderLoader />
@@ -52,7 +52,7 @@
         <template v-else-if="summonerFound">
           <div class="flex items-center justify-between">
             <div>
-              <div class="flex items-center mt-2">
+              <div class="mt-2 flex items-center">
                 <Tooltip>
                   <template #trigger>
                     <h1 class="text-4xl font-extrabold">
@@ -62,47 +62,53 @@
                   <template #default>
                     <div
                       v-if="basic.account.names.length > 1"
-                      class="px-2 text-sm text-center text-white select-none"
+                      class="select-none px-2 text-center text-sm text-white"
                     >
                       <div>Old summoner names</div>
-                      <ul class="pl-2 text-left list-disc list-inside">
+                      <ul class="list-inside list-disc pl-2 text-left">
                         <li
                           v-for="name in basic.account.names.slice(0, -1)"
                           :key="name.date"
                           class="text-teal-400"
-                        >{{ name.name }}</li>
+                        >
+                          {{ name.name }}
+                        </li>
                       </ul>
                     </div>
                   </template>
                 </Tooltip>
                 <div
                   v-if="playing"
-                  class="flex items-center px-3 py-1 mt-2 ml-4 bg-teal-800 border border-teal-400 rounded-full"
+                  class="ml-4 mt-2 flex items-center rounded-full border border-teal-400 bg-teal-800 px-3 py-1"
                 >
-                  <div class="w-2 h-2 rounded-full playing-dot bg-teal-flashy"></div>
+                  <div class="playing-dot h-2 w-2 rounded-full bg-teal-flashy"></div>
                   <span class="ml-2 text-sm font-semibold text-teal-flashy">In Game</span>
                 </div>
                 <div
                   v-if="false"
-                  class="inline-flex items-center px-2 py-1 mt-2 ml-4 leading-tight border border-teal-500 rounded"
-                  style="background: rgba(40, 94, 97, 0.35);"
+                  class="ml-4 mt-2 inline-flex items-center rounded border border-teal-500 px-2 py-1 leading-tight"
+                  style="background: rgba(40, 94, 97, 0.35)"
                 >
-                  <svg class="w-4 h-4 text-teal-600">
+                  <svg class="h-4 w-4 text-teal-600">
                     <use xlink:href="#star" />
                   </svg>
                   <div class="ml-1 text-xs font-bold text-teal-200">Favorite</div>
                 </div>
               </div>
-              <div class="flex mt-2">
-                <div :class="{'playing': playing}" class="relative w-24 h-24">
+              <div class="mt-2 flex">
+                <div :class="{ playing: playing }" class="relative h-24 w-24">
                   <div
-                    :class="{'border-2': !playing}"
-                    class="relative z-10 w-24 h-24 bg-center bg-cover border-teal-400 rounded-full bg-blue-1000"
-                    :style="{backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${basic.account.profileIconId}.jpg')`}"
+                    :class="{ 'border-2': !playing }"
+                    class="relative z-10 h-24 w-24 rounded-full border-teal-400 bg-blue-1000 bg-cover bg-center"
+                    :style="{
+                      backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${basic.account.profileIconId}.jpg')`,
+                    }"
                   >
                     <div
-                      class="absolute bottom-0 left-0 flex items-center justify-center w-8 h-8 text-xs font-extrabold text-teal-500 bg-blue-900 border-2 border-teal-400 rounded-full"
-                    >{{ basic.account.summonerLevel }}</div>
+                      class="absolute bottom-0 left-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-teal-400 bg-blue-900 text-xs font-extrabold text-teal-500"
+                    >
+                      {{ basic.account.summonerLevel }}
+                    </div>
                   </div>
                 </div>
 
@@ -121,29 +127,45 @@
             <!-- NAVIGATION -->
             <div class="pb-2">
               <router-link
-                :to="{ name: 'summoner', params: { region: $route.params.region, name: $route.params.name }}"
+                :to="{
+                  name: 'summoner',
+                  params: { region: $route.params.region, name: $route.params.name },
+                }"
                 :class="isRouteActive('summoner')"
-                class="pb-2 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
+                class="cursor-pointer border-b-2 border-transparent pb-2 text-blue-300 hover:text-blue-100"
                 exact
-              >Overview</router-link>
+                >Overview</router-link
+              >
               <router-link
-                :to="{ name: 'summonerChampions', params: { region: $route.params.region, name: $route.params.name }}"
+                :to="{
+                  name: 'summonerChampions',
+                  params: { region: $route.params.region, name: $route.params.name },
+                }"
                 :class="isRouteActive('summonerChampions')"
-                class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
+                class="ml-4 cursor-pointer border-b-2 border-transparent pb-2 text-blue-300 hover:text-blue-100"
                 exact
-              >Champions</router-link>
+                >Champions</router-link
+              >
               <router-link
-                :to="{ name: 'summonerRecords', params: { region: $route.params.region, name: $route.params.name }}"
+                :to="{
+                  name: 'summonerRecords',
+                  params: { region: $route.params.region, name: $route.params.name },
+                }"
                 :class="isRouteActive('summonerRecords')"
-                class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
+                class="ml-4 cursor-pointer border-b-2 border-transparent pb-2 text-blue-300 hover:text-blue-100"
                 exact
-              >Records</router-link>
+                >Records</router-link
+              >
               <router-link
-                :to="{ name: 'summonerLive', params: { region: $route.params.region, name: $route.params.name }}"
+                :to="{
+                  name: 'summonerLive',
+                  params: { region: $route.params.region, name: $route.params.name },
+                }"
                 :class="isRouteActive('summonerLive')"
-                class="pb-2 ml-4 text-blue-300 border-b-2 border-transparent cursor-pointer hover:text-blue-100"
+                class="ml-4 cursor-pointer border-b-2 border-transparent pb-2 text-blue-300 hover:text-blue-100"
                 exact
-              >Live game</router-link>
+                >Live game</router-link
+              >
             </div>
 
             <!-- Select Season -->
@@ -160,8 +182,8 @@
       </template>
 
       <template v-else-if="summonerNotFound">
-        <div class="flex justify-center mt-16">
-          <div class="px-4 py-3 text-lg font-bold text-center text-blue-100 rounded-lg bg-gradient">
+        <div class="mt-16 flex justify-center">
+          <div class="bg-gradient rounded-lg px-4 py-3 text-center text-lg font-bold text-blue-100">
             <div>Player can't be found.</div>
             <div>😕</div>
           </div>
@@ -193,12 +215,12 @@ export default {
     SearchForm,
     HeaderLoader,
     SummonerRanked,
-    Tooltip
+    Tooltip,
   },
 
   data() {
     return {
-      bgHeader: false
+      bgHeader: false,
     }
   },
 
@@ -207,21 +229,28 @@ export default {
       return this.summonerFound && this.overviewLoaded ? 'tab' : 'none'
     },
     ...mapState({
-      basic: state => state.summoner.basic
+      basic: (state) => state.summoner.basic,
     }),
-    ...mapGetters('summoner', ['playing', 'overviewLoaded', 'summonerFound', 'summonerNotFound', 'summonerLoading'])
+    ...mapGetters('summoner', [
+      'playing',
+      'overviewLoaded',
+      'summonerFound',
+      'summonerNotFound',
+      'summonerLoading',
+    ]),
   },
 
   watch: {
     $route(to, from) {
-      if (from.params.region === to.params.region && from.params.name === to.params.name)
-        return
+      if (from.params.region === to.params.region && from.params.name === to.params.name) return
       this.apiCall()
-    }
+    },
   },
 
   created() {
-    this.apiCall()
+    if (this.$route.params.region) {
+      this.apiCall()
+    }
     window.addEventListener('scroll', this.handleScroll)
   },
 
@@ -239,11 +268,11 @@ export default {
     },
     isRouteActive(currentRoute) {
       return {
-        'router-link-active': this.$route.name === currentRoute
+        'router-link-active': this.$route.name === currentRoute,
       }
     },
     redirect(summoner, region) {
-      this.$router.push(`/summoner/${region}/${summoner}`).catch(() => { })
+      this.$router.push(`/summoner/${region}/${summoner}`).catch(() => {})
     },
     ...mapActions('settings', ['updateSettings']),
     ...mapActions('summoner', ['basicRequest']),
@@ -251,9 +280,11 @@ export default {
 
   metaInfo() {
     return {
-      titleTemplate: this.summonerFound ? `${this.basic.account.name} | LeagueStats.gg %s` : 'LeagueStats.gg %s',
+      titleTemplate: this.summonerFound
+        ? `${this.basic.account.name} | LeagueStats.gg %s`
+        : 'LeagueStats.gg %s',
     }
-  }
+  },
 }
 </script>
 
@@ -290,7 +321,7 @@ export default {
 
 .playing::before,
 .playing::after {
-  content: "";
+  content: '';
   position: absolute;
   height: 100px;
   width: 100px;
@@ -303,11 +334,7 @@ export default {
 
 .playing::after {
   z-index: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0) 30%,
-    rgb(36, 232, 204) 100%
-  );
+  background: linear-gradient(to top, rgba(0, 0, 0, 0) 30%, rgb(36, 232, 204) 100%);
   animation: 0.75s linear 0s infinite normal none running rotate;
 }
 

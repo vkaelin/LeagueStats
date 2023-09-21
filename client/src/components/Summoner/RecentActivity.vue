@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="inline-block bg-blue-800 rounded-lg">
+    <div class="inline-block rounded-lg bg-blue-800">
       <div
-        class="relative flex items-center justify-center py-2 text-blue-200 rounded-t-lg heading"
+        class="heading relative flex items-center justify-center rounded-t-lg py-2 text-blue-200"
       >
-        <svg class="w-4 h-4">
+        <svg class="h-4 w-4">
           <use xlink:href="#time" />
         </svg>
         <span class="mx-3 text-sm font-bold uppercase">Recent Activity</span>
-        <svg class="w-4 h-4">
+        <svg class="h-4 w-4">
           <use xlink:href="#time" />
         </svg>
       </div>
@@ -19,7 +19,7 @@
           <span class="ml-16 text-xs font-semibold text-blue-200">{{ gridDays[73].month }}</span>
           <span class="ml-16 text-xs font-semibold text-blue-200">{{ gridDays[104].month }}</span>
         </div>
-        <div class="flex mt-1">
+        <div class="mt-1 flex">
           <div class="flex flex-col">
             <span class="text-xs font-semibold leading-snug text-blue-200">Mo</span>
             <span class="mt-1 text-xs font-semibold leading-snug text-blue-200">Tu</span>
@@ -30,20 +30,20 @@
             <span class="mt-1 text-xs font-semibold leading-snug text-blue-200">Su</span>
           </div>
           <div
-            class="flex flex-col flex-wrap ml-1"
+            class="ml-1 flex flex-col flex-wrap"
             style="width: calc(20px * 15); height: calc(20px * 7)"
           >
             <Tooltip v-for="(day, index) in gridDays.slice(indexFirstMonday)" :key="day.timestamp">
               <template #trigger>
                 <div
                   :class="[getCaseMargin(index), getCaseColor(day.matches)]"
-                  class="w-4 h-4 ml-1 cursor-pointer"
+                  class="ml-1 h-4 w-4 cursor-pointer"
                 />
               </template>
               <template #default>
-                <div class="px-2 text-xs text-center text-blue-200 leading-5">
+                <div class="px-2 text-center text-xs leading-5 text-blue-200">
                   <div>
-                    <span class="text-white font-semibold">{{ day.date }}</span>
+                    <span class="font-semibold text-white">{{ day.date }}</span>
                     <span>: </span>
                     <span class="font-bold text-teal-400">{{ day.matches }}</span>
                     <span> {{ day.matches > 1 ? 'games' : 'game' }}</span>
@@ -51,12 +51,12 @@
                   <template v-if="day.matches > 0">
                     <div>
                       <span>time played: </span>
-                      <span class="font-semibold text-white">{{ day.time|secToHours }}</span>
+                      <span class="font-semibold text-white">{{ day.time | secToHours }}</span>
                     </div>
                     <div>
                       <span>record: </span>
                       <span class="font-bold text-green-400">{{ day.wins }}</span>
-                      <span> - </span> 
+                      <span> - </span>
                       <span class="font-bold text-red-400">{{ day.losses }}</span>
                     </div>
                   </template>
@@ -87,21 +87,21 @@ export default {
       options: {
         year: 'numeric',
         month: '2-digit',
-        day: 'numeric'
-      }
+        day: 'numeric',
+      },
     }
   },
 
   computed: {
-  ...mapState({
-      recentActivity: state => state.summoner.basic.recentActivity
+    ...mapState({
+      recentActivity: (state) => state.summoner.basic.recentActivity,
     }),
   },
 
   watch: {
     recentActivity() {
       this.fillGrid()
-    }
+    },
   },
 
   created() {
@@ -125,7 +125,7 @@ export default {
           wins: 0,
           losses: 0,
           day: day.toLocaleString('en', { weekday: 'long' }).substring(0, 2),
-          month: day.toLocaleString('en', { month: 'long' }).substring(0, 3)
+          month: day.toLocaleString('en', { month: 'long' }).substring(0, 3),
         })
       }
 
@@ -137,9 +137,7 @@ export default {
         const matchTime = new Date(match.day)
         const formattedTime = matchTime.toLocaleString(undefined, this.options)
 
-        const dayOfTheMatch = this.gridDays.filter(
-          e => e.date === formattedTime
-        )
+        const dayOfTheMatch = this.gridDays.filter((e) => e.date === formattedTime)
         if (dayOfTheMatch.length > 0) {
           dayOfTheMatch[0].time = match.time
           dayOfTheMatch[0].matches = match.wins + match.losses
@@ -149,7 +147,7 @@ export default {
       }
 
       // Get the index of the first Monday
-      this.indexFirstMonday = this.gridDays.findIndex(d => d.day === 'Mo')
+      this.indexFirstMonday = this.gridDays.findIndex((d) => d.day === 'Mo')
     },
     getCaseColor(nbMatches) {
       /* TODO: change this */
@@ -168,7 +166,7 @@ export default {
       if (index % 7 !== 0) {
         return 'mt-1'
       }
-    }
-  }
+    },
+  },
 }
 </script>

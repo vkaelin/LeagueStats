@@ -14,9 +14,12 @@ export const state = {
 }
 
 export const mutations = {
-  DISPLAY_HIDE_RUNES(state, selectedRunes) {
-    state.runesOpen = !state.runesOpen
+  DISPLAY_RUNES(state, selectedRunes) {
+    state.runesOpen = true
     state.selectedRunes = selectedRunes
+  },
+  HIDE_RUNES(state) {
+    state.runesOpen = false
   },
   SET_RUNES(state, runes) {
     state.runes = runes
@@ -24,18 +27,25 @@ export const mutations = {
 }
 
 export const actions = {
-  displayOrHideRunes({ commit }, selectedRunes) {
-    commit('DISPLAY_HIDE_RUNES', selectedRunes)
+  displayRunes({ commit }, selectedRunes) {
+    commit('DISPLAY_RUNES', selectedRunes)
+  },
+  hideRunes({ commit }) {
+    commit('HIDE_RUNES')
   },
   async getRunes({ commit, getters }) {
-    if (getters.runesLoaded) { return }
+    if (getters.runesLoaded) {
+      return
+    }
 
-    const { data } = await axios.get('cdragon/runes').catch((e) => { console.log(e) })
+    const { data } = await axios.get('cdragon/runes').catch((e) => {
+      console.log(e)
+    })
     console.log(data)
     commit('SET_RUNES', data)
   },
 }
 
 export const getters = {
-  runesLoaded: state => state.runes,
+  runesLoaded: (state) => state.runes,
 }

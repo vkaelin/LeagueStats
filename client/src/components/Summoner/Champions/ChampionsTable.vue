@@ -1,24 +1,28 @@
 <template>
-  <table class="w-full leading-none text-center bg-blue-800 rounded-lg table-fixed">
+  <table class="w-full table-fixed rounded-lg bg-blue-800 text-center leading-none">
     <thead>
-      <tr class="text-sm rounded-t-lg select-none heading">
+      <tr class="heading select-none rounded-t-lg text-sm">
         <th
           @click="sortBy('index')"
           :class="sortedClasses('index')"
-          class="relative px-2 py-4 font-normal rounded-tl-lg cursor-pointer hover:bg-blue-700"
-        >rank</th>
+          class="relative cursor-pointer rounded-tl-lg px-2 py-4 font-normal hover:bg-blue-700"
+        >
+          rank
+        </th>
         <th
           v-for="(heading, index) in headings"
           :key="`champHeading-${index}`"
           @click="sortBy(heading.props)"
           v-html="heading.name"
           :class="[
-            {'rounded-tr-lg': index === headings.length - 1,
-             'w-name': heading.name === 'Name',
-             'w-kda': heading.name === 'KDA'}, 
-            sortedClasses(heading.props)
+            {
+              'rounded-tr-lg': index === headings.length - 1,
+              'w-name': heading.name === 'Name',
+              'w-kda': heading.name === 'KDA',
+            },
+            sortedClasses(heading.props),
           ]"
-          class="relative px-2 py-4 font-normal cursor-pointer hover:bg-blue-700"
+          class="relative cursor-pointer px-2 py-4 font-normal hover:bg-blue-700"
         ></th>
       </tr>
     </thead>
@@ -26,75 +30,69 @@
       <tr
         v-for="(champion, index) in championsToDisplay"
         :key="champion._id"
-        :class="{'rounded-b-lg': index === championsToDisplay.length - 1}"
+        :class="{ 'rounded-b-lg': index === championsToDisplay.length - 1 }"
       >
         <td
-          :class="{'rounded-bl-lg': index === championsToDisplay.length - 1}"
-          class="relative px-2 py-3 text-sm text-white bg-blue-800 border-t-table"
-        >{{ champion.index + 1 }}</td>
-        <td class="relative px-2 py-3 text-sm text-white bg-blue-800 border-t-table">
+          :class="{ 'rounded-bl-lg': index === championsToDisplay.length - 1 }"
+          class="border-t-table relative bg-blue-800 px-2 py-3 text-sm text-white"
+        >
+          {{ champion.index + 1 }}
+        </td>
+        <td class="border-t-table relative bg-blue-800 px-2 py-3 text-sm text-white">
           <div class="flex items-center">
             <div
-              :style="{backgroundImage: `url('${champion.champion.icon}')`}"
-              class="flex-shrink-0 w-6 h-6 bg-center bg-cover rounded-full bg-blue-1000"
+              :style="{ backgroundImage: `url('${champion.champion.icon}')` }"
+              class="h-6 w-6 flex-shrink-0 rounded-full bg-blue-1000 bg-cover bg-center"
             ></div>
             <div class="ml-2">{{ champion.champion.name }}</div>
           </div>
         </td>
-        <td
-          :style="bgColor(champion, 'winrate')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.winrate|percent }}</td>
-        <td
-          :style="bgColor(champion, 'playrate')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.playrate|percent }}</td>
-        <td
-          :style="bgColor(champion, 'wins')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.wins }}</td>
-        <td
-          :style="bgColor(champion, 'count')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.count }}</td>
+        <td :style="bgColor(champion, 'winrate')" class="px-2 py-3 text-sm text-white">
+          {{ champion.winrate | percent }}
+        </td>
+        <td :style="bgColor(champion, 'playrate')" class="px-2 py-3 text-sm text-white">
+          {{ champion.playrate | percent }}
+        </td>
+        <td :style="bgColor(champion, 'wins')" class="px-2 py-3 text-sm text-white">
+          {{ champion.wins }}
+        </td>
+        <td :style="bgColor(champion, 'count')" class="px-2 py-3 text-sm text-white">
+          {{ champion.count }}
+        </td>
         <td :style="bgColor(champion, 'kda')" class="px-2 py-3 text-sm text-white">
-          <div>{{ champion.kda|round }}</div>
-          <div class="mt-1 text-blue-200 whitespace-no-wrap text-xxs">
-            {{ champion.kills/champion.count|round(1) }}
+          <div>{{ champion.kda | round }}</div>
+          <div class="mt-1 whitespace-nowrap text-xxs text-blue-200">
+            {{ (champion.kills / champion.count) | round(1) }}
             /
-            {{ champion.deaths/champion.count|round(1) }}
+            {{ (champion.deaths / champion.count) | round(1) }}
             /
-            {{ champion.assists/champion.count|round(1) }}
+            {{ (champion.assists / champion.count) | round(1) }}
           </div>
         </td>
+        <td :style="bgColor(champion, 'kp')" class="px-2 py-3 text-sm text-white">
+          {{ champion.kp | percent }}
+        </td>
+        <td :style="bgColor(champion, 'minions')" class="px-2 py-3 text-sm text-white">
+          {{ champion.minions | round(0) }}
+        </td>
+        <td :style="bgColor(champion, 'gold')" class="px-2 py-3 text-sm text-white">
+          {{ champion.gold | kilo }}
+        </td>
+        <td :style="bgColor(champion, 'dmgChamp')" class="px-2 py-3 text-sm text-white">
+          {{ champion.dmgChamp | kilo }}
+        </td>
+        <td :style="bgColor(champion, 'dmgTaken')" class="px-2 py-3 text-sm text-white">
+          {{ champion.dmgTaken | kilo }}
+        </td>
+        <td :style="bgColor(champion, 'gameLength')" class="px-2 py-3 text-sm text-white">
+          {{ champion.gameLength | secToTime }}
+        </td>
         <td
-          :style="bgColor(champion, 'kp')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.kp|percent }}</td>
-        <td
-          :style="bgColor(champion, 'minions')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.minions|round(0) }}</td>
-        <td
-          :style="bgColor(champion, 'gold')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.gold|kilo }}</td>
-        <td
-          :style="bgColor(champion, 'dmgChamp')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.dmgChamp|kilo }}</td>
-        <td
-          :style="bgColor(champion, 'dmgTaken')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.dmgTaken|kilo }}</td>
-        <td
-          :style="bgColor(champion, 'gameLength')"
-          class="px-2 py-3 text-sm text-white"
-        >{{ champion.gameLength|secToTime }}</td>
-        <td
-          :class="{'rounded-br-lg': index === championsToDisplay.length - 1}"
+          :class="{ 'rounded-br-lg': index === championsToDisplay.length - 1 }"
           class="px-2 py-3 text-xs text-white"
-        >{{ champion.lastPlayed }}</td>
+        >
+          {{ champion.lastPlayed }}
+        </td>
       </tr>
     </tbody>
     <tbody v-else>
@@ -143,16 +141,16 @@ export default {
   props: {
     champions: {
       type: Array,
-      required: true
+      required: true,
     },
     onlyMostPlayed: {
       type: Boolean,
-      default: false
+      default: false,
     },
     search: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
 
   data() {
@@ -160,66 +158,66 @@ export default {
       headings: [
         {
           name: 'Name',
-          props: 'champion.name'
+          props: 'champion.name',
         },
         {
           name: 'Win <br> rate',
-          props: 'winrate'
+          props: 'winrate',
         },
         {
           name: 'Play <br> rate',
-          props: 'playrate'
+          props: 'playrate',
         },
         {
           name: 'Wins',
-          props: 'wins'
+          props: 'wins',
         },
         {
           name: 'Plays',
-          props: 'count'
+          props: 'count',
         },
         {
           name: 'KDA',
-          props: 'kda'
+          props: 'kda',
         },
         {
           name: 'KP',
-          props: 'kp'
+          props: 'kp',
         },
         {
           name: 'Minions',
-          props: 'minions'
+          props: 'minions',
         },
         {
           name: 'Gold',
-          props: 'gold'
+          props: 'gold',
         },
         {
           name: 'Dmg <br> champ',
-          props: 'dmgChamp'
+          props: 'dmgChamp',
         },
         {
           name: 'Dmg <br> taken',
-          props: 'dmgTaken'
+          props: 'dmgTaken',
         },
         {
           name: 'Game <br> length',
-          props: 'gameLength'
+          props: 'gameLength',
         },
         {
           name: 'Last <br> played',
-          props: 'date'
-        }
+          props: 'date',
+        },
       ],
       championsFull: [],
       sortProps: 'index',
-      order: -1
+      order: -1,
     }
   },
 
   computed: {
     championsToDisplay() {
-      return this.championsFull.filter(c => {
+      return this.championsFull.filter((c) => {
         const playedEnough = this.onlyMostPlayed ? c.playrate >= 1 : true
         const searched = c.champion.name.toLowerCase().includes(this.search.toLowerCase())
         return playedEnough && searched
@@ -227,7 +225,7 @@ export default {
     },
     totalGames() {
       return this.champions.reduce((agg, champ) => agg + champ.count, 0)
-    }
+    },
   },
 
   watch: {
@@ -236,7 +234,7 @@ export default {
     },
     championsToDisplay() {
       this.reApplySorts()
-    }
+    },
   },
 
   created() {
@@ -247,15 +245,16 @@ export default {
     bgColor(champion, stats) {
       const biggestValue = Math.max(
         ...this.championsToDisplay
-          .filter(c => c[stats] !== Infinity)
-          .map(c => parseFloat(c[stats]))
-        , 0)
+          .filter((c) => c[stats] !== Infinity)
+          .map((c) => parseFloat(c[stats])),
+        0
+      )
       // Take the second biggest Value if it's an Infinity KDA
       const value = champion[stats] === Infinity ? biggestValue : parseFloat(champion[stats])
       const opacity = (value / biggestValue).toFixed(2)
 
       return {
-        backgroundColor: `rgba(${colors[stats]}, ${opacity})`
+        backgroundColor: `rgba(${colors[stats]}, ${opacity})`,
       }
     },
     sortBy(props) {
@@ -271,8 +270,7 @@ export default {
         const bProp = props.split('.').reduce((p, c) => p && p[c], b)
         let order = typeof aProp === 'string' ? aProp.localeCompare(bProp) : aProp - bProp
 
-        if (this.order == -1)
-            order *= -1
+        if (this.order == -1) order *= -1
 
         // Revert order for rank and champion name
         if (props === 'index' || props === 'champion.name') {
@@ -297,20 +295,22 @@ export default {
     },
     updateChampionsList() {
       this.championsFull = this.champions.map((champ, index) => {
-        let kda = champ.kills === 0 && champ.assists === 0 && champ.deaths === 0 ? 0 : (champ.kills + champ.assists) / champ.deaths
+        let kda =
+          champ.kills === 0 && champ.assists === 0 && champ.deaths === 0
+            ? 0
+            : (champ.kills + champ.assists) / champ.deaths
         return {
           ...champ,
-          winrate: champ.wins * 100 / champ.count,
-          playrate: champ.count * 100 / this.totalGames,
+          winrate: (champ.wins * 100) / champ.count,
+          playrate: (champ.count * 100) / this.totalGames,
           kda,
           index,
           lastPlayed: timeDifference(champ.date),
-          show: true
+          show: true,
         }
       })
-    }
-  }
-
+    },
+  },
 }
 </script>
 
@@ -320,7 +320,7 @@ export default {
 }
 
 .border-t-table::after {
-  content: "";
+  content: '';
   position: absolute;
   right: 0;
   top: 0;
@@ -330,7 +330,7 @@ export default {
 }
 
 .sorted::after {
-  content: "";
+  content: '';
   position: absolute;
   top: -15px;
   left: 0;

@@ -1,24 +1,24 @@
 <template>
   <button
     @click="btnClicked"
-    :class="[btnClass, {'loading': loading}, {'pr-12': loading}]"
+    :class="[btnClass, { loading: loading }, { 'pr-12': loading }]"
     :disabled="loading"
     class="relative select-none"
     type="button"
   >
     <slot>Send</slot>
-    <span class="spinner absolute opacity-0 left-auto">
+    <span class="spinner absolute left-auto opacity-0">
       <span
-        class="inline-block absolute right-0 w-4 h-4 opacity-100 border-3 border-white rounded-full"
+        class="absolute right-0 inline-block h-4 w-4 rounded-full border-[3px] border-white opacity-100"
       ></span>
       <span
-        class="inline-block absolute right-0 w-4 h-4 opacity-100 border-3 border-white rounded-full"
+        class="absolute right-0 inline-block h-4 w-4 rounded-full border-[3px] border-white opacity-100"
       ></span>
       <span
-        class="inline-block absolute right-0 w-4 h-4 opacity-100 border-3 border-white rounded-full"
+        class="absolute right-0 inline-block h-4 w-4 rounded-full border-[3px] border-white opacity-100"
       ></span>
       <span
-        class="inline-block absolute right-0 w-4 h-4 opacity-100 border-3 border-white rounded-full"
+        class="absolute right-0 inline-block h-4 w-4 rounded-full border-[3px] border-white opacity-100"
       ></span>
     </span>
   </button>
@@ -30,20 +30,20 @@ export default {
     btnClass: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     loading: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
 
   methods: {
     btnClicked() {
       this.$emit('clicked')
-    }
-  }
+    },
+  },
 }
 </script>
 

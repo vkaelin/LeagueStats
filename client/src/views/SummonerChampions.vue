@@ -34,7 +34,7 @@ export default {
     return {
       onlyMostPlayed: false,
       queue: null,
-      searchChampions: ''
+      searchChampions: '',
     }
   },
 
@@ -42,24 +42,24 @@ export default {
     queues() {
       // Only keep the gameModes the summoner has played
       const queues = Object.keys(gameModes)
-        .filter(gameMode =>
-          gameModes[gameMode].type !== 'Bot' &&
-          this.gamemodes.includes(Number(gameMode))
+        .filter(
+          (gameMode) =>
+            gameModes[gameMode].type !== 'Bot' && this.gamemodes.includes(Number(gameMode))
         )
         .reduce((obj, key) => {
           return {
             ...obj,
-            [key]: gameModes[key]
+            [key]: gameModes[key],
           }
         }, {})
-      return { '0': { type: 'Normal', name: 'All queues' }, ...queues }
+      return { 0: { type: 'Normal', name: 'All queues' }, ...queues }
     },
     ...mapGetters('summoner', ['summonerFound']),
     ...mapState({
-      champions: state => state.summoner.champions.list,
-      championsLoaded: state => state.summoner.champions.championsLoaded,
-      gamemodes: state => state.summoner.basic.gamemodes
-    })
+      champions: (state) => state.summoner.champions.list,
+      championsLoaded: (state) => state.summoner.champions.championsLoaded,
+      gamemodes: (state) => state.summoner.basic.gamemodes,
+    }),
   },
 
   watch: {
@@ -68,7 +68,7 @@ export default {
     },
     summonerFound() {
       this.fetchData()
-    }
+    },
   },
 
   created() {
@@ -96,6 +96,6 @@ export default {
     return {
       title: 'Summoner Champions',
     }
-  }
+  },
 }
 </script>

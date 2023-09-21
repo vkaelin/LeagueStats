@@ -17,7 +17,7 @@
       <div
         v-show="isOpen"
         ref="content"
-        class="bg-blue-1000 fixed z-50 py-2 rounded-md shadow"
+        class="fixed z-50 rounded-md bg-blue-1000 py-2 shadow"
         :style="{ ...position }"
       >
         <slot></slot>
@@ -25,7 +25,7 @@
     </portal>
   </div>
 </template>
- 
+
 <script>
 export default {
   data() {
@@ -37,19 +37,21 @@ export default {
       directionBottom: true,
       directionRight: true,
       directionChecked: false,
-      width: 0
+      width: 0,
     }
   },
 
   computed: {
     position() {
       const valuetoRemove = this.directionBottom ? 0 : this.height()
-      const leftValue = this.directionRight ? this.left + this.offset : this.left - this.width - this.offset / 2
+      const leftValue = this.directionRight
+        ? this.left + this.offset
+        : this.left - this.width - this.offset / 2
       return {
         left: `${leftValue}px`,
         top: `${this.top + this.offset - valuetoRemove}px`,
       }
-    }
+    },
   },
 
   created() {
@@ -67,8 +69,8 @@ export default {
       this.width = contentRect.width
       const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight)
       const viewWidth = Math.max(document.documentElement.clientWidth, window.innerWidth)
-      this.directionBottom = (contentRect.bottom + this.offset) < viewHeight
-      this.directionRight = (this.left + this.width + triggerRect.width + this.offset) < viewWidth
+      this.directionBottom = contentRect.bottom + this.offset < viewHeight
+      this.directionRight = this.left + this.width + triggerRect.width + this.offset < viewWidth
     },
     handleScroll() {
       this.isOpen = false
@@ -100,7 +102,7 @@ export default {
       this.left = event.clientX
       this.top = event.clientY
       this.isOpen = true
-    }
-  }
+    },
+  },
 }
 </script>
