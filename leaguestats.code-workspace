@@ -8,17 +8,30 @@
     }
   ],
   "settings": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
     "editor.tabSize": 2,
-    "vetur.validation.style": false,
-    "headwind.prependCustomClasses": false
+    "files.insertFinalNewline": true,
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[vue]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
   },
   "extensions": {
     "recommendations": [
-      "octref.vetur",
+      "vue.volar",
       "dbaeumer.vscode-eslint",
       "stylelint.vscode-stylelint",
-      "heybourn.headwind",
-      "bradlc.vscode-tailwindcss"
+      "bradlc.vscode-tailwindcss",
+      "esbenp.prettier-vscode"
     ]
   }
 }
