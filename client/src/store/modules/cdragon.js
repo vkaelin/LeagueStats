@@ -14,9 +14,12 @@ export const state = {
 }
 
 export const mutations = {
-  DISPLAY_HIDE_RUNES(state, selectedRunes) {
-    state.runesOpen = !state.runesOpen
+  DISPLAY_RUNES(state, selectedRunes) {
+    state.runesOpen = true
     state.selectedRunes = selectedRunes
+  },
+  HIDE_RUNES(state) {
+    state.runesOpen = false
   },
   SET_RUNES(state, runes) {
     state.runes = runes
@@ -24,8 +27,11 @@ export const mutations = {
 }
 
 export const actions = {
-  displayOrHideRunes({ commit }, selectedRunes) {
-    commit('DISPLAY_HIDE_RUNES', selectedRunes)
+  displayRunes({ commit }, selectedRunes) {
+    commit('DISPLAY_RUNES', selectedRunes)
+  },
+  hideRunes({ commit }) {
+    commit('HIDE_RUNES')
   },
   async getRunes({ commit, getters }) {
     if (getters.runesLoaded) {

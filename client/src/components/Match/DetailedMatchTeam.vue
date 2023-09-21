@@ -395,9 +395,9 @@ export default {
         return
       }
 
-      this.displayOrHideRunes(player.perks)
+      this.displayRunes(player.perks)
     },
-    ...mapActions('cdragon', ['displayOrHideRunes']),
+    ...mapActions('cdragon', ['displayRunes']),
   },
 }
 </script>

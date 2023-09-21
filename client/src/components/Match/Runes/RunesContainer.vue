@@ -83,15 +83,15 @@ export default {
 
   methods: {
     close() {
-      this.displayOrHideRunes({})
+      this.hideRunes({})
     },
     handleEscape(e) {
       if (e.key === 'Esc' || e.key === 'Escape') {
-        this.displayOrHideRunes({})
+        this.hideRunes({})
       }
     },
     createCDragonAssetUrl,
-    ...mapActions('cdragon', ['displayOrHideRunes']),
+    ...mapActions('cdragon', ['hideRunes']),
   },
 }
 </script>

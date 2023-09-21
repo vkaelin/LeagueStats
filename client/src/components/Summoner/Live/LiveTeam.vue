@@ -282,11 +282,11 @@ export default {
     },
     selectRunes(player) {
       if (!player.perks) return
-      this.displayOrHideRunes(player.perks)
+      this.displayRunes(player.perks)
     },
     getPrimarRune,
     getSecondaryRune,
-    ...mapActions('cdragon', ['displayOrHideRunes']),
+    ...mapActions('cdragon', ['displayRunes']),
   },
 }
 </script>
