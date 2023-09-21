@@ -59,7 +59,7 @@
                 <div
                   v-if="player.role !== 'NONE'"
                   :style="{
-                    backgroundImage: `url(${'img/roles/' + player.role + '.png'})`,
+                    backgroundImage: `url(${'/img/roles/' + player.role + '.png'})`,
                   }"
                   class="h-4 w-4 bg-cover bg-center"
                 ></div>
