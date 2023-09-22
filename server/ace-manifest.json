@@ -649,6 +649,26 @@
           "alias": "p"
         }
       ]
+    },
+    "make:task": {
+      "settings": {
+        "loadApp": false,
+        "stayAlive": false
+      },
+      "commandPath": "@stouder-io/adonis-scheduler/build/commands/MakeTask",
+      "commandName": "make:task",
+      "description": "Make a new task",
+      "args": [
+        {
+          "type": "string",
+          "propertyName": "name",
+          "name": "name",
+          "required": true,
+          "description": "Name of the job class"
+        }
+      ],
+      "aliases": [],
+      "flags": []
     }
   },
   "aliases": {}

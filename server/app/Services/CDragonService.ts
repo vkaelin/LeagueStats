@@ -29,8 +29,10 @@ class CDragonService {
   public readonly BASE_URL =
     'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/'
 
-  private setupCache<T extends Identifiable>(dto: T[]) {
-    return dto.reduce((obj, item) => ((obj[item.id] = item), obj), {})
+  private setupCache<T extends Identifiable>(key: string, dto: T[]) {
+    if (dto.length === 0) return
+
+    this[key] = dto.reduce((obj, item) => ((obj[item.id] = item), obj), {})
   }
 
   /**
@@ -45,19 +47,23 @@ class CDragonService {
    * Get global Context with CDragon Data
    */
   public async getContext() {
-    const items = await Jax.CDragon.items()
-    const champions = await Jax.CDragon.champions()
-    const perks = await Jax.CDragon.perks()
-    const perkstyles = await Jax.CDragon.perkstyles()
-    const summonerSpells = await Jax.CDragon.summonerSpells()
-    const championRoles = await RoleIdentificationService.pullData().catch(() => {})
+    const [items, champions, perks, perkstyles, summonerSpells, championRoles] = await Promise.all([
+      Jax.CDragon.items(),
+      Jax.CDragon.champions(),
+      Jax.CDragon.perks(),
+      Jax.CDragon.perkstyles(),
+      Jax.CDragon.summonerSpells(),
+      RoleIdentificationService.pullData().catch(() => {}),
+    ])
 
-    this.champions = this.setupCache(champions)
-    this.items = this.setupCache(items)
-    this.perks = this.setupCache(perks)
-    this.perkstyles = this.setupCache(perkstyles.styles)
-    this.summonerSpells = this.setupCache(summonerSpells)
-    this.championRoles = championRoles as ChampionsPlayRate
+    this.setupCache('champions', champions)
+    this.setupCache('items', items)
+    this.setupCache('perks', perks)
+    this.setupCache('perkstyles', perkstyles.styles)
+    this.setupCache('summonerSpells', summonerSpells)
+    if (championRoles) {
+      this.championRoles = championRoles
+    }
   }
 }
 

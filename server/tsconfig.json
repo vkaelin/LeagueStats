@@ -30,7 +30,8 @@
       "@adonisjs/repl",
       "@adonisjs/lucid",
       "@adonisjs/redis",
-      "@rocketseat/adonis-bull"
+      "@rocketseat/adonis-bull",
+      "@stouder-io/adonis-scheduler"
     ]
   }
 }

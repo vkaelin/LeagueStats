@@ -29,6 +29,7 @@
     "@adonisjs/redis": "^7.3.4",
     "@adonisjs/repl": "^3.1.11",
     "@rocketseat/adonis-bull": "^1.0.4",
+    "@stouder-io/adonis-scheduler": "^1.0.3",
     "got": "^11.8.5",
     "luxon": "^3.4.3",
     "pg": "^8.11.3",
