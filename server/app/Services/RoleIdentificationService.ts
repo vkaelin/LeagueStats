@@ -1,5 +1,5 @@
 import Redis from '@ioc:Adonis/Addons/Redis'
-import got from 'got/dist/source'
+import got from 'got'
 
 export interface ChampionsPlayRate {
   [champion: string]: {
