@@ -11,15 +11,16 @@ export interface SelectFilters {
 
 class MatchRepository {
   private readonly JOIN_MATCHES = 'INNER JOIN matches ON matches.id = match_players.match_id'
-  private readonly JOIN_TEAMS =
-    'INNER JOIN match_teams ON match_players.match_id = match_teams.match_id AND match_players.team = match_teams.color'
-  private readonly JOIN_ALL = `${this.JOIN_MATCHES} ${this.JOIN_TEAMS}`
 
   private globalFilters(filters: SelectFilters) {
     let query = `
     match_players.summoner_puuid = :puuid
     AND match_players.remake = 0
-    AND matches.gamemode NOT IN (800, 810, 820, 830, 840, 850, 2000, 2010, 2020)
+    AND (
+      (matches.gamemode < 800 OR matches.gamemode > 899)
+        AND
+      (matches.gamemode < 2000 OR matches.gamemode > 2999)
+    )
     `
 
     if (filters.season) query += ' AND matches.season = :season '
@@ -229,7 +230,7 @@ class MatchRepository {
         SUM(match_players.loss) as losses
     FROM
         match_players
-        ${this.JOIN_ALL}
+        ${this.JOIN_MATCHES}
         INNER JOIN match_players as mates ON match_players.match_id = mates.match_id AND match_players.team = mates.team
     WHERE
         ${this.globalFilters(filters)}
