@@ -224,14 +224,26 @@ class MatchRepository {
   public async mates(filters: SelectFilters) {
     const query = `
     SELECT
-        (array_agg(mates.summoner_name ORDER BY mates.match_id DESC))[1] as name,
+        (
+        SELECT
+            summoner_name
+        FROM
+            match_players
+        WHERE
+            summoner_puuid = mates.summoner_puuid
+        ORDER BY
+            match_id DESC
+        LIMIT
+            1
+        ) AS name,
         COUNT(match_players.id) as count,
         SUM(match_players.win) as wins,
         SUM(match_players.loss) as losses
     FROM
         match_players
         ${this.JOIN_MATCHES}
-        INNER JOIN match_players as mates ON match_players.match_id = mates.match_id AND match_players.team = mates.team
+    INNER JOIN
+        match_players as mates ON match_players.match_id = mates.match_id AND match_players.team = mates.team
     WHERE
         ${this.globalFilters(filters)}
     GROUP BY
