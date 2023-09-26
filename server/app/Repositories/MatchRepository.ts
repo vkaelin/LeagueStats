@@ -82,6 +82,7 @@ class MatchRepository {
   }
 
   public async recentActivity(puuid: string) {
+    console.time('RECENT_ACTIVITY')
     const query = `
     SELECT
         to_timestamp(matches.date/1000)::date as day,
@@ -100,10 +101,12 @@ class MatchRepository {
         day
     `
     const { rows } = await Database.rawQuery(query, { puuid })
+    console.timeEnd('RECENT_ACTIVITY')
     return rows
   }
 
   public async globalStats(filters: SelectFilters) {
+    console.time('GLOBAL')
     const query = `
     SELECT
         COALESCE(SUM(match_players.kills), 0) as kills,
@@ -126,10 +129,12 @@ class MatchRepository {
     `
 
     const { rows } = await Database.rawQuery(query, filters as any)
+    console.timeEnd('GLOBAL')
     return rows[0]
   }
 
   public async gamemodeStats(filters: SelectFilters) {
+    console.time('GAMEMODE')
     const query = `
     SELECT
         matches.gamemode as id,
@@ -148,10 +153,12 @@ class MatchRepository {
     `
 
     const { rows } = await Database.rawQuery(query, filters as any)
+    console.timeEnd('GAMEMODE')
     return rows
   }
 
   public async roleStats(filters: SelectFilters) {
+    console.time('ROLE')
     const query = `
     SELECT
         match_players.team_position as role,
@@ -169,10 +176,12 @@ class MatchRepository {
     `
 
     const { rows } = await Database.rawQuery(query, filters as any)
+    console.timeEnd('ROLE')
     return rows
   }
 
   public async championStats(filters: SelectFilters) {
+    console.time('CHAMPION')
     const query = `
     SELECT
         match_players.champion_id as id,
@@ -196,10 +205,12 @@ class MatchRepository {
     `
 
     const { rows } = await Database.rawQuery(query, filters as any)
+    console.timeEnd('CHAMPION')
     return rows
   }
 
   public async championClassStats(filters: SelectFilters) {
+    console.time('CHAMPION-CLASS')
     const query = `
     SELECT
         match_players.champion_role as id,
@@ -218,10 +229,12 @@ class MatchRepository {
     `
 
     const { rows } = await Database.rawQuery(query, filters as any)
+    console.timeEnd('CHAMPION-CLASS')
     return rows
   }
 
   public async mates(filters: SelectFilters) {
+    console.time('MATES')
     const query = `
     SELECT
         (
@@ -255,6 +268,7 @@ class MatchRepository {
     `
 
     const { rows } = await Database.rawQuery(query, filters as any)
+    console.timeEnd('MATES')
 
     // Remove the Summoner himself + unique game mates
     return rows.splice(1).filter((row) => row.count > 1)

@@ -33,7 +33,6 @@ export default class SummonersController {
   public async basic({ request, response }: HttpContextContract) {
     console.time('BASIC_REQUEST')
     const { summoner, region } = await request.validate(SummonerBasicValidator)
-    const finalJSON: any = {}
 
     try {
       const account = await SummonerService.getAccount(summoner, region)
@@ -41,16 +40,20 @@ export default class SummonersController {
       if (!account) {
         return response.json(null)
       }
-      finalJSON.account = account
 
       // Summoner in DB
       const summonerDB = await Summoner.firstOrCreate({ puuid: account.puuid })
 
-      // Summoner names
-      finalJSON.account.names = await SummonerService.getAllSummonerNames(account, summonerDB)
-
-      // Only last 100 matchIds in matchlist
-      await MatchService.updateMatchList(account.puuid, region, MatchListMode.LIGHT)
+      const [names, seasons, gamemodes, current, ranked, recentActivity] = await Promise.all([
+        await SummonerService.getAllSummonerNames(account, summonerDB),
+        this.getSeasons(account.puuid),
+        MatchRepository.gamemodes(account.puuid),
+        Jax.Spectator.summonerID(account.id, region),
+        SummonerService.getRanked(account.id, region),
+        MatchRepository.recentActivity(account.puuid),
+        // Only last 100 matchIds in matchlist
+        await MatchService.updateMatchList(account.puuid, region, MatchListMode.LIGHT),
+      ])
 
       // Add job in 1sec to load entire matchlist in DB (in background)
       const matchListMode = summonerDB.$isLocal ? MatchListMode.FIRSTIME : MatchListMode.UPDATE
@@ -60,33 +63,23 @@ export default class SummonersController {
         1000
       )
 
-      // All seasons the summoner has played
-      finalJSON.seasons = await this.getSeasons(account.puuid)
-
-      // All gamemodes the summoner has played
-      finalJSON.gamemodes = (await MatchRepository.gamemodes(account.puuid)).map((g) => g.gamemode)
-
-      // CURRENT GAME
-      console.time('playing')
-      finalJSON.current = await Jax.Spectator.summonerID(account.id, region)
-      finalJSON.playing = !!finalJSON.current
-      console.timeEnd('playing')
-
-      // RANKED STATS
-      console.time('ranked')
-      finalJSON.ranked = await SummonerService.getRanked(account.id, region)
-      console.timeEnd('ranked')
-
-      // RECENT ACTIVITY
-      finalJSON.recentActivity = await StatsService.getRecentActivity(account.puuid)
+      console.timeEnd('BASIC_REQUEST')
+      return response.json({
+        account: {
+          ...account,
+          names,
+        },
+        seasons, // All seasons the summoner has played
+        gamemodes: gamemodes.map((g) => g.gamemode), // All gamemodes the summoner has played
+        playing: !!current,
+        ranked,
+        recentActivity,
+      })
     } catch (e) {
       console.log(e)
       console.timeEnd('BASIC_REQUEST')
       return response.json(null)
     }
-
-    console.timeEnd('BASIC_REQUEST')
-    return response.json(finalJSON)
   }
 
   /**
