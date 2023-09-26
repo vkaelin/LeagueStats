@@ -45,14 +45,14 @@ export default class SummonersController {
       const summonerDB = await Summoner.firstOrCreate({ puuid: account.puuid })
 
       const [names, seasons, gamemodes, current, ranked, recentActivity] = await Promise.all([
-        await SummonerService.getAllSummonerNames(account, summonerDB),
+        SummonerService.getAllSummonerNames(account, summonerDB),
         this.getSeasons(account.puuid),
         MatchRepository.gamemodes(account.puuid),
         Jax.Spectator.summonerID(account.id, region),
         SummonerService.getRanked(account.id, region),
         MatchRepository.recentActivity(account.puuid),
         // Only last 100 matchIds in matchlist
-        await MatchService.updateMatchList(account.puuid, region, MatchListMode.LIGHT),
+        MatchService.updateMatchList(account.puuid, region, MatchListMode.LIGHT),
       ])
 
       // Add job in 1sec to load entire matchlist in DB (in background)
