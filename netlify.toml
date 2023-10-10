@@ -9,3 +9,11 @@
   base    = "client"
   command = "npm run build"
   publish = "client/dist"
+
+[[redirects]]
+  from = "/js/script.js"
+  to = "https://plausible.io/js/script.js"
+
+[[redirects]]
+  from = "/api/event"
+  to = "https://plausible.io/api/event"

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueAxios from './plugins/axios'
 import VueMeta from 'vue-meta'
-import VuePlausible from './plugins/plausible'
 import PortalVue from 'portal-vue'
 
 import './assets/css/main.css'
@@ -12,7 +11,6 @@ import store from './store'
 
 Vue.config.productionTip = false
 Vue.use(VueAxios)
-Vue.use(VuePlausible)
 Vue.use(VueMeta)
 Vue.use(PortalVue)
 
