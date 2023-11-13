@@ -71,6 +71,7 @@ export default class SummonersController {
         },
         seasons, // All seasons the summoner has played
         gamemodes: gamemodes.map((g) => g.gamemode), // All gamemodes the summoner has played
+        current,
         playing: !!current,
         ranked,
         recentActivity,
