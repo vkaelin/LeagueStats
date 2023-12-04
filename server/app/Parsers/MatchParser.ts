@@ -106,7 +106,7 @@ class MatchParser {
           participant_id: player.participantId,
           summoner_id: player.summonerId,
           summoner_puuid: player.puuid,
-          summoner_name: player.summonerName,
+          summoner_name: player.summonerName || player.riotIdGameName,
           win: team.win ? 1 : 0,
           loss: team.win ? 0 : 1,
           remake: isRemake ? 1 : 0,

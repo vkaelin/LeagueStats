@@ -15,7 +15,7 @@ export const gameModes = {
   },
   400: {
     type: 'Normal',
-    name: 'DRAFT 5vs5',
+    name: 'DRAFT',
   },
   420: {
     type: 'Ranked',
@@ -23,11 +23,11 @@ export const gameModes = {
   },
   430: {
     type: 'Normal',
-    name: 'BLIND 5vs5',
+    name: 'BLIND',
   },
   440: {
     type: 'Ranked',
-    name: 'FLEX 5vs5',
+    name: 'FLEX',
   },
   460: {
     type: 'Normal',
@@ -36,6 +36,10 @@ export const gameModes = {
   470: {
     type: 'Ranked',
     name: 'FLEX 3vs3',
+  },
+  490: {
+    type: 'Normal',
+    name: 'QUICKPLAY',
   },
   700: {
     type: 'Ranked',
