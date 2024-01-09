@@ -148,7 +148,7 @@ export default {
       document.body.style.overflow = 'hidden'
     },
     formSubmit() {
-      const search = this.summoner.split(' ').join('').replace('+', ' ')
+      const search = this.summoner.split(' ').join('').replace('+', ' ').replace('#', '-')
       if (search.length) {
         this.$emit('formSubmit', search, this.selectedRegion)
       }
