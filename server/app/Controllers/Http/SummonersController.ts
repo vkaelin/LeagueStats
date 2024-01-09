@@ -35,7 +35,31 @@ export default class SummonersController {
     const { summoner, region } = await request.validate(SummonerBasicValidator)
 
     try {
-      const account = await SummonerService.getAccount(summoner, region)
+      // Coming from C++ this seems completely fine. Which suggests to me that it likely isn't.
+      var account
+
+      // Checks if searching for Riot tag. Frontend is currently replacing `#` with `-`.
+      if (!summoner.includes(`-`)) {
+        account = await SummonerService.getAccount(summoner, region)
+      } else {
+        const [name, tagline] = summoner.split(`-`)
+        account = await SummonerService.getRiotAccountByName(name, tagline, region)
+        if (!account) {
+          return response.json(null)
+        }
+
+        const additionalInfo = await SummonerService.getSummonerByPuuid(account.puuid, region)
+
+        if (!additionalInfo) {
+          return response.json(null)
+        }
+
+        account = {
+          ...account,
+          ...additionalInfo,
+        }
+      }
+
       // Check if the summoner is found
       if (!account) {
         return response.json(null)
