@@ -24,7 +24,7 @@ export default class SummonerBasicValidator {
    *    ```
    */
   public schema = schema.create({
-    summoner: schema.string({}, [rules.regex(/^[0-9\p{L} _\.]+$/u)]),
+    summoner: schema.string({}, [rules.regex(/^[0-9\p{L} _\.-]+$/u)]),
     region: schema.string(),
   })
 

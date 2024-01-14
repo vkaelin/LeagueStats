@@ -12,6 +12,7 @@ export default class JaxRequest {
   private limiter: RiotRateLimiter
   private cacheTime: number
   private retries: number
+  private riotApiPath: string
   private sleep: { (ms: number): Promise<void>; <T>(ms: number, value: T): Promise<T> }
 
   constructor(
@@ -19,7 +20,8 @@ export default class JaxRequest {
     config: JaxConfig,
     endpoint: string,
     limiter: RiotRateLimiter,
-    cacheTime: number
+    cacheTime: number,
+    riotApiPath = `lol`
   ) {
     this.region = region
     this.config = config
@@ -27,12 +29,13 @@ export default class JaxRequest {
     this.limiter = limiter
     this.cacheTime = cacheTime
     this.retries = config.requestOptions.retriesBeforeAbort
+    this.riotApiPath = riotApiPath
 
     this.sleep = promisify(setTimeout)
   }
 
   public async execute() {
-    const url = `https://${this.region}.api.riotgames.com/lol/${this.endpoint}`
+    const url = `https://${this.region}.api.riotgames.com/${this.riotApiPath}/${this.endpoint}`
 
     // Redis cache
     if (this.cacheTime > 0) {

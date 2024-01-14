@@ -63,6 +63,14 @@ class SummonerService {
     return account
   }
 
+  public async getRiotAccountByName(name: string, tagline: string, region: string) {
+    return await Jax.Summoner.puuidFromRiotTag(name, tagline, region)
+  }
+
+  public async getSummonerByPuuid(puuid: string, region: string) {
+    return await Jax.Summoner.summonerPuuid(puuid, region)
+  }
+
   /**
    * Return the full list of old and actual summoner names
    * @param account of the summoner
