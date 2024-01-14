@@ -36,6 +36,7 @@ class MatchRepository {
     const matchListQuery = SummonerMatchlist.query()
       .select('matchId')
       .where('summoner_puuid', filters.puuid)
+      .andWhere('useful', true)
 
     if (filters.lastMatchId) {
       matchListQuery.andWhere('match_id', '<', filters.lastMatchId)

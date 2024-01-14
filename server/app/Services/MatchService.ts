@@ -129,15 +129,28 @@ class MatchService {
 
     /* If we have to store some matches in the db */
     if (matchesFromApi.length !== 0) {
+      const matchIdsNotUseful: string[] = []
       // Remove bugged matches from the Riot API + tutorial games
-      const filteredMatches = matchesFromApi.filter(notEmpty).filter(
-        (m) =>
+      const filteredMatches = matchesFromApi.filter(notEmpty).filter((m) => {
+        const toKeep =
           !tutorialQueues.includes(m.info.queueId) &&
           m.info.teams.length > 0 &&
           m.info.participants.length > 0 &&
           m.info.gameMode !== 'PRACTICETOOL' &&
           m.info.gameMode !== 'CHERRY' // Arena mode
-      )
+
+        if (!toKeep) {
+          matchIdsNotUseful.push(m.metadata.matchId)
+        }
+        return toKeep
+      })
+
+      // Flag match ids in matchlist that are not useful (to not fetch them again)
+      if (matchIdsNotUseful.length) {
+        await Database.from('summoner_matchlist')
+          .whereIn('match_id', matchIdsNotUseful)
+          .update({ useful: false })
+      }
 
       // Transform raw matches data
       const parsedMatches: any = await MatchParser.parse(filteredMatches)
