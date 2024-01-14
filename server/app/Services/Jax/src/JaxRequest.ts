@@ -21,7 +21,7 @@ export default class JaxRequest {
     endpoint: string,
     limiter: RiotRateLimiter,
     cacheTime: number,
-    riotApiPath = `lol`
+    riotApiPath = 'lol'
   ) {
     this.region = region
     this.config = config

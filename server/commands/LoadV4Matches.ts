@@ -37,7 +37,7 @@ export default class LoadV4Matches extends BaseCommand {
     this.logger.info(`Trying to find ${this.summoner} from ${this.region}`)
 
     // ACCOUNT
-    const account = await SummonerService.getAccount(this.summoner, this.region)
+    const account = await SummonerService.getSummoner(this.summoner, this.region)
     if (account) {
       this.logger.success('League account found.')
     } else {

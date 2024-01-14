@@ -110,15 +110,15 @@ export default {
       }
     },
     $route(newRoute) {
-      this.summoner = newRoute.params.name
+      this.summoner = newRoute.params.name.replaceAll('-', '#')
       this.dropdown = false
       this.open = false
     },
   },
 
   created() {
-    if (!this.summoner.length && !this.homepage) {
-      this.summoner = this.$route.params.name
+    if (!this.summoner.length && !this.homepage && this.$route.params.name) {
+      this.summoner = this.$route.params.name.replaceAll('-', '#')
     }
     window.addEventListener('blur', this.windowBlur)
     window.addEventListener('keydown', this.handleEscape)
@@ -148,7 +148,7 @@ export default {
       document.body.style.overflow = 'hidden'
     },
     formSubmit() {
-      const search = this.summoner.split(' ').join('').replace('+', ' ').replace('#', '-')
+      const search = this.summoner.split(' ').join('').replaceAll('+', ' ').replaceAll('#', '-')
       if (search.length) {
         this.$emit('formSubmit', search, this.selectedRegion)
       }

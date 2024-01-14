@@ -1,4 +1,9 @@
 /**
+ * Delimiter used instead of '#' in account names from the Frontend
+ */
+export const ACCOUNT_NAME_DELIMITER = '-'
+
+/**
  * All League of Legends regions used in Riot API
  */
 export enum LeagueRegion {

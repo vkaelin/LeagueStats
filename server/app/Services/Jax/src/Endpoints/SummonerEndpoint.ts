@@ -1,8 +1,6 @@
-// import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
 import RiotRateLimiter from 'riot-ratelimiter'
 import { JaxConfig } from '../../JaxConfig'
 import JaxRequest from '../JaxRequest'
-import { getRiotRegion } from 'App/helpers'
 
 export interface SummonerDTO {
   accountId: string
@@ -50,17 +48,6 @@ export default class SummonerEndpoint {
       `summoner/v4/summoners/by-name/${encodeURI(summonerName)}`,
       this.limiter,
       36000
-    ).execute()
-  }
-
-  public puuidFromRiotTag(name: string, tagline: string, region: string): Promise<SummonerDTO> {
-    return new JaxRequest(
-      getRiotRegion(region),
-      this.config,
-      `account/v1/accounts/by-riot-id/${name}/${tagline}`,
-      this.limiter,
-      36000,
-      `riot`
     ).execute()
   }
 

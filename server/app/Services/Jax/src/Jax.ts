@@ -1,3 +1,4 @@
+import AccountEndpoint from './Endpoints/AccountEndpoint'
 import LeagueEndpoint from './Endpoints/LeagueEndpoint'
 import MatchEndpoint from './Endpoints/MatchEndpoint'
 import MatchlistEndpoint from './Endpoints/MatchlistEndpoint'
@@ -5,7 +6,6 @@ import SummonerEndpoint from './Endpoints/SummonerEndpoint'
 import SpectatorEndpoint from './Endpoints/SpectatorEndpoint'
 import CDragonEndpoint from './Endpoints/CDragonEndpoint'
 import { JaxConfig } from '../JaxConfig'
-// import { RiotRateLimiter } from '@fightmegg/riot-rate-limiter'
 import RiotRateLimiter from 'riot-ratelimiter'
 import { STRATEGY } from 'riot-ratelimiter/dist/RateLimiter'
 import MatchV4Endpoint from './Endpoints/MatchV4Endpoint'
@@ -15,6 +15,7 @@ export default class Jax {
   public key: string
   public limiter: RiotRateLimiter
   public config: JaxConfig
+  public Account: AccountEndpoint
   public League: LeagueEndpoint
   public Match: MatchEndpoint
   public MatchV4: MatchV4Endpoint
@@ -36,6 +37,7 @@ export default class Jax {
     })
     this.config = config
 
+    this.Account = new AccountEndpoint(this.config, this.limiter)
     this.League = new LeagueEndpoint(this.config, this.limiter)
     this.Match = new MatchEndpoint(this.config, this.limiter)
     this.MatchV4 = new MatchV4Endpoint(this.config, this.limiter)

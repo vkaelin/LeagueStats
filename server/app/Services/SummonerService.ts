@@ -4,6 +4,7 @@ import { LeagueEntryDTO } from './Jax/src/Endpoints/LeagueEndpoint'
 import Summoner from 'App/Models/Summoner'
 import { PlayerRankParsed } from 'App/Parsers/ParsedType'
 import MatchPlayerRank from 'App/Models/MatchPlayerRank'
+import { ACCOUNT_NAME_DELIMITER } from 'App/helpers'
 
 export interface LeagueEntriesByQueue {
   soloQ?: LeagueEntryByQueue
@@ -53,22 +54,22 @@ class SummonerService {
   }
 
   /**
-   * Get account infos for a searched summoner name
+   * Get summnoner account infos for a searched summoner name
    * @param summonerName
    * @param region
    */
-  public async getAccount(summonerName: string, region: string) {
+  public async getSummoner(summonerName: string, region: string): Promise<SummonerDTO | null> {
     const name = summonerName.toLowerCase()
-    const account = await Jax.Summoner.summonerName(name, region)
-    return account
-  }
 
-  public async getRiotAccountByName(name: string, tagline: string, region: string) {
-    return await Jax.Summoner.puuidFromRiotTag(name, tagline, region)
-  }
+    // Get old way: summonerName
+    if (!name.includes(ACCOUNT_NAME_DELIMITER)) {
+      return Jax.Summoner.summonerName(name, region)
+    }
 
-  public async getSummonerByPuuid(puuid: string, region: string) {
-    return await Jax.Summoner.summonerPuuid(puuid, region)
+    // Get new way: gameName#tagLine
+    const [gameName, tagLine] = name.split(ACCOUNT_NAME_DELIMITER)
+    const account = await Jax.Account.byRiotId(gameName, tagLine, region)
+    return account ? Jax.Summoner.summonerPuuid(account.puuid, region) : null
   }
 
   /**
