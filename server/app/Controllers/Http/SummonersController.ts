@@ -48,7 +48,7 @@ export default class SummonersController {
         SummonerService.getAllSummonerNames(account, summonerDB),
         this.getSeasons(account.puuid),
         MatchRepository.gamemodes(account.puuid),
-        Jax.Spectator.summonerID(account.id, region),
+        Jax.Spectator.puuid(account.puuid, region),
         SummonerService.getRanked(account.id, region),
         MatchRepository.recentActivity(account.puuid),
         // Only last 100 matchIds in matchlist
@@ -146,10 +146,10 @@ export default class SummonersController {
    */
   public async liveMatchDetails({ request, response }: HttpContextContract) {
     console.time('liveMatchDetails')
-    const { id, region } = await request.validate(SummonerLiveValidator)
+    const { puuid, region } = await request.validate(SummonerLiveValidator)
 
     // CURRENT GAME
-    const currentGame = await Jax.Spectator.summonerID(id, region)
+    const currentGame = await Jax.Spectator.puuid(puuid, region)
 
     if (!currentGame) {
       return response.json(null)

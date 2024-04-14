@@ -1,5 +1,5 @@
 import Jax from './Jax'
-import { SummonerDTO } from 'App/Services/Jax/src/Endpoints/SummonerEndpoint'
+import { SummonerDTO, SummonerDTOExtended } from 'App/Services/Jax/src/Endpoints/SummonerEndpoint'
 import { LeagueEntryDTO } from './Jax/src/Endpoints/LeagueEndpoint'
 import Summoner from 'App/Models/Summoner'
 import { PlayerRankParsed } from 'App/Parsers/ParsedType'
@@ -33,7 +33,7 @@ class SummonerService {
    * Helper to transform League Data from the Riot API
    * @param league raw data of the league from Riot API
    */
-  private getleagueData(league?: LeagueEntryDTO): LeagueEntryByQueue | null {
+  private getLeagueData(league?: LeagueEntryDTO): LeagueEntryByQueue | null {
     if (!league) {
       return null
     }
@@ -54,22 +54,31 @@ class SummonerService {
   }
 
   /**
-   * Get summnoner account infos for a searched summoner name
+   * Get summoner account infos for a searched summoner name
    * @param summonerName
    * @param region
    */
-  public async getSummoner(summonerName: string, region: string): Promise<SummonerDTO | null> {
-    const name = summonerName.toLowerCase()
+  public async getSummoner(
+    summonerName: string,
+    region: string
+  ): Promise<SummonerDTOExtended | null> {
+    let name = summonerName.toLowerCase()
 
-    // Get old way: summonerName
+    // Get old way
     if (!name.includes(ACCOUNT_NAME_DELIMITER)) {
-      return Jax.Summoner.summonerName(name, region)
+      name = `${name}-${region}`
     }
 
     // Get new way: gameName#tagLine
     const [gameName, tagLine] = name.split(ACCOUNT_NAME_DELIMITER)
     const account = await Jax.Account.byRiotId(gameName, tagLine, region)
-    return account ? Jax.Summoner.summonerPuuid(account.puuid, region) : null
+
+    if (account) {
+      const summoner = await Jax.Summoner.summonerPuuid(account.puuid, region)
+      return { ...summoner, name: account.gameName }
+    }
+
+    return null
   }
 
   /**
@@ -77,7 +86,7 @@ class SummonerService {
    * @param account of the summoner
    * @param summonerDB summoner in the database
    */
-  public async getAllSummonerNames(account: SummonerDTO, summonerDB: Summoner) {
+  public async getAllSummonerNames(account: SummonerDTOExtended, summonerDB: Summoner) {
     await summonerDB.related('names').firstOrCreate({
       name: account.name,
     })
@@ -95,9 +104,9 @@ class SummonerService {
 
     if (ranked && ranked.length) {
       result.soloQ =
-        this.getleagueData(ranked.find((e) => e.queueType === 'RANKED_SOLO_5x5')) || undefined
+        this.getLeagueData(ranked.find((e) => e.queueType === 'RANKED_SOLO_5x5')) || undefined
       result.flex5v5 =
-        this.getleagueData(ranked.find((e) => e.queueType === 'RANKED_FLEX_SR')) || undefined
+        this.getLeagueData(ranked.find((e) => e.queueType === 'RANKED_FLEX_SR')) || undefined
     }
     return result
   }

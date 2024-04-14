@@ -24,7 +24,7 @@ export default class SummonerLiveValidator {
    *    ```
    */
   public schema = schema.create({
-    id: schema.string(),
+    puuid: schema.string(),
     region: schema.string(),
   })
 

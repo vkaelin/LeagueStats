@@ -69,7 +69,7 @@ export default class JaxRequest {
         // Don't log 404 when summoner isn't playing or the summoner doesn't exist
         // Or if summoner has no MatchList
         if (
-          !this.endpoint.includes('spectator/v4/active-games/by-summoner') &&
+          !this.endpoint.includes('spectator/v5/active-games/by-summoner') &&
           !this.endpoint.includes('summoner/v4/summoners/by-name') &&
           !this.endpoint.includes('match/v4/matchlists/by-account')
         ) {

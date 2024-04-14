@@ -60,11 +60,11 @@ export default class SpectatorEndpoint {
     this.limiter = limiter
   }
 
-  public summonerID(summonerID: string, region: string): Promise<CurrentGameInfoDTO | undefined> {
+  public puuid(puuid: string, region: string): Promise<CurrentGameInfoDTO | undefined> {
     return new JaxRequest(
       region,
       this.config,
-      `spectator/v4/active-games/by-summoner/${summonerID}`,
+      `spectator/v5/active-games/by-summoner/${puuid}`,
       this.limiter,
       0
     ).execute()

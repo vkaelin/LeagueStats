@@ -6,10 +6,13 @@ export interface SummonerDTO {
   accountId: string
   profileIconId: number
   revisionDate: number
-  name: string
   id: string
   puuid: string
   summonerLevel: number
+}
+
+export interface SummonerDTOExtended extends SummonerDTO {
+  name: string
 }
 
 export default class SummonerEndpoint {

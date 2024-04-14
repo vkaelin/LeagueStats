@@ -191,7 +191,7 @@ export const actions = {
     const resp = await axios({
       url: 'summoner/live',
       data: {
-        id: state.basic.account.id,
+        puuid: state.basic.account.puuid,
         region: rootState.regionsList[rootState.settings.region],
       },
       method: 'POST',
