@@ -1,7 +1,7 @@
 import Database, { TransactionClientContract } from '@ioc:Adonis/Lucid/Database'
 import { MatchDto } from 'App/Services/Jax/src/Endpoints/MatchEndpoint'
 import Match from 'App/Models/Match'
-import { getSeasonNumber, queuesWithRole } from 'App/helpers'
+import { ACCOUNT_NAME_DELIMITER, getSeasonNumber, queuesWithRole } from 'App/helpers'
 import CDragonService from 'App/Services/CDragonService'
 import { ChampionRoles, TeamPosition } from './ParsedType'
 class MatchParser {
@@ -106,7 +106,7 @@ class MatchParser {
           participant_id: player.participantId,
           summoner_id: player.summonerId,
           summoner_puuid: player.puuid,
-          summoner_name: player.summonerName || player.riotIdGameName,
+          summoner_name: player.riotIdGameName + ACCOUNT_NAME_DELIMITER + player.riotIdTagline,
           win: team.win ? 1 : 0,
           loss: team.win ? 0 : 1,
           remake: isRemake ? 1 : 0,

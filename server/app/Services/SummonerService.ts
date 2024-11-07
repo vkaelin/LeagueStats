@@ -76,7 +76,7 @@ class SummonerService {
 
     if (account) {
       const summoner = await Jax.Summoner.summonerPuuid(account.puuid, region)
-      return { ...summoner, name: account.gameName }
+      return { ...summoner, name: account.gameName, tagLine: account.tagLine }
     }
 
     return null
@@ -93,7 +93,7 @@ class SummonerService {
    */
   public async getAllSummonerNames(account: SummonerDTOExtended, summonerDB: Summoner) {
     await summonerDB.related('names').firstOrCreate({
-      name: account.name,
+      name: account.name + ACCOUNT_NAME_DELIMITER + account.tagLine,
     })
     return summonerDB.related('names').query().select('name', 'created_at')
   }

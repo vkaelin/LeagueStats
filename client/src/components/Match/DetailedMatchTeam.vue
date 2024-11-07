@@ -186,13 +186,13 @@
                     'font-semibold text-yellow-400': account.id === player.summonerId,
                   }"
                   class="text-overflow w-[5.5rem] overflow-hidden whitespace-nowrap text-left text-xs text-white hover:text-blue-200"
-                  >{{ player.name }}</router-link
+                  >{{ player.name.replace('-', '#') }}</router-link
                 >
                 <div
                   v-else
                   class="text-overflow w-[5.5rem] overflow-hidden whitespace-nowrap text-left text-xs text-white"
                 >
-                  {{ player.name }}
+                  {{ player.name.replace('-', '#') }}
                 </div>
                 <div class="text-xxs text-teal-500">
                   {{ player.champion.name }}

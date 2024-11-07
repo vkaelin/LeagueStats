@@ -56,7 +56,7 @@
                 <Tooltip>
                   <template #trigger>
                     <h1 class="text-4xl font-extrabold">
-                      {{ basic.account.name }}
+                      {{ basic.account.name + '#' + basic.account.tagLine }}
                     </h1>
                   </template>
                   <template #default>

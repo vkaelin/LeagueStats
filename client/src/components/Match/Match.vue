@@ -141,14 +141,14 @@
                 }"
                 :class="isSummonerProfile(ally.account_id)"
                 class="text-overflow w-16 overflow-hidden whitespace-nowrap text-right text-xs font-medium hover:text-white"
-                >{{ ally.name }}</router-link
+                >{{ ally.name.replace('-', '#') }}</router-link
               >
               <div
                 v-else
                 :class="isSummonerProfile(ally.account_id)"
                 class="text-overflow w-16 overflow-hidden whitespace-nowrap text-right text-xs font-medium"
               >
-                {{ ally.name }}
+                {{ ally.name.replace('-', '#') }}
               </div>
               <div
                 :class="index !== 0 ? '-mt-1' : ''"
@@ -175,13 +175,13 @@
                   params: { region: $route.params.region, name: data.enemyTeam[index].name },
                 }"
                 class="text-overflow ml-1 w-16 overflow-hidden whitespace-nowrap text-left text-xs font-medium text-blue-200 hover:text-white"
-                >{{ data.enemyTeam[index].name }}</router-link
+                >{{ data.enemyTeam[index].name.replace('-', '#') }}</router-link
               >
               <div
                 v-else
                 class="text-overflow ml-1 w-16 overflow-hidden whitespace-nowrap text-left text-xs font-medium text-blue-200"
               >
-                {{ data.enemyTeam[index].name }}
+                {{ data.enemyTeam[index].name.replace('-', '#') }}
               </div>
             </div>
           </div>

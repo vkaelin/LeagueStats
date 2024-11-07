@@ -13,6 +13,7 @@ export interface SummonerDTO {
 
 export interface SummonerDTOExtended extends SummonerDTO {
   name: string
+  tagLine: string
 }
 
 export default class SummonerEndpoint {
