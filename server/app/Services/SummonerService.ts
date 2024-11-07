@@ -1,5 +1,5 @@
 import Jax from './Jax'
-import { SummonerDTO, SummonerDTOExtended } from 'App/Services/Jax/src/Endpoints/SummonerEndpoint'
+import { SummonerDTOExtended } from 'App/Services/Jax/src/Endpoints/SummonerEndpoint'
 import { LeagueEntryDTO } from './Jax/src/Endpoints/LeagueEndpoint'
 import Summoner from 'App/Models/Summoner'
 import { PlayerRankParsed } from 'App/Parsers/ParsedType'
