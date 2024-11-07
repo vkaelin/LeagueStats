@@ -33,8 +33,8 @@ export interface CurrentGameParticipantDTO {
   profileIconId: number
   bot: boolean
   teamId: number
-  summonerName: string
   summonerId: string
+  puuid: string
   spell1Id: number
   spell2Id: number
   gameCustomizationObjects: GameCustomizationObjectDTO[]

@@ -73,13 +73,16 @@
                   v-if="!player.bot"
                   :to="{
                     name: 'summoner',
-                    params: { region: $route.params.region, name: player.summonerName },
+                    params: {
+                      region: $route.params.region,
+                      name: player.gameName + '-' + player.tagLine,
+                    },
                   }"
                   :class="[
                     player.summonerId === account.id ? 'text-yellow-500' : 'hover:text-blue-200',
                   ]"
                   class="font-semibold"
-                  >{{ player.summonerName }}</router-link
+                  >{{ player.gameName + '#' + player.tagLine }}</router-link
                 >
                 <div :class="[ally ? 'text-teal-300 ' : 'text-red-400 ']" class="text-xs">
                   {{ player.champion.name }}

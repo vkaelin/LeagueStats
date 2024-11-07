@@ -5,6 +5,7 @@ import Summoner from 'App/Models/Summoner'
 import { PlayerRankParsed } from 'App/Parsers/ParsedType'
 import MatchPlayerRank from 'App/Models/MatchPlayerRank'
 import { ACCOUNT_NAME_DELIMITER } from 'App/helpers'
+import { AccountDto } from 'App/Services/Jax/src/Endpoints/AccountEndpoint'
 
 export interface LeagueEntriesByQueue {
   soloQ?: LeagueEntryByQueue
@@ -79,6 +80,10 @@ class SummonerService {
     }
 
     return null
+  }
+
+  public async getAccount(puuid: string, region: string): Promise<AccountDto | null> {
+    return Jax.Account.byPuuid(puuid, region)
   }
 
   /**

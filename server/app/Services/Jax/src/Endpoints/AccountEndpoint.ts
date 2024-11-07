@@ -28,4 +28,15 @@ export default class AccountEndpoint {
       'riot'
     ).execute()
   }
+
+  public byPuuid(puuid: string, region: string): Promise<AccountDto> {
+    return new JaxRequest(
+      getRiotRegion(region),
+      this.config,
+      `account/v1/accounts/by-puuid/${puuid}`,
+      this.limiter,
+      36000,
+      'riot'
+    ).execute()
+  }
 }

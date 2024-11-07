@@ -34,6 +34,12 @@ class LiveMatchSerializer extends MatchSerializer {
       redRoles = super.getTeamRoles(redTeam)
     }
 
+    // Accounts
+    const requestsAccounts = liveMatch.participants.map((p) =>
+      SummonerService.getAccount(p.puuid, region)
+    )
+    const accounts = await Promise.all(requestsAccounts)
+
     // Ranks
     const requestsRanks = liveMatch.participants.map((p) =>
       SummonerService.getRanked(p.summonerId, region)
@@ -61,6 +67,7 @@ class LiveMatchSerializer extends MatchSerializer {
       return {
         ...player,
         role,
+        ...accounts[index],
         rank: ranks[index],
         champion: this.getChampion(player.championId),
         perks,

@@ -207,6 +207,7 @@ export interface SerializedLiveMatchPlayer {
   spell1Id: number
   spell2Id: number
   summonerId: string
-  summonerName: string
+  gameName?: string
+  tagLine?: string
   teamId: number
 }
