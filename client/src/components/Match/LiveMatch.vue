@@ -28,11 +28,11 @@
             v-if="!ally.bot"
             :to="{
               name: 'summoner',
-              params: { region: $route.params.region, name: ally.summonerName },
+              params: { region: $route.params.region, name: ally.riotId.replaceAll('#', '-') },
             }"
             :class="[ally.summonerId === account.id ? 'text-white' : 'text-blue-200']"
             class="relative ml-2 hover:text-white"
-            >{{ ally.summonerName }}</router-link
+            >{{ ally.riotId }}</router-link
           >
         </li>
       </ul>
@@ -47,10 +47,10 @@
             v-if="!enemy.bot"
             :to="{
               name: 'summoner',
-              params: { region: $route.params.region, name: enemy.summonerName },
+              params: { region: $route.params.region, name: enemy.riotId.replaceAll('#', '-') },
             }"
             class="relative text-red-200 hover:text-white"
-            >{{ enemy.summonerName }}</router-link
+            >{{ enemy.riotId }}</router-link
           >
           <div
             :style="{
