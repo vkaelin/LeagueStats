@@ -22,7 +22,7 @@ export default class AccountEndpoint {
     return new JaxRequest(
       getRiotRegion(region),
       this.config,
-      `account/v1/accounts/by-riot-id/${name}/${tagline}`,
+      `account/v1/accounts/by-riot-id/${encodeURI(name)}/${tagline}`,
       this.limiter,
       36000,
       'riot'
