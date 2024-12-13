@@ -4,9 +4,9 @@
     @mouseleave="hover = false"
     :style="{
       backgroundImage: `${hover ? gradientHover : gradient},
-         url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${
+         url('https://cdn.communitydragon.org/latest/champion/${
            record.champion_id
-         }/${record.champion_id}000.jpg')`,
+         }/splash-art/centered/skin/0')`,
     }"
     :class="borderColor"
     class="record-card relative mx-2 mt-6 w-full rounded-lg border bg-cover bg-center p-4 leading-none"

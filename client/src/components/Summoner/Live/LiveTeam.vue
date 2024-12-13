@@ -280,7 +280,7 @@ export default {
     getCSSVars(championId) {
       return {
         '--bg-img': `linear-gradient(90deg, rgba(42, 67, 101, 0.3) 0%, rgba(42, 67, 101, 0.8) 40%, rgba(42, 67, 101, 1) 100%),
-            url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${championId}/${championId}000.jpg')`,
+            url('https://cdn.communitydragon.org/latest/champion/${championId}/splash-art/centered/skin/0')`,
       }
     },
     selectRunes(player) {
