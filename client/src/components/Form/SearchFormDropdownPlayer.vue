@@ -1,7 +1,10 @@
 <template>
   <router-link
     @click.native="close"
-    :to="{ name: 'summoner', params: { region: player.region, name: player.name } }"
+    :to="{
+      name: 'summoner',
+      params: { region: player.region, name: player.name.replaceAll('#', '-') },
+    }"
     :title="player.name"
     :class="selected ? 'bg-blue-760' : 'bg-blue-900'"
     class="bypass-click mt-1 flex w-full cursor-pointer select-none items-center justify-between rounded-md px-4 py-3 text-blue-200 shadow-md"

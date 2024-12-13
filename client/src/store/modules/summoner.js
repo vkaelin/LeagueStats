@@ -150,7 +150,7 @@ export const actions = {
       dispatch(
         'settings/addRecentSearch',
         {
-          name: infos.account.name,
+          name: infos.account.name + '#' + infos.account.tagLine,
           icon: infos.account.profileIconId,
           region,
         },
