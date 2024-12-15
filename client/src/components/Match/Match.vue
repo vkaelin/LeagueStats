@@ -133,22 +133,22 @@
               class="ml-4 flex items-center leading-none"
             >
               <router-link
-                v-if="ally.account_id !== '0' && account.accountId !== ally.account_id"
+                v-if="ally.puuid !== 'BOT' && account.puuid !== ally.puuid"
                 @click.native="$event.stopImmediatePropagation()"
                 :to="{
                   name: 'summoner',
                   params: { region: $route.params.region, name: ally.name },
                 }"
-                :class="isSummonerProfile(ally.account_id)"
+                :class="isSummonerProfile(ally.puuid)"
                 class="text-overflow w-16 overflow-hidden whitespace-nowrap text-right text-xs font-medium hover:text-white"
-                >{{ ally.name.replace('-', '#') }}</router-link
-              >
+                >{{ nameWithoutTagLine(ally.name) }}
+              </router-link>
               <div
                 v-else
-                :class="isSummonerProfile(ally.account_id)"
+                :class="isSummonerProfile(ally.puuid)"
                 class="text-overflow w-16 overflow-hidden whitespace-nowrap text-right text-xs font-medium"
               >
-                {{ ally.name.replace('-', '#') }}
+                {{ nameWithoutTagLine(ally.name) }}
               </div>
               <div
                 :class="index !== 0 ? '-mt-1' : ''"
@@ -168,20 +168,20 @@
                 class="h-6 w-6 rounded-full bg-blue-1000 bg-cover bg-center"
               ></div>
               <router-link
-                v-if="data.enemyTeam[index].account_id !== '0'"
+                v-if="data.enemyTeam[index].puuid !== 'BOT'"
                 @click.native="$event.stopImmediatePropagation()"
                 :to="{
                   name: 'summoner',
                   params: { region: $route.params.region, name: data.enemyTeam[index].name },
                 }"
                 class="text-overflow ml-1 w-16 overflow-hidden whitespace-nowrap text-left text-xs font-medium text-blue-200 hover:text-white"
-                >{{ data.enemyTeam[index].name.replace('-', '#') }}</router-link
-              >
+                >{{ nameWithoutTagLine(data.enemyTeam[index].name) }}
+              </router-link>
               <div
                 v-else
                 class="text-overflow ml-1 w-16 overflow-hidden whitespace-nowrap text-left text-xs font-medium text-blue-200"
               >
-                {{ data.enemyTeam[index].name.replace('-', '#') }}
+                {{ nameWithoutTagLine(data.enemyTeam[index].name) }}
               </div>
             </div>
           </div>
@@ -218,6 +218,7 @@ import Tooltip from '@/components/Common/Tooltip.vue'
 import DetailedMatch from '@/components/Match/DetailedMatch.vue'
 import MatchItems from '@/components/Match/MatchItems.vue'
 import Ripple from '@/components/Common/Ripple.vue'
+import { nameWithoutTagLine } from '@/helpers/functions'
 
 export default {
   components: {
@@ -260,12 +261,13 @@ export default {
         this.matchDetails(this.data.matchId)
       }
     },
-    isSummonerProfile(account_id) {
+    isSummonerProfile(puuid) {
       return {
-        'font-bold text-white': this.account.accountId === account_id,
-        'text-blue-200': this.account.accountId !== account_id,
+        'font-bold text-white': this.account.puuid === puuid,
+        'text-blue-200': this.account.puuid !== puuid,
       }
     },
+    nameWithoutTagLine,
     ...mapActions('detailedMatch', ['matchDetails']),
   },
 }

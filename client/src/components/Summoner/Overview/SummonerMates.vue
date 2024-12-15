@@ -25,7 +25,7 @@
             <router-link
               :to="{ name: 'summoner', params: { region: $route.params.region, name: mate.name } }"
               class="w-2/4 truncate hover:text-teal-200"
-              >{{ mate.name.replace('-', '#') }}</router-link
+              >{{ nameWithoutTagLine(mate.name) }}</router-link
             >
             <div class="w-1/4">{{ mate.wins }} / {{ mate.losses }}</div>
             <div class="w-1/4">
@@ -67,6 +67,7 @@
 <script>
 import { mapState } from 'vuex'
 import Tooltip from '@/components/Common/Tooltip.vue'
+import { nameWithoutTagLine } from '@/helpers/functions'
 
 export default {
   components: {
@@ -103,6 +104,7 @@ export default {
     winrate(wins, count) {
       return (wins * 100) / count
     },
+    nameWithoutTagLine,
   },
 }
 </script>

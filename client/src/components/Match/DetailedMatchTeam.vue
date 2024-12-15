@@ -177,7 +177,7 @@
               </Tooltip>
               <div class="ml-1 flex flex-col items-start justify-center leading-none">
                 <router-link
-                  v-if="player.summonerSpell1"
+                  v-if="!player.name.includes('-BOT')"
                   :to="{
                     name: 'summoner',
                     params: { region: $route.params.region, name: player.name },
@@ -186,13 +186,13 @@
                     'font-semibold text-yellow-400': account.id === player.summonerId,
                   }"
                   class="text-overflow w-[5.5rem] overflow-hidden whitespace-nowrap text-left text-xs text-white hover:text-blue-200"
-                  >{{ player.name.replace('-', '#') }}</router-link
+                  >{{ nameWithoutTagLine(player.name) }}</router-link
                 >
                 <div
                   v-else
                   class="text-overflow w-[5.5rem] overflow-hidden whitespace-nowrap text-left text-xs text-white"
                 >
-                  {{ player.name.replace('-', '#') }}
+                  {{ nameWithoutTagLine(player.name) }}
                 </div>
                 <div class="text-xxs text-teal-500">
                   {{ player.champion.name }}
@@ -309,6 +309,7 @@ import { mapActions, mapState } from 'vuex'
 import DotsLoader from '@/components/Common/DotsLoader.vue'
 import Tooltip from '@/components/Common/Tooltip.vue'
 import MatchItems from '@/components/Match/MatchItems.vue'
+import { nameWithoutTagLine } from '@/helpers/functions'
 
 export default {
   components: {
@@ -397,6 +398,7 @@ export default {
 
       this.displayRunes(player.perks)
     },
+    nameWithoutTagLine,
     ...mapActions('cdragon', ['displayRunes']),
   },
 }

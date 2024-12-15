@@ -52,3 +52,12 @@ export function createCDragonAssetUrl(iconPath) {
   const name = iconPath.split('/assets/')[1].toLowerCase()
   return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${name}`
 }
+
+/**
+ * Remove tagLine from a name
+ * @param {String} name
+ */
+export function nameWithoutTagLine(name) {
+  const separator = name.lastIndexOf('-')
+  return separator === -1 ? name : name.slice(0, separator)
+}
