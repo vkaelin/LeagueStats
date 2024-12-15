@@ -64,12 +64,27 @@ export const gameModes = {
   830: {
     type: 'Bot',
     name: 'Co-op vs. AI (Intro)',
+    notes: 'Deprecated in March 2024 in favor of queueId 870',
   },
   840: {
     type: 'Bot',
     name: 'Co-op vs. AI (Beginner)',
+    notes: 'Deprecated in March 2024 in favor of queueId 880',
   },
   850: {
+    type: 'Bot',
+    name: 'Co-op vs. AI (Intermediate)',
+    notes: 'Deprecated in March 2024 in favor of queueId 890',
+  },
+  870: {
+    type: 'Bot',
+    name: 'Co-op vs. AI (Intro)',
+  },
+  880: {
+    type: 'Bot',
+    name: 'Co-op vs. AI (Beginner)',
+  },
+  890: {
     type: 'Bot',
     name: 'Co-op vs. AI (Intermediate)',
   },
