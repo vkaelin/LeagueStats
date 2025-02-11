@@ -86,6 +86,7 @@ export const queuesWithRole = [
   430, // Blind,
   440, // Flex
   480, // Swiftplay
+  490, // QUICKPLAY
   700, // Clash
   1400, // Ultimate Spellbook
 ]
