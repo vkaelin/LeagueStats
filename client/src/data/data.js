@@ -37,6 +37,10 @@ export const gameModes = {
     type: 'Ranked',
     name: 'FLEX 3vs3',
   },
+  480: {
+    type: 'Normal',
+    name: 'Swiftplay',
+  },
   490: {
     type: 'Normal',
     name: 'QUICKPLAY',
