@@ -62,12 +62,12 @@ export default {
 
   computed: {
     allyTeam() {
-      return this.data.blueTeam.players.some((p) => p.summonerId === this.account.id)
+      return this.data.blueTeam.players.some((p) => p.summonerPuuid === this.account.puuid)
         ? this.data.blueTeam
         : this.data.redTeam
     },
     enemyTeam() {
-      return this.data.blueTeam.players.some((p) => p.summonerId === this.account.id)
+      return this.data.blueTeam.players.some((p) => p.summonerPuuid === this.account.puuid)
         ? this.data.redTeam
         : this.data.blueTeam
     },

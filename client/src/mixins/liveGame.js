@@ -45,7 +45,7 @@ export const liveGame = {
       return this.current ? this.current.gameStartTime : 0
     },
     teamColor() {
-      return this.current.participants.find((p) => p.summonerId === this.account.id).teamId
+      return this.current.participants.find((p) => p.puuid === this.account.puuid).teamId
     },
     ...mapState({
       account: (state) => state.summoner.basic.account,

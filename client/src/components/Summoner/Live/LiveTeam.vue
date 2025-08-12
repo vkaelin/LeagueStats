@@ -6,7 +6,7 @@
     >
       <thead>
         <tr class="text-left">
-          <th :class="[ally ? 'text-teal-400 ' : 'text-red-400 ']" class="w-team font-semibold">
+          <th :class="[ally ? 'text-teal-400' : 'text-red-400']" class="w-team font-semibold">
             {{ ally ? 'Ally' : 'Enemy' }} Team
           </th>
           <th class="w-ranked text-sm font-normal text-blue-200">SoloQ Stats</th>
@@ -17,7 +17,7 @@
       <tbody v-if="liveLoaded">
         <tr
           v-for="(player, index) in team"
-          :key="player.summonerId"
+          :key="player.puuid"
           :style="getCSSVars(player.championId)"
           class="live-team-row relative"
         >
@@ -43,12 +43,12 @@
                 :style="{
                   backgroundImage: `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${player.championId}.png')`,
                 }"
-                :class="borderChampion(player.summonerId)"
+                :class="borderChampion(player.puuid)"
                 class="relative ml-2 h-12 w-12 rounded-full border-2 bg-blue-1000 bg-cover bg-center"
               >
                 <div
                   v-if="player.role && player.role !== 'NONE'"
-                  :class="borderChampion(player.summonerId)"
+                  :class="borderChampion(player.puuid)"
                   class="absolute rounded-full border bg-blue-1000 p-0.5"
                   style="bottom: -5px; right: -5px"
                 >
@@ -79,12 +79,12 @@
                     },
                   }"
                   :class="[
-                    player.summonerId === account.id ? 'text-yellow-500' : 'hover:text-blue-200',
+                    player.puuid === account.puuid ? 'text-yellow-500' : 'hover:text-blue-200',
                   ]"
                   class="font-semibold"
                   >{{ player.gameName + '#' + player.tagLine }}</router-link
                 >
-                <div :class="[ally ? 'text-teal-300 ' : 'text-red-400 ']" class="text-xs">
+                <div :class="[ally ? 'text-teal-300' : 'text-red-400']" class="text-xs">
                   {{ player.champion.name }}
                 </div>
               </div>
@@ -270,8 +270,8 @@ export default {
 
       return this.live.bannedChampions.find((b) => b.pickTurn === toFind && b.teamId === teamId)
     },
-    borderChampion(id) {
-      if (id === this.account.id) {
+    borderChampion(puuid) {
+      if (puuid === this.account.puuid) {
         return 'border-yellow-500'
       }
 

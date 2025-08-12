@@ -183,7 +183,7 @@
                     params: { region: $route.params.region, name: player.name },
                   }"
                   :class="{
-                    'font-semibold text-yellow-400': account.id === player.summonerId,
+                    'font-semibold text-yellow-400': account.puuid === player.summonerPuuid,
                   }"
                   class="text-overflow w-[5.5rem] overflow-hidden whitespace-nowrap text-left text-xs text-white hover:text-blue-200"
                   >{{ nameWithoutTagLine(player.name) }}</router-link

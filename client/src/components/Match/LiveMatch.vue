@@ -14,7 +14,7 @@
       <ul class="w-1/2 text-left">
         <li
           v-for="(ally, index) in allyTeam"
-          :key="ally.summonerId"
+          :key="ally.puuid"
           :class="index % 2 === 0 ? 'accent-ally' : 'ally'"
           class="flex items-center px-5 py-1 leading-loose"
         >
@@ -30,7 +30,7 @@
               name: 'summoner',
               params: { region: $route.params.region, name: ally.riotId.replaceAll('#', '-') },
             }"
-            :class="[ally.summonerId === account.id ? 'text-white' : 'text-blue-200']"
+            :class="[ally.puuid === account.puuid ? 'text-white' : 'text-blue-200']"
             class="relative ml-2 hover:text-white"
             >{{ ally.riotId }}</router-link
           >
@@ -39,7 +39,7 @@
       <ul class="w-1/2 text-right">
         <li
           v-for="(enemy, index) in enemyTeam"
-          :key="enemy.summonerId"
+          :key="enemy.puuid"
           :class="index % 2 === 0 ? 'accent-enemy' : 'enemy'"
           class="flex items-center justify-end px-5 py-1 leading-loose"
         >
