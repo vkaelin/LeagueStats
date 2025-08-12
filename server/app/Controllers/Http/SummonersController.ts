@@ -49,7 +49,7 @@ export default class SummonersController {
         this.getSeasons(account.puuid),
         MatchRepository.gamemodes(account.puuid),
         Jax.Spectator.puuid(account.puuid, region),
-        SummonerService.getRanked(account.id, region),
+        SummonerService.getRanked(account.puuid, region),
         MatchRepository.recentActivity(account.puuid),
         // Only last 100 matchIds in matchlist
         MatchService.updateMatchList(account.puuid, region, MatchListMode.LIGHT),

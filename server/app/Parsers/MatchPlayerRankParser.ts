@@ -9,7 +9,7 @@ class MatchPlayerRankParser {
   public async parse(match: Match): Promise<PlayerRankParsed[]> {
     const requests = match.players
       .filter((p) => p.summonerPuuid !== 'BOT')
-      .map((p) => SummonerService.getRanked(p.summonerId, match.region))
+      .map((p) => SummonerService.getRanked(p.summonerPuuid, match.region))
     const ranks = await Promise.all(requests)
 
     const parsedRanks = ranks

@@ -100,11 +100,11 @@ class SummonerService {
 
   /**
    * Get ranked data for a specific Summoner
-   * @param account
+   * @param puuid
    * @param region
    */
-  public async getRanked(summonerId: string, region: string): Promise<LeagueEntriesByQueue> {
-    const ranked = await Jax.League.summonerID(summonerId, region)
+  public async getRanked(puuid: string, region: string): Promise<LeagueEntriesByQueue> {
+    const ranked = await Jax.League.puuid(puuid, region)
     const result: LeagueEntriesByQueue = {}
 
     if (ranked && ranked.length) {

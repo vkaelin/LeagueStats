@@ -42,7 +42,7 @@ class LiveMatchSerializer extends MatchSerializer {
 
     // Ranks
     const requestsRanks = liveMatch.participants.map((p) =>
-      SummonerService.getRanked(p.summonerId, region)
+      SummonerService.getRanked(p.puuid, region)
     )
     const ranks = await Promise.all(requestsRanks)
 

@@ -8,8 +8,7 @@ export interface LeagueEntryDTO {
   queueType: string
   tier: string
   rank: string
-  summonerId: string
-  summonerName: string
+  puuid: string
   leaguePoints: number
   wins: number
   losses: number
@@ -36,11 +35,11 @@ export default class LeagueEndpoint {
     this.limiter = limiter
   }
 
-  public summonerID(summonerID: string, region: string): Promise<LeagueEntryDTO[]> {
+  public puuid(puuid: string, region: string): Promise<LeagueEntryDTO[]> {
     return new JaxRequest(
       region,
       this.config,
-      `league/v4/entries/by-summoner/${summonerID}`,
+      `league/v4/entries/by-puuid/${puuid}`,
       this.limiter,
       300
     ).execute()
