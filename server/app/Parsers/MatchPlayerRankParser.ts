@@ -16,7 +16,7 @@ class MatchPlayerRankParser {
       .map((rank) => {
         return Object.entries(rank).map(([queue, data]) => {
           let player: MatchPlayer | undefined
-          if (!data || !(player = match.players.find((p) => p.summonerId === data.summonerId))) {
+          if (!data || !(player = match.players.find((p) => p.summonerPuuid === data.puuid))) {
             return
           }
 
