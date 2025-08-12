@@ -1,20 +1,20 @@
 {
   "commands": {
-    "load:v4": {
+    "load:matches": {
       "settings": {
         "loadApp": true,
         "stayAlive": false
       },
-      "commandPath": "./commands/LoadV4Matches",
-      "commandName": "load:v4",
-      "description": "Load matches for a given Summoner from the old Match-V4 endpoint",
+      "commandPath": "./commands/LoadMatches",
+      "commandName": "load:matches",
+      "description": "Load all possible matches for a given Summoner",
       "args": [
         {
           "type": "string",
           "propertyName": "summoner",
           "name": "summoner",
           "required": true,
-          "description": "Summoner name to seach"
+          "description": "Summoner name to search"
         },
         {
           "type": "string",

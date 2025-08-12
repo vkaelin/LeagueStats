@@ -1,19 +1,19 @@
 import { BaseCommand, args } from '@adonisjs/core/build/standalone'
-import MatchV4Service from 'App/Services/MatchV4Service'
+import MatchService, { MatchListMode } from 'App/Services/MatchService'
 import SummonerService from 'App/Services/SummonerService'
 
-export default class LoadV4Matches extends BaseCommand {
+export default class LoadMatches extends BaseCommand {
   /**
    * Command name is used to run the command
    */
-  public static commandName = 'load:v4'
+  public static commandName = 'load:matches'
 
   /**
    * Command description is displayed in the "help" output
    */
-  public static description = 'Load matches for a given Summoner from the old Match-V4 endpoint'
+  public static description = 'Load all possible matches for a given Summoner'
 
-  @args.string({ description: 'Summoner name to seach' })
+  @args.string({ description: 'Summoner name to search' })
   public summoner: string
 
   @args.string({ description: 'League region of the summoner' })
@@ -45,7 +45,11 @@ export default class LoadV4Matches extends BaseCommand {
     }
 
     // MATCHLIST
-    const matchListIds = await MatchV4Service.updateMatchList(account, this.region)
+    const matchListIds = await MatchService.updateMatchList(
+      account.puuid,
+      this.region,
+      MatchListMode.FIRSTIME
+    )
     if (matchListIds.length) {
       this.logger.success(`${matchListIds.length} matches in the matchlist.`)
     } else {
@@ -57,7 +61,7 @@ export default class LoadV4Matches extends BaseCommand {
     let savedMatches = 0
     for (let i = 0; i < matchListIds.length; i += chunkSize) {
       const chunk = matchListIds.slice(i, i + chunkSize)
-      savedMatches += await MatchV4Service.getMatches(this.region, chunk)
+      savedMatches += (await MatchService.getMatches(this.region, chunk, account.puuid)).length
       this.logger.info(`${savedMatches} matches saved.`)
     }
 

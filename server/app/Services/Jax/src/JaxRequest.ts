@@ -74,8 +74,7 @@ export default class JaxRequest {
           !this.endpoint.includes('match/v4/matchlists/by-account')
         ) {
           Logger.error(`URL ${url}: `)
-          console.log('JAX ERROR')
-          console.log(rest?.cause?.code)
+          console.log('JAX ERROR', statusCode, rest?.cause?.code)
           // Logger.error(`JaxRequest Error  ${statusCode}: `, rest)
         }
 
