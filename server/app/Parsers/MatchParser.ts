@@ -148,7 +148,7 @@ class MatchParser {
           minions: player.totalMinionsKilled + player.neutralMinionsKilled,
           critical_strike: player.largestCriticalStrike,
           killing_spree: player.killingSprees,
-          time_spent_living: player.longestTimeSpentLiving,
+          time_spent_living: player.longestTimeSpentLiving || player.timePlayed, // If no death, longestTimeSpentLiving is 0
           perks_primary_style: primaryStyle!.style,
           perks_secondary_style: secondaryStyle!.style,
           perks_selected: perksSelected.concat(Object.values(player.perks.statPerks)),
